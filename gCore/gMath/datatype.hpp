@@ -7,19 +7,25 @@
 #include "../gVideo/gl_core_3_3.hpp"
 
 namespace gfx {
-
+  
+// Five basic graphics primitives
+template< typename T > class scalar;
 template< typename T > class vec2;
 template< typename T > class vec3;
 template< typename T > class vec4;
 class Qutn;
 
+// Component swizzles
 class swizz4;
 class swizz3;
 class swizz2;
 class swizz1;
 
+// An ABC that graphics primitives use to dela with mapping
+// to OpenGL or any other memory.
 class raw_mappable;
 
+// A container class used to pass byte arrays of data around
 class raw_map {
 public:
                             raw_map( raw_map const& src );
@@ -72,12 +78,17 @@ inline unsigned char    raw_map::operator[]( int const index ) const
     return bytes[index];
 }
 
+// An ABC that graphics primitives use to dela with mapping
+// to OpenGL or any other memory.
 class raw_mappable {
 public:
                     raw_mappable()                  {}
     virtual         ~raw_mappable()                 {}
     virtual         raw_map const to_map() const    = 0;
 protected:
+    // Implementers have a public version of raw_map().
+    // This is intentional: this raw_map() is an internal
+    // utility function used for cloning bytes.
     raw_map const   map_bytes( size_t n_bytes, unsigned char const* bytes ) const;
 };
 
@@ -112,6 +123,7 @@ public:
     friend std::ostream&    operator<<( std::ostream& out, scalar<U> const& src );
     virtual raw_map const   to_map() const;
 protected:
+  // A union is used to access the value in full or the bytes individually.
     union {
         comp_type       value;
         unsigned char   bytes[sizeof(comp_type)];
@@ -121,6 +133,10 @@ protected:
 template< typename T > inline   scalar<T>::operator T() const   { return data.value; }
 template< typename T > inline   scalar<T>::operator T&()        { return data.value; }
 
+// This macro is defined in datatypeinfo.hpp; it expands to a template
+// specialization of the typeinfo class with a further template param.
+// Type information for library classes is only generated when code uses
+// the functionality.
 template< typename T >
 G_TYPE( scalar<T>, type<T>().n_components(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
