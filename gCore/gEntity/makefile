@@ -1,0 +1,2 @@
+GENTITY = ./gEntity
+

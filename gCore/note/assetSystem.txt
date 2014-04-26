@@ -1,0 +1,288 @@
+Data Pipeline - gEngine
+
+gEngine is designed from the ground up with the intent of direct and
+featureful support of modding, though in this context the entire
+design of development is the same as modding.  As little as possible 
+should be hard coded, such features that are are those that are universal,
+complicated, and difficult.
+
+---- Mk II ----
+
+Okay, scrap that idea.  Here's why: a 32bit integer holds 4.3 billion
+values.  Even if every game object had 1000 referenced objects, you still
+have 4.3 million objects you can reference at any one time.  The
+likeliehood of needing that many things referenced at one time is rather
+low.  Remember, we aren't talking about the actual memory, we are basically
+talking about the number of Entities referenced by the data system at any
+one time.
+
+So we don't need an explicitly two-part numeric ID, clearly.  Instead,
+one integer should suffice.
+
+The overall structure has changed as well.  Communication between content
+will be achieved via FRP functionality while Entities will be composed
+simular to Component based engines.  Utility Behaviors such as rendering
+and AI will be represented by Components but nuts & bolts behavior will
+be modeled with an internal FRP system; most of this behavior is generated
+from Entity scripts.
+
+Let's experiment.
+
+<script>
+entity Character {
+
+export:
+    num hitpoints := 100;
+    vec3 position;
+    vec3 direction;
+
+internal:
+    enum state; 
+    
+subscribe:
+    num Weapon.damage;
+    
+compose:
+    Render:
+        Skin { mesh := Geometry.baseHuman,
+               texture := Texture.baseHuman,
+               anim := AnimSet.baseHuman };
+    Collide:
+        Bone { volume := Volume.baseHuman };
+
+behavior:
+    takeDamage { hitpoints := hitpoints - Weapon.damage;
+                 state := STAGGERED;
+               };
+    animate { switch on state {
+                    case : STAGGERED { wait( Render.animation( STAGGER );) {
+                                               state := DEFAULT;
+                                           } }
+                    case : DEFAULT { Render.animation( DEFAULT ); }
+                    default { Render.animation( DEFAULT ); }
+                }
+            };
+
+};
+
+entity Sword : Weapon {
+
+override:
+    base.damage = 10;
+    
+behavior:
+    dealDamage { on Collision { send damage to Collision.Target;
+                                Engine.play( Sound.clang ); }
+               }; 
+
+};
+
+</script>
+
+Now JJ has said that his all sounds suspiciously like Lua.  That is good,
+and after looking at how Lua integrates with C and/or C++, I am inclined
+to agree.  The syntax won't be quite the same, but it will indeed serve
+the purpose very well provided I figure out how to get Lua to load
+multiple scripts at the same time.
+
+The Lua script will do two basic things.  The first parts of the script
+are used to set up the data interfaces and components of the objects
+in application space.  The behavior sections will run in Lua and acivate
+events in the application via a Lua library.  Component events will be
+bounced back through the application to get the addressing correct.
+Value events can probably be contrived to be handled by Lua.
+
+More experimenting:
+
+Entity = {}
+function Entity:new()
+    local export = {}
+    local subscribe = {}
+    local compose = {}
+    local behavior = {}
+    
+    local newEntity = { export = export,
+                        subscribe = subscribe,
+                        compose = compose,
+                        behavior = behavior }
+
+    setmetatable( newEntity, {__index = Entity} )
+    return newEntity
+end
+
+Character = {}
+function Character:new()
+    local newCharacter = Entity:new()
+    
+
+
+listener.gOnCollision = function dealDamage( event )
+                            gSend( damage, event.target )
+                            gEngine:play( "baseMod.clang" )
+                        end
+
+That's roughly what we'll end up with.  That leaves the event system
+and the utility Components system to the engine, as well as some control
+of the loading of mod packages.  If I design this just right, Lua
+can drive memory management and in particular the saving of game state.
+
+
+
+-------------------------------------------
+
+---- Data System ---- 
+
+The data system of gEngine deals with the loading and maintenance of game
+content.  Game content comes in Packages, which are analogous to a Mod
+file.  A Package implements only what it needs to, and is free to safely
+reference other Packages.  Interoperability and intercommunication of
+Pacakges is guaranteed.
+
+The Content itself comes in three broad categories: Resources, Components,
+and Entities.
+
+Resources are the raw materials of the content; the individual meshes,
+textures, and shader source files.  Components rely on Resources; they
+represent the network of data that comprises a particular behavior of
+an Entity, such as rendering or stats maintenance. Entities are composed
+of Components and represent a type of game object and all the behaviors
+therein implied.
+
+Each tier of content is controlled en masse by a Manager: ResourceManager,
+CompomentManager, and EntityManager.  Each level of content manager only
+deals with its own tier of content; ComponentManager only cares that
+ResourceManager can provide the Resources it needs, not where they come
+from.  Likewise with EntityManager relative to Components.
+
+The dependencies of all these pieces are managed by a DependencyManager.
+The DependencyManager is agnostic to the type of content its dependency
+model tracks; it mostly deals in the dependencies between IDs, which
+themselves are overseen by a ReferenceManager whose responsibility is
+the translation of textual IDs into numeric IDs at load and save time.
+
+---- IDs ----
+
+Each ID is composed of two 32 bit, unsigned integers.  The first field
+is the Package number, and the second is the ID within that Package.
+Content that hails from a given Package is assigned that Package's
+numeric ID and then a numeric ID generated when it was loaded into
+the engine.
+
+Again, numeric IDs are generated dynamically at load time; they are not
+hashes of Content filenames or handles.  This is important for two
+reasons: numbers make for far faster lookup and the interoperability
+and intercommunication of Packages depends on dynamic generation of
+these fast lookup keys.
+
+The Resources of Packages do not make reference to numeric IDs; they
+instead use textual IDs, which have the same structure but use strings
+instead of integers. When loading, the Manager registers
+each new textual ID with the ReferenceManager, which then assigns a new
+numeric ID to the Resource, Component, or Entity.  Each tier of content
+uses the same ID space.
+
+On save, numeric IDs are translated back into textual IDs.  Loading save
+files constructs a new ID Table in sync with the Packages used by the
+savefile in addition to the Packages currently loaded
+
+--------- Textual IDs ------------
+
+Textual IDs take the form:
+
+<package>.<content id>
+
+-------------------------
+
+A ResourceManager is an object which knows a scant few, but very important,
+things:
+
+    1) Its home directory environment; ideally this is customizable, but
+       we'll start with hard-coding its structure.  A customizable structure
+       would associate certain subcategories of Resource files with certain
+       directories.
+    2) The categories of Resource Files it may open and wrap as ResourceHandles.
+       ResourceHandles provide:
+       I)  A common data access interface
+       II) Hidden garbage collection data that the parent ResourceManager
+           uses todeal with memory
+    3)  Garbage Collection information associated with all the ResourceHandles
+        it has open.  ResourceHandles know enough to either delete themselves
+        and communicate to the ResourceManager upon deletion that they are
+        no longer extant.
+
+ComponentManager requests Resources from the ResourceManager  
+
+-------------------------
+
+The CompomentManager takes Resources and puts them to use in Components.
+The specific behavior a Component represents is fleshed out by the
+resources it uses; a Renderable3D, for instance, may know how to draw
+a 3D mesh with Textures and Shaders, but it is the Resources themselves
+that it needs in order to do so.
+
+ComponentManager creates Components by first loading the Component script
+that defines that Component.  This is used to determine typing and request
+Resources, which are then combined into a Prototype Component.
+
+Some scripts simply state the Component type and list the Resources this
+particular Component uses.  Others overide a built-in type and specify
+behaviors, and still others are completely Script based.
+
+Prototype Components are then instanced via cloning and composed into
+Entities by the EntityManager.
+
+-----------------------
+
+EntityManager composes Components into individual Entities.  These Entities
+are the actual game elements you see and interact with, and are the point
+at which State comes into being.
+
+-----------------------
+
+An AssetLoader is in charge of loading and maintaining files.
+You interact with the files by asking for a handle to one thusly:
+
+aAssetLoader.get_asset( <type hint>, "<filename>.<extension>");
+
+Which returns an accessor object that deals with the type indicated by
+the <type hint>.  The accessor implements an ABC interface called AssetHandle.
+
+AssetHandle has a abstract function called get():
+
+aAssetHandle.get(<type_hint>, "<subsection>(.<subsection>)*");
+
+Which works similarly and returns an object from a subsection of the file.
+
+The type hint is a crucial piece of safety mechanism; it is a way to select
+
+---------------
+
+This system was inspired by elements of the Graphics Language Shader
+Wrangler ( http://prideout.net/blog/?p=11 ).
+
+There is a class called hint that is a singleton.  Normally that is a bad idea
+but this class is purely syntactic, it does not have any behavior of it's own.
+hint has a public attribute for every class that needs to be hinted.  The
+attribute's type is a special empty class that maps 1:1 to the type it hints
+for.  hint has access to the private constructors of the type hints
+themselves, so it is the only thing that has access to the classes.
+
+So you write:
+
+gfx::hint.type_of_<classname>();
+
+To get the hint for <classname>.
+
+
+
+Or maybe it should be like:
+
+get_texture_asset()
+get_text_asset()
+get_mesh_asset()
+
+And so forth.  Of course it should be, what was I thinking?
+
+Anyway, somewhere there will be a hard-coded mapping of extensions to handle
+types so we can throw useful exceptions.  Probably a static member of
+AssetLoader.
