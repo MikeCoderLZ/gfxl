@@ -346,6 +346,9 @@ raw_map const   vec4<T>::to_map()   const
 template< typename T >
 G_TYPE( vec4<T>, 4 * type<T>().n_components(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
+// Here we instantiate all the datatypes that GLSL supports
+// and provide typedef names.
+
 typedef     vec4<float>             fvec4;
 typedef     vec3<float>             fvec3;
 typedef     vec2<float>             fvec2;
