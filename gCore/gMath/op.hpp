@@ -70,6 +70,8 @@ Vec2 operator*( Vec2 const& lhs, Mat const& rhs );
  * Its also a little esoteric and insane; I wouldn't mess with it.
  */
 
+// TODO This all needs to be integrated with the new types code.
+
 
 class OperatorFactory;
 

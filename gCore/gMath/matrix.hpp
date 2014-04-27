@@ -13,7 +13,9 @@ class Vec3;
 class Vec2;
 class Qutn;
 
-/* The Mat class may switch over to returning references if it gets too big. */
+/** The Mat class may switch over to returning references if it gets too big.
+    Also, once the datatype module is fixed, this should switch to using
+    raw_mappable. */
 
 /**
  * Represents a two dimensional array of 32bt floats.  May be of any dimension,

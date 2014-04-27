@@ -6,6 +6,9 @@
 #include "./vec.hpp"
 #include "./op.hpp"
 
+// TODO this needs to be integrated with the new types and should
+// adopt the use of a union to store the data for easier mapping.
+
 namespace gfx {
 
 class Mat;
