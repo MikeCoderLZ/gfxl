@@ -2,6 +2,7 @@
 
 //#include "type_op.hpp"
 #include "datatype.hpp"
+#include "swizzTest.hpp"
 
 int main( int argc, char** argv )
 {
@@ -25,6 +26,7 @@ int main( int argc, char** argv )
     fvec4 vec4_2 ( 0.5f, -1.2f, 8.2f, -8.6f );
     fvec4 vec4_3 ( 2.0f );
 
+    cout << test::output_float() << endl;
     cout << "Running datatype diagnositcs." << endl;
 
     cout << "A scalar!" << endl;
