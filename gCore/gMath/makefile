@@ -84,10 +84,17 @@ $(OBJ)/quaternion.o: $(GMATH)/quaternion.cpp \
 newTypes: $(BIN)/datatypeTest.exe
 
 
-$(BIN)/datatypeTest.exe: $(OBJ)/datatypeTest.o
+$(BIN)/datatypeTest.exe: $(OBJ)/datatypeTest.o $(OBJ)/swizzTest.o
 
-	g++ $(OBJ)/datatypeTest.o -o $(BIN)/datatypeTest.exe
+	g++ $(OBJ)/datatypeTest.o $(OBJ)/swizzTest.o \
+	    -o $(BIN)/datatypeTest.exe
 
+	    
+$(OBJ)/swizzTest.o: $(GMATH)/swizzTest.cpp $(GMATH)/swizzTest.hpp
+
+	g++ -c $(GMATH)/swizzTest.cpp $(COM) \
+	    -o $(OBJ)/swizzTest.o
+	
 
 $(OBJ)/datatypeTest.o: $(GMATH)/datatypeTest.cpp $(GMATH)/datatype.hpp
 

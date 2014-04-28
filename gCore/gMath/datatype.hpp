@@ -454,14 +454,7 @@ class swizz1 : public swizz2 {
     protected:
                                     swizz1( int index ) : swizz2( index ) {};
 };
-
-// I have a feeling that this approach, whereby the swizzle
-// classes construct themselves in the header file, is
-// a bad idea. There is no way this won't create a
-// declaration collision. My attempts to remove the need
-// to link an object file with the datatypes would seem
-// to be in vain. Should revert back to the secret factory
-// class.
+// Test
 
 // Classical Components
 swizz1 const x = swizz1::make_x();
