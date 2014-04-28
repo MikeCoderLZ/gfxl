@@ -15,6 +15,9 @@ template< typename T > class vec3;
 template< typename T > class vec4;
 class Qutn;
 
+// Basic matrix primitive
+template< typename T > class mat;
+
 // Component swizzles
 class swizz4;
 class swizz3;
@@ -346,6 +349,146 @@ raw_map const   vec4<T>::to_map()   const
 template< typename T >
 G_TYPE( vec4<T>, 4 * type<T>().n_components(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
+template< size_t C, size_t R, typename T >
+class mat : public raw_mappable {
+public:
+    typedef T               comp_type;
+    size_t const cols;
+    size_t const rows;
+                            mat() : cols(C),
+                                    rows(R)
+                                    { size_t i = C * R;
+                                      while( i ){
+                                          data.components[i-1] = 0.0f;
+                                          --i;
+                                      }
+                                    };
+    static mat<C,R,T>       rows( comp_type rows[R][C] );
+    static mat<C,R,T>       columns( comp_type cols[C][R] );
+    static mat<C,R,T>       identity();
+    comp_type&              operator()( size_t col,
+                                        size_t row );
+    comp_type               operator()( size_t col,
+                                        size_t row ) const;
+    mat<C,R,T>              operator*( mat const& rhs );
+    mat<C,R,T>              operator+( mat const& rhs );
+    mat<C,R,T>              operator-( mat const& rhs );
+    mat<C,R,T>              transpose( mat const& rhs );
+    mat<C,R,T>              norm( mat const& rhs );
+    
+    virtual raw_map const   to_map() const;
+private:
+    union {
+        comp_type       components[C * R];
+        unsigned char   bytes[sizeof(T) * C * R];
+    } data;
+
+};
+
+class mat2 : public mat<2,2,float> {
+public:
+    typedef mat<2,2,float>  base_t;
+    
+                            mat2() : base_t() {};
+    void                    row( swizz2 const& row,
+                                 fvec2 const& val );
+    void                    col( swizz2 const& col,
+                                 fvec2 const& val );
+    static mat2             rows( fvec2 const& row1,
+                                  fvec2 const& row2 );
+    static mat2             columns( fvec2 const& col1,
+                                     fvec2 const& col2 );
+    static mat2             scale( comp_type x,
+                                   comp_type y );
+    static mat2             scale( vec2<T> const& svec );
+};
+
+class mat3 : public mat<3,3,float> {
+public:
+    typedef mat<3,3,float>  base_t;
+    
+                            mat3() : base_t() {};
+    void                    row( swizz3 const& row,
+                                 fvec3 const& val );
+    void                    col( swizz3 const& col,
+                                 fvec3 const& val );
+    static mat3             rows( fvec3 const& row1,
+                                  fvec3 const& row2,
+                                  fvec3 const& row3 );
+    static mat3             columns( fvec3 const& col1,
+                                     fvec3 const& col2,
+                                     fvec3 const& col3 );
+    static mat3             translate( comp_type x,
+                                       comp_type y );
+    static mat3             translate( vec2<T> const& tvec );
+    static mat3             scale( comp_type x,
+                                   comp_type y );
+    static mat3             scale( vec2<T> const& svec );
+    static mat3             scale( comp_type x,
+                                   comp_type y,
+                                   comp_type z );
+    static mat3             scale( vec3<T> const& svec );
+};
+
+class mat4 : public mat<4,4,float> {
+public:
+    typedef mat<4,4,float>  base_t;
+    
+                            mat4() : base_t() {};
+    void                    row( swizz4 const& row,
+                                 fvec4 const& val );
+    void                    col( swizz4 const& col,
+                                 fvec4 const& val );
+    static mat4             rows( fvec4 const& row1,
+                                  fvec4 const& row2,
+                                  fvec4 const& row3,
+                                  fvec4 const& row4 );
+    static mat4             columns( fvec4 const& col1,
+                                     fvec4 const& col2,
+                                     fvec4 const& col3,
+                                     fvec4 const& col4 );
+    static mat4             translate( comp_type x,
+                                       comp_type y,
+                                       comp_type z );
+    static mat4             translate( vec3<T> const& tvec );
+    static mat4             scale( comp_type x,
+                                   comp_type y,
+                                   comp_type z );
+    static mat4             scale( vec3<T> const& svec );
+    static mat4             scale( comp_type x,
+                                   comp_type y,
+                                   comp_type z,
+                                   comp_type w );
+    static mat4             scale( vec4<T> const& svec );
+};
+
+/**
+
+    static mat              translate( comp_type x,
+                                       comp_type y,
+                                       comp_type z );
+    static mat              translate( vec3<T> const& tvec );
+    static mat              translate( comp_type x,
+                                       comp_type y,
+                                       comp_type z,
+                                       comp_type w );
+    static mat              translate( vec4<T> const& tvec );
+    static mat              scale( comp_type x,
+                                   comp_type y );
+    static mat              scale( vec2<T> const& svec );
+    static mat              scale( comp_type x,
+                                   comp_type y,
+                                   comp_type z );
+    static mat              scale( vec3<T> const& svec );
+    static mat              scale( comp_type x,
+                                   comp_type y,
+                                   comp_type z,
+                                   comp_type w );
+    static mat              scale( vec4<T> const& svec );
+ 
+ 
+ */
+
 // Here we instantiate all the datatypes that GLSL supports
 // and provide typedef names.
 
@@ -454,7 +597,6 @@ class swizz1 : public swizz2 {
     protected:
                                     swizz1( int index ) : swizz2( index ) {};
 };
-// Test
 
 // Classical Components
 swizz1 const x = swizz1::make_x();
