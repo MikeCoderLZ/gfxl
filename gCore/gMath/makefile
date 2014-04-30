@@ -90,7 +90,7 @@ $(BIN)/datatypeTest.exe: $(OBJ)/datatypeTest.o $(OBJ)/swizzTest.o
 	    -o $(BIN)/datatypeTest.exe
 
 	    
-$(OBJ)/swizzTest.o: $(GMATH)/swizzTest.cpp $(GMATH)/swizzTest.hpp
+$(OBJ)/swizzTest.o: $(GMATH)/swizzTest.cpp $(GMATH)/swizzTest.hpp $(GMATH)/datatype.hpp
 
 	g++ -c $(GMATH)/swizzTest.cpp $(COM) \
 	    -o $(OBJ)/swizzTest.o

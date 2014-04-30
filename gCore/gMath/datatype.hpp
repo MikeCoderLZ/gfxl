@@ -16,7 +16,7 @@ template< typename T > class vec4;
 class Qutn;
 
 // Basic matrix primitive
-template< typename T > class mat;
+template< size_t C, size_t R, typename T > class mat;
 
 // Component swizzles
 class swizz4;
@@ -349,13 +349,56 @@ raw_map const   vec4<T>::to_map()   const
 template< typename T >
 G_TYPE( vec4<T>, 4 * type<T>().n_components(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
+// Here we instantiate all the datatypes that GLSL supports
+// and provide typedef names.
+
+typedef     vec4<float>             fvec4;
+typedef     vec3<float>             fvec3;
+typedef     vec2<float>             fvec2;
+typedef     scalar<float>           float32;
+
+typedef     vec4<double>            dvec4;
+typedef     vec3<double>            dvec3;
+typedef     vec2<double>            dvec2;
+typedef     scalar<double>          double64;
+
+typedef     vec4<int>               ivec4;
+typedef     vec3<int>               ivec3;
+typedef     vec2<int>               ivec2;
+typedef     scalar<int>             int32;
+
+typedef     vec4<short>             svec4;
+typedef     vec3<short>             svec3;
+typedef     vec2<short>             svec2;
+typedef     scalar<short>           short16;
+
+typedef     vec4<char>              cvec4;
+typedef     vec3<char>              cvec3;
+typedef     vec2<char>              cvec2;
+typedef     scalar<char>            char8;
+
+typedef     vec4<unsigned int>      uvec4;
+typedef     vec3<unsigned int>      uvec3;
+typedef     vec2<unsigned int>      uvec2;
+typedef     scalar<unsigned int>    uint32;
+
+typedef     vec4<unsigned short>    usvec4;
+typedef     vec3<unsigned short>    usvec3;
+typedef     vec2<unsigned short>    usvec2;
+typedef     scalar<unsigned short>  ushort16;
+
+typedef     vec4<unsigned char>     ucvec4;
+typedef     vec3<unsigned char>     ucvec3;
+typedef     vec2<unsigned char>     ucvec2;
+typedef     scalar<unsigned char>   uchar8;
+
 template< size_t C, size_t R, typename T >
 class mat : public raw_mappable {
 public:
     typedef mat<C,R,T>      mat_t;
     typedef T               comp_t;
-    static size_t const     n_cols (C);
-    static size_t const     n_rows (R);
+    static size_t const     n_cols = C;
+    static size_t const     n_rows = R;
     
                             mat() { size_t i = n_cols * n_rows;
                                     while( i ){
@@ -363,8 +406,8 @@ public:
                                         --i;
                                     }
                                   };
-    static mat_t            rows( comp_t rows[n_rows][n_cols] );
-    static mat_t            columns( comp_t cols[n_cols][n_rows] );
+    static mat_t            rows( comp_t rows[R][C] );
+    static mat_t            columns( comp_t cols[C][R] );
     static mat_t            identity();
     comp_t&                 operator()( size_t col,
                                         size_t row );
@@ -476,8 +519,8 @@ public:
                                   float e02, float e12, float e22 );
     mat3&                   row( swizz3 const& row,
                                  fvec3 const& val );
-    mat3&                   col( swizz3 const& col,
-                                 fvec3 const& val );
+    mat3&                   column( swizz3 const& col,
+                                    fvec3 const& val );
     static mat3             rows( fvec3 const& row1,
                                   fvec3 const& row2,
                                   fvec3 const& row3 );
@@ -506,7 +549,7 @@ public:
     typedef mat<3,2,float>  base_t;
     
                             mat3x2() : base_t() {};
-                            mat3x2( float e00, float e10, float e20
+                            mat3x2( float e00, float e10, float e20,
                                     float e01, float e11, float e21 );
     mat3x2&                 row( swizz2 const& row,
                                  fvec3 const& val );
@@ -562,8 +605,8 @@ public:
                                   float e03, float e13, float e23, float e33 );
     mat4&                   row( swizz4 const& row,
                                  fvec4 const& val );
-    mat4&                   col( swizz4 const& col,
-                                 fvec4 const& val );
+    mat4&                   column( swizz4 const& col,
+                                    fvec4 const& val );
     static mat4             rows( fvec4 const& row1,
                                   fvec4 const& row2,
                                   fvec4 const& row3,
@@ -641,49 +684,6 @@ public:
     float                   operator()( swizz4 col,
                                         swizz3 row ) const;
 };
-
-// Here we instantiate all the datatypes that GLSL supports
-// and provide typedef names.
-
-typedef     vec4<float>             fvec4;
-typedef     vec3<float>             fvec3;
-typedef     vec2<float>             fvec2;
-typedef     scalar<float>           float32;
-
-typedef     vec4<double>            dvec4;
-typedef     vec3<double>            dvec3;
-typedef     vec2<double>            dvec2;
-typedef     scalar<double>          double64;
-
-typedef     vec4<int>               ivec4;
-typedef     vec3<int>               ivec3;
-typedef     vec2<int>               ivec2;
-typedef     scalar<int>             int32;
-
-typedef     vec4<short>             svec4;
-typedef     vec3<short>             svec3;
-typedef     vec2<short>             svec2;
-typedef     scalar<short>           short16;
-
-typedef     vec4<char>              cvec4;
-typedef     vec3<char>              cvec3;
-typedef     vec2<char>              cvec2;
-typedef     scalar<char>            char8;
-
-typedef     vec4<unsigned int>      uvec4;
-typedef     vec3<unsigned int>      uvec3;
-typedef     vec2<unsigned int>      uvec2;
-typedef     scalar<unsigned int>    uint32;
-
-typedef     vec4<unsigned short>    usvec4;
-typedef     vec3<unsigned short>    usvec3;
-typedef     vec2<unsigned short>    usvec2;
-typedef     scalar<unsigned short>  ushort16;
-
-typedef     vec4<unsigned char>     ucvec4;
-typedef     vec3<unsigned char>     ucvec3;
-typedef     vec2<unsigned char>     ucvec2;
-typedef     scalar<unsigned char>   uchar8;
 
 class swizz4 {
     public:
@@ -1174,13 +1174,13 @@ inline vec4<T> vec4<T>::operator/( vec4<T> const& rhs ) const
 }
 
 template< size_t C, size_t R, typename T >
-inline mat<C,R,T> mat<C,R,T>::rows( T rows[C][R] )
+inline mat<C,R,T> mat<C,R,T>::rows( T rows[R][C] )
 {
     return mat<C,R,T>();
 }
 
 template< size_t C, size_t R, typename T >
-inline mat<C,R,T> mat<C,R,T>::columns( T cols[R][C] )
+inline mat<C,R,T> mat<C,R,T>::columns( T cols[C][R] )
 {
     return mat<C,R,T>();
 }
@@ -1255,14 +1255,14 @@ inline mat2& mat2::column( swizz2 const& col,
     return *this;
 }
 
-inline mat2& mat2::rows( fvec2 const& row1,
-                         fvec2 const& row2 )
+inline mat2 mat2::rows( fvec2 const& row1,
+                        fvec2 const& row2 )
 {
     return *(new mat2());
 }
 
-inline mat2& mat2::columns( fvec2 const& col1,
-                            fvec2 const& col2 )
+inline mat2 mat2::columns( fvec2 const& col1,
+                           fvec2 const& col2 )
 {
     return *(new mat2());
 }
@@ -1292,14 +1292,14 @@ inline mat2x3& mat2x3::column( swizz2 const& col,
     return *this;
 }
 
-inline mat2x3& mat2x3::rows( fvec2 const& row1,
+inline mat2x3 mat2x3::rows( fvec2 const& row1,
                              fvec2 const& row2,
                              fvec2 const& row3 )
 {
     return *(new mat2x3());
 }
 
-inline mat2x3& mat2x3::columns( fvec3 const& col1,
+inline mat2x3 mat2x3::columns( fvec3 const& col1,
                                 fvec3 const& col2 )
 {
     return *(new mat2x3());
@@ -1333,16 +1333,16 @@ inline mat2x4& mat2x4::column( swizz2 const& col,
     return *this;
 }
 
-inline mat2x4& mat2x4::rows( fvec2 const& row1,
-                             fvec2 const& row2,
-                             fvec2 const& row3,
-                             fvec2 const& row4 )
+inline mat2x4 mat2x4::rows( fvec2 const& row1,
+                            fvec2 const& row2,
+                            fvec2 const& row3,
+                            fvec2 const& row4 )
 {
     return *(new mat2x4());
 }
 
-inline mat2x4& mat2x4::columns( fvec4 const& col1,
-                                fvec4 const& col2 )
+inline mat2x4 mat2x4::columns( fvec4 const& col1,
+                               fvec4 const& col2 )
 {
     return *(new mat2x4());
 }
@@ -1371,15 +1371,15 @@ inline mat3x2& mat3x2::column( swizz3 const& col,
     return *this;
 }
 
-inline mat3x2& mat3x2::rows( fvec3 const& row1,
-                             fvec3 const& row2 )
+inline mat3x2 mat3x2::rows( fvec3 const& row1,
+                            fvec3 const& row2 )
 {
     return *(new mat3x2());
 }
 
-inline mat3x2& mat3x2::columns( fvec2 const& col1,
-                                fvec2 const& col2,
-                                fvec2 const& col3 )
+inline mat3x2 mat3x2::columns( fvec2 const& col1,
+                               fvec2 const& col2,
+                               fvec2 const& col3 )
 {
     return *(new mat3x2());
 }
@@ -1412,16 +1412,16 @@ inline mat3& mat3::column( swizz3 const& col,
     return *this;
 }
 
-inline mat3& mat3::rows( fvec2 const& row1,
-                         fvec2 const& row2,
-                         fvec3 const& row3 )
+inline mat3 mat3::rows( fvec3 const& row1,
+                        fvec3 const& row2,
+                        fvec3 const& row3 )
 {
     return *(new mat3());
 }
 
-inline mat3& mat3::columns( fvec3 const& col1,
-                            fvec3 const& col2,
-                            fvec3 const& col3 )
+inline mat3 mat3::columns( fvec3 const& col1,
+                           fvec3 const& col2,
+                           fvec3 const& col3 )
 {
     return *(new mat3());
 }
@@ -1458,17 +1458,17 @@ inline mat3x4& mat3x4::column( swizz3 const& col,
     return *this;
 }
 
-inline mat3x4& mat3x4::rows( fvec3 const& row1,
-                             fvec3 const& row2,
-                             fvec3 const& row3,
-                             fvec3 const& row4 )
+inline mat3x4 mat3x4::rows( fvec3 const& row1,
+                            fvec3 const& row2,
+                            fvec3 const& row3,
+                            fvec3 const& row4 )
 {
     return *(new mat3x4());
 }
 
-inline mat3x4& mat3x4::columns( fvec4 const& col1,
-                                fvec4 const& col2,
-                                fvec4 const& col3 )
+inline mat3x4 mat3x4::columns( fvec4 const& col1,
+                               fvec4 const& col2,
+                               fvec4 const& col3 )
 {
     return *(new mat3x4());
 }
@@ -1499,16 +1499,16 @@ inline mat4x2& mat4x2::column( swizz4 const& col,
     return *this;
 }
 
-inline mat4x2& mat4x2::rows( fvec4 const& row1,
-                             fvec4 const& row2)
+inline mat4x2 mat4x2::rows( fvec4 const& row1,
+                            fvec4 const& row2)
 {
     return *(new mat4x2());
 }
 
-inline mat4x2& mat4x2::columns( fvec2 const& col1,
-                                fvec2 const& col2,
-                                fvec2 const& col3,
-                                fvec2 const& col4 )
+inline mat4x2 mat4x2::columns( fvec2 const& col1,
+                               fvec2 const& col2,
+                               fvec2 const& col3,
+                               fvec2 const& col4 )
 {
     return *(new mat4x2());
 }
@@ -1544,19 +1544,19 @@ inline mat4x3& mat4x3::column( swizz4 const& col,
     return *this;
 }
 
-inline mat4x3& mat4x3::rows( fvec4 const& row1,
-                             fvec4 const& row2,
-                             fvec4 const& row3 )
+inline mat4x3 mat4x3::rows( fvec4 const& row1,
+                            fvec4 const& row2,
+                            fvec4 const& row3 )
 {
-    return *(new mat4x2());
+    return mat4x3();
 }
 
-inline mat4x3& mat4x3::columns( fvec3 const& col1,
-                                fvec3 const& col2,
-                                fvec3 const& col3,
-                                fvec3 const& col4 )
+inline mat4x3 mat4x3::columns( fvec3 const& col1,
+                               fvec3 const& col2,
+                               fvec3 const& col3,
+                               fvec3 const& col4 )
 {
-    return *(new mat4x3());
+    return mat4x3();
 }
 
 inline mat4::mat4( float e00, float e10, float e20, float e30,
@@ -1595,18 +1595,18 @@ inline mat4& mat4::column( swizz4 const& col,
     return *this;
 }
 
-inline mat4& mat4::rows( fvec4 const& row1,
-                         fvec4 const& row2,
-                         fvec4 const& row3,
-                         fvec4 const& row4 )
+inline mat4 mat4::rows( fvec4 const& row1,
+                        fvec4 const& row2,
+                        fvec4 const& row3,
+                        fvec4 const& row4 )
 {
     return *(new mat4());
 }
 
-inline mat4& mat4::columns( fvec4 const& col1,
-                            fvec4 const& col2,
-                            fvec4 const& col3,
-                            fvec4 const& col4 )
+inline mat4 mat4::columns( fvec4 const& col1,
+                           fvec4 const& col2,
+                           fvec4 const& col3,
+                           fvec4 const& col4 )
 {
     return *(new mat4());
 }
