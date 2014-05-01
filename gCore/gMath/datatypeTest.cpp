@@ -25,6 +25,13 @@ int main( int argc, char** argv )
     fvec4 vec4_1;
     fvec4 vec4_2 ( 0.5f, -1.2f, 8.2f, -8.6f );
     fvec4 vec4_3 ( 2.0f );
+    
+    mat<3,3,float> mat_33_1;
+    float dummy[3][3] = { {2.0f,3.1f,4.5f},
+                      {5.0f,-6.7f,1.0f},
+                      {0.0f,-105.6f,0.0f} };
+    mat<3,3,float> mat_33_2 = mat<3,3,float>::rows( dummy );
+    mat<3,3,float> mat_33_I = mat<3,3,float>::identity();
 
     cout << test::output_float() << endl;
     cout << "Running datatype diagnositcs." << endl;
@@ -105,6 +112,25 @@ int main( int argc, char** argv )
     cout << "should be -89.0: " << vec3_1(y) << endl;
     vec4_1(w) = 0.048f;
     cout << "should be 0.048: " << vec4_1(w) << endl;
+    
+    cout << "Testing Matrices" << endl;
+    
+    cout << "Default construction of 3x3" << endl;
+    cout << mat_33_1 << endl;
+    
+    cout << "Explicit construction of 3x3 as" << endl;
+    
+    cout << "[ 2.0f 3.1f 4.5f ]" << "\n";
+    cout << "[ 5.0f -6.7f 1.0f ]" << "\n";
+    cout << "[ 0.0f -105.6f 0.0f ]" << "\n" << endl;
+
+    cout << mat_33_2 << endl;
+    
+    cout << "Identity matrix, 3x3" << endl;
+    cout << mat_33_I << endl;
+    
+    cout << "Multiplication with Identity matrix should not change the matrix:" << endl;
+    cout << mat_33_I * mat_33_2 << endl;
 
     cout << "Datatype diagnostics complete." << endl;
     return 0;

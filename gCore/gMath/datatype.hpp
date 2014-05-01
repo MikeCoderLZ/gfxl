@@ -392,6 +392,9 @@ typedef     vec3<unsigned char>     ucvec3;
 typedef     vec2<unsigned char>     ucvec2;
 typedef     scalar<unsigned char>   uchar8;
 
+template< size_t C_R, size_t RL, size_t CR, typename D>
+mat<CR,RL,D> operator*( mat<C_R,RL,D> const& lhs, mat<CR,C_R,D> const& rhs );
+
 template< size_t C, size_t R, typename T >
 class mat : public raw_mappable {
 public:
@@ -399,6 +402,7 @@ public:
     typedef T               comp_t;
     static size_t const     n_cols = C;
     static size_t const     n_rows = R;
+    static size_t const     n_elem = C * R;
     
                             mat() { size_t i = n_cols * n_rows;
                                     while( i ){
@@ -413,7 +417,12 @@ public:
                                         size_t row );
     comp_t                  operator()( size_t col,
                                         size_t row ) const;
-    mat_t                   operator*( mat_t const& rhs ) const;
+                                        
+                                        
+    template< size_t C_R, size_t RL, size_t CR, typename D>
+    friend mat<CR,RL,D> operator*( mat<C_R,RL,D> const& lhs, mat<CR,C_R,D> const& rhs );
+    
+    //mat_t                   operator*( mat_t const& rhs ) const;
     mat_t                   operator+( mat_t const& rhs ) const;
     mat_t                   operator-( mat_t const& rhs ) const;
    
@@ -426,6 +435,8 @@ public:
     mat_t&                  norm();
     
     virtual raw_map const   to_map() const;
+
+    //friend std::ostream& operator<<( std::ostream& stream, mat_t const& src );
 protected:
     union {
         comp_t              components[n_cols * n_rows];
@@ -1176,49 +1187,120 @@ inline vec4<T> vec4<T>::operator/( vec4<T> const& rhs ) const
 template< size_t C, size_t R, typename T >
 inline mat<C,R,T> mat<C,R,T>::rows( T rows[R][C] )
 {
-    return mat<C,R,T>();
+    mat<C,R,T> a_mat;
+    
+    size_t c;
+    size_t r;
+    size_t n_c = a_mat.n_cols;
+    size_t n_r = a_mat.n_rows;
+    
+    for( c = 0; c < n_c; c++ ) {
+        for( r = 0; r < n_r; r++ ) {
+            a_mat.data.components[ c * n_r + r ] = rows[r][c];
+        }
+    }
+    
+    return a_mat;
 }
 
 template< size_t C, size_t R, typename T >
 inline mat<C,R,T> mat<C,R,T>::columns( T cols[C][R] )
 {
-    return mat<C,R,T>();
+    mat<C,R,T> a_mat;
+    
+    size_t c;
+    size_t r;
+    size_t n_c = a_mat.n_cols;
+    size_t n_r = a_mat.n_rows;
+    
+    for( c = 0; c < n_c; c++ ) {
+        for( r = 0; r < n_r; r++ ) {
+            a_mat.data.components[ c * n_r + r ] = rows[c][r];
+        }
+    }
+    
+    return a_mat;
 }
 
 template< size_t C, size_t R, typename T >
 inline mat<C,R,T> mat<C,R,T>::identity()
 {
-    return mat<C,R,T>();
+    mat<C,R,T> a_mat;
+    
+    size_t n_r = a_mat.n_rows;
+    size_t min_dim = ( a_mat.n_cols < n_r ? a_mat.n_cols : n_r );
+    
+    // the offset into the array has the formula:
+    // column * numbew_of_rows + row
+    // when we are doing the diagonal, the column
+    // and row are the same, so it reduces to:
+    // i( number_of_rows + 1)
+    // so we increment n_r here just once before the loop
+    n_r++;
+    
+    for( size_t i = 0; i < min_dim; i++ ){
+        a_mat.data.components[ i * n_r ] = 1;
+    }
+    
+    return a_mat;
 }
 
 template< size_t C, size_t R, typename T >
 inline T& mat<C,R,T>::operator()( size_t col, size_t row )
 {
-    return *(new T(0.0f));
+    return this->data.components[col * this->n_rows + row];
 }
 
 template< size_t C, size_t R, typename T >
 inline T mat<C,R,T>::operator()( size_t col, size_t row ) const
 {
-    return T(0.0f);
+    T out = this->data.components[col * this->n_rows + row];
+    return out;
 }
 
-template< size_t C, size_t R, typename T >
-inline mat<C,R,T> mat<C,R,T>::operator*( mat<C,R,T> const& rhs ) const
-{
-    return mat<C,R,T>();
+template< size_t C_R, size_t RL, size_t CR, typename D >
+inline mat<CR,RL,D> operator*( mat<C_R,RL,D> const& lhs, mat<CR,C_R,D> const& rhs )
+{   
+    size_t element = 0;
+    size_t addend = 0;
+
+    D sum = 0.0;
+
+    mat<CR,RL,D> out;
+
+    for( element = 0; element < lhs.n_rows * rhs.n_cols; ++element ){
+        for( addend = 0; addend < lhs.n_cols; ++addend ){
+            sum += lhs( addend, element % lhs.n_rows ) * rhs( element / lhs.n_rows, addend );
+        }
+        out.data.components[element] = sum;
+        sum = 0.0;
+    }
+
+    return out;
 }
 
 template< size_t C, size_t R, typename T >
 inline mat<C,R,T> mat<C,R,T>::operator+( mat<C,R,T> const& rhs ) const
 {
-    return mat<C,R,T>();
+    mat<C,R,T>::mat_t a_mat();
+    
+    for( size_t i = 0; i < this->n_elem; i++ ) {
+        a_mat.data.components[i] = this->data.components[i] + rhs.data.components[i];
+    }
+    
+    return a_mat;
 }
 
 template< size_t C, size_t R, typename T >
 inline mat<C,R,T> mat<C,R,T>::operator-( mat<C,R,T> const& rhs ) const
 {
-    return mat<C,R,T>();
+    mat<C,R,T>::mat_t a_mat();
+    
+    for( size_t i = 0; i < this->n_elem; i++ ) {
+        a_mat.data.components[i] = this->data.components[i] - rhs.data.components[i];
+    }
+    
+    return a_mat;
 }
 
 template< size_t C, size_t R, typename T >
@@ -1231,6 +1313,32 @@ template< size_t C, size_t R, typename T >
 inline mat<C,R,T>& mat<C,R,T>::norm()
 {
     return *this;
+}
+
+template< size_t C, size_t R, typename T>
+raw_map const mat<C,R,T>::to_map() const
+{
+    return map_bytes( sizeof(T) * 4, data.bytes );
+}
+
+template< size_t C, size_t R, typename T>
+std::ostream& operator<<( std::ostream& stream, mat<C,R,T> const& src )
+{
+    size_t i = 0;
+    size_t j = 0;
+
+    for( i = 0; i < src.n_rows; ++i ){
+        stream << "[ ";
+        for( j = 0; j < src.n_cols; ++j ){
+            stream << src(j,i) << " ";
+        }
+        stream << "]";
+        // this makes sure the formatting behaves like other types
+        if( i + 1 != src.n_rows && j + 1 != src.n_cols ){
+             stream << std::endl;
+        }
+    }
+    return stream;
 }
 
 inline mat2::mat2( float e00, float e10,
