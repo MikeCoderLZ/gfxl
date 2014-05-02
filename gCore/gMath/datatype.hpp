@@ -3,6 +3,7 @@
 
 #include <stdexcept>
 #include <iostream>
+#include <cmath>
 #include "../gUtility/datatypeinfo.hpp"
 #include "../gVideo/gl_core_3_3.hpp"
 
@@ -431,8 +432,8 @@ public:
     friend mat_t            operator*( mat_t const& lhs,
                                        float rhs );
     
-    mat_t&                  transpose();
-    mat_t&                  norm();
+    mat<R,C,T>&             transpose();
+    mat_t&                  norm( bool ignore_translate );
     
     virtual raw_map const   to_map() const;
 
@@ -1310,8 +1311,29 @@ inline mat<C,R,T>& mat<C,R,T>::transpose()
 }
 
 template< size_t C, size_t R, typename T >
-inline mat<C,R,T>& mat<C,R,T>::norm()
+inline mat<C,R,T>& mat<C,R,T>::norm( bool ignore_translate = false )
 {
+    double inv_mag = 0.0;
+    double comp_store;
+    
+    size_t n_c = ( ignore_translate ? this->n_cols - 1 : this->n_cols );
+    size_t n_r = this->n_rows;
+    
+    for( size_t i = 0; i < n_c; i++ ) {
+        for( size_t j = 0; j < n_r; j++ ) {
+            comp_store = this->data.components[ i * n_r + j ];
+            comp_store *= comp_store;
+            inv_mag += comp_store;
+        }
+        
+        inv_mag = 1.0 / std::sqrt( inv_mag );
+        
+        for( size_t j = 0; j < n_r; j++ ) {
+            this->data.components[ i * n_r + j ] *= inv_mag;
+        }
+        
+        inv_mag = 0.0;
+    }
     return *this;
 }
 
