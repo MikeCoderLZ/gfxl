@@ -114,11 +114,36 @@ int main( int argc, char** argv )
     cout << "Default construction of 3x3" << endl;
     cout << mat_33_1 << endl;
     
+    cout << "Now, fill it with the value 5.7:" << endl;
+    
+    mat_33_1.fill( 5.7f );
+    cout << mat_33_1 << endl;
+    
+    cout << "Now, the same, but using the named contructor:" << endl;
+    
+    mat<float> mat_33_2 = mat<float>::fill( 3,3, 5.7f );
+    cout << mat_33_2 << endl;
+    
     cout << "Identity matrix, 3x3" << endl;
     cout << mat_33_I << endl;
     
     cout << "Multiplication with Identity matrix should not change the matrix:" << endl;
-    cout << mat_33_I * mat_33_I << endl;
+    cout << mat_33_I * mat_33_2 << endl;
+    
+    cout << "Whereas multiplication with a zero matrix should result in all zeroes:" << endl;
+    
+    mat_33_1.fill( 0.0f );
+    cout << mat_33_1 * mat_33_2 << endl;
+    
+    cout << "Let's scale that matrix by 2 using the identity matrix and a scalar:" << endl;
+    cout << 2.0f * mat_33_I * mat_33_2 << endl;
+    
+    cout << "Let's alter the components..." << endl;
+    mat_33_2(2,0) = -6.5f;
+    cout << mat_33_2 << endl;
+    cout << "And then transpose the matrix:" << endl;
+    mat_33_2.transpose();
+    cout << mat_33_2 << endl;
 
     cout << "Datatype diagnostics complete." << endl;
     return 0;

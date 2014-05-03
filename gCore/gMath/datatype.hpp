@@ -425,9 +425,6 @@ typedef     vec3<unsigned char>     ucvec3;
 typedef     vec2<unsigned char>     ucvec2;
 typedef     scalar<unsigned char>   uchar8;
 
-//template< size_t C_R, size_t RL, size_t CR, typename D>
-//mat<CR,RL,D> operator*( mat<C_R,RL,D> const& lhs, mat<CR,C_R,D> const& rhs );
-
 template< typename T >
 class mat : public raw_mappable {
 public:
@@ -448,9 +445,10 @@ public:
     virtual                 ~mat() { delete data; }
     
     static mat_t            fill( size_t new_n_cols, size_t new_n_rows,
-                                  comp_t const& val );
+                                  comp_t const val );
     static mat_t            identity( size_t new_dim );
     
+    mat_t&                  fill( comp_t const val );
     mat_t&                  transpose();
     
     virtual raw_map const   to_map() const;
@@ -460,14 +458,18 @@ public:
 
     mat_t                   operator*( mat_t const& rhs );
     
+    template< typename D >
+    friend mat<D>            operator*( D lhs,
+                                        mat<D> const& rhs );
+    template< typename D >
+    friend mat<D>            operator*( mat<D> const& lhs,
+                                        D rhs );
+    
     //mat_t                   operator*( mat_t const& rhs ) const;
     mat_t                   operator+( mat_t const& rhs ) const;
     mat_t                   operator-( mat_t const& rhs ) const;
    
-    friend mat_t            operator*( comp_t lhs,
-                                       mat_t const& rhs );
-    friend mat_t            operator*( mat_t const& lhs,
-                                       comp_t rhs );
+
     
     //friend std::ostream& operator<<( std::ostream& stream, mat_t const& src );
 protected:
@@ -494,32 +496,50 @@ protected:
 
 };
 
-/**class mat2 : public mat<2,2,float> {
+template< typename T >
+class mat2 : public mat<T> {
 public:
-    typedef mat<2,2,float>  base_t;
+    typedef mat<T>  base_t;
+    typedef mat2<T> mat2_t;
     
-                            mat2() : base_t() {};
-                            mat2( float e00, float e10,
-                                  float e01, float e11 );
-    mat2&                   row( swizz2 const& row,
-                                 fvec2 const& val );
-    mat2&                   column( swizz2 const& col,
-                                    fvec2 const& val );
-    static mat2             rows( fvec2 const& row1,
-                                  fvec2 const& row2 );
-    static mat2             columns( fvec2 const& col1,
-                                     fvec2 const& col2 );
-    static mat2             scale( float sx,
-                                   float sy );
-    static mat2             scale( fvec2 const& svec );
+    typedef T       comp_t;
     
-    float&                  operator()( swizz2 col,
-                                        swizz2 row );
-    float                   operator()( swizz2 col,
-                                        swizz2 row ) const;
+                    mat2() : mat<T>(2,2) {};
+                    mat2( comp_t e00, comp_t e10,
+                          comp_t e01, comp_t e11 ) : base_t(2,2)
+                        { T* c = this->data->components;
+                          c[0] = e00;
+                          c[1] = e01;
+                          c[2] = e10;
+                          c[3] = e11; };
+    mat2_t&         row( swizz2 const& row,
+                         vec2<comp_t> const& val );
+    mat2_t&         column( swizz2 const& col,
+                            vec2<comp_t> const& val );
+    static mat2_t   rows( vec2<comp_t> const& row1,
+                          vec2<comp_t> const& row2 );
+    static mat2_t   columns( vec2<comp_t> const& col1,
+                             vec2<comp_t> const& col2 );
+    static mat2_t   scale( comp_t sx,
+                           comp_t sy );
+    static mat2_t   scale( vec2<comp_t> const& svec );
+    
+    comp_t&         operator()( swizz2 col,
+                                swizz2 row );
+    comp_t          operator()( swizz2 col,
+                                swizz2 row ) const;
+                                
+    mat2_t          operator*( mat2_t const& lhs );
+    //mat4x2_t          operator*( mat4x2_t const& lhs );
+    //mat3x2_t          operator*( mat3x2_t const& lhs );
+    
+    template< typename D >
+    friend mat2<D>            operator*( D lhs, mat2<D> const& rhs );
+    template< typename D >
+    friend mat2<D>            operator*( mat2<D> const& lhs, D rhs );
 };
 
-class mat2x3 : public mat<2,3,float> {
+/**class mat2x3 : public mat<2,3,float> {
 public:
     typedef mat<2,3,float>  base_t;
     
@@ -1272,6 +1292,20 @@ inline mat<C,R,T> mat<C,R,T>::columns( T cols[C][R] )
 }*/
 
 template< typename T >
+inline mat<T> mat<T>::fill( size_t new_n_cols, size_t new_n_rows,
+                    comp_t const val )
+{
+    mat<T> out( new_n_cols, new_n_rows );
+    
+    size_t i = out.n_comp;
+    T* out_cm = out.data->components;
+    
+    while(i) { out_cm[--i] = val; }
+    
+    return out;
+}
+
+template< typename T >
 inline mat<T> mat<T>::identity( size_t new_dim )
 {
     mat<T> a_mat( new_dim, new_dim );
@@ -1339,6 +1373,35 @@ inline mat<T> mat<T>::operator*( mat<T> const& rhs )
 }
 
 template< typename T >
+inline mat<T> operator*( T lhs, mat<T> const& rhs )
+{
+    mat<T> out( rhs.n_cols, rhs.n_rows );
+    size_t i = rhs.n_comp;
+    
+    T* out_cm = out.data->components;
+    T const* rhs_cm = rhs.data->components;
+    
+    while(i) { --i; out_cm[i] = rhs_cm[i] * lhs; }
+    
+    return out;
+}
+
+template< typename T >
+inline mat<T> operator*( mat<T> const& lhs, T rhs )
+{
+    mat<T> out( lhs.n_cols, lhs.n_rows );
+    size_t i = lhs.n_comp;
+    
+    T* out_cm = out.data->components;
+    T const* lhs_cm = lhs.data->components;
+    
+    while(i) { --i; out_cm[i] = lhs_cm[i] * rhs; }
+    
+    return out;
+}
+    
+
+template< typename T >
 inline mat<T> mat<T>::operator+( mat<T> const& rhs ) const
 {
     if( n_cols != rhs.n_cols || n_rows != rhs.n_rows ){
@@ -1353,7 +1416,7 @@ inline mat<T> mat<T>::operator+( mat<T> const& rhs ) const
     T* rhs_cm = rhs.data->components;
     T* out_cm = out.data->components;
     
-    while(i) { out_cm[--i] = lhs_cm[i] + rhs_cm[i]; }
+    while(i) { --i; out_cm[i] = lhs_cm[i] + rhs_cm[i]; }
     
     return out;
 }
@@ -1373,30 +1436,44 @@ inline mat<T> mat<T>::operator-( mat<T> const& rhs ) const
     T const* rhs_cm = rhs.data->components;
     T* out_cm = out.data->components;
     
-    while(i) { out_cm[--i] = lhs_cm[i] - rhs_cm[i]; }
+    while(i) { --i; out_cm[i] = lhs_cm[i] - rhs_cm[i]; }
     
     return out;
 }
 
 template< typename T >
-inline mat<T>& mat<T>::transpose()
+inline mat<T>& mat<T>::fill( comp_t const val )
 {    
     size_t i = n_comp;
     T* cm = data->components;
-    T swap;
-    size_t trans_i;
+    
+    while(i) { cm[--i] = val; }
+    
+    return *this;
+}
+
+template< typename T >
+inline mat<T>& mat<T>::transpose()
+{    
+    
+    mat_data* new_data = new mat_data(this);
+    T const* old_cm = data->components;
+    T* new_cm = new_data->components;
+    size_t i = n_comp;
     
     while(i) {
-        swap = cm[--i];
-        // Transform the linear index into it's transposed value
-        trans_i = (i % n_cols) * n_cols + i / n_cols;
-        cm[i] = cm[ trans_i ];
-        cm[ trans_i ] = swap;
+        --i;
+        new_cm[(i % n_cols) * n_cols + i / n_cols] = old_cm[i];
     }
+    
+    mat_data* old_data = data;
+    data = new_data;
+    delete old_data;
+    
     // Now we can swap the dimensions, and all is well
     size_t dummy = n_rows;
     n_rows = n_cols;
-    n_cols = n_rows;
+    n_cols = dummy;
     return *this;
 }
 
@@ -1452,40 +1529,36 @@ std::ostream& operator<<( std::ostream& stream, mat<T> const& src )
     }
     return stream;
 }
+
+template< typename T >
+inline mat2<T>& mat2<T>::row( swizz2 const& row,
+                              vec2<T> const& val )
+{
+    return *this;
+}
+
+template< typename T >
+inline mat2<T>& mat2<T>::column( swizz2 const& col,
+                              vec2<T> const& val )
+{
+    return *this;
+}
+
+template< typename T >
+inline mat2<T> mat2<T>::rows( vec2<T> const& row1,
+                           vec2<T> const& row2 )
+{
+    return *(new mat2());
+}
+
+template< typename T >
+inline mat2<T> mat2<T>::columns( vec2<T> const& col1,
+                              vec2<T> const& col2 )
+{
+    return *(new mat2());
+}
+
 /**
-inline mat2::mat2( float e00, float e10,
-                   float e01, float e11 )
-{
-    float* c = this->data.components;
-    c[0] = e00;
-    c[1] = e01;
-    c[2] = e10;
-    c[3] = e11;
-}
-
-inline mat2& mat2::row( swizz2 const& row,
-                        fvec2 const& val )
-{
-    return *this;
-}
-
-inline mat2& mat2::column( swizz2 const& col,
-                           fvec2 const& val )
-{
-    return *this;
-}
-
-inline mat2 mat2::rows( fvec2 const& row1,
-                        fvec2 const& row2 )
-{
-    return *(new mat2());
-}
-
-inline mat2 mat2::columns( fvec2 const& col1,
-                           fvec2 const& col2 )
-{
-    return *(new mat2());
-}
 
 inline mat2x3::mat2x3( float e00, float e10,
                        float e01, float e11,
