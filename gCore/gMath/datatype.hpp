@@ -17,13 +17,45 @@ template< typename T > class vec4;
 class Qutn;
 
 // Basic matrix primitive
-template< size_t C, size_t R, typename T > class mat;
+template< typename T > class mat;
 
 // Component swizzles
 class swizz4;
 class swizz3;
 class swizz2;
 class swizz1;
+
+// This little gizmo is a metaprogramming thing to make sure
+// templates use the correctly typed values for common
+// literals. I'm a paranoid programmer, and since the default
+// type for floating point is double and the compiler is supposed
+// to enforce that, we can lose some efficiency.
+//
+// Besides, you can never be too sure with matrices and graphics.
+
+template< typename T >
+class lit {
+public:
+    constexpr static T const    zero = 0;
+    constexpr static T const   one = 1;
+    constexpr static T const   neg_one = -1;
+};
+
+template<>
+class lit<float> {
+public:
+    constexpr static float const   zero = 0.0f;
+    constexpr static float const   one = 1.0f;
+    constexpr static float const   neg_one = -1.0f;
+};
+
+template<>
+class lit<double> {
+public:
+    constexpr static float const   zero = 0.0;
+    constexpr static float const   one = 1.0;
+    constexpr static float const   neg_one = -1.0;
+};
 
 // An ABC that graphics primitives use to dela with mapping
 // to OpenGL or any other memory.
@@ -393,60 +425,76 @@ typedef     vec3<unsigned char>     ucvec3;
 typedef     vec2<unsigned char>     ucvec2;
 typedef     scalar<unsigned char>   uchar8;
 
-template< size_t C_R, size_t RL, size_t CR, typename D>
-mat<CR,RL,D> operator*( mat<C_R,RL,D> const& lhs, mat<CR,C_R,D> const& rhs );
+//template< size_t C_R, size_t RL, size_t CR, typename D>
+//mat<CR,RL,D> operator*( mat<C_R,RL,D> const& lhs, mat<CR,C_R,D> const& rhs );
 
-template< size_t C, size_t R, typename T >
+template< typename T >
 class mat : public raw_mappable {
 public:
-    typedef mat<C,R,T>      mat_t;
-    typedef T               comp_t;
-    static size_t const     n_cols = C;
-    static size_t const     n_rows = R;
-    static size_t const     n_elem = C * R;
+    typedef mat<T>   mat_t;
+    typedef T        comp_t;
+    size_t           n_cols;
+    size_t           n_rows;
+    size_t           n_comp;
     
-                            mat() { size_t i = n_cols * n_rows;
-                                    while( i ){
-                                        data.components[i-1] = 0.0f;
-                                        --i;
-                                    }
-                                  };
-    static mat_t            rows( comp_t rows[R][C] );
-    static mat_t            columns( comp_t cols[C][R] );
-    static mat_t            identity();
-    comp_t&                 operator()( size_t col,
-                                        size_t row );
-    comp_t                  operator()( size_t col,
-                                        size_t row ) const;
-                                        
-                                        
-    template< size_t C_R, size_t RL, size_t CR, typename D>
-    friend mat<CR,RL,D> operator*( mat<C_R,RL,D> const& lhs, mat<CR,C_R,D> const& rhs );
+                            mat( size_t new_n_cols,
+                                 size_t new_n_rows ) : n_cols( new_n_cols ),
+                                                       n_rows( new_n_rows ),
+                                                       n_comp( n_cols * n_rows )
+                                // TODO Need to throw an exception when dimensions are zero
+                                { data = new mat_data( this );
+                                  size_t i = n_comp;
+                                  while( i ){ data->components[--i] = lit<comp_t>::zero; } }
+    virtual                 ~mat() { delete data; }
+    
+    static mat_t            fill( size_t new_n_cols, size_t new_n_rows,
+                                  comp_t const& val );
+    static mat_t            identity( size_t new_dim );
+    
+    mat_t&                  transpose();
+    
+    virtual raw_map const   to_map() const;
+    
+    comp_t&                 operator()( size_t col, size_t row );
+    comp_t                  operator()( size_t col, size_t row ) const;
+
+    mat_t                   operator*( mat_t const& rhs );
     
     //mat_t                   operator*( mat_t const& rhs ) const;
     mat_t                   operator+( mat_t const& rhs ) const;
     mat_t                   operator-( mat_t const& rhs ) const;
    
-    friend mat_t            operator*( float lhs,
+    friend mat_t            operator*( comp_t lhs,
                                        mat_t const& rhs );
     friend mat_t            operator*( mat_t const& lhs,
-                                       float rhs );
+                                       comp_t rhs );
     
-    mat<R,C,T>&             transpose();
-    mat_t&                  norm( bool ignore_translate );
-    
-    virtual raw_map const   to_map() const;
-
     //friend std::ostream& operator<<( std::ostream& stream, mat_t const& src );
 protected:
-    union {
-        comp_t              components[n_cols * n_rows];
-        unsigned char       bytes[sizeof(comp_t) * n_cols * n_rows];
-    } data;
+    class mat_data {
+    public:
+        mat_t*                  owner;
+        comp_t*                 components;
+        size_t                  n_bytes() { return owner->n_comp * sizeof( comp_t ); }
+        unsigned char const*    bytes() { return (unsigned char*) components; }
+        
+                                mat_data( mat_t* new_owner ) : owner( new_owner )
+                                    { components = new comp_t[owner->n_comp]; };
+                                ~mat_data() { delete[] components; }
+        mat_data*               clone()
+                                    { mat_data* new_clone = new mat_data(this->owner);
+                                      size_t i = owner->n_comp;
+                                      while(i) { --i;
+                                                 new_clone->components[i] =
+                                                   this->components[i]; }
+                                      return new_clone; }
+    };
+    
+    mat_data* data;
 
 };
 
-class mat2 : public mat<2,2,float> {
+/**class mat2 : public mat<2,2,float> {
 public:
     typedef mat<2,2,float>  base_t;
     
@@ -695,7 +743,7 @@ public:
                                         swizz3 row );
     float                   operator()( swizz4 col,
                                         swizz3 row ) const;
-};
+}; */
 
 class swizz4 {
     public:
@@ -1185,8 +1233,8 @@ inline vec4<T> vec4<T>::operator/( vec4<T> const& rhs ) const
                     (*this)(w) / rhs(w) );
 }
 
-template< size_t C, size_t R, typename T >
-inline mat<C,R,T> mat<C,R,T>::rows( T rows[R][C] )
+/**template< typename T >
+inline mat<T> mat<T>::rows( T rows[R][C] )
 {
     mat<C,R,T> a_mat;
     
@@ -1221,96 +1269,138 @@ inline mat<C,R,T> mat<C,R,T>::columns( T cols[C][R] )
     }
     
     return a_mat;
-}
+}*/
 
-template< size_t C, size_t R, typename T >
-inline mat<C,R,T> mat<C,R,T>::identity()
+template< typename T >
+inline mat<T> mat<T>::identity( size_t new_dim )
 {
-    mat<C,R,T> a_mat;
+    mat<T> a_mat( new_dim, new_dim );
     
-    size_t n_r = a_mat.n_rows;
-    size_t min_dim = ( a_mat.n_cols < n_r ? a_mat.n_cols : n_r );
+    size_t i = new_dim;
+    ++new_dim;
     
-    // the offset into the array has the formula:
-    // column * numbew_of_rows + row
-    // when we are doing the diagonal, the column
-    // and row are the same, so it reduces to:
-    // i( number_of_rows + 1)
-    // so we increment n_r here just once before the loop
-    n_r++;
-    
-    for( size_t i = 0; i < min_dim; i++ ){
-        a_mat.data.components[ i * n_r ] = 1;
-    }
+    // The indices of the diagonal components in the array have
+    // the form:
+    // i * (1 + d)
+    // where:
+    // i is the number of the diagonal component, starting at zero
+    // d is the dimension of the square matrix
+    // 'i' is initialized to the dimension and we loop with it, so it
+    // is decremented each loop. new_dim is incremented once, ahead of time.
+    while(i) { a_mat.data->components[ --i * new_dim ] = lit<T>::one; }
     
     return a_mat;
 }
 
-template< size_t C, size_t R, typename T >
-inline T& mat<C,R,T>::operator()( size_t col, size_t row )
+template< typename T >
+inline T& mat<T>::operator()( size_t col, size_t row )
 {
-    return this->data.components[col * this->n_rows + row];
+    return data->components[col * n_rows + row];
 }
 
-template< size_t C, size_t R, typename T >
-inline T mat<C,R,T>::operator()( size_t col, size_t row ) const
+template< typename T >
+inline T mat<T>::operator()( size_t col, size_t row ) const
 {
-    T out = this->data.components[col * this->n_rows + row];
+    T out = data->components[col * n_rows + row];
     return out;
 }
 
-template< size_t C_R, size_t RL, size_t CR, typename D >
-inline mat<CR,RL,D> operator*( mat<C_R,RL,D> const& lhs, mat<CR,C_R,D> const& rhs )
+template< typename T >
+inline mat<T> mat<T>::operator*( mat<T> const& rhs )
 {   
+    if( n_cols != rhs.n_rows ){
+        throw std::invalid_argument("row, column mismatch on multiplication.");
+    }
+    
     size_t element = 0;
     size_t addend = 0;
 
-    D sum = 0.0;
+    T val = lit<T>::zero;
 
-    mat<CR,RL,D> out;
+    mat<T> out( rhs.n_cols, n_rows );
+    size_t n_cm = out.n_comp;
+    
+    T* lhs_cm = data->components;
+    T* rhs_cm = rhs.data->components;
+    T* out_cm = out.data->components;
 
-    for( element = 0; element < lhs.n_rows * rhs.n_cols; ++element ){
-        for( addend = 0; addend < lhs.n_cols; ++addend ){
-            sum += lhs( addend, element % lhs.n_rows ) * rhs( element / lhs.n_rows, addend );
+    size_t rhs_nr = rhs.n_rows;
+
+    for( element = 0; element < n_cm; ++element ){
+        for( addend = 0; addend < rhs_nr; ++addend ){
+            val += lhs_cm[ addend * n_rows + element % n_rows ]
+                 * rhs_cm[ element / n_rows * rhs_nr + addend ];
         }
-        out.data.components[element] = sum;
-        sum = 0.0;
+        out_cm[element] = val;
+        val = lit<T>::zero;
     }
 
     return out;
 }
 
-template< size_t C, size_t R, typename T >
-inline mat<C,R,T> mat<C,R,T>::operator+( mat<C,R,T> const& rhs ) const
+template< typename T >
+inline mat<T> mat<T>::operator+( mat<T> const& rhs ) const
 {
-    mat<C,R,T>::mat_t a_mat();
-    
-    for( size_t i = 0; i < this->n_elem; i++ ) {
-        a_mat.data.components[i] = this->data.components[i] + rhs.data.components[i];
+    if( n_cols != rhs.n_cols || n_rows != rhs.n_rows ){
+        throw std::invalid_argument("matrices not dimensionally similar on addition.");
     }
     
-    return a_mat;
+    mat<T> out( n_cols, n_rows );
+    
+    size_t i = n_comp;
+    
+    T* lhs_cm = data->components;
+    T* rhs_cm = rhs.data->components;
+    T* out_cm = out.data->components;
+    
+    while(i) { out_cm[--i] = lhs_cm[i] + rhs_cm[i]; }
+    
+    return out;
 }
 
-template< size_t C, size_t R, typename T >
-inline mat<C,R,T> mat<C,R,T>::operator-( mat<C,R,T> const& rhs ) const
+template< typename T >
+inline mat<T> mat<T>::operator-( mat<T> const& rhs ) const
 {
-    mat<C,R,T>::mat_t a_mat();
-    
-    for( size_t i = 0; i < this->n_elem; i++ ) {
-        a_mat.data.components[i] = this->data.components[i] - rhs.data.components[i];
+    if( n_cols != rhs.n_cols || n_rows != rhs.n_rows ){
+        throw std::invalid_argument("matrices not dimensionally similar on addition.");
     }
     
-    return a_mat;
+    mat<T> out( n_cols, n_rows );
+    
+    size_t i = n_comp;
+    
+    T const* lhs_cm = data->components;
+    T const* rhs_cm = rhs.data->components;
+    T* out_cm = out.data->components;
+    
+    while(i) { out_cm[--i] = lhs_cm[i] - rhs_cm[i]; }
+    
+    return out;
 }
 
-template< size_t C, size_t R, typename T >
-inline mat<C,R,T>& mat<C,R,T>::transpose()
-{
+template< typename T >
+inline mat<T>& mat<T>::transpose()
+{    
+    size_t i = n_comp;
+    T* cm = data->components;
+    T swap;
+    size_t trans_i;
+    
+    while(i) {
+        swap = cm[--i];
+        // Transform the linear index into it's transposed value
+        trans_i = (i % n_cols) * n_cols + i / n_cols;
+        cm[i] = cm[ trans_i ];
+        cm[ trans_i ] = swap;
+    }
+    // Now we can swap the dimensions, and all is well
+    size_t dummy = n_rows;
+    n_rows = n_cols;
+    n_cols = n_rows;
     return *this;
 }
 
-template< size_t C, size_t R, typename T >
+/**template< size_t C, size_t R, typename T >
 inline mat<C,R,T>& mat<C,R,T>::norm( bool ignore_translate = false )
 {
     double inv_mag = 0.0;
@@ -1335,16 +1425,16 @@ inline mat<C,R,T>& mat<C,R,T>::norm( bool ignore_translate = false )
         inv_mag = 0.0;
     }
     return *this;
-}
+} */
 
-template< size_t C, size_t R, typename T>
-raw_map const mat<C,R,T>::to_map() const
+template< typename T>
+raw_map const mat<T>::to_map() const
 {
-    return map_bytes( sizeof(T) * 4, data.bytes );
+    return map_bytes( data->n_bytes(), data->bytes() );
 }
 
-template< size_t C, size_t R, typename T>
-std::ostream& operator<<( std::ostream& stream, mat<C,R,T> const& src )
+template<typename T>
+std::ostream& operator<<( std::ostream& stream, mat<T> const& src )
 {
     size_t i = 0;
     size_t j = 0;
@@ -1362,7 +1452,7 @@ std::ostream& operator<<( std::ostream& stream, mat<C,R,T> const& src )
     }
     return stream;
 }
-
+/**
 inline mat2::mat2( float e00, float e10,
                    float e01, float e11 )
 {
@@ -1740,6 +1830,7 @@ inline mat4 mat4::columns( fvec4 const& col1,
 {
     return *(new mat4());
 }
+*/
 
 }
 
