@@ -28,6 +28,9 @@ int main( int argc, char** argv )
     
     mat<float> mat_33_1(3,3);
     mat<float> mat_33_I = mat<float>::identity(3);
+    mat<float> mat_32_1(3,2);
+    mat_32_1(1,0) = 4.1f;
+    mat_32_1(0,1) = -23.7f;
 
     cout << test::output_float() << endl;
     cout << "Running datatype diagnositcs." << endl;
@@ -144,6 +147,13 @@ int main( int argc, char** argv )
     cout << "And then transpose the matrix:" << endl;
     mat_33_2.transpose();
     cout << mat_33_2 << endl;
+    
+    cout << "A 3x2 matrix with some values:" << endl;
+    cout << mat_32_1 << endl;
+    
+    cout << "Now transpose it:" << endl;
+    mat_32_1.transpose();
+    cout << mat_32_1 << endl;
 
     cout << "Datatype diagnostics complete." << endl;
     return 0;
