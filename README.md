@@ -1,15 +1,15 @@
 
--- INTRODUCTION --
+INTRODUCTION
 
 GFXL is my work on graphics. It contains some linear algebra
 classes and some GUI code which uses SDL. I intend to expand
 this work, making more useful libraries designed for real-time
 graphics programming and demos. My goal is a collection of
-modular libraries, but much of this work dovetails which
+modular libraries, but much of this work dovetails with
 working on a game engine.
 
 This is all still experimental, so user beware. It is generally
-safe, but imcomplete, and I have not yet switched over to an
+safe, but incomplete, and I have not yet switched over to an
 actual unit testing system. I do test for bugs, but you never
 know.
 
@@ -18,7 +18,7 @@ OVERVIEW
 GFXL is an attempt to make a C++ friendly set of libraries that
 uses OpenGL and SDL under the hood to work with creating pretty
 pictures. While OpenGL and SDL already provide the raw
-functionality for that task, there are still a little clunky.
+functionality for that task, they are still a little clunky.
 They serve to smooth out the differences between systems, and
 OpenGL in particular is still very much concerned with nitpicky
 details that, while important, can distract from development
@@ -32,11 +32,11 @@ like a verbose C. In contrast, GLSL speaks directly in the
 language of 3D graphics: linear algebra and multi-variate objects.
 GFXL implements a suite of types that provide syntactic support
 for these kinds of mathematical objects and deals with the details
-of mapping them to OpenGL.
+of mapping them to OpenGL and GLSL.
 
 Component swizzling is among the most important functionality
-provided in terms of ease of use, as is implemented as close as
-possible to resemble a real feature of the language. The clarity
+provided in terms of ease of use, and is implemented to resemble
+as close as possible a real feature of the language. The clarity
 swizzling provides in expressing vector and matrix algorithms is
 well worth the complexity. All primitive GLSL datatypes are
 represented in the code with the same names, designed to map to
