@@ -448,7 +448,8 @@ public:
     mat_t                   operator*( mat_t const& rhs ) const;
     mat_t                   operator*( T rhs );
     template< typename D >
-    friend mat<D>           operator*( D lhs, mat<D> const& rhs );    mat_t&                  fill( comp_t const val );
+    friend mat<D>           operator*( D lhs, mat<D> const& rhs );
+    mat_t&                  fill( comp_t const val );
     mat_t&                  transpose();
     virtual raw_map const   to_map() const;
 protected:
@@ -486,7 +487,7 @@ public:
                                     swizz2 row );
     comp_t              operator()( swizz2 col,
                                     swizz2 row ) const;
-    mat2_t              operator*( mat2_t const& lhs );
+    mat2_t              operator*( mat2_t const& rhs );
     //mat4x2_t          operator*( mat4x2_t const& lhs );
     //mat3x2_t          operator*( mat3x2_t const& lhs );
     template< typename D >
@@ -495,8 +496,10 @@ public:
     friend mat2<D>      operator*( mat2<D> const& lhs, D rhs );
     mat2_t&             row( swizz2 const& row,
                              vec2<comp_t> const& val );
+    vec2<T>             row( swizz2 const& row ) const;
     mat2_t&             column( swizz2 const& col,
                                 vec2<comp_t> const& val );
+    vec2<T>             column( swizz2 const& col ) const;
     mat2_t&             rows( vec2<comp_t> const& row0,
                               vec2<comp_t> const& row1 );
     mat2_t&             columns( vec2<comp_t> const& col0,
@@ -509,17 +512,16 @@ public:
     typedef mat<T>      base_t;
     typedef mat2x3<T>   mat2x3_t;
     typedef T           comp_t;
-                        mat2x3();
-                        
+    
+                        mat2x3();                    
                         mat2x3( comp_t e00, comp_t e10,
                                 comp_t e01, comp_t e11,
                                 comp_t e02, comp_t e12 );
     static mat2x3_t     row_vectors( vec2<comp_t> const& row0,
                                      vec2<comp_t> const& row1,
                                      vec2<comp_t> const& row2 );
-    static mat2x3_t     column_vectors( vec2<comp_t> const& col0,
-                                        vec2<comp_t> const& col1,
-                                        vec2<comp_t> const& col2 );
+    static mat2x3_t     column_vectors( vec3<comp_t> const& col0,
+                                        vec3<comp_t> const& col1 );
     comp_t&             operator()( swizz2 col,
                                     swizz3 row );
     comp_t              operator()( swizz2 col,
@@ -532,13 +534,156 @@ public:
     friend mat2x3<D>    operator*( D lhs, mat2x3<D> const& rhs );
     mat2x3_t&           row( swizz3 const& row,
                              vec2<comp_t> const& val );
+    vec2<T>             row( swizz3 const& row ) const;
     mat2x3_t&           column( swizz2 const& col,
                                 vec3<comp_t> const& val );
+    vec3<T>             column( swizz2 const& col ) const;
     mat2x3_t&           rows( vec2<comp_t> const& row0,
                               vec2<comp_t> const& row1,
                               vec2<comp_t> const& row2 );
     mat2x3_t&           columns( vec3<comp_t> const& col0,
                                  vec3<comp_t> const& col1 );
+};
+
+template< typename T >
+class mat2x4 : public mat<T> {
+public:
+    typedef mat<T>      base_t;
+    typedef mat2x4<T>   mat2x4_t;
+    typedef T           comp_t;
+    
+                        mat2x4();                    
+                        mat2x4( comp_t e00, comp_t e10,
+                                comp_t e01, comp_t e11,
+                                comp_t e01, comp_t e12,
+                                comp_t e03, comp_t e13 );
+    static mat2x4_t     row_vectors( vec2<comp_t> const& row0,
+                                     vec2<comp_t> const& row1,
+                                     vec2<comp_t> const& row2,
+                                     vec2<comp_t> const& row3 );
+    static mat2x4_t     column_vectors( vec4<comp_t> const& col0,
+                                        vec4<comp_t> const& col1 );
+    comp_t&             operator()( swizz2 col,
+                                    swizz4 row );
+    comp_t              operator()( swizz2 col,
+                                    swizz4 row ) const;
+    //mat2x3_t          operator*( mat3x2_t const& rhs );
+    //mat4x2_t          operator*( mat4x2_t const& rhs );
+    mat2x4_t            operator*( T rhs );
+    template< typename D >
+    friend mat2x4<D>    operator*( D lhs, mat2x4<D> const& rhs );
+    mat2x4_t&           row( swizz4 const& row,
+                             vec2<comp_t> const& val );
+    vec2<T>             row( swizz4 const& row ) const;
+    mat2x4_t&           column( swizz2 const& col,
+                                vec4<comp_t> const& val );
+    vec4<T>             column( swizz2 const& col ) const;
+    mat2x4_t&           rows( vec2<comp_t> const& row0,
+                              vec2<comp_t> const& row1,
+                              vec2<comp_t> const& row2,
+                              vec2<comp_t> const& row3 );
+    mat2x4_t&           columns( vec4<comp_t> const& col0,
+                                 vec4<comp_t> const& col1 );
+};
+
+template< typename T >
+class mat3 : public mat<T> {
+public:
+    typedef mat<T>      base_t;
+    typedef mat3<T>     mat3_t;
+    typedef T           comp_t;
+    
+                        mat3();
+                        mat3( comp_t e00, comp_t e10, comp_t e20,
+                              comp_t e01, comp_t e11, comp_t e21,
+                              comp_t e02, comp_t e12, comp_t e22 );
+    static mat3_t       row_vectors( vec3<comp_t> const& row0,
+                                     vec3<comp_t> const& row1,
+                                     vec3<comp_t> const& row2 );
+    static mat3_t       column_vectors( vec3<comp_t> const& col0,
+                                        vec3<comp_t> const& col1,
+                                        vec3<comp_t> const& col2 );
+    static mat3_t       scale( comp_t sx,
+                               comp_t sy,
+                               comp_t sz = lit<comp_t>.one );
+    static mat3_t       scale( vec3<comp_t> const& svec );
+    static mat3_t       scale( vec2<comp_t> const& svec );
+    comp_t&             operator()( swizz3 col,
+                                    swizz3 row );
+    comp_t              operator()( swizz3 col,
+                                    swizz3 row ) const;
+    mat3_t              operator*( mat3_t const& rhs );
+    //mat2x3_t          operator*( mat2x3_t const& rhs );
+    //mat4x3_t          operator*( mat4x3_t const& rhs );
+    template< typename D >
+    friend mat3<D>      operator*( D lhs, mat3<D> const& rhs );
+    template< typename D >
+    friend mat3<D>      operator*( mat3<D> const& lhs, D rhs );
+    mat3_t&             row( swizz3 const& row,
+                             vec3<comp_t> const& val );
+    vec3<T>             row( swizz3 const& row ) const;
+    mat3_t&             column( swizz3 const& col,
+                                vec3<comp_t> const& val );
+    vec3<T>             column( swizz3 const& col ) const;
+    mat3_t&             rows( vec3<comp_t> const& row0,
+                              vec3<comp_t> const& row1,
+                              vec3<comp_t> const& row2 );
+    mat3_t&             columns( vec3<comp_t> const& col0,
+                                 vec3<comp_t> const& col1,
+                                 vec3<comp_t> const& col2 );
+};
+
+template< typename T >
+class mat4 : public mat<T> {
+public:
+    typedef mat<T>      base_t;
+    typedef mat4<T>     mat4_t;
+    typedef T           comp_t;
+    
+                        mat4();
+                        mat4( comp_t e00, comp_t e10, comp_t e20, comp_t e30,
+                              comp_t e01, comp_t e11, comp_t e21, comp_t e31,
+                              comp_t e02, comp_t e12, comp_t e22, comp_t e32,
+                              comp_t e03, comp_t e13, comp_t e23, comp_t e33 );
+    static mat4_t       row_vectors( vec4<comp_t> const& row0,
+                                     vec4<comp_t> const& row1,
+                                     vec4<comp_t> const& row2,
+                                     vec4<comp_t> const& row3 );
+    static mat4_t       column_vectors( vec4<comp_t> const& col0,
+                                        vec4<comp_t> const& col1,
+                                        vec4<comp_t> const& col2,
+                                        vec4<comp_t> const& col3 );
+    static mat4_t       scale( comp_t sx,
+                               comp_t sy,
+                               comp_t sz,
+                               comp_t sw = lit<comp_t>.one );
+    static mat4_t       scale( vec4<comp_t> const& svec );
+    static mat4_t       scale( vec3<comp_t> const& svec );
+    comp_t&             operator()( swizz4 col,
+                                    swizz4 row );
+    comp_t              operator()( swizz4 col,
+                                    swizz4 row ) const;
+    mat4_t              operator*( mat4_t const& rhs );
+    //mat2x4_t          operator*( mat2x4_t const& rhs );
+    //mat3x4_t          operator*( mat3x4_t const& rhs );
+    template< typename D >
+    friend mat4<D>      operator*( D lhs, mat4<D> const& rhs );
+    template< typename D >
+    friend mat4<D>      operator*( mat4<D> const& lhs, D rhs );
+    mat4_t&             row( swizz4 const& row,
+                             vec4<comp_t> const& val );
+    vec4<T>             row( swizz4 const& row ) const;
+    mat4_t&             column( swizz4 const& col,
+                                vec4<comp_t> const& val );
+    vec4<T>             column( swizz4 const& col ) const;
+    mat4_t&             rows( vec4<comp_t> const& row0,
+                              vec4<comp_t> const& row1,
+                              vec4<comp_t> const& row2,
+                              vec4<comp_t> const& row3 );
+    mat4_t&             columns( vec4<comp_t> const& col0,
+                                 vec4<comp_t> const& col1,
+                                 vec4<comp_t> const& col2,
+                                 vec4<comp_t> const& col3 );
 };
 
 /**class mat2x3 : public mat<2,3,float> {
