@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <cmath>
+#include <climits>
 #include "../gUtility/datatypeinfo.hpp"
 #include "../gVideo/gl_core_3_3.hpp"
 
@@ -425,6 +426,27 @@ typedef     vec3<unsigned char>     ucvec3;
 typedef     vec2<unsigned char>     ucvec2;
 typedef     scalar<unsigned char>   uchar8;
 
+class mat_i {
+public:
+    size_t      n_cols;
+    size_t      n_rows;
+    size_t      n_comp;
+                mat_i( size_t cols,
+                       size_t rows );
+protected:
+    class mat_data {
+    public:
+        mat_t*                  owner;
+        comp_t*                 components;
+                                mat_data( mat_t* new_owner );
+                                ~mat_data();
+        mat_data*               clone();
+        size_t                  n_bytes();
+        unsigned char const*    bytes();
+    };
+    mat_data*   data;
+};
+
 template< typename T >
 class mat : public raw_mappable {
 public:
@@ -440,15 +462,18 @@ public:
                                   size_t new_n_rows,
                                   comp_t const val );
     static mat_t            identity( size_t new_dim );
-    virtual                 ~mat();    
+    virtual                 ~mat();
+    bool                    operator==( mat_t const& rhs ) const;
+    mat_t&                  operator=( mat_t const& rhs );
     comp_t&                 operator()( size_t col, size_t row );
     comp_t                  operator()( size_t col, size_t row ) const;
     mat_t                   operator+( mat_t const& rhs ) const;
     mat_t                   operator-( mat_t const& rhs ) const;
     mat_t                   operator*( mat_t const& rhs ) const;
-    mat_t                   operator*( T rhs );
+    mat_t                   operator*( comp_t rhs );
     template< typename D >
     friend mat<D>           operator*( D lhs, mat<D> const& rhs );
+    mat_t                   operator/( comp_t rhs );
     mat_t&                  fill( comp_t const val );
     mat_t&                  transpose();
     virtual raw_map const   to_map() const;
@@ -483,6 +508,13 @@ public:
     static mat2_t       scale( comp_t sx,
                                comp_t sy );
     static mat2_t       scale( vec2<comp_t> const& svec );
+    using               base_t::operator();
+    using               base_t::operator==;
+    using               base_t::operator=;
+    using               base_t::operator+;
+    using               base_t::operator-;
+    using               base_t::operator*;
+    using               base_t::operator/;
     comp_t&             operator()( swizz2 col,
                                     swizz2 row );
     comp_t              operator()( swizz2 col,
@@ -490,10 +522,12 @@ public:
     mat2_t              operator*( mat2_t const& rhs );
     //mat4x2_t          operator*( mat4x2_t const& lhs );
     //mat3x2_t          operator*( mat3x2_t const& lhs );
+    mat2_t              operator*( comp_t rhs );
     template< typename D >
     friend mat2<D>      operator*( D lhs, mat2<D> const& rhs );
-    template< typename D >
-    friend mat2<D>      operator*( mat2<D> const& lhs, D rhs );
+    mat2_t              operator/( comp_t rhs );
+    mat2_t&             fill( comp_t val );
+    mat2_t&             transpose();
     mat2_t&             row( swizz2 const& row,
                              vec2<comp_t> const& val );
     vec2<T>             row( swizz2 const& row ) const;
@@ -506,6 +540,7 @@ public:
                                  vec2<comp_t> const& col1 );
 };
 
+/**
 template< typename T >
 class mat2x3 : public mat<T> {
 public:
@@ -684,7 +719,7 @@ public:
                                  vec4<comp_t> const& col1,
                                  vec4<comp_t> const& col2,
                                  vec4<comp_t> const& col3 );
-};
+};*/
 
 /**class mat2x3 : public mat<2,3,float> {
 public:
@@ -1494,6 +1529,39 @@ inline mat<T> mat<T>::identity( size_t new_dim )
 template< typename T >
 mat<T>::~mat() { delete data; }
 
+template< typename T > inline
+bool    mat<T>::operator==( mat<T> const& rhs ) const
+{
+    size_t i = n_comp;
+    bool equal = true;
+    if ( n_rows == rhs.n_rows and n_cols == rhs.n_cols) {
+        while(i){ --i; equal &= data->components[i] == rhs.data->components[i]; }
+    } else {
+        equal = false;
+    }
+    return equal;
+}
+
+template< typename T > inline
+mat<T>&     mat<T>::operator=( mat<T> const& rhs)
+{
+    // Do we need to allocate new memory?
+    if ( n_comp == rhs.n_comp ) {
+        size_t i = n_comp;
+        while(i){ --i; data->components[i] = rhs.data->components[i]; }
+    // Damn, guess we do...
+    } else {
+        // Dangling pointers are bad!
+        mat_data* old_data = data;
+        data = rhs.data->clone();
+        data->owner = this;
+        delete old_data;
+    }
+    n_rows = rhs.n_rows;
+    n_cols = rhs.n_cols;
+    return *this;
+}
+
 template< typename T >
 inline T& mat<T>::operator()( size_t col, size_t row )
 { return data->components[col * n_rows + row]; }
@@ -1599,6 +1667,20 @@ inline mat<T> operator*( T lhs, mat<T> const& rhs )
     T const* rhs_cm = rhs.data->components;
     
     while(i) { --i; out_cm[i] = rhs_cm[i] * lhs; }
+    
+    return out;
+}
+
+template< typename T >
+inline mat<T> mat<T>::operator/( T rhs )
+{
+    mat<T> out( n_cols, n_rows );
+    size_t i = n_comp;
+    
+    T* out_cm = out.data->components;
+    T const* lhs_cm = data->components;
+    
+    while(i) { --i; out_cm[i] = lhs_cm[i] / rhs; }
     
     return out;
 }
@@ -1718,8 +1800,8 @@ inline mat<C,R,T>& mat<C,R,T>::norm( bool ignore_translate = false )
     return *this;
 } */
 
-template< typename T >
-inline mat2<T>::mat2() : mat<T>(2,2) {}
+template< typename T > inline
+mat2<T>::mat2() : mat<T>(2,2) {}
 
 template< typename T >
 mat2<T>::mat2( comp_t e00, comp_t e10,
@@ -1728,35 +1810,167 @@ mat2<T>::mat2( comp_t e00, comp_t e10,
     c[0] = e00;   c[2] = e10;
     c[1] = e01;   c[3] = e11;   }
 
-template< typename T >
-inline mat2<T> mat2<T>::row_vectors( vec2<T> const& row0,
-                                     vec2<T> const& row1 )
+template< typename T > inline
+mat2<T>     mat2<T>::row_vectors( vec2<T> const& row0,
+                                  vec2<T> const& row1 )
 { return mat2( row0(x), row0(y),
                row1(x), row1(y) ); }
                
-template< typename T >
-inline mat2<T> mat2<T>::column_vectors( vec2<T> const& col0,
-                                        vec2<T> const& col1 )
+template< typename T > inline
+mat2<T>     mat2<T>::column_vectors( vec2<T> const& col0,
+                                     vec2<T> const& col1 )
 { return mat2( col0(x), col1(x),
                col0(y), col1(y) ); }
 
+template< typename T > inline
+mat2<T>     mat2<T>::scale( T sx, T sy )
+{ return mat2( sx,           lit<T>::zero,
+               lit<T>::zero, sy            ); }
+               
+template< typename T > inline
+mat2<T>     mat2<T>::scale( vec2<T> const& svec )
+{ return mat2( svec(x),      lit<T>::zero,
+               lit<T>::zero, svec(y)       ); }
+
+template< typename T > inline
+T&     mat2<T>::operator()( swizz2 col,
+                            swizz2 row )
+{
+    size_t c = col.index - 1;
+    size_t r = row.index - 1;
+    
+    if ( c < 0 or r < 0 or c > 1 or r > 1) {
+        // I know this looks redundant, but I did not want any more
+        // if-statements in the enclosing scope than were absolutely
+        // necessary.
+        if ( c < 0 or r < 0 ) {
+            throw std::out_of_range("Cannot access mat2 component using negative index");
+        } else if ( c > 1 or r > 1 ) {
+            throw std::out_of_range("Cannot access mat2 component using index greater than 1");
+        }
+    }
+    return this->data->components[c * this->n_rows + r];
+}
+
+template< typename T > inline
+T      mat2<T>::operator()( swizz2 col,
+                            swizz2 row ) const
+{
+    size_t c = col.index - 1;
+    size_t r = row.index - 1;
+    
+    if ( c < 0 or r < 0 or c > 1 or r > 1) {
+        // I know this looks redundant, but I did not want any more
+        // if-statements in the enclosing scope than were absolutely
+        // necessary.
+        if ( c < 0 or r < 0 ) {
+            throw std::out_of_range("Cannot access mat2 component using negative index");
+        } else if ( c > 1 or r > 1 ) {
+            throw std::out_of_range("Cannot access mat2 component using index greater than 1");
+        }
+    }
+    return this->data->components[c * this->n_rows + r];
+}
+               
+template< typename T > inline
+mat2<T>     mat2<T>::operator*( mat2<T> const& rhs )
+{
+    T const* lhs_cm = this->data->components;
+    T const* rhs_cm = rhs.data->components;
+    
+    T e00 = lhs_cm[0] * rhs_cm[0] + lhs_cm[2] * rhs_cm[1];
+    T e10 = lhs_cm[0] * rhs_cm[2] + lhs_cm[2] * rhs_cm[3];
+    T e01 = lhs_cm[1] * rhs_cm[0] + lhs_cm[3] * rhs_cm[1];
+    T e11 = lhs_cm[1] * rhs_cm[2] + lhs_cm[3] * rhs_cm[3];
+    
+    return mat2( e00, e10,
+                 e01, e11 );
+}
+
 template< typename T >
-mat2<T>& mat2<T>::row( swizz2 const& row,
-                       vec2<T> const& val )
+mat2<T>     mat2<T>::operator*( T rhs )
+{
+    T const* rhs_cm = this->data->components;
+    
+    T e00 = rhs_cm * rhs;
+    T e01 = rhs_cm * rhs;
+    T e10 = rhs_cm * rhs;
+    T e11 = rhs_cm * rhs;
+    
+    return mat2( e00, e10,
+                 e01, e11 );
+}
+
+template< typename D >
+mat2<D>     operator*( D lhs, mat2<D> const& rhs )
+{
+    D const* rhs_cm = rhs.data->components;
+    
+    D e00 = rhs_cm * lhs;
+    D e01 = rhs_cm * lhs;
+    D e10 = rhs_cm * lhs;
+    D e11 = rhs_cm * lhs;
+    
+    return mat2<D>( e00, e10,
+                    e01, e11 );
+}
+
+template< typename T >
+mat2<T>     mat2<T>::operator/( T rhs )
+{
+    T const* rhs_cm = this->data->components;
+    
+    T e00 = rhs_cm / rhs;
+    T e01 = rhs_cm / rhs;
+    T e10 = rhs_cm / rhs;
+    T e11 = rhs_cm / rhs;
+    
+    return mat2( e00, e10,
+                 e01, e11 );
+}
+
+template< typename T >
+mat2<T>& mat2<T>::fill( T val )
+{
+    T* cm = this->data->components;
+    cm[0] = val;
+    cm[1] = val;
+    cm[2] = val;
+    cm[3] = val;
+    return *this;
+}
+
+template< typename T >
+mat2<T>& mat2<T>::transpose()
+{
+    T* cm = this->data->components;
+    T swap = cm[2];
+    cm[2] = cm[1];
+    cm[1] = swap;
+    return *this;
+}
+
+template< typename T > inline
+mat2<T>&    mat2<T>::row( swizz2 const& row,
+                          vec2<T> const& val )
 {
     switch( row.index ){
         case 1:
             this->data->components[0] = val(x);
             this->data->components[2] = val(y);
+            break;
         case 2:
             this->data->components[1] = val(x);
             this->data->components[3] = val(y);
+            break;
         case -1:
             this->data->components[0] = -val(x);
             this->data->components[2] = -val(y);
+            break;
         case -2:
             this->data->components[1] = -val(x);
             this->data->components[3] = -val(y);
+            break;
         default:
           throw std::out_of_range("Component index on mat2 out of range.");
     }
@@ -1764,27 +1978,85 @@ mat2<T>& mat2<T>::row( swizz2 const& row,
     return *this;
 }
 
-template< typename T >
-inline mat2<T>& mat2<T>::column( swizz2 const& col,
-                                 vec2<T> const& val )
+template< typename T > inline
+vec2<T>     mat2<T>::row( swizz2 const& row ) const
+{
+    T out_x, out_y;
+    switch( row.index ){
+        case 1:
+            out_x = this->data->components[0];
+            out_y = this->data->components[2];
+            break;
+        case 2:
+            out_x = this->data->components[1];
+            out_y = this->data->components[3];
+            break;
+        case -1:
+            out_x = -this->data->components[0];
+            out_y = -this->data->components[2];
+            break;
+        case -2:
+            out_x = -this->data->components[1];
+            out_y = -this->data->components[3];
+            break;
+        default:
+          throw std::out_of_range("Component index on mat2 out of range.");
+    }
+    return vec2<T>(out_x, out_y);
+}
+
+template< typename T > inline
+mat2<T>&    mat2<T>::column( swizz2 const& col,
+                             vec2<T> const& val )
 {
     switch( col.index ){
         case 1:
             this->data->components[0] = val(x);
             this->data->components[1] = val(y);
+            break;
         case 2:
             this->data->components[2] = val(x);
             this->data->components[3] = val(y);
+            break;
         case -1:
             this->data->components[0] = -val(x);
             this->data->components[1] = -val(y);
+            break;
         case -2:
             this->data->components[2] = -val(x);
             this->data->components[3] = -val(y);
+            break;
         default:
           throw std::out_of_range("Component index on mat2 out of range.");
     }
     return *this;
+}
+
+template< typename T > inline
+vec2<T>     mat2<T>::column( swizz2 const& col ) const
+{
+    T out_x, out_y;
+    switch( col.index ){
+        case 1:
+            out_x = this->data->components[0];
+            out_y = this->data->components[1];
+            break;
+        case 2:
+            out_x = this->data->components[2];
+            out_y = this->data->components[3];
+            break;
+        case -1:
+            out_x = -this->data->components[0];
+            out_y = -this->data->components[1];
+            break;
+        case -2:
+            out_x = -this->data->components[2];
+            out_y = -this->data->components[3];
+            break;
+        default:
+          throw std::out_of_range("Component index on mat2 out of range.");
+    }
+    return vec2<T>(out_x, out_y);
 }
 
 template< typename T >
@@ -1801,9 +2073,9 @@ inline mat2<T>& mat2<T>::rows( vec2<T> const& row0,
     return *this;
 }
 
-template< typename T >
-inline mat2<T>& mat2<T>::columns( vec2<T> const& col0,
-                                  vec2<T> const& col1 )
+template< typename T > inline
+mat2<T>&    mat2<T>::columns( vec2<T> const& col0,
+                              vec2<T> const& col1 )
 {
     T* cm = this->data->components;
     
@@ -1813,6 +2085,14 @@ inline mat2<T>& mat2<T>::columns( vec2<T> const& col0,
     cm[3] = col1(y);
     
     return *this;
+}
+
+template<typename T>
+std::ostream& operator<<( std::ostream& stream, mat2<T> const& src )
+{
+    stream << "[ " << src(0,0) << " " << src(1,0) << " ]" << '\n';
+    stream << "[ " << src(0,1) << " " << src(1,1) << " ]" << std::endl;
+    return stream;
 }
 
 /**

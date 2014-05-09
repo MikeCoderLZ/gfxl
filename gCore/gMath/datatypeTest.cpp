@@ -25,12 +25,6 @@ int main( int argc, char** argv )
     fvec4 vec4_1;
     fvec4 vec4_2 ( 0.5f, -1.2f, 8.2f, -8.6f );
     fvec4 vec4_3 ( 2.0f );
-    
-    mat<float> mat_33_1(3,3);
-    mat<float> mat_33_I = mat<float>::identity(3);
-    mat<float> mat_32_1(3,2);
-    mat_32_1(1,0) = 4.1f;
-    mat_32_1(0,1) = -23.7f;
 
     cout << test::output_float() << endl;
     cout << "Running datatype diagnositcs." << endl;
@@ -114,6 +108,17 @@ int main( int argc, char** argv )
     
     cout << "Testing Matrices" << endl;
     
+    mat<float> mat_33_1(3,3);
+    mat<float> mat_33_I = mat<float>::identity(3);
+    mat<float> mat_32_1(3,2);
+    mat_32_1(1,0) = 4.1f;
+    mat_32_1(0,1) = -23.7f;
+    mat<float> mat_32_2(3,2);
+    mat_32_2(1,0) = 4.1f;
+    mat_32_2(0,1) = -23.7f;
+    mat2<float> mat2_1(2.0f, 4.6f, -2.3, 5.0f);
+    mat2<float> mat2_2(1.3f, -2.1f, 0.0f, 10.0f);
+    
     cout << "Default construction of 3x3" << endl;
     cout << mat_33_1 << endl;
     
@@ -151,9 +156,47 @@ int main( int argc, char** argv )
     cout << "A 3x2 matrix with some values:" << endl;
     cout << mat_32_1 << endl;
     
+    cout << "Testing comparison of two matrices:" << endl;
+    cout << mat_32_1 << '\n' <<  endl;
+    cout << mat_32_2 << endl;
+    cout << (mat_32_1 == mat_32_2) << endl;
+    
     cout << "Now transpose it:" << endl;
     mat_32_1.transpose();
     cout << mat_32_1 << endl;
+    
+    cout << "Now those two matrices should not be equal:" << endl;
+    cout << mat_32_1 << '\n' << endl;
+    cout << mat_32_2 << endl;
+    cout << (mat_32_1 == mat_32_2) << endl;
+    
+    cout << "Now we assign the first the value of the second:" << endl;
+    mat_32_1 = mat_32_2;
+    cout << mat_32_1 << '\n' << endl;
+    cout << mat_32_2 << endl;
+    
+    cout << "And check that modifications to one do not affect the other:" << endl;
+    mat_32_1(2,0) = -87.23f;
+    mat_32_2(1,1) = 987.3f;
+    cout << mat_32_1 << '\n' << endl;
+    cout << mat_32_2 << endl;
+    
+    cout << "Now, two 2x2 mats of type mat2:" << endl;
+    cout << mat2_1 << '\n' << endl;
+    cout << mat2_2 << endl;
+    
+    cout << "Comparison:" << endl;
+    cout << (mat2_1 == mat2_2) << endl;
+    
+    cout << "Transposition:" << endl;
+    cout << mat2_1 << '\n' << endl;
+    mat2_1.transpose();
+    cout << mat2_1 << endl;
+    
+    cout << "Assignment of the first to the second:" << endl;
+    mat2_1 = mat2_2;
+    cout << mat2_1 << '\n' << endl;
+    cout << mat2_2 << endl;
 
     cout << "Datatype diagnostics complete." << endl;
     return 0;
