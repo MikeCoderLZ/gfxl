@@ -444,6 +444,7 @@ public:
     size_t                  n_rows;
     size_t                  n_comp;
     
+                            mat();
                             mat( size_t new_n_cols,
                                  size_t new_n_rows );
     static mat_t            fill( size_t new_n_cols,
@@ -452,6 +453,7 @@ public:
     static mat_t            identity( size_t new_dim );
     virtual                 ~mat();
     bool                    operator==( mat_t const& rhs ) const;
+    bool                    operator!=( mat_t const& rhs ) const;
     mat_t&                  operator=( mat_t const& rhs );
     comp_t&                 operator()( size_t col, size_t row );
     comp_t                  operator()( size_t col, size_t row ) const;
@@ -1617,6 +1619,14 @@ inline mat<C,R,T> mat<C,R,T>::columns( T cols[C][R] )
 }*/
 
 template< typename T >
+mat<T>::mat()
+           : n_cols( 0 ), n_rows( 0 ),
+             n_comp( 0 )
+{ // TODO Need to throw an exception when dimensions are zero
+    data = new mat_data( this );
+}
+
+template< typename T >
 mat<T>::mat( size_t new_n_cols, size_t new_n_rows )
            : n_cols( new_n_cols ), n_rows( new_n_rows ),
              n_comp( n_cols * n_rows )
@@ -1669,12 +1679,32 @@ bool    mat<T>::operator==( mat<T> const& rhs ) const
 {
     size_t i = n_comp;
     bool equal = true;
-    if ( n_rows == rhs.n_rows and n_cols == rhs.n_cols) {
+    if ( n_rows == rhs.n_rows and n_cols == rhs.n_cols ) {
         while(i){ --i; equal &= data->components[i] == rhs.data->components[i]; }
     } else {
         equal = false;
     }
     return equal;
+}
+
+template< typename T > inline
+bool    mat<T>::operator!=( mat<T> const& rhs ) const
+{
+    size_t i = n_comp;
+    bool not_equal = false;
+    if ( n_rows == rhs.n_rows and n_cols == rhs.n_cols) {
+        while(i){
+            --i;
+            not_equal = not_equal
+                        or data->components[i]
+                            != rhs.data->components[i];
+            if ( not_equal ) { i = 0; }
+        }
+    } else {
+        not_equal = true;
+    }
+    
+    return not_equal;
 }
 
 template< typename T > inline
@@ -1686,14 +1716,17 @@ mat<T>&     mat<T>::operator=( mat<T> const& rhs)
         while(i){ --i; data->components[i] = rhs.data->components[i]; }
     // Damn, guess we do...
     } else {
+        
         // Dangling pointers are bad!
         mat_data* old_data = data;
+        
         data = rhs.data->clone();
         data->owner = this;
         delete old_data;
     }
     n_rows = rhs.n_rows;
     n_cols = rhs.n_cols;
+    n_comp = rhs.n_comp;
     return *this;
 }
 
@@ -1716,11 +1749,11 @@ inline mat<T> mat<T>::operator+( mat<T> const& rhs ) const
     
     size_t i = n_comp;
     
-    T* lhs_cm = data->components;
-    T* rhs_cm = rhs.data->components;
-    T* out_cm = out.data->components;
+    T const* lhs_c = data->components;
+    T const* rhs_c = rhs.data->components;
+    T* out_c = out.data->components;
     
-    while(i) { --i; out_cm[i] = lhs_cm[i] + rhs_cm[i]; }
+    while(i) { --i; out_c[i] = lhs_c[i] + rhs_c[i]; }
     
     return out;
 }
@@ -1860,22 +1893,44 @@ raw_map const mat<T>::to_map() const
 { return map_bytes( data->n_bytes(), data->bytes() ); }
 
 template< typename T >
-inline mat<T>::mat_data::mat_data( mat_t* new_owner )
-    : owner( new_owner )
-{ components = new comp_t[owner->n_comp]; }
+inline mat<T>::mat_data::mat_data( mat<T>* new_owner )
+{
+    std::cout << "new_owner: " << new_owner << std::endl;
+    this->owner = new_owner;
+    if ( owner->n_comp > 0 ) {
+        std::cout << "Not this branch." << std::endl;
+        components = new comp_t[owner->n_comp];
+    } else {
+        std::cout << "So we should be on this branch." << std::endl;
+        components = 0;
+    }
+    std::cout << "Does this even get here?" << std::endl;
+}
 
 template< typename T >
-inline mat<T>::mat_data::~mat_data() { delete[] components; }
+inline mat<T>::mat_data::~mat_data()
+{ 
+    if( owner->n_comp > 0 ) { delete[] components; }
+}
 
 template< typename T >
 typename mat<T>::mat_data* mat<T>::mat_data::clone()
 {
-    mat_data* new_clone = new mat_data(this->owner);
-    size_t i = owner->n_comp;
-    while(i) {
-        --i;
-        new_clone->components[i] =
-        this->components[i];
+    std::cout << "Then we declare a pointer." << std::endl;
+    mat<T>::mat_data* new_clone;
+    std::cout << "And assign it to a new instance." << std::endl;
+    new_clone = new mat_data(this->owner);
+    std::cout << "But do not succeed." << std::endl;
+    if ( owner->n_comp > 0 ) {
+        size_t i = owner->n_comp;
+        while(i) {
+            --i;
+            new_clone->components[i] = this->components[i];
+        }
+    } else {
+        
+        new_clone->components = 0;
+        
     }
     return new_clone;
 }
