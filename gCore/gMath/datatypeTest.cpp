@@ -1,11 +1,56 @@
 #include <iostream>
 
 //#include "type_op.hpp"
+#include "../../UnitTest++_src/UnitTest++.h"
 #include "datatype.hpp"
 #include "swizzTest.hpp"
 
+TEST( MatrixConstruction )
+{
+    using namespace gfx;
+    mat<float> amat(2,2);
+    mat<float> bmat(2,2);
+    bmat(0,0) = 0.0f;
+    bmat(0,1) = 0.0f;
+    bmat(1,0) = 0.0f;
+    bmat(1,1) = 0.0f;
+    CHECK_EQUAL( amat, bmat );
+}
+
+TEST( Matrix2Construction )
+{
+    using namespace gfx;
+    fmat2 amat2;
+    fmat2 bmat2( 0.0f, 0.0f,
+                 0.0f, 0.0f );
+    CHECK_EQUAL( amat2, bmat2 );
+}
+
+TEST( Matrix3Construction )
+{
+    using namespace gfx;
+    fmat3 amat3;
+    fmat3 bmat3( 0.0f, 0.0f, 0.0f,
+                 0.0f, 0.0f, 0.0f,
+                 0.0f, 0.0f, 0.0f );
+    CHECK_EQUAL( amat3, bmat3 );
+}
+
+TEST( Matrix4Construction )
+{
+    using namespace gfx;
+    fmat4 amat4;
+    fmat4 bmat4( 0.0f, 0.0f, 0.0f, 0.0f,
+                 0.0f, 0.0f, 0.0f, 0.0f,
+                 0.0f, 0.0f, 0.0f, 0.0f,
+                 0.0f, 0.0f, 0.0f, 0.0f );
+    CHECK_EQUAL( amat4, bmat4 );
+}
+
 int main( int argc, char** argv )
 {
+    UnitTest::RunAllTests();
+    
     using namespace gfx;
     using std::cout;
     using std::endl;

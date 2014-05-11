@@ -87,6 +87,7 @@ newTypes: $(BIN)/datatypeTest.exe
 $(BIN)/datatypeTest.exe: $(OBJ)/datatypeTest.o $(OBJ)/swizzTest.o
 
 	g++ $(OBJ)/datatypeTest.o $(OBJ)/swizzTest.o \
+	    -L ../../dev_lib -lUnitTest++ \
 	    -o $(BIN)/datatypeTest.exe
 
 	    

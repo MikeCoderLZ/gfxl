@@ -520,12 +520,12 @@ public:
     mat2_t              operator/( comp_t rhs );
     mat2_t&             fill( comp_t val );
     mat2_t&             transpose();
-    mat2_t&             row( size_t const& row,
+    mat2_t&             row( size_t row,
                              vec2<comp_t> const& val );
-    vec2<T>             row( size_t const& row ) const;
-    mat2_t&             column( size_t const& col,
+    vec2<T>             row( size_t row ) const;
+    mat2_t&             column( size_t col,
                                 vec2<comp_t> const& val );
-    vec2<T>             column( size_t const& col ) const;
+    vec2<T>             column( size_t col ) const;
     mat2_t&             rows( vec2<comp_t> const& row0,
                               vec2<comp_t> const& row1 );
     mat2_t&             columns( vec2<comp_t> const& col0,
@@ -572,9 +572,9 @@ public:
                                     size_t row );
     comp_t              operator()( size_t col,
                                     size_t row ) const;
-    mat4_t              operator+( mat3_t const& rhs );
-    mat4_t              operator-();
-    mat4_t              operator-( mat3_t const& rhs );
+    mat3_t              operator+( mat3_t const& rhs );
+    mat3_t              operator-();
+    mat3_t              operator-( mat3_t const& rhs );
     mat3_t              operator*( mat3_t const& rhs );
     mat3_t              operator*( comp_t rhs );
     template< typename D >
@@ -582,12 +582,12 @@ public:
     mat3_t              operator/( comp_t rhs );
     mat3_t&             fill( comp_t val );
     mat3_t&             transpose();
-    mat3_t&             row( size_t const& row,
+    mat3_t&             row( size_t row,
                              vec3<comp_t> const& val );
-    vec3<T>             row( size_t const& row ) const;
-    mat3_t&             column( size_t const& col,
+    vec3<T>             row( size_t row ) const;
+    mat3_t&             column( size_t col,
                                 vec3<comp_t> const& val );
-    vec3<T>             column( size_t const& col ) const;
+    vec3<T>             column( size_t col ) const;
     mat3_t&             rows( vec3<comp_t> const& row0,
                               vec3<comp_t> const& row1,
                               vec3<comp_t> const& row2 );
@@ -650,12 +650,12 @@ public:
     mat4_t              operator/( comp_t rhs );
     mat4_t&             fill( comp_t val );
     mat4_t&             transpose();
-    mat4_t&             row( size_t const& row,
+    mat4_t&             row( size_t row,
                              vec4<comp_t> const& val );
-    vec4<T>             row( size_t const& row ) const;
-    mat4_t&             column( size_t const& col,
+    vec4<T>             row( size_t row ) const;
+    mat4_t&             column( size_t col,
                                 vec4<comp_t> const& val );
-    vec4<T>             column( size_t const& col ) const;
+    vec4<T>             column( size_t col ) const;
     mat4_t&             rows( vec4<comp_t> const& row0,
                               vec4<comp_t> const& row1,
                               vec4<comp_t> const& row2,
@@ -670,6 +670,10 @@ protected:
         unsigned char   bytes[sizeof(comp_t) * 16];
     } data;
 };
+
+typedef     mat2<float>             fmat2;
+typedef     mat3<float>             fmat3;
+typedef     mat4<float>             fmat4;
 
 /**
 template< typename T >
@@ -1946,8 +1950,8 @@ mat2<T>::mat2( T e00, T e10,
   
 template< typename T >
 mat2<T>     mat2<T>::identity()
-{ return mat2( lit<T>::one,  lit<T>::zero,
-               lit<T>::zero; lit<T>::one   ); }
+{ return mat2<T>( lit<T>::one,  lit<T>::zero,
+                  lit<T>::zero, lit<T>::one   ); }
 
 template< typename T > inline
 mat2<T>     mat2<T>::row_vectors( vec2<T> const& row0,
@@ -1971,10 +1975,10 @@ mat2<T>     mat2<T>::scale( vec2<T> const& svec )
 { return mat2( svec(x),      lit<T>::zero,
                lit<T>::zero, svec(y)       ); }
 template< typename T > inline
-bool    operator==( mat2<T> const& rhs ) const
+bool    mat2<T>::operator==( mat2<T> const& rhs ) const
 {
-    T* rhs_c = rhs.data.components;
-    T* lhs_c = this->data.components;
+    T const* rhs_c = rhs.data.components;
+    T const* lhs_c = this->data.components;
     return     lhs_c[0] == rhs_c[0]
            and lhs_c[1] == rhs_c[1]
            and lhs_c[2] == rhs_c[2]
@@ -1982,7 +1986,7 @@ bool    operator==( mat2<T> const& rhs ) const
 }
 
 template< typename T > inline
-bool    operator<( mat2<T> const& rhs ) const
+bool    mat2<T>::operator<( mat2<T> const& rhs ) const
 {
     T* rhs_c = rhs.data.components;
     T* lhs_c = this->data.components;
@@ -1993,7 +1997,7 @@ bool    operator<( mat2<T> const& rhs ) const
 }
 
 template< typename T > inline
-bool    operator>( mat2<T> const& rhs ) const
+bool    mat2<T>::operator>( mat2<T> const& rhs ) const
 {
     T* rhs_c = rhs.data.components;
     T* lhs_c = this->data.components;
@@ -2004,7 +2008,7 @@ bool    operator>( mat2<T> const& rhs ) const
 }
 
 template< typename T > inline
-bool    operator<=( mat2<T> const& rhs ) const
+bool    mat2<T>::operator<=( mat2<T> const& rhs ) const
 {
     T* rhs_c = rhs.data.components;
     T* lhs_c = this->data.components;
@@ -2015,7 +2019,7 @@ bool    operator<=( mat2<T> const& rhs ) const
 }
 
 template< typename T > inline
-bool    operator>=( mat2<T> const& rhs ) const
+bool    mat2<T>::operator>=( mat2<T> const& rhs ) const
 {
     T* rhs_c = rhs.data.components;
     T* lhs_c = this->data.components;
@@ -2026,7 +2030,7 @@ bool    operator>=( mat2<T> const& rhs ) const
 }
 
 template< typename T > inline
-bool    operator!=( mat2<T> const& rhs ) const
+bool    mat2<T>::operator!=( mat2<T> const& rhs ) const
 {
     T* rhs_c = rhs.data.components;
     T* lhs_c = this->data.components;
@@ -2036,10 +2040,10 @@ bool    operator!=( mat2<T> const& rhs ) const
            and lhs_c[3] != rhs_c[3];
 }
 
-tempalte< typename T > inline
-mat2<T>&    operator=( mat2<T> const& rhs )
+template< typename T > inline
+mat2<T>&    mat2<T>::operator=( mat2<T> const& rhs )
 {
-    T* rhs_c = rhs.data.components;
+    T const* rhs_c = rhs.data.components;
     T* lhs_c = this->data.components;
     lhs_c[0] = rhs_c[0];
     lhs_c[1] = rhs_c[1];
@@ -2317,17 +2321,17 @@ mat3<T>::mat3()
 template< typename T >
 mat3<T>::mat3( T e00, T e10, T e20, 
                T e01, T e11, T e21,
-               T e02, T e13, T e22 )
+               T e02, T e12, T e22 )
 { T* c = this->data.components;
-  c[0] = e00;   c[2] = e10;   c[2] = e20;
-  c[1] = e01;   c[3] = e11;   c[3] = e21;
-  c[1] = e02;   c[3] = e12;   c[3] = e22; }
+  c[0] = e00;   c[3] = e10;   c[6] = e20;
+  c[1] = e01;   c[4] = e11;   c[7] = e21;
+  c[2] = e02;   c[5] = e12;   c[8] = e22; }
 
 template< typename T >
 mat3<T>     mat3<T>::identity()
 { return mat3( lit<T>::one,  lit<T>::zero, lit<T>::zero,
-               lit<T>::zero, lit<T>::one;  lit<T>::zero,
-               lit<T>::zero, lit<T>::zero; lit<T>::one ); }
+               lit<T>::zero, lit<T>::one,  lit<T>::zero,
+               lit<T>::zero, lit<T>::zero, lit<T>::one ); }
   
 template< typename T > inline
 mat3<T>     mat3<T>::row_vectors( vec3<T> const& row0,
@@ -2357,10 +2361,10 @@ mat3<T>     mat3<T>::scale( vec3<T> const& svec )
                lit<T>::zero, svec(y),      lit<T>::zero,
                lit<T>::zero, lit<T>::zero, svec(z)       ); }
 template< typename T > inline
-bool    operator==( mat3<T> const& rhs ) const
+bool    mat3<T>::operator==( mat3<T> const& rhs ) const
 {
-    T* rhs_c = rhs.data.components;
-    T* lhs_c = this->data.components;
+    T const* rhs_c = rhs.data.components;
+    T const* lhs_c = this->data.components;
     return     lhs_c[0] == rhs_c[0]
            and lhs_c[1] == rhs_c[1]
            and lhs_c[2] == rhs_c[2]
@@ -2373,10 +2377,10 @@ bool    operator==( mat3<T> const& rhs ) const
 }
 
 template< typename T > inline
-bool    operator<( mat3<T> const& rhs ) const
+bool    mat3<T>::operator<( mat3<T> const& rhs ) const
 {
-    T* rhs_c = rhs.data.components;
-    T* lhs_c = this->data.components;
+    T const* rhs_c = rhs.data.components;
+    T const* lhs_c = this->data.components;
     return     lhs_c[0] < rhs_c[0]
            and lhs_c[1] < rhs_c[1]
            and lhs_c[2] < rhs_c[2]
@@ -2389,10 +2393,10 @@ bool    operator<( mat3<T> const& rhs ) const
 }
 
 template< typename T > inline
-bool    operator>( mat3<T> const& rhs ) const
+bool    mat3<T>::operator>( mat3<T> const& rhs ) const
 {
-    T* rhs_c = rhs.data.components;
-    T* lhs_c = this->data.components;
+    T const* rhs_c = rhs.data.components;
+    T const* lhs_c = this->data.components;
     return     lhs_c[0] > rhs_c[0]
            and lhs_c[1] > rhs_c[1]
            and lhs_c[2] > rhs_c[2]
@@ -2405,10 +2409,10 @@ bool    operator>( mat3<T> const& rhs ) const
 }
 
 template< typename T > inline
-bool    operator<=( mat3<T> const& rhs ) const
+bool    mat3<T>::operator<=( mat3<T> const& rhs ) const
 {
-    T* rhs_c = rhs.data.components;
-    T* lhs_c = this->data.components;
+    T const* rhs_c = rhs.data.components;
+    T const* lhs_c = this->data.components;
     return     lhs_c[0] <= rhs_c[0]
            and lhs_c[1] <= rhs_c[1]
            and lhs_c[2] <= rhs_c[2]
@@ -2421,10 +2425,10 @@ bool    operator<=( mat3<T> const& rhs ) const
 }
 
 template< typename T > inline
-bool    operator>=( mat3<T> const& rhs ) const
+bool    mat3<T>::operator>=( mat3<T> const& rhs ) const
 {
-    T* rhs_c = rhs.data.components;
-    T* lhs_c = this->data.components;
+    T const* rhs_c = rhs.data.components;
+    T const* lhs_c = this->data.components;
     return     lhs_c[0] >= rhs_c[0]
            and lhs_c[1] >= rhs_c[1]
            and lhs_c[2] >= rhs_c[2]
@@ -2437,10 +2441,10 @@ bool    operator>=( mat3<T> const& rhs ) const
 }
 
 template< typename T > inline
-bool    operator!=( mat3<T> const& rhs ) const
+bool    mat3<T>::operator!=( mat3<T> const& rhs ) const
 {
-    T* rhs_c = rhs.data.components;
-    T* lhs_c = this->data.components;
+    T const* rhs_c = rhs.data.components;
+    T const* lhs_c = this->data.components;
     return     lhs_c[0] != rhs_c[0]
            and lhs_c[1] != rhs_c[1]
            and lhs_c[2] != rhs_c[2]
@@ -2452,10 +2456,10 @@ bool    operator!=( mat3<T> const& rhs ) const
            and lhs_c[8] != rhs_c[8];
 }
 
-tempalte< typename T > inline
-mat3<T>&    operator=( mat3<T> const& rhs )
+template< typename T > inline
+mat3<T>&    mat3<T>::operator=( mat3<T> const& rhs )
 {
-    T* rhs_c = rhs.data.components;
+    T const* rhs_c = rhs.data.components;
     T* lhs_c = this->data.components;
     lhs_c[0] = rhs_c[0];
     lhs_c[1] = rhs_c[1];
@@ -2613,9 +2617,9 @@ mat3<D>     operator*( D lhs, mat3<D> const& rhs )
     D e21 = rhs_c[7] * lhs;
     D e22 = rhs_c[8] * lhs;
     
-    return mat3( e00, e10, e20,
-                 e01, e11, e21,
-                 e02, e12, e22 );
+    return mat3<D>( e00, e10, e20,
+                    e01, e11, e21,
+                    e02, e12, e22 );
 }
 
 template< typename T >
@@ -2698,7 +2702,7 @@ mat3<T>&    mat3<T>::row( size_t row,
 }
 
 template< typename T > inline
-vec2<T>     mat3<T>::row( size_t row ) const
+vec3<T>     mat3<T>::row( size_t row ) const
 {
     T out_x, out_y, out_z;
     switch( row ){
@@ -2750,9 +2754,9 @@ mat3<T>&    mat3<T>::column( size_t col,
 }
 
 template< typename T > inline
-vec2<T>     mat3<T>::column( size_t col ) const
+vec3<T>     mat3<T>::column( size_t col ) const
 {
-    T out_x, out_y;
+    T out_x, out_y, out_z;
     switch( col ){
         case 0:
             out_x = this->data.components[0];
@@ -2848,9 +2852,9 @@ mat4<T>::mat4( T e00, T e10, T e20, T e30,
 template< typename T >
 mat4<T>     mat4<T>::identity()
 { return mat4( lit<T>::one,  lit<T>::zero, lit<T>::zero, lit<T>::zero,
-               lit<T>::zero, lit<T>::one;  lit<T>::zero, lit<T>::zero,
-               lit<T>::zero, lit<T>::zero; lit<T>::one,  lit<T>::zero,
-               lit<T>::zero, lit<T>::zero; lit<T>::zero,  lit<T>::one  ); }
+               lit<T>::zero, lit<T>::one,  lit<T>::zero, lit<T>::zero,
+               lit<T>::zero, lit<T>::zero, lit<T>::one,  lit<T>::zero,
+               lit<T>::zero, lit<T>::zero, lit<T>::zero, lit<T>::one  ); }
   
 template< typename T > inline
 mat4<T>     mat4<T>::row_vectors( vec4<T> const& row0,
@@ -2860,7 +2864,7 @@ mat4<T>     mat4<T>::row_vectors( vec4<T> const& row0,
 { return mat4( row0(x), row0(y), row0(z), row0(w),
                row1(x), row1(y), row1(z), row1(w),
                row2(x), row2(y), row2(z), row2(w),
-               row3(x), row3(y), row3(z), row3(w), ); }
+               row3(x), row3(y), row3(z), row3(w) ); }
                
 template< typename T > inline
 mat4<T>     mat4<T>::column_vectors( vec4<T> const& col0,
@@ -2873,7 +2877,7 @@ mat4<T>     mat4<T>::column_vectors( vec4<T> const& col0,
                col0(w), col1(w), col2(w), col3(w) ); }
 
 template< typename T > inline
-mat4<T>     mat4<T>::scale( T sx, T sy, T sz )
+mat4<T>     mat4<T>::scale( T sx, T sy, T sz, T sw )
 { return mat4( sx,           lit<T>::zero, lit<T>::zero, lit<T>::zero,
                lit<T>::zero, sy,           lit<T>::zero, lit<T>::zero,
                lit<T>::zero, lit<T>::zero, sz,           lit<T>::zero,
@@ -2887,10 +2891,10 @@ mat4<T>     mat4<T>::scale( vec4<T> const& svec )
                lit<T>::zero, lit<T>::zero, lit<T>::zero, svec(w)       ); }
                
 template< typename T > inline
-bool    operator==( mat4<T> const& rhs ) const
+bool    mat4<T>::operator==( mat4<T> const& rhs ) const
 {
-    T* rhs_c = rhs.data.components;
-    T* lhs_c = this->data.components;
+    T const* rhs_c = rhs.data.components;
+    T const* lhs_c = this->data.components;
     return     lhs_c[0] == rhs_c[0]
            and lhs_c[1] == rhs_c[1]
            and lhs_c[2] == rhs_c[2]
@@ -2910,10 +2914,10 @@ bool    operator==( mat4<T> const& rhs ) const
 }
 
 template< typename T > inline
-bool    operator<( mat4<T> const& rhs ) const
+bool    mat4<T>::operator<( mat4<T> const& rhs ) const
 {
-    T* rhs_c = rhs.data.components;
-    T* lhs_c = this->data.components;
+    T const* rhs_c = rhs.data.components;
+    T const* lhs_c = this->data.components;
     return     lhs_c[0] < rhs_c[0]
            and lhs_c[1] < rhs_c[1]
            and lhs_c[2] < rhs_c[2]
@@ -2933,10 +2937,10 @@ bool    operator<( mat4<T> const& rhs ) const
 }
 
 template< typename T > inline
-bool    operator>( mat4<T> const& rhs ) const
+bool    mat4<T>::operator>( mat4<T> const& rhs ) const
 {
-    T* rhs_c = rhs.data.components;
-    T* lhs_c = this->data.components;
+    T const* rhs_c = rhs.data.components;
+    T const* lhs_c = this->data.components;
     return     lhs_c[0] > rhs_c[0]
            and lhs_c[1] > rhs_c[1]
            and lhs_c[2] > rhs_c[2]
@@ -2956,10 +2960,10 @@ bool    operator>( mat4<T> const& rhs ) const
 }
 
 template< typename T > inline
-bool    operator<=( mat4<T> const& rhs ) const
+bool    mat4<T>::operator<=( mat4<T> const& rhs ) const
 {
-    T* rhs_c = rhs.data.components;
-    T* lhs_c = this->data.components;
+    T const* rhs_c = rhs.data.components;
+    T const* lhs_c = this->data.components;
     return     lhs_c[0] <= rhs_c[0]
            and lhs_c[1] <= rhs_c[1]
            and lhs_c[2] <= rhs_c[2]
@@ -2979,10 +2983,10 @@ bool    operator<=( mat4<T> const& rhs ) const
 }
 
 template< typename T > inline
-bool    operator>=( mat4<T> const& rhs ) const
+bool    mat4<T>::operator>=( mat4<T> const& rhs ) const
 {
-    T* rhs_c = rhs.data.components;
-    T* lhs_c = this->data.components;
+    T const* rhs_c = rhs.data.components;
+    T const* lhs_c = this->data.components;
     return     lhs_c[0] >= rhs_c[0]
            and lhs_c[1] >= rhs_c[1]
            and lhs_c[2] >= rhs_c[2]
@@ -3002,10 +3006,10 @@ bool    operator>=( mat4<T> const& rhs ) const
 }
 
 template< typename T > inline
-bool    operator!=( mat4<T> const& rhs ) const
+bool    mat4<T>::operator!=( mat4<T> const& rhs ) const
 {
-    T* rhs_c = rhs.data.components;
-    T* lhs_c = this->data.components;
+    T const* rhs_c = rhs.data.components;
+    T const* lhs_c = this->data.components;
     return     lhs_c[0] != rhs_c[0]
            and lhs_c[1] != rhs_c[1]
            and lhs_c[2] != rhs_c[2]
@@ -3024,10 +3028,10 @@ bool    operator!=( mat4<T> const& rhs ) const
            and lhs_c[15] != rhs_c[15];
 }
 
-tempalte< typename T > inline
-mat4<T>&    operator=( mat4<T> const& rhs )
+template< typename T > inline
+mat4<T>&    mat4<T>::operator=( mat4<T> const& rhs )
 {
-    T* rhs_c = rhs.data.components;
+    T const* rhs_c = rhs.data.components;
     T* lhs_c = this->data.components;
     lhs_c[0] = rhs_c[0];
     lhs_c[1] = rhs_c[1];
@@ -3153,21 +3157,21 @@ mat4<D>     operator*( D lhs, mat4<D> const& rhs )
 {
     D const* rhs_c = rhs.data.components;
     
-    return mat4( rhs_c[0] * lhs, rhs_c[4] * lhs, rhs_c[8] * lhs,  rhs_c[12] * lhs,
-                 rhs_c[1] * lhs, rhs_c[5] * lhs, rhs_c[9] * lhs,  rhs_c[13] * lhs,
-                 rhs_c[2] * lhs, rhs_c[6] * lhs, rhs_c[10] * lhs, rhs_c[14] * lhs,
-                 rhs_c[3] * lhs, rhs_c[7] * lhs, rhs_c[11] * lhs, rhs_c[15] * lhs );
+    return mat4<D>( rhs_c[0] * lhs, rhs_c[4] * lhs, rhs_c[8] * lhs,  rhs_c[12] * lhs,
+                    rhs_c[1] * lhs, rhs_c[5] * lhs, rhs_c[9] * lhs,  rhs_c[13] * lhs,
+                    rhs_c[2] * lhs, rhs_c[6] * lhs, rhs_c[10] * lhs, rhs_c[14] * lhs,
+                    rhs_c[3] * lhs, rhs_c[7] * lhs, rhs_c[11] * lhs, rhs_c[15] * lhs );
 }
 
 template< typename T >
 mat4<T>     mat4<T>::operator/( T rhs )
 {
-    T const* rhs_c = this->data.components;
+    T const* lhs_c = this->data.components;
     
-    return mat4( rhs_c[0] / lhs, rhs_c[4] / lhs, rhs_c[8] / lhs,  rhs_c[12] / lhs,
-                 rhs_c[1] / lhs, rhs_c[5] / lhs, rhs_c[9] / lhs,  rhs_c[13] / lhs,
-                 rhs_c[2] / lhs, rhs_c[6] / lhs, rhs_c[10] / lhs, rhs_c[14] / lhs,
-                 rhs_c[3] / lhs, rhs_c[7] / lhs, rhs_c[11] / lhs, rhs_c[15] / lhs );
+    return mat4( lhs_c[0] / rhs, lhs_c[4] / rhs, lhs_c[8] / rhs,  lhs_c[12] / rhs,
+                 lhs_c[1] / rhs, lhs_c[5] / rhs, lhs_c[9] / rhs,  lhs_c[13] / rhs,
+                 lhs_c[2] / rhs, lhs_c[6] / rhs, lhs_c[10] / rhs, lhs_c[14] / rhs,
+                 lhs_c[3] / rhs, lhs_c[7] / rhs, lhs_c[11] / rhs, lhs_c[15] / rhs );
 }
 
 template< typename T >
@@ -3214,18 +3218,27 @@ mat4<T>&    mat4<T>::row( size_t row,
     switch( row ){
         case 0:
             this->data.components[0] = val(x);
-            this->data.components[3] = val(y);
-            this->data.components[6] = val(z);
+            this->data.components[4] = val(y);
+            this->data.components[8] = val(z);
+            this->data.components[12] = val(w);
             break;
         case 1:
             this->data.components[1] = val(x);
-            this->data.components[4] = val(y);
-            this->data.components[7] = val(z);
+            this->data.components[5] = val(y);
+            this->data.components[9] = val(z);
+            this->data.components[13] = val(w);
             break;
         case 2:
             this->data.components[2] = val(x);
-            this->data.components[5] = val(y);
-            this->data.components[8] = val(z);
+            this->data.components[6] = val(y);
+            this->data.components[10] = val(z);
+            this->data.components[14] = val(w);
+            break;
+        case 3:
+            this->data.components[3] = val(x);
+            this->data.components[7] = val(y);
+            this->data.components[11] = val(z);
+            this->data.components[15] = val(w);
             break;
         default:
           throw std::out_of_range("Component index on mat4 out of range.");
@@ -3235,50 +3248,62 @@ mat4<T>&    mat4<T>::row( size_t row,
 }
 
 template< typename T > inline
-vec2<T>     mat4<T>::row( size_t row ) const
+vec4<T>     mat4<T>::row( size_t row ) const
 {
-    T out_x, out_y, out_z;
     switch( row ){
         case 0:
-            out_x = this->data.components[0];
-            out_y = this->data.components[3];
-            out_z = this->data.components[6];
-            break;
+            return vec4<T>(this->data.components[0],
+                           this->data.components[4],
+                           this->data.components[8],
+                           this->data.components[12] );
         case 1:
-            out_x = this->data.components[1];
-            out_y = this->data.components[4];
-            out_z = this->data.components[7];
-            break;
+            return vec4<T>(this->data.components[1],
+                           this->data.components[5],
+                           this->data.components[9],
+                           this->data.components[13] );
         case 2:
-            out_x = this->data.components[2];
-            out_y = this->data.components[5];
-            out_z = this->data.components[8];
-            break;
+            return vec4<T>(this->data.components[2],
+                           this->data.components[6],
+                           this->data.components[10],
+                           this->data.components[14] );
+        case 3:
+            return vec4<T>(this->data.components[3],
+                           this->data.components[7],
+                           this->data.components[11],
+                           this->data.components[15] );
         default:
           throw std::out_of_range("Component index on mat4 out of range.");
     }
-    return vec3<T>(out_x, out_y, out_z);
 }
 
 template< typename T > inline
 mat4<T>&    mat4<T>::column( size_t col,
-                             vec3<T> const& val )
+                             vec4<T> const& val )
 {
     switch( col ){
         case 0:
             this->data.components[0] = val(x);
             this->data.components[1] = val(y);
             this->data.components[2] = val(z);
+            this->data.components[3] = val(w);
             break;
         case 1:
-            this->data.components[3] = val(x);
-            this->data.components[4] = val(y);
-            this->data.components[5] = val(z);
+            this->data.components[4] = val(x);
+            this->data.components[5] = val(y);
+            this->data.components[6] = val(z);
+            this->data.components[7] = val(w);
             break;
         case 2:
-            this->data.components[6] = val(x);
-            this->data.components[7] = val(y);
-            this->data.components[8] = val(z);
+            this->data.components[8] = val(x);
+            this->data.components[9] = val(y);
+            this->data.components[10] = val(z);
+            this->data.components[11] = val(w);
+            break;
+        case 3:
+            this->data.components[12] = val(x);
+            this->data.components[13] = val(y);
+            this->data.components[14] = val(z);
+            this->data.components[15] = val(w);
             break;
         default:
           throw std::out_of_range("Component index on mat4 out of range.");
@@ -3287,67 +3312,86 @@ mat4<T>&    mat4<T>::column( size_t col,
 }
 
 template< typename T > inline
-vec2<T>     mat4<T>::column( size_t col ) const
+vec4<T>     mat4<T>::column( size_t col ) const
 {
-    T out_x, out_y;
     switch( col ){
         case 0:
-            out_x = this->data.components[0];
-            out_y = this->data.components[1];
-            out_z = this->data.components[2];
-            break;
+            return vec4<T>(this->data.components[0],
+                           this->data.components[1],
+                           this->data.components[2],
+                           this->data.components[3] );
         case 1:
-            out_x = this->data.components[3];
-            out_y = this->data.components[4];
-            out_z = this->data.components[5];
-            break;
+            return vec4<T>(this->data.components[4],
+                           this->data.components[5],
+                           this->data.components[6],
+                           this->data.components[7] );
         case 2:
-            out_x = this->data.components[6];
-            out_y = this->data.components[7];
-            out_z = this->data.components[8];
-            break;
+            return vec4<T>(this->data.components[8],
+                           this->data.components[9],
+                           this->data.components[10],
+                           this->data.components[11] );
+        case 3:
+            return vec4<T>(this->data.components[12],
+                           this->data.components[13],
+                           this->data.components[14],
+                           this->data.components[15] );
         default:
           throw std::out_of_range("Component index on mat4 out of range.");
     }
-    return vec3<T>(out_x, out_y, out_z);
 }
 
 template< typename T >
-inline mat4<T>& mat4<T>::rows( vec3<T> const& row0,
-                               vec3<T> const& row1,
-                               vec3<T> const& row2 )
+inline mat4<T>& mat4<T>::rows( vec4<T> const& row0,
+                               vec4<T> const& row1,
+                               vec4<T> const& row2,
+                               vec4<T> const& row3 )
 {
     T* c = this->data.components;
     
     c[0] = row0(x);
-    c[3] = row0(y);
-    c[6] = row0(z);
+    c[4] = row0(y);
+    c[8] = row0(z);
+    c[12] = row0(w);
     c[1] = row1(x);
-    c[4] = row1(y);
-    c[7] = row1(z);
+    c[5] = row1(y);
+    c[9] = row1(z);
+    c[13] = row1(w);
     c[2] = row2(x);
-    c[5] = row2(y);
-    c[8] = row2(z);
+    c[6] = row2(y);
+    c[10] = row2(z);
+    c[14] = row2(w);
+    c[3] = row3(x);
+    c[7] = row3(y);
+    c[11] = row3(z);
+    c[15] = row3(w);
     
     return *this;
 }
 
 template< typename T > inline
-mat4<T>&    mat4<T>::columns( vec3<T> const& col0,
-                              vec3<T> const& col1,
-                              vec3<T> const& col2 )
+mat4<T>&    mat4<T>::columns( vec4<T> const& col0,
+                              vec4<T> const& col1,
+                              vec4<T> const& col2,
+                              vec4<T> const& col3 )
 {
     T* c = this->data.components;
     
     c[0] = col0(x);
     c[1] = col0(y);
     c[2] = col0(z);
-    c[3] = col1(x);
-    c[4] = col1(y);
-    c[5] = col1(z);
-    c[6] = col2(x);
-    c[7] = col2(y);
-    c[8] = col2(z);
+    c[3] = col0(w);
+    c[4] = col1(x);
+    c[5] = col1(y);
+    c[6] = col1(z);
+    c[7] = col1(w);
+    c[8] = col2(x);
+    c[9] = col2(y);
+    c[10] = col2(z);
+    c[11] = col2(w);
+    c[12] = col3(x);
+    c[13] = col3(y);
+    c[14] = col3(z);
+    c[15] = col3(w);
     
     return *this;
 }
@@ -3355,9 +3399,17 @@ mat4<T>&    mat4<T>::columns( vec3<T> const& col0,
 template<typename T>
 std::ostream& operator<<( std::ostream& stream, mat4<T> const& src )
 {
-    stream << "[ " << src(0,0) << " " << src(1,0) << " " << src(2,0) << " ]" << '\n';
-    stream << "[ " << src(0,1) << " " << src(1,1) << " " << src(2,1) << " ]" << '\n';
-    stream << "[ " << src(0,2) << " " << src(1,2) << " " << src(2,2) << " ]" << std::endl;
+    stream << "[ " << src(0,0) << " " << src(1,0);
+    stream << " " << src(2,0) << " " << src(3,0) << " ]" << '\n';
+    
+    stream << "[ " << src(0,1) << " " << src(1,1);
+    stream << " " << src(2,1) << " " << src(3,1) << " ]" << '\n';
+    
+    stream << "[ " << src(0,2) << " " << src(1,2);
+    stream << " " << src(2,2) << " " << src(3,2) << " ]" << '\n';
+    
+    stream << "[ " << src(0,3) << " " << src(1,3);
+    stream << " " << src(2,3) << " " << src(3,3) << " ]" << std::endl;
     return stream;
 }
 
