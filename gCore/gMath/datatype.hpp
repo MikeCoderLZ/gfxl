@@ -153,11 +153,13 @@ inline raw_map const    raw_mappable::map_bytes( size_t n_bytes, unsigned char c
 template< typename T >
 class scalar : public raw_mappable {
 public:
+    typedef scalar<T>       scalar_t;
     typedef T               comp_t;
                             scalar();
                             scalar( comp_t x0 );
                             operator T() const;
                             operator T&();
+    scalar&                 operator=( scalar const& src );                        
     scalar                  operator+( scalar const& rhs ) const;
     scalar                  operator-( scalar const& rhs ) const;
     scalar                  operator*( scalar const& rhs ) const;
@@ -172,7 +174,7 @@ public:
 protected:
   // A union is used to access the value in full or the bytes individually.
     union {
-        comp_t       value;
+        comp_t          value;
         unsigned char   bytes[sizeof(comp_t)];
     } data;
 };
@@ -512,7 +514,7 @@ protected:
 };
 
 template< typename T >
-class mat2 {
+class mat2 : public raw_mappable {
 public:
     typedef mat2<T>                 mat2_t;
     typedef T                       comp_t;
@@ -563,6 +565,7 @@ public:
                               vec2<comp_t> const& row1 );
     mat2_t&             columns( vec2<comp_t> const& col0,
                                  vec2<comp_t> const& col1 );
+    virtual raw_map const   to_map() const;
 protected:
     union {
         comp_t          components[4];
@@ -571,7 +574,7 @@ protected:
 };
 
 template< typename T >
-class mat3 {
+class mat3 : public raw_mappable {
 public:
     typedef mat3<T>                 mat3_t;
     typedef T                       comp_t;
@@ -628,6 +631,7 @@ public:
     mat3_t&             columns( vec3<comp_t> const& col0,
                                  vec3<comp_t> const& col1,
                                  vec3<comp_t> const& col2 );
+    virtual raw_map const   to_map() const;
 protected:
     union {
         comp_t          components[9];
@@ -636,7 +640,7 @@ protected:
 };
 
 template< typename T >
-class mat4 {
+class mat4 : public raw_mappable {
 public:
     typedef mat4<T>                 mat4_t;
     typedef T                       comp_t;
@@ -699,6 +703,7 @@ public:
                                  vec4<comp_t> const& col1,
                                  vec4<comp_t> const& col2,
                                  vec4<comp_t> const& col3 );
+    virtual raw_map const   to_map() const;
 protected:
     union {
         comp_t          components[16];
@@ -1121,11 +1126,11 @@ class swizz4 {
     public:
                                     swizz4() : index(0) {};
         swizz4                      operator-() const {return swizz4(-index);}
-        template< class U > friend  class vec2;
-        template< class U > friend  class vec3;
-        template< class U > friend  class vec4;
-        template< class U > friend  class mat;
-        template< class U > friend  class mat2;
+        template< typename U > friend  class vec2;
+        template< typename U > friend  class vec3;
+        template< typename U > friend  class vec4;
+        template< typename U > friend  class mat;
+        template< typename U > friend  class mat2;
         static swizz4               make_w() { return swizz4(4); }
         static swizz4               make_q() { return swizz4(4); }
         static swizz4               make_a() { return swizz4(4); }
@@ -1140,11 +1145,11 @@ class swizz3 : public swizz4 {
     public:
                                     swizz3() {};
         swizz3                      operator-() const {return swizz3(-index);}
-        template< class U > friend  class vec2;
-        template< class U > friend  class vec3;
-        template< class U > friend  class vec4;
-        template< class U > friend  class mat;
-        template< class U > friend  class mat2;
+        template< typename U > friend  class vec2;
+        template< typename U > friend  class vec3;
+        template< typename U > friend  class vec4;
+        template< typename U > friend  class mat;
+        template< typename U > friend  class mat2;
         static swizz3               make_z() { return swizz3(3); }
         static swizz3               make_p() { return swizz3(3); }
         static swizz3               make_b() { return swizz3(3); }
@@ -1158,11 +1163,11 @@ class swizz2 : public swizz3 {
     public:
                                     swizz2() {};
         swizz2                      operator-() const {return swizz2(-index);}
-        template< class U > friend  class vec2;
-        template< class U > friend  class vec3;
-        template< class U > friend  class vec4;
-        template< class U > friend  class mat;
-        template< class U > friend  class mat2;
+        template< typename U > friend  class vec2;
+        template< typename U > friend  class vec3;
+        template< typename U > friend  class vec4;
+        template< typename U > friend  class mat;
+        template< typename U > friend  class mat2;
         static swizz2               make_y() { return swizz2(2); }
         static swizz2               make_t() { return swizz2(2); }
         static swizz2               make_g() { return swizz2(2); }
@@ -1176,12 +1181,12 @@ class swizz1 : public swizz2 {
     public:
                                     swizz1() {};
         swizz1                      operator-() const {return swizz1(-index);}
-        template< class U > friend  class scalar;
-        template< class U > friend  class vec2;
-        template< class U > friend  class vec3;
-        template< class U > friend  class vec4;
-        template< class U > friend  class mat;
-        template< class U > friend  class mat2;
+        template< typename U > friend  class scalar;
+        template< typename U > friend  class vec2;
+        template< typename U > friend  class vec3;
+        template< typename U > friend  class vec4;
+        template< typename U > friend  class mat;
+        template< typename U > friend  class mat2;
         static swizz1               make_x() { return swizz1(1); }
         static swizz1               make_s() { return swizz1(1); }
         static swizz1               make_r() { return swizz1(1); }
@@ -1213,10 +1218,15 @@ swizz3 const k = swizz3::make_k();
 swizz4 const m = swizz4::make_m();
 
 template< typename T > inline
-scalar<T>::scalar() : data( {0} ) {}
+scalar<T>::scalar() : data( {lit<T>::zero} ) {}
 
 template< typename T > inline
 scalar<T>::scalar( comp_t x0) : data( {x0} ) {}
+
+template< typename T > inline
+scalar<T>& scalar<T>::operator=( scalar<T> const& src )
+{   this->data.value = src.data.value;
+    return *this; }
 
 template< typename T > inline
 scalar<T> scalar<T>::operator+( scalar const& rhs ) const
@@ -2401,6 +2411,12 @@ mat2<T>&    mat2<T>::columns( vec2<T> const& col0,
     return *this;
 }
 
+template< typename T > inline
+raw_map const   mat2<T>::to_map() const
+{
+    return map_bytes( sizeof(T) * 4, this->data.bytes );
+}
+
 template<typename T>
 std::ostream& operator<<( std::ostream& stream, mat2<T> const& src )
 {
@@ -2925,6 +2941,12 @@ mat3<T>&    mat3<T>::columns( vec3<T> const& col0,
     c[8] = col2(z);
     
     return *this;
+}
+
+template< typename T > inline
+raw_map const   mat3<T>::to_map() const
+{
+    return map_bytes( sizeof(T) * 9, this->data.bytes );
 }
 
 template<typename T>
@@ -3511,6 +3533,12 @@ mat4<T>&    mat4<T>::columns( vec4<T> const& col0,
     c[15] = col3(w);
     
     return *this;
+}
+
+template< typename T > inline
+raw_map const   mat4<T>::to_map() const
+{
+    return map_bytes( sizeof(T) * 16, this->data.bytes );
 }
 
 template<typename T>
