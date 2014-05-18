@@ -1,49 +1,89 @@
 #ifndef OP_HPP
 #define OP_HPP
 
+#include "datatype.hpp"
+
 namespace gfx {
 
-//extern double const IN_DEGREES;
-//extern double const IN_RADIANS;
+template< typename T >
+class cnst {
+public:
+    constexpr static T const    pi           = 3.1415926535897932384626433;
+    constexpr static T const    tau          = 6.2831853071795864769252867;
+    constexpr static T const    inv_pi       = 0.31830988618379067153776752;
+    constexpr static T const    inv_tau      = 0.15915494309189533586888376;
+    constexpr static T const    e            = 2.7182818284590452353602874;
+    constexpr static T const    sqrt_two     = 1.4142135623730950488016887;
+    constexpr static T const    inv_sqrt_two = 0.70710678118654752440084436;
+    constexpr static T const    phi          = 1.6180339887498948482045868;
+    
+};
 
-extern double const G_PI;
-extern double const G_TAU;
-extern double const G_INV_PI;
-extern double const G_INV_TAU;
+template<>
+class cnst<double> {
+public:
+    constexpr static double const    pi           = 3.1415926535897932384626433;
+    constexpr static double const    tau          = 6.2831853071795864769252867;
+    constexpr static double const    inv_pi       = 0.31830988618379067153776752;
+    constexpr static double const    inv_tau      = 0.15915494309189533586888376;
+    constexpr static double const    e            = 2.7182818284590452353602874;
+    constexpr static double const    sqrt_two     = 1.4142135623730950488016887;
+    constexpr static double const    inv_sqrt_two = 0.70710678118654752440084436;
+    constexpr static double const    phi          = 1.6180339887498948482045868;
+};
 
-extern double const G_PI_F;
-extern double const G_TAU_F;
-extern double const G_INV_PI_F;
-extern double const G_INV_TAU_F;
+template<>
+class cnst<float> {
+public:
+    constexpr static float const    pi           = 3.1415926535897932384626433f;
+    constexpr static float const    tau          = 6.2831853071795864769252867f;
+    constexpr static float const    inv_pi       = 0.31830988618379067153776752f;
+    constexpr static float const    inv_tau      = 0.15915494309189533586888376f;
+    constexpr static float const    e            = 2.7182818284590452353602874f;
+    constexpr static float const    sqrt_two     = 1.4142135623730950488016887f;
+    constexpr static float const    inv_sqrt_two = 0.70710678118654752440084436f;
+    constexpr static float const    phi          = 1.6180339887498948482045868f;
+};
 
+/**
+template< typename T >
+fvec4 operator*( T lhs, fvec4 const& rhs );
+template< typename T >
+fvec3 operator*( T lhs, fvec3 const& rhs );
+template< typename T >
+fvec2 operator*( T lhs, fvec2 const& rhs );
 
-class Mat;
-class Vec4;
-class Vec3;
-class Vec2;
-class Qutn;
+template< typename T >
+fvec4 operator*( fvec4 const& lhs, T rhs );
+template< typename T >
+fvec3 operator*( fvec3 const& lhs, T rhs );
+template< typename T >
+fvec2 operator*( fvec2 const& lhs, T rhs );
 
-Vec4 operator*( float lhs, Vec4 const& rhs );
-Vec3 operator*( float lhs, Vec3 const& rhs );
-Vec2 operator*( float lhs, Vec2 const& rhs );
+template< typename T >
+fmat operator*( T lhs, fmat const& rhs );
+template< typename T >
+fmat operator*( fmat const& lhs, T rhs );
 
-Vec4 operator*( Vec4 const& lhs, float rhs );
-Vec3 operator*( Vec3 const& lhs, float rhs );
-Vec2 operator*( Vec2 const& lhs, float rhs );
+template< typename T >
+qutn operator*( float lhs, qutn const& rhs );
+template< typename T >
+qutn operator*( qutn const& lhs, float rhs );
 
-Mat operator*( float lhs, Mat const& rhs );
-Mat operator*( Mat const& lhs, float rhs );
+template< typename T >
+fvec4 operator*( fmat const& lhs, fvec4 const& rhs );
+template< typename T >
+fvec3 operator*( fmat const& lhs, fvec3 const& rhs );
+template< typename T >
+fvec2 operator*( fmat const& lhs, fvec2 const& rhs );
 
-Qutn operator*( float lhs, Qutn const& rhs );
-Qutn operator*( Qutn const& lhs, float rhs );
-
-Vec4 operator*( Mat const& lhs, Vec4 const& rhs );
-Vec3 operator*( Mat const& lhs, Vec3 const& rhs );
-Vec2 operator*( Mat const& lhs, Vec2 const& rhs );
-
-Vec4 operator*( Vec4 const& lhs, Mat const& rhs );
-Vec3 operator*( Vec3 const& lhs, Mat const& rhs );
-Vec2 operator*( Vec2 const& lhs, Mat const& rhs );
+template< typename T >
+fvec4 operator*( fvec4 const& lhs, fmat const& rhs );
+template< typename T >
+fvec3 operator*( fvec3 const& lhs, fmat const& rhs );
+template< typename T >
+fvec2 operator*( fvec2 const& lhs, fmat const& rhs );
+*/
 
 /*
  * Okay, this is where things get a little complicated.
@@ -73,321 +113,323 @@ Vec2 operator*( Vec2 const& lhs, Mat const& rhs );
 // TODO This all needs to be integrated with the new types code.
 
 
-class OperatorFactory;
 
-template< typename OPERAND_T >
-class UnaryOp {
+class operator_factory;
+
+template< typename ARG_T >
+class unary_op {
     public:
-        UnaryOp() {}
-        OPERAND_T operator()( OPERAND_T const& aDatum ) const
-            { return this->eval( aDatum ); }
-        virtual ~UnaryOp() {}
+        unary_op() {}
+        ARG_T operator()( ARG_T const& arg ) const
+            { return this->eval( arg ); }
+        virtual ~unary_op() {}
     protected:
-        virtual OPERAND_T eval( OPERAND_T const& aDatum ) const = 0;
+        virtual ARG_T eval( ARG_T const& arg ) const = 0;
 };
 
 template< typename RETURN_T,
-          typename OPERAND_T >
-class UnaryOp_Exp {
+          typename ARG_T >
+class unary_op_exp {
     public:
-        UnaryOp_Exp() {}
-        RETURN_T operator()( OPERAND_T const& aDatum ) const
-            { return this->eval( aDatum ); }
-        virtual ~UnaryOp_Exp() {}
+        unary_op_exp() {}
+        RETURN_T operator()( ARG_T const& arg ) const
+            { return this->eval( arg ); }
+        virtual ~unary_op_exp() {}
     protected:
-        virtual RETURN_T eval( OPERAND_T const& aDatum ) const = 0;
+        virtual RETURN_T eval( ARG_T const& arg ) const = 0;
 };
 
-template < typename OPERAND_T >
-class BinaryOp {
+template < typename ARG_T >
+class binary_op {
     public:
-        BinaryOp() {}
-        OPERAND_T operator()( OPERAND_T const& aDatum,
-                              OPERAND_T const& bDatum ) const
-            { return this->eval( aDatum, bDatum ); }
-        virtual ~BinaryOp() {}
+        binary_op() {}
+        ARG_T operator()( ARG_T const& arg1,
+                          ARG_T const& arg2 ) const
+            { return this->eval( arg1, arg2 ); }
+        virtual ~binary_op() {}
     protected:
-        virtual OPERAND_T eval( OPERAND_T const& aDatum,
-                                OPERAND_T const& bDatum ) const = 0;
+        virtual ARG_T eval( ARG_T const& arg1,
+                            ARG_T const& arg2 ) const = 0;
 };
 
 template < typename RETURN_T,
-           typename A_OPERAND_T,
-           typename B_OPERAND_T >
-class BinaryOp_Exp {
+           typename ARG1_T,
+           typename ARG2_T >
+class binary_op_exp {
     public:
-        BinaryOp_Exp() {}
-        RETURN_T operator()( A_OPERAND_T const& aDatum,
-                             B_OPERAND_T const& bDatum ) const
-            { return this->eval( aDatum, bDatum ); }
-        virtual ~BinaryOp_Exp() {}
+        binary_op_exp() {}
+        RETURN_T operator()( ARG1_T const& arg1,
+                             ARG2_T const& arg2 ) const
+            { return this->eval( arg1, arg2 ); }
+        virtual ~binary_op_exp() {}
     protected:
-        virtual RETURN_T eval( A_OPERAND_T const& aDatum,
-                               B_OPERAND_T const& bDatum ) const = 0;
+        virtual RETURN_T eval( ARG1_T const& arg1,
+                               ARG2_T const& arg2 ) const = 0;
 };
 
-template < typename OPERAND_T >
-class TernaryOp {
+template < typename ARG_T >
+class ternary_op {
     public:
-        TernaryOp() {}
-        OPERAND_T operator()( OPERAND_T const& aDatum,
-                              OPERAND_T const& bDatum,
-                              OPERAND_T const& cDatum ) const
-            { return this->eval( aDatum, bDatum, cDatum ); }
-        virtual ~TernaryOp() {}
+        ternary_op() {}
+        ARG_T operator()( ARG_T const& arg1,
+                          ARG_T const& arg2,
+                          ARG_T const& arg3 ) const
+            { return this->eval( arg1, arg2, arg3 ); }
+        virtual ~ternary_op() {}
     private:
-        virtual OPERAND_T eval( OPERAND_T const& aDatum,
-                                OPERAND_T const& bDatum,
-                                OPERAND_T const& cDatum ) const = 0;
+        virtual ARG_T eval( ARG_T const& arg1,
+                            ARG_T const& arg2,
+                            ARG_T const& arg3 ) const = 0;
 };
 
 template < typename RETURN_T,
-           typename A_OPERAND_T,
-           typename B_OPERAND_T,
-           typename C_OPERAND_T >
-class TernaryOp_Exp {
+           typename ARG1_T,
+           typename ARG2_T,
+           typename ARG3_T >
+class ternary_op_exp {
     public:
-        TernaryOp_Exp() {}
-        RETURN_T operator()( A_OPERAND_T const& aDatum,
-                             B_OPERAND_T const& bDatum,
-                             C_OPERAND_T const& cDatum ) const
-            { return this->eval( aDatum, bDatum, cDatum ); }
-        virtual ~TernaryOp_Exp() {}
+        ternary_op_exp() {}
+        RETURN_T operator()( ARG1_T const& arg1,
+                             ARG2_T const& arg2,
+                             ARG3_T const& arg3 ) const
+            { return this->eval( arg1, arg2, arg3 ); }
+        virtual ~ternary_op_exp() {}
     private:
-        virtual RETURN_T eval( A_OPERAND_T const& aDatum,
-                               B_OPERAND_T const& bDatum,
-                               C_OPERAND_T const& cDatum ) const = 0;
+        virtual RETURN_T eval( ARG1_T const& arg1,
+                               ARG2_T const& arg2,
+                               ARG3_T const& arg3 ) const = 0;
 };
 
-class Normalize : public UnaryOp<Vec4>,
-                  public UnaryOp<Vec3>,
-                  public UnaryOp<Vec2>,
-                  public UnaryOp<Mat>,
-                  public UnaryOp<Qutn>
+class __normalize__ : public unary_op<fvec4>,
+                      public unary_op<fvec3>,
+                      public unary_op<fvec2>,
+                      public unary_op<fmat>,
+                      public unary_op<qutn>
 {
     public:
-        using UnaryOp<Vec4>::operator();
-        using UnaryOp<Vec3>::operator();
-        using UnaryOp<Vec2>::operator();
-        using UnaryOp<Mat>::operator();
-        using UnaryOp<Qutn>::operator();
-        friend class OperatorFactory;
-        ~Normalize() {}
+        using unary_op<fvec4>::operator();
+        using unary_op<fvec3>::operator();
+        using unary_op<fvec2>::operator();
+        using unary_op<fmat>::operator();
+        using unary_op<qutn>::operator();
+        friend class operator_factory;
+        ~__normalize__() {}
     private:
-        Normalize() {};
-        Vec4 eval( Vec4 const& ) const;
-        Vec3 eval( Vec3 const& ) const;
-        Vec2 eval( Vec2 const& ) const;
-        Mat eval( Mat const& ) const;
-        Qutn eval( Qutn const& ) const;
+        __normalize__() {};
+        fvec4 eval( fvec4 const& ) const;
+        fvec3 eval( fvec3 const& ) const;
+        fvec2 eval( fvec2 const& ) const;
+        fmat eval( fmat const& ) const;
+        qutn eval( qutn const& ) const;
 };
 
-extern Normalize const norm;
+extern __normalize__ const norm;
 
-class Orthogonalize : public BinaryOp<Vec3>,
-                      public BinaryOp<Vec2>
-                      //,public UnaryOp<Mat>
+class __orthogonalize__ : public binary_op<fvec3>,
+                          public binary_op<fvec2>
+                          //,public unary_op<fmat>
 {
     public:
-        using BinaryOp<Vec3>::operator();
-        using BinaryOp<Vec2>::operator();
-        //using UnaryOp<Mat>::operator();
-        friend class OperatorFactory;
-        ~Orthogonalize() {}
+        using binary_op<fvec3>::operator();
+        using binary_op<fvec2>::operator();
+        //using unary_op<fmat>::operator();
+        friend class operator_factory;
+        ~__orthogonalize__() {}
     private:
-        Orthogonalize() {}
-        Vec3 eval( Vec3 const& vecA, Vec3 const& vecB ) const;
-        Vec2 eval( Vec2 const& vecA, Vec2 const& vecB ) const;
-        //Mat const eval( Mat const& mat ) const;
+        __orthogonalize__() {}
+        fvec3 eval( fvec3 const& vecA, fvec3 const& vecB ) const;
+        fvec2 eval( fvec2 const& vecA, fvec2 const& vecB ) const;
+        //fmat const eval( fmat const& fmat ) const;
 };
 
-extern Orthogonalize const ortho;
+extern __orthogonalize__ const ortho;
 
-class Interpolator : public virtual TernaryOp_Exp<Vec4, Vec4, Vec4, float>,
-                     public virtual TernaryOp_Exp<Vec3, Vec3, Vec3, float>,
-                     public virtual TernaryOp_Exp<Vec2, Vec2, Vec2, float>,
-                     public virtual TernaryOp<float>
+class __interpolator__ : public virtual ternary_op_exp<fvec4, fvec4, fvec4, float>,
+                         public virtual ternary_op_exp<fvec3, fvec3, fvec3, float>,
+                         public virtual ternary_op_exp<fvec2, fvec2, fvec2, float>,
+                         public virtual ternary_op<float>
 {
      public:
-         using TernaryOp_Exp<Vec4, Vec4, Vec4, float>::operator();
-         using TernaryOp_Exp<Vec3, Vec3, Vec3, float>::operator();
-         using TernaryOp_Exp<Vec2, Vec2, Vec2, float>::operator();
-         using TernaryOp<float>::operator();
-         friend class OperatorFactory;
-         virtual ~Interpolator() {}
+         using ternary_op_exp<fvec4, fvec4, fvec4, float>::operator();
+         using ternary_op_exp<fvec3, fvec3, fvec3, float>::operator();
+         using ternary_op_exp<fvec2, fvec2, fvec2, float>::operator();
+         using ternary_op<float>::operator();
+         friend class operator_factory;
+         virtual ~__interpolator__() {}
     protected:
-         Interpolator() {}
+         __interpolator__() {}
     private:
-         virtual Vec4 eval( Vec4 const& vecA, Vec4 const& vecB, float const& p ) const = 0;
-         virtual Vec3 eval( Vec3 const& vecA, Vec3 const& vecB, float const& p ) const = 0;
-         virtual Vec2 eval( Vec2 const& vecA, Vec2 const& vecB, float const& p ) const = 0;
+         virtual fvec4 eval( fvec4 const& vecA, fvec4 const& vecB, float const& p ) const = 0;
+         virtual fvec3 eval( fvec3 const& vecA, fvec3 const& vecB, float const& p ) const = 0;
+         virtual fvec2 eval( fvec2 const& vecA, fvec2 const& vecB, float const& p ) const = 0;
          virtual float eval( float const& a, float const& b, float const& p ) const = 0;
 };
 
-class Threshold : public Interpolator {
+class __threshold__ : public __interpolator__ {
     public:
-        friend class OperatorFactory;
-        ~Threshold() {}
+        friend class operator_factory;
+        ~__threshold__() {}
     private:
-        Threshold() {}
-        Vec4 eval( Vec4 const& vecA, Vec4 const& vecB, float const& p ) const;
-        Vec3 eval( Vec3 const& vec3, Vec3 const& vecB, float const& p ) const;
-        Vec2 eval( Vec2 const& vec2, Vec2 const& vecB, float const& p ) const;
+        __threshold__() {}
+        fvec4 eval( fvec4 const& vecA, fvec4 const& vecB, float const& p ) const;
+        fvec3 eval( fvec3 const& fvec3, fvec3 const& vecB, float const& p ) const;
+        fvec2 eval( fvec2 const& fvec2, fvec2 const& vecB, float const& p ) const;
         float eval( float const& a, float const& b, float const& p ) const;
 };
 
-extern Threshold const mix_th;
+extern __threshold__ const mix_th;
 
-class Linear : public Interpolator {
+class __linear__ : public __interpolator__ {
     public:
-        friend class OperatorFactory;
-        ~Linear() {}
+        friend class operator_factory;
+        ~__linear__() {}
     private:
-        Linear() {}
-        Vec4 eval( Vec4 const& vecA, Vec4 const& vecB, float const& p ) const;
-        Vec3 eval( Vec3 const& vec3, Vec3 const& vecB, float const& p ) const;
-        Vec2 eval( Vec2 const& vec2, Vec2 const& vecB, float const& p ) const;
+        __linear__() {}
+        fvec4 eval( fvec4 const& vecA, fvec4 const& vecB, float const& p ) const;
+        fvec3 eval( fvec3 const& fvec3, fvec3 const& vecB, float const& p ) const;
+        fvec2 eval( fvec2 const& fvec2, fvec2 const& vecB, float const& p ) const;
         float eval( float const& a, float const& b, float const& p ) const;
 };
 
-extern Linear const mix_ln;
+extern __linear__ const mix_ln;
 
-class Cubic : public Interpolator {
+class __cubic__ : public __interpolator__ {
     public:
-        friend class OperatorFactory;
-        ~Cubic() {}
+        friend class operator_factory;
+        ~__cubic__() {}
     private:
-        Cubic() {}
-        Vec4 eval( Vec4 const& vecA, Vec4 const& vecB, float const& p ) const;
-        Vec3 eval( Vec3 const& vec3, Vec3 const& vecB, float const& p ) const;
-        Vec2 eval( Vec2 const& vec2, Vec2 const& vecB, float const& p ) const;
+        __cubic__() {}
+        fvec4 eval( fvec4 const& vecA, fvec4 const& vecB, float const& p ) const;
+        fvec3 eval( fvec3 const& fvec3, fvec3 const& vecB, float const& p ) const;
+        fvec2 eval( fvec2 const& fvec2, fvec2 const& vecB, float const& p ) const;
         float eval( float const& a, float const& b, float const& p ) const;
 };
 
-extern Cubic const mix_cb;
+extern __cubic_ const mix_cb;
 
-class OuterProduct : public BinaryOp<Vec3> {
+class __outer_product__ : public binary_op<fvec3> {
     public:
-        using BinaryOp<Vec3>::operator();
-        friend class OperatorFactory;
-        ~OuterProduct() {}
+        using binary_op<fvec3>::operator();
+        friend class operator_factory;
+        ~__outer_product__() {}
     private:
-        OuterProduct() {}
-        Vec3 eval( Vec3 const& vecA, Vec3 const& vecB ) const;
+        __outer_product__() {}
+        fvec3 eval( fvec3 const& vecA, fvec3 const& vecB ) const;
 };
 
-extern OuterProduct const cross;
+extern __outer_product__ const cross;
 
-class InnerProduct : public BinaryOp_Exp<float, Vec4, Vec4>,
-                     public BinaryOp_Exp<float, Vec3, Vec3>,
-                     public BinaryOp_Exp<float, Vec2, Vec2>
+class __inner_product__ : public binary_op_exp<float, fvec4, fvec4>,
+                          public binary_op_exp<float, fvec3, fvec3>,
+                          public binary_op_exp<float, fvec2, fvec2>
 {
     public:
-        using BinaryOp_Exp<float, Vec4, Vec4>::operator();
-        using BinaryOp_Exp<float, Vec3, Vec3>::operator();
-        using BinaryOp_Exp<float, Vec2, Vec2>::operator();
-        friend class OperatorFactory;
-        ~InnerProduct() {}
+        using binary_op_exp<float, fvec4, fvec4>::operator();
+        using binary_op_exp<float, fvec3, fvec3>::operator();
+        using binary_op_exp<float, fvec2, fvec2>::operator();
+        friend class operator_factory;
+        ~__inner_product__() {}
     private:
-        InnerProduct() {}
-        float eval( Vec4 const& vecA, Vec4 const& vecB ) const;
-        float eval( Vec3 const& vecA, Vec3 const& vecB ) const;
-        float eval( Vec2 const& vecA, Vec2 const& vecB ) const;
+        __inner_product__() {}
+        float eval( fvec4 const& vecA, fvec4 const& vecB ) const;
+        float eval( fvec3 const& vecA, fvec3 const& vecB ) const;
+        float eval( fvec2 const& vecA, fvec2 const& vecB ) const;
 };
 
-extern InnerProduct const dot;
+extern __inner_product__ const dot;
 
-class Magnitude : public UnaryOp_Exp<float, Vec4>,
-                  public UnaryOp_Exp<float, Vec3>,
-                  public UnaryOp_Exp<float, Vec2>
+class __magnitude__ : public unary_op_exp<float, fvec4>,
+                      public unary_op_exp<float, fvec3>,
+                      public unary_op_exp<float, fvec2>
 {
     public:
-        using UnaryOp_Exp<float, Vec4>::operator();
-        using UnaryOp_Exp<float, Vec3>::operator();
-        using UnaryOp_Exp<float, Vec2>::operator();
-        friend class OperatorFactory;
-        ~Magnitude() {}
+        using unary_op_exp<float, fvec4>::operator();
+        using unary_op_exp<float, fvec3>::operator();
+        using unary_op_exp<float, fvec2>::operator();
+        friend class operator_factory;
+        ~__magnitude__() {}
     private:
-        Magnitude() {}
-        float eval( Vec4 const& vec ) const;
-        float eval( Vec3 const& vec ) const;
-        float eval( Vec2 const& vec ) const;
+        __magnitude__() {}
+        float eval( fvec4 const& vec ) const;
+        float eval( fvec3 const& vec ) const;
+        float eval( fvec2 const& vec ) const;
 };
 
-extern Magnitude const mag;
+extern __magnitude__ const mag;
 
-class InverseMagnitude : public UnaryOp_Exp<float, Vec4>,
-                         public UnaryOp_Exp<float, Vec3>,
-                         public UnaryOp_Exp<float, Vec2>
+class __inverse_magnitude__ : public unary_op_exp<float, fvec4>,
+                              public unary_op_exp<float, fvec3>,
+                              public unary_op_exp<float, fvec2>
  {
     public:
-        using UnaryOp_Exp<float, Vec4>::operator();
-        using UnaryOp_Exp<float, Vec3>::operator();
-        using UnaryOp_Exp<float, Vec2>::operator();
-        friend class OperatorFactory;
-        ~InverseMagnitude() {}
+        using unary_op_exp<float, fvec4>::operator();
+        using unary_op_exp<float, fvec3>::operator();
+        using unary_op_exp<float, fvec2>::operator();
+        friend class operator_factory;
+        ~__inverse_magnitude__() {}
     private:
-        InverseMagnitude() {}
-        float eval( Vec4 const& vec ) const;
-        float eval( Vec3 const& vec ) const;
-        float eval( Vec2 const& vec ) const;
+        __inverse_magnitude__() {}
+        float eval( fvec4 const& vec ) const;
+        float eval( fvec3 const& vec ) const;
+        float eval( fvec2 const& vec ) const;
 };
 
-extern InverseMagnitude const inv_mag;
+extern __inverse_magnitude__ const inv_mag;
 
-class Transpose : public UnaryOp<Mat> {
+class __transpose__ : public unary_op<fmat> {
     public:
-        using UnaryOp<Mat>::operator();
-        friend class OperatorFactory;
-        ~Transpose() {}
+        using unary_op<fmat>::operator();
+        friend class operator_factory;
+        ~__transpose__() {}
     private:
-        Transpose() {}
-        Mat eval( Mat const& mat ) const;
+        __transpose__() {}
+        fmat eval( fmat const& fmat ) const;
 };
 
-extern Transpose const transpose;
+extern __transpose__ const transpose;
 
-class Homogenize : public UnaryOp<Mat> {
+class __homogenize__ : public unary_op<fmat> {
     public:
-        using UnaryOp<Mat>::operator();
-        friend class OperatorFactory;
-        ~Homogenize() {}
+        using unary_op<fmat>::operator();
+        friend class operator_factory;
+        ~__homogenize__() {}
     private:
-        Homogenize() {}
-        Mat eval( Mat const& mat ) const;
+        __homogenize__() {}
+        fmat eval( fmat const& fmat ) const;
 };
 
-extern Homogenize const homogenize;
+extern __homogenize__ const homogenize;
 
-class ClipRange : public TernaryOp<float> {
+class __clip_range__ : public ternary_op<float> {
     public:
-        using TernaryOp<float>::operator();
-        friend class OperatorFactory;
-        ~ClipRange() {}
+        using ternary_op<float>::operator();
+        friend class operator_factory;
+        ~__clip_range__() {}
     private:
-        ClipRange() {}
+        __clip_range__() {}
         float eval( float const& value, float const& min, float const& max ) const;
 };
 
-extern ClipRange const clip_rng;
+extern __clip_range__ const clip_rng;
 
-template< typename DATA_T >
-class Angle {
+template< typename T >
+class angle {
     public:
-        static Angle<DATA_T> inRads( DATA_T inRads );
-        static Angle<DATA_T> inGrads( DATA_T inGrads );
-        static Angle<DATA_T> inDegs( DATA_T inDegs );
+        static angle<T> in_rads( T in_rads );
+        static angle<T> in_grads( T in_grads );
+        static angle<T> in_degs( T in_degs );
         
-        DATA_T toRads();
-        DATA_T toGrads();
-        DATA_T toDegs();
+        T to_rads();
+        T to_grads();
+        T to_degs();
     private:
-        Angle( DATA_T newUnians ) : unians (newUnians) {};
-        DATA_T unians;
+        angle( T new_unians ) : unians (new_unians) {};
+        T unians;
 };
 
-typedef Angle<double> AngleD;
-typedef Angle<float> AngleF;
+typedef angle<double> d_angle;
+typedef angle<float> f_angle;
+
 
 /**
 class ClipMaximum {

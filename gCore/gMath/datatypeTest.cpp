@@ -49,6 +49,10 @@ SUITE( ScalarTests )
         float32 bnum;
         bnum = anum;
         CHECK_EQUAL( anum, bnum );
+        bnum = -10.0f;
+        CHECK_EQUAL( -10.0f, bnum );
+        anum = anum;
+        CHECK_EQUAL( 5.0f, anum );
     }
 
     TEST( ScalarAddition )
@@ -162,8 +166,29 @@ SUITE( Vec2Tests )
         fvec2 avec2( 1.0f, -4.5f );
         CHECK_EQUAL( 1.0f, avec2(x) );
         CHECK_EQUAL( -4.5f, avec2(y) );
+        CHECK_EQUAL( 1.0f, avec2[0] );
+        CHECK_EQUAL( -4.5f, avec2[1] );
         avec2(y) = 5.6f;
         CHECK_EQUAL( 5.6f, avec2(y) );
+        CHECK_EQUAL( 5.6f, avec2[1] );
+        avec2[0] = -4.2f;
+        CHECK_EQUAL( -4.2f, avec2(x) );
+        CHECK_EQUAL( -4.2f, avec2[0] );
+        
+        float a = 0.0f;
+        CHECK_EQUAL( 0.0f, a );
+        
+        try {
+            a = avec2[3];
+        } catch (std::out_of_range e) {
+            CHECK_EQUAL( e.what(), "index out of range on vec2 lookup" );
+        }
+        
+        try {
+            a = avec2[-3];
+        } catch (std::out_of_range e) {
+            CHECK_EQUAL( e.what(), "index out of range on vec2 lookup" );
+        }
     }
 
     TEST( Vec2LookupConstruction )
@@ -308,8 +333,31 @@ SUITE( Vec3Tests )
         CHECK_EQUAL( 1.0f, avec3(x) );
         CHECK_EQUAL( -4.5f, avec3(y) );
         CHECK_EQUAL( 2.0f, avec3(z) );
+        CHECK_EQUAL( 1.0f, avec3[0] );
+        CHECK_EQUAL( -4.5f, avec3[1] );
+        CHECK_EQUAL( 2.0f, avec3[2] );
         avec3(z) = 5.6f;
         CHECK_EQUAL( 5.6f, avec3(z) );
+        CHECK_EQUAL( 5.6f, avec3[2] );
+        
+        avec3[0] = 5.9f;
+        CHECK_EQUAL( 5.9f, avec3(x) );
+        CHECK_EQUAL( 5.9f, avec3[0] );
+        
+        float a = 0.0f;
+        CHECK_EQUAL( 0.0f, a );
+        
+        try {
+            a = avec3[3];
+        } catch (std::out_of_range e) {
+            CHECK_EQUAL( e.what(), "index out of range on vec3 lookup" );
+        }
+        
+        try {
+            a = avec3[-3];
+        } catch (std::out_of_range e) {
+            CHECK_EQUAL( e.what(), "index out of range on vec3 lookup" );
+        }
     }
 
     TEST( Vec3LookupConstruction )
@@ -461,8 +509,33 @@ SUITE( Vec4Tests )
         CHECK_EQUAL( -4.5f, avec4(y) );
         CHECK_EQUAL( 2.0f, avec4(z) );
         CHECK_EQUAL( -3.5f, avec4(w) );
+        
+        CHECK_EQUAL( 1.0f, avec4[0] );
+        CHECK_EQUAL( -4.5f, avec4[1] );
+        CHECK_EQUAL( 2.0f, avec4[2] );
+        CHECK_EQUAL( -3.5f, avec4[3] );
+        
         avec4(w) = 5.6f;
         CHECK_EQUAL( 5.6f, avec4(w) );
+        CHECK_EQUAL( 5.6f, avec4[3] );
+        
+        avec4[3] = -2.6f;
+        CHECK_EQUAL( -2.6f, avec4(w) );
+        CHECK_EQUAL( -2.6f, avec4[3] );
+        
+        float a = 0.0f;
+        CHECK_EQUAL( 0.0f, a );
+        try {
+            a = avec4[7];
+        } catch (std::out_of_range e) {
+            CHECK_EQUAL( e.what(), "index out of range on vec4 lookup" );
+        }
+        
+        try {
+            a = avec4[-3];
+        } catch (std::out_of_range e) {
+            CHECK_EQUAL( e.what(), "index out of range on vec4 lookup" );
+        }
     }
 
     TEST( Vec4LookupConstruction )
@@ -561,16 +634,161 @@ SUITE( Vec4Tests )
     }
 }
 
+SUITE( QutnTests )
+{
+    TEST( QutnConstruction )
+    {
+        using namespace gfx;
+        fqutn aqutn;
+        fqutn bqutn( 0.0f, 0.0f, 0.0f, 1.0f );
+        CHECK_EQUAL( aqutn, bqutn );
+    }
+
+    TEST( QutnFillConstruction )
+    {
+        using namespace gfx;
+        fqutn aqutn( 1.0f );
+        fqutn bqutn( 1.0f, 1.0f, 1.0f, 1.0f );
+        CHECK_EQUAL( aqutn, bqutn );
+    }
+
+    TEST( QutnCopyAssignment )
+    {
+        using namespace gfx;
+        fqutn aqutn( 1.0f, -4.5f, 2.0f, -3.5f );
+        fqutn bqutn = aqutn;
+        CHECK_EQUAL( aqutn, bqutn );
+        bqutn(x) = -2.5f;
+        CHECK( aqutn(x) != bqutn(x) );
+        CHECK( aqutn(y) != bqutn(x) );
+        CHECK( aqutn(z) != bqutn(x) );
+        CHECK( aqutn(w) != bqutn(x) );
+        // no side effects
+    }
+
+    TEST( QutnAssignment )
+    {
+        using namespace gfx;
+        fqutn aqutn( 1.0f, -4.5f, 2.0f, -3.5f );
+        fqutn bqutn( -2.4f, 67.8f, 4.0f, 1.0f );
+        CHECK( aqutn != bqutn );
+        aqutn = bqutn;
+        CHECK_EQUAL( aqutn, bqutn );
+        
+        bqutn(x) = -2.5f;
+        CHECK( aqutn(x) != bqutn(x) );
+        CHECK( aqutn(y) != bqutn(x) );
+        CHECK( aqutn(z) != bqutn(x) );
+        CHECK( aqutn(w) != bqutn(x) );
+    }
+
+    TEST( QutnLookupComponent )
+    {
+        using namespace gfx;
+        fqutn aqutn( 1.0f, -4.5f, 2.0f, -3.5f );
+        CHECK_EQUAL( 1.0f, aqutn(x) );
+        CHECK_EQUAL( -4.5f, aqutn(y) );
+        CHECK_EQUAL( 2.0f, aqutn(z) );
+        CHECK_EQUAL( -3.5f, aqutn(w) );
+        
+        CHECK_EQUAL( 1.0f, aqutn[0] );
+        CHECK_EQUAL( -4.5f, aqutn[1] );
+        CHECK_EQUAL( 2.0f, aqutn[2] );
+        CHECK_EQUAL( -3.5f, aqutn[3] );
+        
+        aqutn(w) = 5.6f;
+        CHECK_EQUAL( 5.6f, aqutn(w) );
+        CHECK_EQUAL( 5.6f, aqutn[3] );
+        
+        aqutn[3] = -2.6f;
+        CHECK_EQUAL( -2.6f, aqutn(w) );
+        CHECK_EQUAL( -2.6f, aqutn[3] );
+        
+        float a = 0.0f;
+        CHECK_EQUAL( 0.0f, a );
+        try {
+            a = aqutn[7];
+        } catch (std::out_of_range e) {
+            CHECK_EQUAL( e.what(), "index out of range on qutn lookup" );
+        }
+        
+        try {
+            a = aqutn[-3];
+        } catch (std::out_of_range e) {
+            CHECK_EQUAL( e.what(), "index out of range on qutn lookup" );
+        }
+    }
+
+    TEST( QutnAddition )
+    {
+        using namespace gfx;
+        fqutn aqutn( 1.0f, -4.5f, 2.0f, -3.5f );
+        fqutn bqutn( 1.0f, 1.0f, 1.0f, -1.0f );
+        fqutn cqutn( 2.0f, -3.5f, 3.0f, -4.5f );
+        fqutn dqutn = aqutn + bqutn;
+        CHECK_EQUAL( cqutn, dqutn );
+    }
+
+    TEST( QutnSubtraction )
+    {
+        using namespace gfx;
+        fqutn aqutn( 1.0f, -4.5f, 2.0f, -3.5f );
+        fqutn bqutn( 1.0f, 1.0f, 1.0f, -1.0f );
+        fqutn cqutn( 0.0f, -5.5f, 1.0f, -2.5f );
+        fqutn dqutn = aqutn - bqutn;
+        CHECK_EQUAL( cqutn, dqutn );
+    }
+    
+    TEST( QutnNegation )
+    {
+        using namespace gfx;
+        fqutn aqutn( 1.0f, -4.5f, 2.0f, -3.5f );
+        fqutn bqutn( -1.0f, 4.5f, -2.0f, -3.5f );
+        fqutn cqutn = -aqutn;
+        CHECK_EQUAL( bqutn, cqutn );
+    }
+    
+    TEST( QutnMultiplication )
+    {
+        using namespace gfx;
+        fqutn aqutn( 1.0f, -4.5f, 2.0f, -3.5f );
+        fqutn bqutn( 1.0f, 1.0f, 1.0f, -1.0f );
+        fqutn cqutn( -11.0f, 2.0f, 0.0f, 5.0f );
+        fqutn dqutn = aqutn * bqutn;
+        CHECK_EQUAL( cqutn, dqutn );
+    }
+
+    TEST( QutnMapping )
+    {
+        using namespace gfx;
+        union mock_data {
+            float           values[4];
+            unsigned char   bytes[sizeof(float) * 4];
+        };
+
+        fqutn aqutn(8.0f, -2.0f, 0.0f, 10.0f);
+        raw_map aqutn_map = aqutn.to_map();
+        mock_data test_bytes = { {8.0f, -2.0f, 0.0f, 10.0f} };
+        
+        size_t i = sizeof(float) * 4;
+        
+        while(i) {
+            --i;
+            CHECK_EQUAL( test_bytes.bytes[i], aqutn_map[i] );
+        } 
+    }
+}
+
 SUITE( MatrixTests )
 {
     TEST( MatrixConstruction )
     {
         using namespace gfx;
-        mat<float> amat(2,2);
-        CHECK_EQUAL( amat.n_cols, 2u );
-        CHECK_EQUAL( amat.n_rows, 2u );
-        CHECK_EQUAL( amat.n_comp, 4u );
-        mat<float> bmat(2,2);
+        fmat amat(2,2);
+        CHECK_EQUAL( amat.n_cols(), 2u );
+        CHECK_EQUAL( amat.n_rows(), 2u );
+        CHECK_EQUAL( amat.n_comp(), 4u );
+        fmat bmat(2,2);
         bmat(0,0) = 0.0f;
         bmat(0,1) = 0.0f;
         bmat(1,0) = 0.0f;
@@ -581,11 +799,11 @@ SUITE( MatrixTests )
     TEST( MatrixFill )
     {
         using namespace gfx;
-        mat<float> amat = mat<float>::fill( 2, 2, 4.5f );
-        CHECK_EQUAL( amat.n_cols, 2u );
-        CHECK_EQUAL( amat.n_rows, 2u );
-        CHECK_EQUAL( amat.n_comp, 4u );
-        mat<float> bmat(2,2);
+        fmat amat = fmat::fill( 2, 2, 4.5f );
+        CHECK_EQUAL( amat.n_cols(), 2u );
+        CHECK_EQUAL( amat.n_rows(), 2u );
+        CHECK_EQUAL( amat.n_comp(), 4u );
+        fmat bmat(2,2);
         bmat(0,0) = 4.5f;
         bmat(0,1) = 4.5f;
         bmat(1,0) = 4.5f;
@@ -596,11 +814,11 @@ SUITE( MatrixTests )
     TEST( MatrixIdentity )
     {
         using namespace gfx;
-        mat<float> amat = mat<float>::identity( 2 );
-        CHECK_EQUAL( amat.n_cols, 2u );
-        CHECK_EQUAL( amat.n_rows, 2u );
-        CHECK_EQUAL( amat.n_comp, 4u );
-        mat<float> bmat(2,2);
+        fmat amat = fmat::identity( 2 );
+        CHECK_EQUAL( amat.n_cols(), 2u );
+        CHECK_EQUAL( amat.n_rows(), 2u );
+        CHECK_EQUAL( amat.n_comp(), 4u );
+        fmat bmat(2,2);
         bmat(0,0) = 1.0f;
         bmat(0,1) = 0.0f;
         bmat(1,0) = 0.0f;
@@ -611,8 +829,8 @@ SUITE( MatrixTests )
     TEST( MatrixAssignment )
     {
         using namespace gfx;
-        mat<float> amat(2,2);
-        mat<float> bmat(2,2);
+        fmat amat(2,2);
+        fmat bmat(2,2);
         bmat(0,0) = 14.5f;
         bmat(0,1) = -7.01f;
         bmat(1,0) = 100.5f;
@@ -620,8 +838,8 @@ SUITE( MatrixTests )
         CHECK( amat != bmat );
         amat = bmat;
         CHECK_EQUAL( amat, bmat );
-        CHECK_EQUAL( amat.n_comp, bmat.n_comp );
-        mat<float> cmat = amat;
+        CHECK_EQUAL( amat.n_comp(), bmat.n_comp() );
+        fmat cmat = amat;
         bmat(0,1) = 67.3f;
         CHECK( amat != bmat );
         CHECK_EQUAL( amat, cmat ); // no side effects
@@ -630,7 +848,7 @@ SUITE( MatrixTests )
     TEST( MatrixLookup )
     {
         using namespace gfx;
-        mat<float> amat(2,2);
+        fmat amat(2,2);
         amat(0,0) = 23.0f;
         amat(0,1) = 438.4f;
         amat(1,0) = -0.00231f;
@@ -644,14 +862,14 @@ SUITE( MatrixTests )
     TEST( MatrixAddition )
     {
         using namespace gfx;
-        mat<float> amat(2,2);
-        mat<float> bmat(2,2);
+        fmat amat(2,2);
+        fmat bmat(2,2);
         bmat(0,0) = 14.5f;
         bmat(0,1) = -7.01f;
         bmat(1,0) = 100.5f;
         bmat(1,1) = -234.52f;
         CHECK( amat != bmat );
-        mat<float> cmat(2,2);   
+        fmat cmat(2,2);   
         cmat = amat + bmat;
         CHECK_EQUAL( cmat, bmat );
     }
@@ -659,14 +877,14 @@ SUITE( MatrixTests )
     TEST( MatrixSubtraction )
     {
         using namespace gfx;
-        mat<float> amat(2,2);
-        mat<float> bmat(2,2);
+        fmat amat(2,2);
+        fmat bmat(2,2);
         bmat(0,0) = 14.5f;
         bmat(0,1) = -7.01f;
         bmat(1,0) = 100.5f;
         bmat(1,1) = -234.52f;
         CHECK( amat != bmat );
-        mat<float> cmat;   
+        fmat cmat;   
         cmat = amat - bmat;
         bmat(0,0) = -14.5f;
         bmat(0,1) = 7.01f;
@@ -678,26 +896,26 @@ SUITE( MatrixTests )
     TEST( MatrixMultiplication )
     {
         using namespace gfx;
-        mat<float> amat = mat<float>::identity(2);
-        mat<float> bmat(2,2);
+        fmat amat = fmat::identity(2);
+        fmat bmat(2,2);
         bmat(0,0) = 14.5f;
         bmat(0,1) = -7.01f;
         bmat(1,0) = 100.5f;
         bmat(1,1) = -234.52f;
         CHECK( amat != bmat );
-        mat<float> cmat = amat * bmat;
+        fmat cmat = amat * bmat;
         CHECK_EQUAL( cmat, bmat );
     }
 
     TEST( MatrixScalarMultiplication )
     {
         using namespace gfx;
-        mat<float> amat(2,2);
+        fmat amat(2,2);
         amat(0,0) = 14.5f;
         amat(0,1) = -7.01f;
         amat(1,0) = 100.5f;
         amat(1,1) = -234.52f;
-        mat<float> cmat = amat * 2.0f;
+        fmat cmat = amat * 2.0f;
         amat(0,0) = 29.0f;
         amat(0,1) = -14.02f;
         amat(1,0) = 201.0f;
@@ -709,17 +927,47 @@ SUITE( MatrixTests )
         amat(1,0) = 402.0f;
         amat(1,1) = -938.08f;
         CHECK_EQUAL( cmat, amat );
+        
+        float32 anum( 2.0f );
+        amat(0,0) = 14.5f;
+        amat(0,1) = -7.01f;
+        amat(1,0) = 100.5f;
+        amat(1,1) = -234.52f;
+        cmat = amat * anum;
+        amat(0,0) = 29.0f;
+        amat(0,1) = -14.02f;
+        amat(1,0) = 201.0f;
+        amat(1,1) = -469.04f;
+        CHECK_EQUAL( cmat, amat );
+        cmat = anum * amat;
+        amat(0,0) = 58.0f;
+        amat(0,1) = -28.04f;
+        amat(1,0) = 402.0f;
+        amat(1,1) = -938.08f;
+        CHECK_EQUAL( cmat, amat );
     }
 
     TEST( MatrixScalarDivision )
     {
         using namespace gfx;
-        mat<float> amat(2,2);
+        fmat amat(2,2);
         amat(0,0) = 14.5f;
         amat(0,1) = -7.01f;
         amat(1,0) = 100.5f;
         amat(1,1) = -234.52f;
-        mat<float> cmat = amat / 2.0f;
+        fmat cmat = amat / 2.0f;
+        amat(0,0) = 7.25f;
+        amat(0,1) = -3.505f;
+        amat(1,0) = 50.25f;
+        amat(1,1) = -117.26f;
+        CHECK_EQUAL( cmat, amat );
+        
+        float32 anum( 2.0f );
+        amat(0,0) = 14.5f;
+        amat(0,1) = -7.01f;
+        amat(1,0) = 100.5f;
+        amat(1,1) = -234.52f;
+        cmat = amat / anum;
         amat(0,0) = 7.25f;
         amat(0,1) = -3.505f;
         amat(1,0) = 50.25f;
@@ -730,12 +978,12 @@ SUITE( MatrixTests )
     TEST( MatrixTransposition )
     {
         using namespace gfx;
-        mat<float> amat(2,2);
+        fmat amat(2,2);
         amat(0,0) = 14.5f;
         amat(0,1) = -7.01f;
         amat(1,0) = 100.5f;
         amat(1,1) = -234.52f;
-        mat<float> cmat(2,2);
+        fmat cmat(2,2);
         cmat(0,0) = 14.5f;
         cmat(0,1) = 100.5f;
         cmat(1,0) = -7.01f;
@@ -752,7 +1000,7 @@ SUITE( MatrixTests )
             unsigned char   bytes[sizeof(float) * 4];
         };
 
-        mat<float> amat(2,2);
+        fmat amat(2,2);
         amat(0,0) = 8.0f;
         amat(0,1) = -2.0f;
         amat(1,0) = 0.0f;
@@ -849,6 +1097,26 @@ SUITE( Matrix2Tests )
         CHECK_EQUAL( amat2, bmat2 );
         CHECK_EQUAL( amat2(0,0), 4.7f );
         CHECK_EQUAL( amat2(0,1), -5.3f );
+    }
+    
+    TEST( Matrix2ColumnLookup )
+    {
+        using namespace gfx;
+        fmat2 amat2( 4.7f, 0.0f,
+                    -5.3f, 0.0f );
+        fvec2 avec2( 4.7f, -5.3f );
+        
+        fvec2 bvec2 = amat2[0];
+        CHECK_EQUAL( avec2, bvec2 );
+        
+        avec2(x) = 10.2f;
+        amat2[0] = avec2;
+        
+        CHECK_EQUAL( avec2[0], amat2(0,0) );
+        CHECK_EQUAL( avec2[1], amat2(0,1) );
+        CHECK_EQUAL( avec2, amat2[0] );
+        avec2(x) = 11.2f;
+        CHECK( avec2(x) != amat2(0,0) );
     }
 
     TEST( Matrix2Addition )
@@ -949,6 +1217,27 @@ SUITE( Matrix2Tests )
         CHECK( emat2(1,0) != cmat2(1,1) );
         CHECK( emat2(1,1) != cmat2(1,1) ); // no side effects
     }
+    
+    TEST( Matrix2VectorMultiplication )
+    {
+        using namespace gfx;
+        fmat2 amat2 = fmat2::identity();
+        fmat2 bmat2( 2.0f, 100.0f,
+                    -7.0f, -10.0f );
+        fvec2 avec2( 2.0f, 1.0f );
+        fvec2 bvec2 = amat2 * avec2;
+        CHECK_EQUAL( avec2, bvec2 );
+        bvec2 = avec2 * amat2;
+        CHECK_EQUAL( avec2, bvec2 );
+        
+        fvec2 cvec2( 104.0f, -24.0f );
+        bvec2 = bmat2 * avec2;
+        CHECK_EQUAL( cvec2, bvec2 );
+
+        fvec2 dvec2( -3.0f, 190.0f );
+        bvec2 = avec2 * bmat2;
+        CHECK_EQUAL( dvec2, bvec2 );
+    }
 
     TEST( Matrix2ScalarMultiplication )
     {
@@ -1042,7 +1331,7 @@ SUITE( Matrix2Tests )
         CHECK_EQUAL( cvec2, bvec2 );
     }
 
-    TEST( Matrix2ColumnLookup )
+    TEST( Matrix2ColumnAccess )
     {
         using namespace gfx;
         fmat2 amat2( 3.4f, -0.3f,
@@ -1175,7 +1464,18 @@ SUITE( Matrix3Tests )
                     -1.0f,  2.0f, 12.0f,
                     6.7f,  2.3f,  4.5f );
         CHECK_EQUAL( amat3, bmat3 );
-    } 
+    }
+    
+    TEST( Matrix3Square )
+    {
+        using namespace gfx;
+        fvec3 avec3( 3.0f, 4.0f, -2.0f );
+        fmat3 amat3 = fmat3::square( avec3 );
+        fmat3 bmat3(  9.0f, 12.0f, -6.0f,
+                     12.0f, 16.0f, -8.0f,
+                     -6.0f, -8.0f,  4.0f );
+        CHECK_EQUAL( bmat3, amat3 );
+    }
 
     TEST( Matrix3Scale )
     {
@@ -1188,7 +1488,57 @@ SUITE( Matrix3Tests )
                     0.0f,  0.0f, 4.0f );
         CHECK_EQUAL( amat3, bmat3 );
         CHECK_EQUAL( bmat3, cmat3 );
-        CHECK_EQUAL( amat3, cmat3 );  
+        CHECK_EQUAL( amat3, cmat3 );
+        
+        amat3 = fmat3::scale( 5.0f, -1.0f );
+        fvec2 avec2( 5.0f, -1.0f );
+        bmat3 = fmat3::scale( avec2 );
+        cmat3 = fmat3( 5.0f,  0.0f, 0.0f,
+                       0.0f, -1.0f, 0.0f,
+                       0.0f,  0.0f, 1.0f );
+        CHECK_EQUAL( amat3, bmat3 );
+        CHECK_EQUAL( bmat3, cmat3 );
+        CHECK_EQUAL( amat3, cmat3 );
+    }
+    
+    TEST( Matrix3Translate )
+    {
+        using namespace gfx;
+        fmat3 amat3 = fmat3::translate( 5.0f, -1.0f );
+        fvec2 avec2( 5.0f, -1.0f );
+        fmat3 bmat3 = fmat3::translate( avec2 );
+        fmat3 cmat3( 1.0f, 0.0f,  5.0f,
+                     0.0f, 1.0f, -1.0f,
+                     0.0f, 0.0f,  1.0f  );
+        CHECK_EQUAL( cmat3, amat3 );
+        CHECK_EQUAL( cmat3, bmat3 );
+        CHECK_EQUAL( amat3, bmat3 );
+    }
+    
+    TEST( Matrix3CrossProduct )
+    {
+        using namespace gfx;
+        fvec3 avec3( 3.0f, 4.0f, -2.0f );
+        fmat3 amat3 = fmat3::cross_product( avec3 );
+        fmat3 bmat3(  0.0f, 2.0f,  4.0f,
+                     -2.0f, 0.0f, -3.0f,
+                     -4.0f, 3.0f,  0.0f );
+        CHECK_EQUAL( bmat3, amat3 );
+    }
+    
+    TEST( Matrix3Rotation )
+    {
+        using namespace gfx;
+        fvec3 axis( 0.5f, 0.4f, 0.8660254038f );
+        double angle ( 2.0f );
+        fmat3 amat3 = fmat3::rotation( axis, angle );
+        fmat3 bmat3( -0.0621101274f, -0.4334379621f, 1.0678582814f,
+                      1.1415113804f, -0.0621101274f, 0.1585608546f,
+                      0.1585608546f,  1.0678582814f, 0.6459632909f );
+        CHECK_EQUAL( bmat3, amat3 );
+        std::cout << amat3 << std::endl;
+        std::cout << bmat3 << std::endl;
+        std::cout << amat3 - bmat3 << std::endl;
     }
 
     TEST( Matrix3Lookup )
@@ -1203,6 +1553,28 @@ SUITE( Matrix3Tests )
         CHECK_EQUAL( amat3, bmat3 );
         CHECK_EQUAL( amat3(0,0), 4.7f );
         CHECK_EQUAL( amat3(0,2), -5.3f );
+    }
+    
+    TEST( Matrix3ColumnLookup )
+    {
+        using namespace gfx;
+        fmat3 amat3( 4.7f, 0.0f, 0.0f,
+                    -5.3f, 0.0f, 0.0f,
+                     1.5f, 0.0f, 0.0f );
+        fvec3 avec3( 4.7f, -5.3f, 1.5f );
+        
+        fvec3 bvec3 = amat3[0];
+        CHECK_EQUAL( avec3, bvec3 );
+        
+        avec3(z) = 10.2f;
+        amat3[0] = avec3;
+        
+        CHECK_EQUAL( avec3[0], amat3(0,0) );
+        CHECK_EQUAL( avec3[1], amat3(0,1) );
+        CHECK_EQUAL( avec3[2], amat3(0,2) );
+        CHECK_EQUAL( avec3, amat3[0] );
+        avec3(x) = 11.2f;
+        CHECK( avec3(x) != amat3(0,0) );
     }
 
     TEST( Matrix3Addition )
@@ -1370,6 +1742,28 @@ SUITE( Matrix3Tests )
         CHECK( emat3(2,1) != cmat3(1,1) );
         CHECK( emat3(2,2) != cmat3(1,1) ); // no side effects
     }
+    
+    TEST( Matrix3VectorMultiplication )
+    {
+        using namespace gfx;
+        fmat3 amat3 = fmat3::identity();
+        fmat3 bmat3( 2.0f, 100.0f,  1.0f,
+                     4.0f,  15.0f, -1.0f,
+                    -7.0f, -10.0f,  5.0f );
+        fvec3 avec3( 2.0f, 1.0f, -1.0f );
+        fvec3 bvec3 = amat3 * avec3;
+        CHECK_EQUAL( avec3, bvec3 );
+        bvec3 = avec3 * amat3;
+        CHECK_EQUAL( avec3, bvec3 );
+        
+        fvec3 cvec3( 103.0f, 24.0f, -29.0f );
+        bvec3 = bmat3 * avec3;
+        CHECK_EQUAL( cvec3, bvec3 );
+
+        fvec3 dvec3( 15.0f, 225.0f, -4.0f );
+        bvec3 = avec3 * bmat3;
+        CHECK_EQUAL( dvec3, bvec3 );
+    }
 
     TEST( Matrix3ScalarMultiplication )
     {
@@ -1490,7 +1884,7 @@ SUITE( Matrix3Tests )
         CHECK_EQUAL( cvec3, bvec3 );
     }
 
-    TEST( Matrix3ColumnLookup )
+    TEST( Matrix3ColumnAccess )
     {
         using namespace gfx;
         fmat3 amat3( 3.4f, -0.3f, 17.0f,
@@ -1645,20 +2039,92 @@ SUITE( Matrix4Tests )
                     1.0f, -12.1f,  0.045f, -1.037f );
         CHECK_EQUAL( amat4, bmat4 );
     }
+    
+    TEST( Matrix4Square )
+    {
+        using namespace gfx;
+        fvec4 avec4( 3.0f, 4.0f, -2.0f, 2.0f );
+        fmat4 amat4 = fmat4::square( avec4 );
+        fmat4 bmat4(  9.0f, 12.0f, -6.0f,  6.0f,
+                     12.0f, 16.0f, -8.0f,  8.0f,
+                     -6.0f, -8.0f,  4.0f, -4.0f,
+                      6.0f,  8.0f, -4.0f,  4.0f );
+        CHECK_EQUAL( bmat4, amat4 );
+    }
 
     TEST( Matrix4Scale )
     {
         using namespace gfx;
-        fmat4 amat4 = fmat4::scale( 5.0f, -1.0f, 4.0f, 1.0f );
-        fvec4 avec4( 5.0f, -1.0f, 4.0f, 1.0f );
-        fmat4 bmat4 = fmat4::scale( avec4 );
+        fmat4 amat4 = fmat4::scale( 5.0f, -1.0f, 4.0f );
+        fvec3 avec3( 5.0f, -1.0f, 4.0f );
+        fmat4 bmat4 = fmat4::scale( avec3 );
         fmat4 cmat4( 5.0f,  0.0f, 0.0f, 0.0f,
-                    0.0f, -1.0f, 0.0f, 0.0f,
-                    0.0f,  0.0f, 4.0f, 0.0f,
-                    0.0f, 0.0f, 0.0f,  1.0f );
+                     0.0f, -1.0f, 0.0f, 0.0f,
+                     0.0f,  0.0f, 4.0f, 0.0f,
+                     0.0f,  0.0f, 0.0f, 1.0f );
         CHECK_EQUAL( amat4, bmat4 );
         CHECK_EQUAL( bmat4, cmat4 );
         CHECK_EQUAL( amat4, cmat4 );  
+    }
+    
+    TEST( Matrix4Translate )
+    {
+        using namespace gfx;
+        fmat4 amat4 = fmat4::translate( 5.0f, -1.0f, 4.0f );
+        fvec3 avec3( 5.0f, -1.0f, 4.0f );
+        fmat4 bmat4 = fmat4::translate( avec3 );
+        fmat4 cmat4( 1.0f, 0.0f, 0.0f,  5.0f,
+                     0.0f, 1.0f, 0.0f, -1.0f,
+                     0.0f, 0.0f, 1.0f,  4.0f,
+                     0.0f, 0.0f, 0.0f,  1.0f );
+        CHECK_EQUAL( cmat4, amat4 );
+        CHECK_EQUAL( cmat4, bmat4 );
+        CHECK_EQUAL( amat4, bmat4 );
+    }
+    
+    TEST( Matrix4CrossProduct )
+    {
+        using namespace gfx;
+        fvec3 avec3( 3.0f, 4.0f, -2.0f );
+        fmat4 amat4 = fmat4::cross_product( avec3 );
+        fmat4 bmat4(  0.0f, 2.0f,  4.0f, 0.0f,
+                     -2.0f, 0.0f, -3.0f, 0.0f,
+                     -4.0f, 3.0f,  0.0f, 0.0f,
+                      0.0f, 0.0f,  0.0f, 1.0f );
+        CHECK_EQUAL( bmat4, amat4 );
+    }
+    
+    TEST( Matrix4Perspective )
+    {
+        using namespace gfx;
+        double fovY (1.0);
+        double aspect (0.75);
+        double near (0.01);
+        double far (100);
+        fmat4 amat4 = fmat4::perspective( fovY, aspect,
+                                          near, far );
+        fmat4 bmat4( 2.4406502956f, 0.0f,           0.0f,        0.0f,
+                     0.0f,          1.8304877217f,  0.0f,        0.0f,
+                     0.0f,          0.0f,          -1.0002002f, -0.0200020002f,
+                     0.0f,          0.0f,          -1.0f,        0.0f           );
+        CHECK_EQUAL( bmat4, amat4 );
+        
+    }
+    
+    TEST( Matrix4Rotation )
+    {
+        using namespace gfx;
+        fvec3 axis( 0.5f, 0.4f, 0.8660254038f );
+        double angle ( 2.0f );
+        fmat4 amat4 = fmat4::rotation( axis, angle );
+        fmat4 bmat4( -0.0621101274f, -0.4334379621f, 1.0678582814f, 0.0f,
+                      1.1415113804f, -0.0621101274f, 0.1585608546f, 0.0f,
+                      0.1585608546f,  1.0678582814f, 0.6459632909f, 0.0f,
+                      0.0f,           0.0f,          0.0f,          1.0f );
+        CHECK_EQUAL( bmat4, amat4 );
+        std::cout << amat4 << std::endl;
+        std::cout << bmat4 << std::endl;
+        std::cout << amat4 - bmat4 << std::endl;
     }
 
     TEST( Matrix4Lookup )
@@ -1674,6 +2140,30 @@ SUITE( Matrix4Tests )
         CHECK_EQUAL( amat4, bmat4 );
         CHECK_EQUAL( amat4(0,0), 4.7f );
         CHECK_EQUAL( amat4(0,3), -5.3f );
+    }
+    
+    TEST( Matrix4ColumnLookup )
+    {
+        using namespace gfx;
+        fmat4 amat4( 4.7f, 0.0f, 0.0f, 0.0f,
+                    -5.3f, 0.0f, 0.0f, 0.0f,
+                     1.5f, 0.0f, 0.0f, 0.0f,
+                     2.5f, 0.0f, 0.0f, 0.0f );
+        fvec4 avec4( 4.7f, -5.3f, 1.5f, 2.5f );
+        
+        fvec4 bvec4 = amat4[0];
+        CHECK_EQUAL( avec4, bvec4 );
+        
+        avec4(w) = 10.2f;
+        amat4[0] = avec4;
+        
+        CHECK_EQUAL( avec4[0], amat4(0,0) );
+        CHECK_EQUAL( avec4[1], amat4(0,1) );
+        CHECK_EQUAL( avec4[2], amat4(0,2) );
+        CHECK_EQUAL( avec4[3], amat4(0,3) );
+        CHECK_EQUAL( avec4, amat4[0] );
+        avec4(x) = 11.2f;
+        CHECK( avec4(x) != amat4(0,0) );
     }
 
     TEST( Matrix4Addition )
@@ -1923,6 +2413,29 @@ SUITE( Matrix4Tests )
         CHECK( bmat4(3,2) != cmat4(1,1) );
         CHECK( bmat4(3,3) != cmat4(1,1) ); // no side effects
     }
+    
+    TEST( Matrix4VectorMultiplication )
+    {
+        using namespace gfx;
+        fmat4 amat4 = fmat4::identity();
+        fmat4 bmat4( 2.0f, 100.0f,  1.0f, 3.0f,
+                     4.0f,  15.0f, -1.0f, -50.0f,
+                     3.0f,   8.0f,  2.0f, -25.0f,
+                    -7.0f, -10.0f,  5.0f, -1.0f );
+        fvec4 avec4( 2.0f, 1.0f, -1.0f, -2.0f );
+        fvec4 bvec4 = amat4 * avec4;
+        CHECK_EQUAL( avec4, bvec4 );
+        bvec4 = avec4 * amat4;
+        CHECK_EQUAL( avec4, bvec4 );
+        
+        fvec4 cvec4( 97.0f, 124.0f, 62.0f, -27.0f);
+        bvec4 = bmat4 * avec4;
+        CHECK_EQUAL( cvec4, bvec4 );
+
+        fvec4 dvec4( 19.0f, 227.0f, -11.0f, -17.0f );
+        bvec4 = avec4 * bmat4;
+        CHECK_EQUAL( dvec4, bvec4 );
+    }
 
     TEST( Matrix4ScalarMultiplication )
     {
@@ -2121,7 +2634,7 @@ SUITE( Matrix4Tests )
         CHECK_EQUAL( cvec4, bvec4 );
     }
 
-    TEST( Matrix4ColumnLookup )
+    TEST( Matrix4ColumnAccess )
     {
         using namespace gfx;
         fmat4 amat4;
