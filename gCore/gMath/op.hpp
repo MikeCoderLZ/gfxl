@@ -204,14 +204,14 @@ class __normalize__ : public unary_op<fvec4>,
                       public unary_op<fvec3>,
                       public unary_op<fvec2>,
                       public unary_op<fmat>,
-                      public unary_op<qutn>
+                      public unary_op<fqutn>
 {
     public:
         using unary_op<fvec4>::operator();
         using unary_op<fvec3>::operator();
         using unary_op<fvec2>::operator();
         using unary_op<fmat>::operator();
-        using unary_op<qutn>::operator();
+        using unary_op<fqutn>::operator();
         friend class operator_factory;
         ~__normalize__() {}
     private:
@@ -220,25 +220,25 @@ class __normalize__ : public unary_op<fvec4>,
         fvec3 eval( fvec3 const& ) const;
         fvec2 eval( fvec2 const& ) const;
         fmat eval( fmat const& ) const;
-        qutn eval( qutn const& ) const;
+        fqutn eval( fqutn const& ) const;
 };
 
 extern __normalize__ const norm;
 
-class __orthogonalize__ : public binary_op<fvec3>,
-                          public binary_op<fvec2>
+class __orthogonalize__ : public binary_op<fvec3>
+                          //public binary_op<fvec2>
                           //,public unary_op<fmat>
 {
     public:
         using binary_op<fvec3>::operator();
-        using binary_op<fvec2>::operator();
+        //using binary_op<fvec2>::operator();
         //using unary_op<fmat>::operator();
         friend class operator_factory;
         ~__orthogonalize__() {}
     private:
         __orthogonalize__() {}
         fvec3 eval( fvec3 const& vecA, fvec3 const& vecB ) const;
-        fvec2 eval( fvec2 const& vecA, fvec2 const& vecB ) const;
+        //fvec2 eval( fvec2 const& vecA, fvec2 const& vecB ) const;
         //fmat const eval( fmat const& fmat ) const;
 };
 
@@ -272,8 +272,8 @@ class __threshold__ : public __interpolator__ {
     private:
         __threshold__() {}
         fvec4 eval( fvec4 const& vecA, fvec4 const& vecB, float const& p ) const;
-        fvec3 eval( fvec3 const& fvec3, fvec3 const& vecB, float const& p ) const;
-        fvec2 eval( fvec2 const& fvec2, fvec2 const& vecB, float const& p ) const;
+        fvec3 eval( fvec3 const& vecA, fvec3 const& vecB, float const& p ) const;
+        fvec2 eval( fvec2 const& vecA, fvec2 const& vecB, float const& p ) const;
         float eval( float const& a, float const& b, float const& p ) const;
 };
 
@@ -286,8 +286,8 @@ class __linear__ : public __interpolator__ {
     private:
         __linear__() {}
         fvec4 eval( fvec4 const& vecA, fvec4 const& vecB, float const& p ) const;
-        fvec3 eval( fvec3 const& fvec3, fvec3 const& vecB, float const& p ) const;
-        fvec2 eval( fvec2 const& fvec2, fvec2 const& vecB, float const& p ) const;
+        fvec3 eval( fvec3 const& vecA, fvec3 const& vecB, float const& p ) const;
+        fvec2 eval( fvec2 const& vecA, fvec2 const& vecB, float const& p ) const;
         float eval( float const& a, float const& b, float const& p ) const;
 };
 
@@ -300,12 +300,12 @@ class __cubic__ : public __interpolator__ {
     private:
         __cubic__() {}
         fvec4 eval( fvec4 const& vecA, fvec4 const& vecB, float const& p ) const;
-        fvec3 eval( fvec3 const& fvec3, fvec3 const& vecB, float const& p ) const;
-        fvec2 eval( fvec2 const& fvec2, fvec2 const& vecB, float const& p ) const;
+        fvec3 eval( fvec3 const& vecA, fvec3 const& vecB, float const& p ) const;
+        fvec2 eval( fvec2 const& vecA, fvec2 const& vecB, float const& p ) const;
         float eval( float const& a, float const& b, float const& p ) const;
 };
 
-extern __cubic_ const mix_cb;
+extern __cubic__ const mix_cb;
 
 class __outer_product__ : public binary_op<fvec3> {
     public:
@@ -383,7 +383,7 @@ class __transpose__ : public unary_op<fmat> {
         ~__transpose__() {}
     private:
         __transpose__() {}
-        fmat eval( fmat const& fmat ) const;
+        fmat eval( fmat const& amat ) const;
 };
 
 extern __transpose__ const transpose;
@@ -411,7 +411,7 @@ class __clip_range__ : public ternary_op<float> {
 };
 
 extern __clip_range__ const clip_rng;
-
+/**
 template< typename T >
 class angle {
     public:
@@ -431,7 +431,7 @@ typedef angle<double> d_angle;
 typedef angle<float> f_angle;
 
 
-/**
+
 class ClipMaximum {
     public:
     ClipMaximum() {};
@@ -452,8 +452,9 @@ extern ClipMinimum const clip_min;
 /**
  * The Converter class represents functors that convert values to native
  * Radians.
- * /
+ */
 
+/**
 class Converter {
     public:
         virtual float operator()( float value ) const = 0;
@@ -498,7 +499,7 @@ class FromUnians : public Converter {
 
 extern FromUnians const unit;
 
-// */
+*/
 
 }
 #endif

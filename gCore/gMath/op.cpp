@@ -3,10 +3,8 @@
 #include <cmath>
 #include <iostream>
 
+#include "./datatype.hpp"
 #include "./op.hpp"
-#include "./vec.hpp"
-#include "./matrix.hpp"
-#include "./quaternion.hpp"
 
 namespace gfx {
 /**
@@ -236,10 +234,10 @@ fvec4 __normalize__::eval( fvec4 const& vec ) const
 {
     fvec4 out = vec;
 
-    float invMag = 1.0f / sqrt(   vec[0]*vec[0]
-                                + vec[1]*vec[1]
-                                + vec[2]*vec[2]
-                                + vec[3]*vec[3] );
+    float invMag = 1.0f / sqrt(   vec[0] * vec[0]
+                                + vec[1] * vec[1]
+                                + vec[2] * vec[2]
+                                + vec[3] * vec[3] );
 
     return out*invMag;
 }
@@ -248,9 +246,9 @@ fvec3 __normalize__::eval( fvec3 const& vec ) const
 {
     fvec3 out = vec;
 
-    float invMag = 1.0f / sqrt(   vec[0]*vec[0]
-                                + vec[1]*vec[1]
-                                + vec[2]*vec[2] );
+    float invMag = 1.0f / sqrt(   vec[0] * vec[0]
+                                + vec[1] * vec[1]
+                                + vec[2] * vec[2] );
 
     return out*invMag;
 }
@@ -259,8 +257,8 @@ fvec2 __normalize__::eval( fvec2 const& vec ) const
 {
     fvec2 out = vec;
 
-    float invMag = 1.0f / sqrt(   vec[0]*vec[0]
-                                + vec[1]*vec[1] );
+    float invMag = 1.0f / sqrt(   vec[0] * vec[0]
+                                + vec[1] * vec[1] );
 
     return out*invMag;
 }
@@ -270,8 +268,8 @@ fmat __normalize__::eval( fmat const& mat ) const
     size_t row = 0;
     size_t col = 0;
 
-    size_t nRows = mat.nRows();
-    size_t nCols = mat.nCols();
+    size_t n_rows = mat.n_rows();
+    size_t n_cols = mat.n_cols();
 
     // Using double precision here promotes all operations to double _then_ truncates.
     // Slower, but more accurate and you should avoid matrix normalizations as much
@@ -279,16 +277,16 @@ fmat __normalize__::eval( fmat const& mat ) const
     double temp = 0.0;
     double invColMag = 0.0;
 
-    fmat out (mat.nCols(), mat.nRows());
+    fmat out (mat.n_cols(), mat.n_rows());
 
     // __normalize__ each column of the matrix
-    for( col = 0; col < nCols; ++col ){
-        for( row = 0; row < nRows; ++row ){
+    for( col = 0; col < n_cols; ++col ){
+        for( row = 0; row < n_rows; ++row ){
             temp = mat(col, row);
             invColMag += temp * temp;
         }
         invColMag = 1.0 / sqrt(invColMag);
-        for( row = 0; row < nRows; ++row ){
+        for( row = 0; row < n_rows; ++row ){
             out(col, row) = mat(col, row) * invColMag;
         }
         invColMag = 0.0;
@@ -297,36 +295,40 @@ fmat __normalize__::eval( fmat const& mat ) const
     return out;
 }
 
-Qutn __normalize__::eval( Qutn const& quat ) const
+fqutn __normalize__::eval( fqutn const& quat ) const
 {
-    Qutn out = quat;
-
-    float invMag = 1.0f / sqrt(   quat[0]*quat[0]
-                                + quat[1]*quat[1]
-                                + quat[2]*quat[2]
-                                + quat[3]*quat[3] );
-
-    return out*invMag;
+    double invMag = 1.0f / sqrt(   quat[0] * quat[0]
+                                 + quat[1] * quat[1]
+                                 + quat[2] * quat[2]
+                                 + quat[3] * quat[3] );
+    return fqutn( quat[0] * invMag,
+                  quat[1] * invMag,
+                  quat[2] * invMag,
+                  quat[3] * invMag );
 }
 
 
 __normalize__ const norm = operator_factory::make__normalize__();
+
 
 fvec3 __orthogonalize__::eval( fvec3 const& vecA, fvec3 const& vecB ) const
 {
     return cross( vecA, cross( vecB, vecA ));
 }
 
-fvec2 __orthogonalize__::eval( fvec2 const& vecA, fvec2 const& vecB ) const
-{
-    fvec3 vecA3 (vecA[0], vecA[1], 0.0f );
-    fvec3 vecB3 (vecB[0], vecB[1], 0.0f );
-    fvec3 out3 = cross( vecA3, cross( vecB3, vecA3));
 
-    return fvec2( out3[0], out3[1] );
-}
+// fvec2 __orthogonalize__::eval( fvec2 const& vecA, fvec2 const& vecB ) const
+// {
+//     fvec3 vecA3 (vecA[0], vecA[1], 0.0f );
+//     fvec3 vecB3 (vecB[0], vecB[1], 0.0f );
+//     fvec3 out3 = cross( vecA3, cross( vecB3, vecA3));
+// 
+//     return fvec2( out3[0], out3[1] );
+// }
 
 __orthogonalize__ const ortho = operator_factory::make__orthogonalize__();
+
+
 
 fvec4 __threshold__::eval( fvec4 const& vecA, fvec4 const& vecB, float const& p ) const
 {
@@ -350,6 +352,7 @@ float __threshold__::eval( float const& a, float const& b, float const& p ) cons
 
 
 __threshold__ const mix_th = operator_factory::make__threshold__();
+
 
 fvec4 __linear__::eval( fvec4 const& vecA, fvec4 const& vecB, float const& p ) const
 {
@@ -375,34 +378,35 @@ __linear__ const mix_ln = operator_factory::make__linear__();
 
 fvec4 __cubic__::eval( fvec4 const& vecA, fvec4 const& vecB, float const& p ) const
 {
-    return vecA + (p*p)*( 3.0f - 2.0f*p)*(vecB - vecA);
+    return vecA + p*p*( 3.0f - 2.0f*p)*(vecB - vecA);
 }
 
 fvec3 __cubic__::eval( fvec3 const& vecA, fvec3 const& vecB, float const& p ) const
 {
-    return vecA + (p*p)*( 3.0f - 2.0f*p)*(vecB - vecA);
+    return vecA + p*p*( 3.0f - 2.0f*p)*(vecB - vecA);
 }
 
 fvec2 __cubic__::eval( fvec2 const& vecA, fvec2 const& vecB, float const& p ) const
 {
-    return vecA + (p*p)*( 3.0f - 2.0f*p)*(vecB - vecA);
+    return vecA + p*p*( 3.0f - 2.0f*p)*(vecB - vecA);
 }
 
 float __cubic__::eval( float const& a, float const& b, float const& p ) const
 {
-    return a + ( 3.0f*p*p - 2.0f*p*p )*(b - a);
+    return a + p*p*( 3.0f - 2.0f*p )*(b - a);
 }
-
 __cubic__ const mix_cb = operator_factory::make__cubic__();
+
 
 fvec3 __outer_product__::eval( fvec3 const& vecA, fvec3 const& vecB ) const
 {
     return fvec3( vecA[1]*vecB[2] - vecA[2]*vecB[1],
-                 vecA[2]*vecB[0] - vecA[0]*vecB[2],
-                 vecA[0]*vecB[1] - vecA[1]*vecB[0] );
+                  vecA[2]*vecB[0] - vecA[0]*vecB[2],
+                  vecA[0]*vecB[1] - vecA[1]*vecB[0] );
 }
 
 __outer_product__ const cross = operator_factory::make__outer_product__();
+
 
 float __inner_product__::eval( fvec4 const& vecA, fvec4 const& vecB ) const
 {
@@ -479,15 +483,19 @@ float __inverse_magnitude__::eval( fvec2 const& vec ) const
 
 __inverse_magnitude__ const inv_mag = operator_factory::make__inverse_magnitude__();
 
-fmat __transpose__::eval( fmat const& mat ) const
+fmat __transpose__::eval( fmat const& amat ) const
 {
-    fmat out ( mat.nRows(), mat.nCols() );
+    fmat out ( amat.n_rows(), amat.n_cols() );
 
-    size_t i = 0;
-    size_t nElements = mat.size();
+    size_t i = amat.n_comp();
+    size_t amat_cols = amat.n_cols();
+    size_t out_rows = out.n_rows();
 
-    for( i = 0; i < nElements; ++i ){
-        out(i / out.nRows(), i % out.nRows() ) = mat( i % mat.nCols(), i / mat.nCols() );
+    while(i)
+    {
+        --i;
+        out(i / out_rows, i % out_rows )
+            = amat( i % amat_cols, i / amat_cols );
     }
 
     return out;
@@ -497,8 +505,8 @@ __transpose__ const transpose = operator_factory::make__transpose__();
 
 fmat __homogenize__::eval( fmat const& mat ) const
 {
-    size_t cols = mat.nCols();
-    size_t rows = mat.nRows();
+    size_t cols = mat.n_cols();
+    size_t rows = mat.n_rows();
 
     size_t dim = 0;
 
@@ -513,8 +521,8 @@ fmat __homogenize__::eval( fmat const& mat ) const
 
     size_t i = 0;
 
-    bool colOutside = false;
-    bool rowOutside = false;
+    bool col_outside = false;
+    bool row_outside = false;
 
     size_t row = 0;
     size_t col = 0;
@@ -522,11 +530,11 @@ fmat __homogenize__::eval( fmat const& mat ) const
     for( i =0; i < size; ++i ){
         col = i / dim;
         row = i % dim;
-        colOutside = col >= cols;
-        rowOutside = row >= rows;
-    if ( colOutside && rowOutside ){
+        col_outside = col >= cols;
+        row_outside = row >= rows;
+    if ( col_outside and row_outside ){
             break;
-        } else if ( !(colOutside || rowOutside) ){
+        } else if ( not (col_outside or row_outside) ){
             out(col, row ) = mat( col, row );
         }
     }
@@ -542,7 +550,7 @@ float __clip_range__::eval( float const& value, float const& min, float const& m
 }
 
 __clip_range__ const clip_rng = operator_factory::make__clip_range__();
-
+/**
 template < typename DATA_T >
 Angle<DATA_T> Angle< DATA_T >::inRads( DATA_T inRads )
 {
@@ -574,7 +582,7 @@ DATA_T Angle< DATA_T >::toDegs()
     return unians * 360.0;
 }
 
-/* ---- Float Specializations ---- */
+/* ---- Float Specializations ---- * /
 template <>
 AngleF AngleF::inRads( float inRads )
 {
@@ -608,5 +616,5 @@ float AngleF::toDegs()
 
 template class Angle< double >;
 template class Angle< float >;
-
+*/
 }

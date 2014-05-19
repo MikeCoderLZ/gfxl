@@ -51,12 +51,12 @@ $(OBJ)/vec.o: $(GMATH)/vec.cpp  $(GMATH)/vec.hpp
 	    -o $(OBJ)/vec.o
 
 	    
-$(OBJ)/op.o: $(GMATH)/op.cpp \
-             $(GMATH)/op.hpp  $(GMATH)/matrix.hpp \
-             $(GMATH)/vec.hpp
-             
-	g++ -c $(GMATH)/op.cpp  $(COM) \
-	    -o $(OBJ)/op.o
+# $(OBJ)/op.o: $(GMATH)/op.cpp \
+#              $(GMATH)/op.hpp  $(GMATH)/matrix.hpp \
+#              $(GMATH)/vec.hpp
+#              
+# 	g++ -c $(GMATH)/op.cpp  $(COM) \
+# 	    -o $(OBJ)/op.o
 
 	    
 $(BIN)/quaternionTest.exe: $(OBJ)/quaternionTest.o \
@@ -81,7 +81,7 @@ $(OBJ)/quaternion.o: $(GMATH)/quaternion.cpp \
 	g++ -c $(GMATH)/quaternion.cpp $(COM) -o $(OBJ)/quaternion.o
 
 	
-newTypes: $(BIN)/datatypeTest.exe
+newTypes: $(BIN)/datatypeTest.exe $(BIN)/operatorTest
 
 
 $(BIN)/datatypeTest.exe: $(OBJ)/datatypeTest.o $(OBJ)/swizzTest.o
@@ -101,8 +101,26 @@ $(OBJ)/datatypeTest.o: $(GMATH)/datatypeTest.cpp $(GMATH)/datatype.hpp
 
 	g++ -c $(GMATH)/datatypeTest.cpp $(COM) \
 	    -o $(OBJ)/datatypeTest.o
+
+$(BIN)/operatorTest:    $(OBJ)/operatorTest.o \
+                        $(OBJ)/op.o
+                     
+	g++ $(OBJ)/operatorTest.o \
+	    $(OBJ)/op.o \
+	    -L ../../dev_lib -lUnitTest++ \
+	    -o $(BIN)/operatorTest
 	    
-	    
+$(OBJ)/operatorTest.o:    $(GMATH)/operatorTest.cpp \
+                          $(GMATH)/op.hpp \
+                          $(GMATH)/datatype.hpp
+	g++ -c $(GMATH)/operatorTest.cpp $(COM) \
+            -o $(OBJ)/operatorTest.o
+
+$(OBJ)/op.o:    $(GMATH)/op.cpp \
+                $(GMATH)/op.hpp \
+                $(GMATH)/datatype.hpp
+	g++ -c $(GMATH)/op.cpp $(COM) \
+            -o $(OBJ)/op.o
 #$(OBJ)/type.o: $(GMATH)/type.cpp $(GMATH)/type.hpp $(GMATH)/datatypes.hpp
 #	g++ -c $(GMATH)/type.cpp $(COM) -o $(OBJ)/type.o
 #$(OBJ)/datatypes.o: $(GMATH)/datatypes.cpp $(GMATH)/datatypes.hpp $(GMATH)/type_op.hpp

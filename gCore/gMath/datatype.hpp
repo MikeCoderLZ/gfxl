@@ -220,6 +220,7 @@ public:
     vec2_t                  operator+( vec2_t const& rhs ) const;
     vec2_t                  operator-( vec2_t const& rhs ) const;
     vec2_t                  operator*( vec2_t const& rhs ) const;
+    vec2_t                  operator*( comp_t rhs ) const;
     vec2_t                  operator/( vec2_t const& rhs ) const;
     template< typename U >
     friend std::ostream&    operator<<( std::ostream& out, vec2<U> const& src );
@@ -227,6 +228,8 @@ public:
     template< typename U > friend  class mat2;
     template<typename D >
     friend vec2<D>          operator*( vec2<D> const& lhs, mat2<D> const& rhs );
+    template<typename D >
+    friend vec2<D>          operator*( D lhs, vec2<D> const& rhs );
 protected:
     union {
         comp_t          components[2];
@@ -268,6 +271,7 @@ public:
     vec3_t                  operator+( vec3_t const& rhs ) const;
     vec3_t                  operator-( vec3_t const& rhs ) const;
     vec3_t                  operator*( vec3_t const& rhs ) const;
+    vec3_t                  operator*( comp_t rhs ) const;
     vec3_t                  operator/( vec3_t const& rhs ) const;
 
     template< typename U >
@@ -276,6 +280,8 @@ public:
     template< typename D > friend class mat3;
     template< typename D >
     friend vec3<D>          operator*( vec3<D> const& lhs, mat3<D> const& rhs );
+    template< typename D >
+    friend vec3<D>          operator*( D lhs, vec3<D> const& rhs );
 protected:
     union {
         comp_t          components[3];
@@ -319,6 +325,7 @@ public:
     vec4_t                  operator+( vec4_t const& rhs ) const;
     vec4_t                  operator-( vec4_t const& rhs ) const;
     vec4_t                  operator*( vec4_t const& rhs ) const;
+    vec4_t                  operator*( comp_t rhs ) const;
     vec4_t                  operator/( vec4_t const& rhs ) const;
     template< typename U >
     friend std::ostream&    operator<<( std::ostream& out, vec4<U> const& src );
@@ -326,6 +333,8 @@ public:
     template< typename D > friend class mat4;
     template< typename D >
     friend vec4<D>          operator*( vec4<D> const& lhs, mat4<D> const& rhs );
+    template< typename D >
+    friend vec4<D>          operator*( D lhs, vec4<D> const& rhs );
 protected:
     union {
         comp_t          components[4];
@@ -1404,29 +1413,28 @@ raw_map const   scalar<T>::to_map() const
 template< typename T > inline
 vec2<T>::vec2() : data( {{0,0}} ) {};
 
-template< typename T >
-inline vec2<T>::vec2( comp_t x0,
+template< typename T > inline
+vec2<T>::vec2( comp_t x0,
                       comp_t x1 ) : data( {{ x0, x1 }} ) {}
 
-template< typename T >
-inline vec2<T>::vec2( comp_t fill ) : data( {{fill, fill}} ){}
+template< typename T > inline
+vec2<T>::vec2( comp_t fill ) : data( {{fill, fill}} ){}
 
-template< typename T >
-inline vec2<T>::vec2( vec2<T> const& src ) : data( {{ src.data.components[0], src.data.components[1] }} ) {}
+template< typename T > inline
+vec2<T>::vec2( vec2<T> const& src ) : data( {{ src.data.components[0], src.data.components[1] }} ) {}
 
-template< typename T >
-inline vec2<T>::~vec2() {}
+template< typename T > inline   vec2<T>::~vec2() {}
 
-template< typename T >
-inline vec2<T>& vec2<T>::operator=( vec2<T> const& rhs )
+template< typename T > inline
+vec2<T>& vec2<T>::operator=( vec2<T> const& rhs )
 {
     this->data.components[0] = rhs.data.components[0];
     this->data.components[1] = rhs.data.components[1];
     return *this;
 }
 
-template< typename T >
-T&     vec2<T>::operator[]( size_t i )
+template< typename T > inline
+T&  vec2<T>::operator[]( size_t i )
 {
     if ( i > 1 or i < 0 ) {
         throw std::out_of_range( "index out of range on vec2 lookup" );
@@ -1434,8 +1442,8 @@ T&     vec2<T>::operator[]( size_t i )
     return data.components[i];
 }
 
-template< typename T >
-T     vec2<T>::operator[]( size_t i ) const
+template< typename T > inline
+T   vec2<T>::operator[]( size_t i ) const
 {
     if ( i > 1 or i < 0 ) {
         throw std::out_of_range( "index out of range on vec2 lookup" );
@@ -1443,8 +1451,8 @@ T     vec2<T>::operator[]( size_t i ) const
     return data.components[i];    
 }
 
-template< typename T >
-inline T& vec2<T>::operator()( swizz2 const& x0 )
+template< typename T > inline
+T&  vec2<T>::operator()( swizz2 const& x0 )
 {
     switch( x0.index ){
       case 1:
@@ -1459,8 +1467,8 @@ inline T& vec2<T>::operator()( swizz2 const& x0 )
     }
 }
 
-template< typename T >
-inline T vec2<T>::operator()( swizz2 const& x0 ) const
+template< typename T > inline
+T   vec2<T>::operator()( swizz2 const& x0 ) const
 {
     switch( x0.index ){
       case 1:
@@ -1476,53 +1484,60 @@ inline T vec2<T>::operator()( swizz2 const& x0 ) const
     }
 }
 
-template< typename T >
-inline vec2<T> vec2<T>::operator()( swizz2 const& x0,
-                                    swizz2 const& x1 ) const
-{
-    return vec2( (*this)(x0), (*this)(x1) );
-}
+template< typename T > inline
+vec2<T>     vec2<T>::operator()( swizz2 const& x0,
+                                 swizz2 const& x1 ) const
+{ return vec2( (*this)(x0), (*this)(x1) ); }
 
-template< typename T >
-inline vec3<T> vec2<T>::operator()( swizz2 const& x0,
-                                    swizz2 const& x1,
-                                    swizz2 const& x2 ) const
-{
-    return vec3<T>( (*this)(x0), (*this)(x1), (*this)(x2) );
-}
+template< typename T > inline
+vec3<T>     vec2<T>::operator()( swizz2 const& x0,
+                                 swizz2 const& x1,
+                                 swizz2 const& x2 ) const
+                                 
+{ return vec3<T>( (*this)(x0), (*this)(x1), (*this)(x2) ); }
 
-template< typename T >
-inline vec4<T> vec2<T>::operator()( swizz2 const& x0,
-                                    swizz2 const& x1,
-                                    swizz2 const& x2,
-                                    swizz2 const& x3 ) const
-{
-    return vec4<T>( (*this)(x0), (*this)(x1), (*this)(x2), (*this)(x3) );
-}
+template< typename T > inline
+vec4<T>     vec2<T>::operator()( swizz2 const& x0,
+                                 swizz2 const& x1,
+                                 swizz2 const& x2,
+                                 swizz2 const& x3 ) const
+                                 
+{ return vec4<T>( (*this)(x0), (*this)(x1), (*this)(x2), (*this)(x3) ); }
 
-template< typename T >
-inline vec2<T> vec2<T>::operator+( vec2<T> const& rhs ) const
-{
-    return vec2<T>( (*this)(x) + rhs(x), (*this)(y) + rhs(y) );
-}
+template< typename T > inline
+vec2<T>     vec2<T>::operator+( vec2<T> const& rhs ) const
 
-template< typename T >
-inline vec2<T> vec2<T>::operator-( vec2<T> const& rhs ) const
-{
-    return vec2<T>( (*this)(x) - rhs(x), (*this)(y) - rhs(y) );
-}
+{ return vec2<T>( (*this)(x) + rhs(x), (*this)(y) + rhs(y) ); }
 
-template< typename T >
-inline vec2<T> vec2<T>::operator*( vec2<T> const& rhs ) const
+template< typename T > inline
+vec2<T>     vec2<T>::operator-( vec2<T> const& rhs ) const
+
+{ return vec2<T>( (*this)(x) - rhs(x), (*this)(y) - rhs(y) ); }
+
+template< typename T > inline
+vec2<T>     vec2<T>::operator*( vec2<T> const& rhs ) const
 {
     return vec2<T>( (*this)(x) * rhs(x), (*this)(y) * rhs(y) );
 }
 
-template< typename T >
-inline vec2<T> vec2<T>::operator/( vec2<T> const& rhs ) const
+template< typename T > inline
+vec2<T>     vec2<T>::operator*( T rhs ) const
 {
-    return vec2<T>( (*this)(x) / rhs(x), (*this)(y) / rhs(y) );
+    return vec2<T>( this->data.components[0] * rhs,
+                    this->data.components[1] * rhs );
 }
+
+template< typename T > inline
+vec2<T>     operator*( T lhs, vec2<T> const& rhs )
+{
+    return vec2<T>( lhs * rhs.data.components[0],
+                    lhs * rhs.data.components[1] );
+}
+
+template< typename T > inline
+vec2<T>     vec2<T>::operator/( vec2<T> const& rhs ) const
+{ return vec2<T>( (*this)(x) / rhs(x),
+                  (*this)(y) / rhs(y) ); }
 
 template<typename T> inline
 bool    vec2<T>::operator==( vec2<T> const& rhs ) const
@@ -1582,7 +1597,7 @@ vec3<T>&    vec3<T>::operator=( vec3<T> const& rhs )
     return *this;
 }
 
-template< typename T >
+template< typename T > inline
 T&     vec3<T>::operator[]( size_t i )
 {
     if ( i > 2 or i < 0 ) {
@@ -1591,7 +1606,7 @@ T&     vec3<T>::operator[]( size_t i )
     return data.components[i];
 }
 
-template< typename T >
+template< typename T > inline
 T     vec3<T>::operator[]( size_t i ) const
 {
     if ( i > 2 or i < 0 ) {
@@ -1619,8 +1634,8 @@ T&  vec3<T>::operator()( swizz3 const& x0 )
     }
 }
 
-template< typename T >
-inline T vec3<T>::operator()( swizz3 const& x0 ) const
+template< typename T > inline
+T   vec3<T>::operator()( swizz3 const& x0 ) const
 {
     switch( x0.index ){
       case 1:
@@ -1640,30 +1655,26 @@ inline T vec3<T>::operator()( swizz3 const& x0 ) const
     }
 }
 
-template< typename T >
-inline vec2<T> vec3<T>::operator()( swizz3 const& x0,
-                                    swizz3 const& x1 ) const
-{
-    return vec2<T>( (*this)(x0), (*this)(x1) );
-}
-template< typename T >
-inline vec3<T> vec3<T>::operator()( swizz3 const& x0,
-                                    swizz3 const& x1,
-                                    swizz3 const& x2 ) const
-{
-    return vec3( (*this)(x0), (*this)(x1), (*this)(x2) );
-}
-template< typename T >
-inline vec4<T> vec3<T>::operator()( swizz3 const& x0,
-                                    swizz3 const& x1,
-                                    swizz3 const& x2,
-                                    swizz3 const& x3 ) const
-{
-    return vec4<T>( (*this)(x0), (*this)(x1), (*this)(x2), (*this)(x3) );
-}
+template< typename T > inline
+vec2<T>     vec3<T>::operator()( swizz3 const& x0,
+                                 swizz3 const& x1 ) const
+{ return vec2<T>( (*this)(x0), (*this)(x1) ); }
 
-template< typename T >
-inline vec3<T> vec3<T>::operator+( vec3<T> const& rhs ) const
+template< typename T > inline
+vec3<T>     vec3<T>::operator()( swizz3 const& x0,
+                                 swizz3 const& x1,
+                                 swizz3 const& x2 ) const
+{ return vec3( (*this)(x0), (*this)(x1), (*this)(x2) ); }
+
+template< typename T > inline
+vec4<T>     vec3<T>::operator()( swizz3 const& x0,
+                                 swizz3 const& x1,
+                                 swizz3 const& x2,
+                                 swizz3 const& x3 ) const
+{ return vec4<T>( (*this)(x0), (*this)(x1), (*this)(x2), (*this)(x3) ); }
+
+template< typename T > inline
+vec3<T>     vec3<T>::operator+( vec3<T> const& rhs ) const
 {
     return vec3<T>( (*this)(x) + rhs(x),
                     (*this)(y) + rhs(y),
@@ -1684,6 +1695,23 @@ inline vec3<T> vec3<T>::operator*( vec3<T> const& rhs ) const
                     (*this)(y) * rhs(y),
                     (*this)(z) * rhs(z) );
 }
+    
+template< typename T >
+inline vec3<T> vec3<T>::operator*( T rhs ) const
+{
+    return vec3<T>( this->data.components[0] * rhs,
+                    this->data.components[1] * rhs,
+                    this->data.components[2] * rhs );
+}
+
+template< typename T >
+inline vec3<T> operator*( T lhs, vec3<T> const& rhs )
+{
+    return vec3<T>( lhs * rhs.data.components[0],
+                    lhs * rhs.data.components[1],
+                    lhs * rhs.data.components[2] );
+}
+
 template< typename T >
 inline vec3<T> vec3<T>::operator/( vec3<T> const& rhs ) const
 {
@@ -1866,6 +1894,24 @@ inline vec4<T> vec4<T>::operator*( vec4<T> const& rhs ) const
                     (*this)(y) * rhs(y),
                     (*this)(z) * rhs(z),
                     (*this)(w) * rhs(w) );
+}
+
+template< typename T >
+inline vec4<T> vec4<T>::operator*( T rhs ) const
+{
+    return vec4<T>( this->data.components[0] * rhs,
+                    this->data.components[1] * rhs,
+                    this->data.components[2] * rhs,
+                    this->data.components[3] * rhs );
+}
+
+template< typename T >
+inline vec4<T> operator*( T lhs, vec4<T> const& rhs )
+{
+    return vec4<T>( lhs * rhs.data.components[0],
+                    lhs * rhs.data.components[1],
+                    lhs * rhs.data.components[2],
+                    lhs * rhs.data.components[3] );
 }
 
 template< typename T >
