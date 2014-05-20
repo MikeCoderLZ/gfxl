@@ -10,27 +10,27 @@ SUITE( NormTests )
     TEST( NormVec4 )
     {
         using namespace gfx;
-        fvec4 avec4 ( 1.0f, 1.0f, 1.0f, 1.0f );
-        fvec4 bvec4 = norm( avec4 );
-        fvec4 cvec4 ( 0.5f, 0.5f, 0.5f, 0.5f );
+        vec4 avec4 ( 1.0f, 1.0f, 1.0f, 1.0f );
+        vec4 bvec4 = norm( avec4 );
+        vec4 cvec4 ( 0.5f, 0.5f, 0.5f, 0.5f );
         CHECK_EQUAL( cvec4, bvec4 );
     }
     
     TEST( NormVec3 )
     {
         using namespace gfx;
-        fvec3 avec3 ( 2.0f, 1.0f, 2.0f );
-        fvec3 bvec3 = norm( avec3 );
-        fvec3 cvec3 ( 2.0/3.0, 1.0/3.0, 2.0/3.0 );
+        vec3 avec3 ( 2.0f, 1.0f, 2.0f );
+        vec3 bvec3 = norm( avec3 );
+        vec3 cvec3 ( 2.0/3.0, 1.0/3.0, 2.0/3.0 );
         CHECK_EQUAL( cvec3, bvec3 );
     }
     
     TEST( NormVec2 )
     {
         using namespace gfx;
-        fvec2 avec2 ( 4.0f, 3.0f );
-        fvec2 bvec2 = norm( avec2 );
-        fvec2 cvec2 ( 4.0/5.0, 3.0/5.0 );
+        vec2 avec2 ( 4.0f, 3.0f );
+        vec2 bvec2 = norm( avec2 );
+        vec2 cvec2 ( 4.0/5.0, 3.0/5.0 );
         CHECK_EQUAL( cvec2, bvec2 );
     }
     
@@ -53,9 +53,9 @@ SUITE( NormTests )
     TEST( NormQutn )
     {
         using namespace gfx;
-        fqutn aqutn ( 1.0f, 1.0f, 1.0f, 1.0f );
-        fqutn bqutn = norm( aqutn );
-        fqutn cqutn ( 0.5f, 0.5f, 0.5f, 0.5f );
+        qutn aqutn ( 1.0f, 1.0f, 1.0f, 1.0f );
+        qutn bqutn = norm( aqutn );
+        qutn cqutn ( 0.5f, 0.5f, 0.5f, 0.5f );
         CHECK_EQUAL( cqutn, bqutn );
     }
 }
@@ -65,10 +65,10 @@ SUITE( OrthogonalizeTests )
     TEST( OrthoVec3 )
     {
         using namespace gfx;
-        fvec3 avec3 ( 1.0f, 0.0f, 0.0f );
-        fvec3 bvec3 ( 3.0f, 4.0f, 0.0f );
-        fvec3 cvec3 = ortho( avec3, bvec3 );
-        fvec3 dvec3 ( 0.0f, 4.0f, 0.0f );
+        vec3 avec3 ( 1.0f, 0.0f, 0.0f );
+        vec3 bvec3 ( 3.0f, 4.0f, 0.0f );
+        vec3 cvec3 = ortho( avec3, bvec3 );
+        vec3 dvec3 ( 0.0f, 4.0f, 0.0f );
         CHECK_EQUAL( dvec3, cvec3 );        
     }
 }
@@ -78,10 +78,10 @@ SUITE( OuterProductTests )
     TEST( OuterProductVec3 )
     {
         using namespace gfx;
-        fvec3 avec3 ( 1.0f, 0.0f, 0.0f);
-        fvec3 bvec3 ( 0.0f, 1.0f, 0.0f);
-        fvec3 cvec3 = cross( avec3, bvec3 );
-        fvec3 dvec3 ( 0.0f, 0.0f, 1.0f );
+        vec3 avec3 ( 1.0f, 0.0f, 0.0f);
+        vec3 bvec3 ( 0.0f, 1.0f, 0.0f);
+        vec3 cvec3 = cross( avec3, bvec3 );
+        vec3 dvec3 ( 0.0f, 0.0f, 1.0f );
         CHECK_EQUAL( dvec3, cvec3 );
     }
 }
@@ -91,26 +91,26 @@ SUITE( ThresholdTests )
     TEST( ThreshVec4 )
     {
         using namespace gfx;
-        fvec4 avec4 ( 2.5f, -1.0f, 7.0f, -18.0f );
-        fvec4 bvec4 ( 8.0f, 4.0f, -6.0f, 17.0f );
-        fvec4 cvec4 = mix_th( avec4, bvec4, 0.4f );
+        vec4 avec4 ( 2.5f, -1.0f, 7.0f, -18.0f );
+        vec4 bvec4 ( 8.0f, 4.0f, -6.0f, 17.0f );
+        vec4 cvec4 = mix_th( avec4, bvec4, 0.4f );
         CHECK_EQUAL( avec4, cvec4 );
     }
     
     TEST( ThreshVec3 )
     {
         using namespace gfx;
-        fvec3 avec3 ( 2.5f, -1.0f, 7.0f );
-        fvec3 bvec3 ( 8.0f, 4.0f, -6.0f );
-        fvec3 cvec3 = mix_th( avec3, bvec3, 0.4f );
+        vec3 avec3 ( 2.5f, -1.0f, 7.0f );
+        vec3 bvec3 ( 8.0f, 4.0f, -6.0f );
+        vec3 cvec3 = mix_th( avec3, bvec3, 0.4f );
         CHECK_EQUAL( avec3, cvec3 );
     }
     TEST( ThreshVec2 )
     {
         using namespace gfx;
-        fvec2 avec2 ( 2.5f, -1.0f );
-        fvec2 bvec2 ( 8.0f, 4.0f );
-        fvec2 cvec2 = mix_th( avec2, bvec2, 0.4f );
+        vec2 avec2 ( 2.5f, -1.0f );
+        vec2 bvec2 ( 8.0f, 4.0f );
+        vec2 cvec2 = mix_th( avec2, bvec2, 0.4f );
         CHECK_EQUAL( avec2, cvec2 );
     }
     
@@ -129,29 +129,29 @@ SUITE( LinearTests )
     TEST( LinearVec4 )
     {
         using namespace gfx;
-        fvec4 avec4 ( 3.0f, -1.0f, 9.0f, -18.0f );
-        fvec4 bvec4 ( 8.0f, 4.0f, -6.0f, 17.0f );
-        fvec4 cvec4 = mix_ln( avec4, bvec4, 0.4f );
-        fvec4 dvec4 ( 5.0f, 1.0f, 3.0f, -4.0f );
+        vec4 avec4 ( 3.0f, -1.0f, 9.0f, -18.0f );
+        vec4 bvec4 ( 8.0f, 4.0f, -6.0f, 17.0f );
+        vec4 cvec4 = mix_ln( avec4, bvec4, 0.4f );
+        vec4 dvec4 ( 5.0f, 1.0f, 3.0f, -4.0f );
         CHECK_EQUAL( dvec4, cvec4 );
     }
     
     TEST( LinearVec3 )
     {
         using namespace gfx;
-        fvec3 avec3 ( 3.0f, -1.0f, 9.0f );
-        fvec3 bvec3 ( 8.0f, 4.0f, -6.0f );
-        fvec3 cvec3 = mix_ln( avec3, bvec3, 0.4f );
-        fvec3 dvec3 ( 5.0f, 1.0f, 3.0f );
+        vec3 avec3 ( 3.0f, -1.0f, 9.0f );
+        vec3 bvec3 ( 8.0f, 4.0f, -6.0f );
+        vec3 cvec3 = mix_ln( avec3, bvec3, 0.4f );
+        vec3 dvec3 ( 5.0f, 1.0f, 3.0f );
         CHECK_EQUAL( dvec3, cvec3 );
     }
     TEST( LinearVec2 )
     {
         using namespace gfx;
-        fvec2 avec2 ( 3.0f, -1.0f );
-        fvec2 bvec2 ( 8.0f, 4.0f );
-        fvec2 cvec2 = mix_ln( avec2, bvec2, 0.4f );
-        fvec2 dvec2 ( 5.0f, 1.0f );
+        vec2 avec2 ( 3.0f, -1.0f );
+        vec2 bvec2 ( 8.0f, 4.0f );
+        vec2 cvec2 = mix_ln( avec2, bvec2, 0.4f );
+        vec2 dvec2 ( 5.0f, 1.0f );
         CHECK_EQUAL( dvec2, cvec2 );
     }
     
@@ -170,29 +170,29 @@ SUITE( CubicTests )
     TEST( CubicVec4 )
     {
         using namespace gfx;
-        fvec4 avec4 ( 3.0f, -1.0f, 9.0f, -18.0f );
-        fvec4 bvec4 ( 8.0f, 4.0f, -6.0f, 17.0f );
-        fvec4 cvec4 = mix_cb( avec4, bvec4, 0.25f );
-        fvec4 dvec4 ( 3.78125f, -0.21875f, 6.65625f, -12.53125f );
+        vec4 avec4 ( 3.0f, -1.0f, 9.0f, -18.0f );
+        vec4 bvec4 ( 8.0f, 4.0f, -6.0f, 17.0f );
+        vec4 cvec4 = mix_cb( avec4, bvec4, 0.25f );
+        vec4 dvec4 ( 3.78125f, -0.21875f, 6.65625f, -12.53125f );
         CHECK_EQUAL( dvec4, cvec4 );
     }
     
     TEST( CubicVec3 )
     {
         using namespace gfx;
-        fvec3 avec3 ( 3.0f, -1.0f, 9.0f );
-        fvec3 bvec3 ( 8.0f, 4.0f, -6.0f );
-        fvec3 cvec3 = mix_cb( avec3, bvec3, 0.25f );
-        fvec3 dvec3 ( 3.78125f, -0.21875f, 6.65625f );
+        vec3 avec3 ( 3.0f, -1.0f, 9.0f );
+        vec3 bvec3 ( 8.0f, 4.0f, -6.0f );
+        vec3 cvec3 = mix_cb( avec3, bvec3, 0.25f );
+        vec3 dvec3 ( 3.78125f, -0.21875f, 6.65625f );
         CHECK_EQUAL( dvec3, cvec3 );
     }
     TEST( CubicVec2 )
     {
         using namespace gfx;
-        fvec2 avec2 ( 3.0f, -1.0f );
-        fvec2 bvec2 ( 8.0f, 4.0f );
-        fvec2 cvec2 = mix_cb( avec2, bvec2, 0.25f );
-        fvec2 dvec2 ( 3.78125f, -0.21875f );
+        vec2 avec2 ( 3.0f, -1.0f );
+        vec2 bvec2 ( 8.0f, 4.0f );
+        vec2 cvec2 = mix_cb( avec2, bvec2, 0.25f );
+        vec2 dvec2 ( 3.78125f, -0.21875f );
         CHECK_EQUAL( dvec2, cvec2 );
     }
     
@@ -211,8 +211,8 @@ SUITE( DotTests )
     TEST( DotVec4 )
     {
         using namespace gfx;
-        fvec4 avec4 ( 3.0f, -1.0f, 9.0f, -18.0f );
-        fvec4 bvec4 ( 8.0f, 4.0f, -6.0f, 17.0f );
+        vec4 avec4 ( 3.0f, -1.0f, 9.0f, -18.0f );
+        vec4 bvec4 ( 8.0f, 4.0f, -6.0f, 17.0f );
         float anum = dot( avec4, bvec4 );
         float bnum ( -340.0f );
         CHECK_EQUAL( bnum, anum );
@@ -221,8 +221,8 @@ SUITE( DotTests )
     TEST( DotVec3 )
     {
         using namespace gfx;
-        fvec3 avec3 ( 3.0f, -1.0f, 9.0f );
-        fvec3 bvec3 ( 8.0f, 4.0f, -6.0f );
+        vec3 avec3 ( 3.0f, -1.0f, 9.0f );
+        vec3 bvec3 ( 8.0f, 4.0f, -6.0f );
         float anum = dot( avec3, bvec3 );
         float bnum ( -34.0f );
         CHECK_EQUAL( bnum, anum );
@@ -230,8 +230,8 @@ SUITE( DotTests )
     TEST( DotVec2 )
     {
         using namespace gfx;
-        fvec2 avec2 ( 3.0f, -1.0f );
-        fvec2 bvec2 ( 8.0f, 4.0f );
+        vec2 avec2 ( 3.0f, -1.0f );
+        vec2 bvec2 ( 8.0f, 4.0f );
         float anum = dot( avec2, bvec2 );
         float bnum ( 20.0f );
         CHECK_EQUAL( bnum, anum );
@@ -244,7 +244,7 @@ SUITE( MagTests )
     TEST( MagVec4 )
     {
         using namespace gfx;
-        fvec4 avec4 ( 3.0f, -1.0f, 9.0f, -18.0f );
+        vec4 avec4 ( 3.0f, -1.0f, 9.0f, -18.0f );
         float anum = mag( avec4 );
         float bnum ( sqrt(9.0f + 1.0f + 81.0f + 324.0f ) );
         CHECK_EQUAL( bnum, anum );
@@ -253,7 +253,7 @@ SUITE( MagTests )
     TEST( MagVec3 )
     {
         using namespace gfx;
-        fvec3 avec3 ( 3.0f, -1.0f, 9.0f );
+        vec3 avec3 ( 3.0f, -1.0f, 9.0f );
         float anum = mag( avec3 );
         float bnum ( sqrt(9.0f + 1.0f + 81.0f ) );
         CHECK_EQUAL( bnum, anum );
@@ -261,7 +261,7 @@ SUITE( MagTests )
     TEST( MagVec2 )
     {
         using namespace gfx;
-        fvec2 avec2 ( 3.0f, -1.0f );
+        vec2 avec2 ( 3.0f, -1.0f );
         float anum = mag( avec2 );
         float bnum ( sqrt( 9.0f + 1.0f ) );
         CHECK_EQUAL( bnum, anum );
@@ -274,7 +274,7 @@ SUITE( InvMagTests )
     TEST( InvMagVec4 )
     {
         using namespace gfx;
-        fvec4 avec4 ( 3.0f, -1.0f, 9.0f, -18.0f );
+        vec4 avec4 ( 3.0f, -1.0f, 9.0f, -18.0f );
         float anum = inv_mag( avec4 );
         float bnum ( 1.0f / sqrt(9.0f + 1.0f + 81.0f + 324.0f ) );
         CHECK_EQUAL( bnum, anum );
@@ -283,7 +283,7 @@ SUITE( InvMagTests )
     TEST( InvMagVec3 )
     {
         using namespace gfx;
-        fvec3 avec3 ( 3.0f, -1.0f, 9.0f );
+        vec3 avec3 ( 3.0f, -1.0f, 9.0f );
         float anum = inv_mag( avec3 );
         float bnum ( 1.0f / sqrt(9.0f + 1.0f + 81.0f ) );
         CHECK_EQUAL( bnum, anum );
@@ -291,7 +291,7 @@ SUITE( InvMagTests )
     TEST( InvMagVec2 )
     {
         using namespace gfx;
-        fvec2 avec2 ( 3.0f, -1.0f );
+        vec2 avec2 ( 3.0f, -1.0f );
         float anum = inv_mag( avec2 );
         float bnum ( 1.0f / sqrt( 9.0f + 1.0f ) );
         CHECK_EQUAL( bnum, anum );

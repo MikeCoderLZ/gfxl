@@ -8,34 +8,34 @@
 
 namespace gfx {
 /**
-fvec4 operator*( float lhs, fvec4 const& rhs )
+vec4 operator*( float lhs, vec4 const& rhs )
 {
-    return fvec4( rhs[0] * lhs, rhs[1] * lhs, rhs[2] * lhs, rhs[3] * lhs );
+    return vec4( rhs[0] * lhs, rhs[1] * lhs, rhs[2] * lhs, rhs[3] * lhs );
 }
 
-fvec3 operator*( float lhs, fvec3 const& rhs )
+vec3 operator*( float lhs, vec3 const& rhs )
 {
-    return fvec3( rhs[0] * lhs, rhs[1] * lhs, rhs[2] * lhs );
+    return vec3( rhs[0] * lhs, rhs[1] * lhs, rhs[2] * lhs );
 }
 
-fvec2 operator*( float lhs, fvec2 const& rhs )
+vec2 operator*( float lhs, vec2 const& rhs )
 {
-    return fvec2( rhs[0] * lhs, rhs[1] * lhs );
+    return vec2( rhs[0] * lhs, rhs[1] * lhs );
 }
 
-fvec4 operator*( fvec4 const& lhs, float rhs )
+vec4 operator*( vec4 const& lhs, float rhs )
 {
-    return fvec4( lhs[0] * rhs, lhs[1] * rhs, lhs[2] * rhs, lhs[3] * rhs );
+    return vec4( lhs[0] * rhs, lhs[1] * rhs, lhs[2] * rhs, lhs[3] * rhs );
 }
 
-fvec3 operator*( fvec3 const& lhs, float rhs )
+vec3 operator*( vec3 const& lhs, float rhs )
 {
-    return fvec3( lhs[0] * rhs, lhs[1] * rhs, lhs[2] * rhs );
+    return vec3( lhs[0] * rhs, lhs[1] * rhs, lhs[2] * rhs );
 }
 
-fvec2 operator*( fvec2 const& lhs, float rhs )
+vec2 operator*( vec2 const& lhs, float rhs )
 {
-    return fvec2( lhs[0] * rhs, lhs[1] * rhs );
+    return vec2( lhs[0] * rhs, lhs[1] * rhs );
 }
 
 fmat operator*( float lhs, fmat const& rhs )
@@ -74,7 +74,7 @@ Qutn operator*( Qutn const& lhs, float rhs )
     return Qutn( rhs * lhs[0], rhs * lhs[1], rhs * lhs[2], rhs * lhs[3] );
 }
 
-fvec4 operator*( fmat const& lhs, fvec4 const& rhs )
+vec4 operator*( fmat const& lhs, vec4 const& rhs )
 {
     if( lhs.nCols() != 4 || lhs.nRows() != 4 ){
         throw std::invalid_argument("dimension, column mismatch on matrix, vec4 multiply");
@@ -83,7 +83,7 @@ fvec4 operator*( fmat const& lhs, fvec4 const& rhs )
     size_t row = 0;
     float sum = 0.0f;
 
-    fvec4 out;
+    vec4 out;
 
     for( row = 0; row < 4; ++row ){
         sum += lhs(0, row) * rhs[0];
@@ -96,7 +96,7 @@ fvec4 operator*( fmat const& lhs, fvec4 const& rhs )
     return out;
 }
 
-fvec3 operator*( fmat const& lhs, fvec3 const& rhs )
+vec3 operator*( fmat const& lhs, vec3 const& rhs )
 {
     if( lhs.nCols() != 3 || lhs.nRows() != 3 ){
         throw std::invalid_argument("dimension, column mismatch on matrix, vec3 multiply");
@@ -105,7 +105,7 @@ fvec3 operator*( fmat const& lhs, fvec3 const& rhs )
     size_t row = 0;
     float sum = 0.0f;
 
-    fvec3 out;
+    vec3 out;
 
     for( row = 0; row < 3; ++row ){
         sum += lhs(0, row) * rhs[0];
@@ -117,7 +117,7 @@ fvec3 operator*( fmat const& lhs, fvec3 const& rhs )
     return out;
 }
 
-fvec2 operator*( fmat const& lhs, fvec2 const& rhs )
+vec2 operator*( fmat const& lhs, vec2 const& rhs )
 {
     if( lhs.nCols() != 2 || lhs.nRows() != 2 ){
         throw std::invalid_argument("dimension, column mismatch on matrix, vec2 multiply");
@@ -126,7 +126,7 @@ fvec2 operator*( fmat const& lhs, fvec2 const& rhs )
     size_t row = 0;
     float sum = 0.0f;
 
-    fvec2 out;
+    vec2 out;
 
     for( row = 0; row < 2; ++row ){
         sum += lhs(0, row) * rhs[0];
@@ -137,7 +137,7 @@ fvec2 operator*( fmat const& lhs, fvec2 const& rhs )
     return out;
 }
 
-fvec4 operator*( fvec4 const& lhs, fmat const& rhs )
+vec4 operator*( vec4 const& lhs, fmat const& rhs )
 {
     if( rhs.nCols() != 4 || rhs.nRows() != 4 ){
         throw std::invalid_argument("dimension, column mismatch on vec4, matrix multiply");
@@ -146,7 +146,7 @@ fvec4 operator*( fvec4 const& lhs, fmat const& rhs )
     size_t col = 0;
     float sum = 0.0f;
 
-    fvec4 out;
+    vec4 out;
 
     for( col = 0; col < 4; ++col ){
         sum += lhs[0] * rhs(col, 0);
@@ -159,7 +159,7 @@ fvec4 operator*( fvec4 const& lhs, fmat const& rhs )
     return out;
 }
 
-fvec3 operator*( fvec3 const& lhs, fmat const& rhs )
+vec3 operator*( vec3 const& lhs, fmat const& rhs )
 {
     if( rhs.nCols() != 3 || rhs.nRows() != 3 ){
         throw std::invalid_argument("dimension, column mismatch on vec3, matrix multiply");
@@ -168,7 +168,7 @@ fvec3 operator*( fvec3 const& lhs, fmat const& rhs )
     size_t col = 0;
     float sum = 0.0f;
 
-    fvec3 out;
+    vec3 out;
 
     for( col = 0; col < 3; ++col ){
         sum += lhs[0] * rhs(col, 0);
@@ -180,7 +180,7 @@ fvec3 operator*( fvec3 const& lhs, fmat const& rhs )
     return out;
 }
 
-fvec2 operator*( fvec2 const& lhs, fmat const& rhs )
+vec2 operator*( vec2 const& lhs, fmat const& rhs )
 {
     if( rhs.nCols() != 2 || rhs.nRows() != 2 ){
         throw std::invalid_argument("dimension, column mismatch on vec2, matrix multiply");
@@ -189,7 +189,7 @@ fvec2 operator*( fvec2 const& lhs, fmat const& rhs )
     size_t col = 0;
     float sum = 0.0f;
 
-    fvec2 out;
+    vec2 out;
 
     for( col = 0; col < 2; ++col ){
         sum += lhs[0] * rhs(col, 0);
@@ -230,9 +230,9 @@ class operator_factory {
             { return __clip_range__(); }
 };
 
-fvec4 __normalize__::eval( fvec4 const& vec ) const
+vec4 __normalize__::eval( vec4 const& vec ) const
 {
-    fvec4 out = vec;
+    vec4 out = vec;
 
     float invMag = 1.0f / sqrt(   vec[0] * vec[0]
                                 + vec[1] * vec[1]
@@ -242,9 +242,9 @@ fvec4 __normalize__::eval( fvec4 const& vec ) const
     return out*invMag;
 }
 
-fvec3 __normalize__::eval( fvec3 const& vec ) const
+vec3 __normalize__::eval( vec3 const& vec ) const
 {
-    fvec3 out = vec;
+    vec3 out = vec;
 
     float invMag = 1.0f / sqrt(   vec[0] * vec[0]
                                 + vec[1] * vec[1]
@@ -253,9 +253,9 @@ fvec3 __normalize__::eval( fvec3 const& vec ) const
     return out*invMag;
 }
 
-fvec2 __normalize__::eval( fvec2 const& vec ) const
+vec2 __normalize__::eval( vec2 const& vec ) const
 {
-    fvec2 out = vec;
+    vec2 out = vec;
 
     float invMag = 1.0f / sqrt(   vec[0] * vec[0]
                                 + vec[1] * vec[1] );
@@ -295,13 +295,13 @@ fmat __normalize__::eval( fmat const& mat ) const
     return out;
 }
 
-fqutn __normalize__::eval( fqutn const& quat ) const
+qutn __normalize__::eval( qutn const& quat ) const
 {
     double invMag = 1.0f / sqrt(   quat[0] * quat[0]
                                  + quat[1] * quat[1]
                                  + quat[2] * quat[2]
                                  + quat[3] * quat[3] );
-    return fqutn( quat[0] * invMag,
+    return qutn( quat[0] * invMag,
                   quat[1] * invMag,
                   quat[2] * invMag,
                   quat[3] * invMag );
@@ -311,36 +311,36 @@ fqutn __normalize__::eval( fqutn const& quat ) const
 __normalize__ const norm = operator_factory::make__normalize__();
 
 
-fvec3 __orthogonalize__::eval( fvec3 const& vecA, fvec3 const& vecB ) const
+vec3 __orthogonalize__::eval( vec3 const& vecA, vec3 const& vecB ) const
 {
     return cross( vecA, cross( vecB, vecA ));
 }
 
 
-// fvec2 __orthogonalize__::eval( fvec2 const& vecA, fvec2 const& vecB ) const
+// vec2 __orthogonalize__::eval( vec2 const& vecA, vec2 const& vecB ) const
 // {
-//     fvec3 vecA3 (vecA[0], vecA[1], 0.0f );
-//     fvec3 vecB3 (vecB[0], vecB[1], 0.0f );
-//     fvec3 out3 = cross( vecA3, cross( vecB3, vecA3));
+//     vec3 vecA3 (vecA[0], vecA[1], 0.0f );
+//     vec3 vecB3 (vecB[0], vecB[1], 0.0f );
+//     vec3 out3 = cross( vecA3, cross( vecB3, vecA3));
 // 
-//     return fvec2( out3[0], out3[1] );
+//     return vec2( out3[0], out3[1] );
 // }
 
 __orthogonalize__ const ortho = operator_factory::make__orthogonalize__();
 
 
 
-fvec4 __threshold__::eval( fvec4 const& vecA, fvec4 const& vecB, float const& p ) const
+vec4 __threshold__::eval( vec4 const& vecA, vec4 const& vecB, float const& p ) const
 {
     return p < 0.5f ? vecA : vecB;
 }
 
-fvec3 __threshold__::eval( fvec3 const& vecA, fvec3 const& vecB, float const& p ) const
+vec3 __threshold__::eval( vec3 const& vecA, vec3 const& vecB, float const& p ) const
 {
     return p < 0.5f ? vecA : vecB;
 }
 
-fvec2 __threshold__::eval( fvec2 const& vecA, fvec2 const& vecB, float const& p ) const
+vec2 __threshold__::eval( vec2 const& vecA, vec2 const& vecB, float const& p ) const
 {
     return p < 0.5f ? vecA : vecB;
 }
@@ -354,17 +354,17 @@ float __threshold__::eval( float const& a, float const& b, float const& p ) cons
 __threshold__ const mix_th = operator_factory::make__threshold__();
 
 
-fvec4 __linear__::eval( fvec4 const& vecA, fvec4 const& vecB, float const& p ) const
+vec4 __linear__::eval( vec4 const& vecA, vec4 const& vecB, float const& p ) const
 {
     return vecA + p * ( vecB - vecA );
 }
 
-fvec3 __linear__::eval( fvec3 const& vecA, fvec3 const& vecB, float const& p ) const
+vec3 __linear__::eval( vec3 const& vecA, vec3 const& vecB, float const& p ) const
 {
     return vecA + p * ( vecB - vecA );
 }
 
-fvec2 __linear__::eval( fvec2 const& vecA, fvec2 const& vecB, float const& p ) const
+vec2 __linear__::eval( vec2 const& vecA, vec2 const& vecB, float const& p ) const
 {
     return vecA + p * ( vecB - vecA );
 }
@@ -376,17 +376,17 @@ float __linear__::eval( float const& a, float const& b, float const& p ) const
 
 __linear__ const mix_ln = operator_factory::make__linear__();
 
-fvec4 __cubic__::eval( fvec4 const& vecA, fvec4 const& vecB, float const& p ) const
+vec4 __cubic__::eval( vec4 const& vecA, vec4 const& vecB, float const& p ) const
 {
     return vecA + p*p*( 3.0f - 2.0f*p)*(vecB - vecA);
 }
 
-fvec3 __cubic__::eval( fvec3 const& vecA, fvec3 const& vecB, float const& p ) const
+vec3 __cubic__::eval( vec3 const& vecA, vec3 const& vecB, float const& p ) const
 {
     return vecA + p*p*( 3.0f - 2.0f*p)*(vecB - vecA);
 }
 
-fvec2 __cubic__::eval( fvec2 const& vecA, fvec2 const& vecB, float const& p ) const
+vec2 __cubic__::eval( vec2 const& vecA, vec2 const& vecB, float const& p ) const
 {
     return vecA + p*p*( 3.0f - 2.0f*p)*(vecB - vecA);
 }
@@ -398,9 +398,9 @@ float __cubic__::eval( float const& a, float const& b, float const& p ) const
 __cubic__ const mix_cb = operator_factory::make__cubic__();
 
 
-fvec3 __outer_product__::eval( fvec3 const& vecA, fvec3 const& vecB ) const
+vec3 __outer_product__::eval( vec3 const& vecA, vec3 const& vecB ) const
 {
-    return fvec3( vecA[1]*vecB[2] - vecA[2]*vecB[1],
+    return vec3( vecA[1]*vecB[2] - vecA[2]*vecB[1],
                   vecA[2]*vecB[0] - vecA[0]*vecB[2],
                   vecA[0]*vecB[1] - vecA[1]*vecB[0] );
 }
@@ -408,24 +408,24 @@ fvec3 __outer_product__::eval( fvec3 const& vecA, fvec3 const& vecB ) const
 __outer_product__ const cross = operator_factory::make__outer_product__();
 
 
-float __inner_product__::eval( fvec4 const& vecA, fvec4 const& vecB ) const
+float __inner_product__::eval( vec4 const& vecA, vec4 const& vecB ) const
 {
     return vecA[0]*vecB[0] + vecA[1]*vecB[1] + vecA[2]*vecB[2] + vecA[3]*vecB[3];
 }
 
-float __inner_product__::eval( fvec3 const& vecA, fvec3 const& vecB ) const
+float __inner_product__::eval( vec3 const& vecA, vec3 const& vecB ) const
 {
     return vecA[0]*vecB[0] + vecA[1]*vecB[1] + vecA[2]*vecB[2];
 }
 
-float __inner_product__::eval( fvec2 const& vecA, fvec2 const& vecB ) const
+float __inner_product__::eval( vec2 const& vecA, vec2 const& vecB ) const
 {
     return vecA[0]*vecB[0] + vecA[1]*vecB[1];
 }
 
 __inner_product__ const dot = operator_factory::make__inner_product__();
 
-float __magnitude__::eval( fvec4 const& vec ) const
+float __magnitude__::eval( vec4 const& vec ) const
 {
     float i = vec[0];
     float j = vec[1];
@@ -435,7 +435,7 @@ float __magnitude__::eval( fvec4 const& vec ) const
     return sqrt( i*i + j*j + k*k + m*m );
 }
 
-float __magnitude__::eval( fvec3 const& vec ) const
+float __magnitude__::eval( vec3 const& vec ) const
 {
     float i = vec[0];
     float j = vec[1];
@@ -444,7 +444,7 @@ float __magnitude__::eval( fvec3 const& vec ) const
     return sqrt( i*i + j*j + k*k );
 }
 
-float __magnitude__::eval( fvec2 const& vec ) const
+float __magnitude__::eval( vec2 const& vec ) const
 {
     float i = vec[0];
     float j = vec[1];
@@ -454,7 +454,7 @@ float __magnitude__::eval( fvec2 const& vec ) const
 
 __magnitude__ const mag = operator_factory::make__magnitude__();
 
-float __inverse_magnitude__::eval( fvec4 const& vec ) const
+float __inverse_magnitude__::eval( vec4 const& vec ) const
 {
     float i = vec[0];
     float j = vec[1];
@@ -464,7 +464,7 @@ float __inverse_magnitude__::eval( fvec4 const& vec ) const
     return 1.0f / sqrt( i*i + j*j + k*k + m*m );
 }
 
-float __inverse_magnitude__::eval( fvec3 const& vec ) const
+float __inverse_magnitude__::eval( vec3 const& vec ) const
 {
     float i = vec[0];
     float j = vec[1];
@@ -473,7 +473,7 @@ float __inverse_magnitude__::eval( fvec3 const& vec ) const
     return 1.0f / sqrt( i*i + j*j + k*k );
 }
 
-float __inverse_magnitude__::eval( fvec2 const& vec ) const
+float __inverse_magnitude__::eval( vec2 const& vec ) const
 {
     float i = vec[0];
     float j = vec[1];
@@ -550,38 +550,38 @@ float __clip_range__::eval( float const& value, float const& min, float const& m
 }
 
 __clip_range__ const clip_rng = operator_factory::make__clip_range__();
-/**
-template < typename DATA_T >
-Angle<DATA_T> Angle< DATA_T >::inRads( DATA_T inRads )
+
+template < typename T >
+angle_t<T> angle_t< T >::in_rads( T in_rads )
 {
-    return Angle<DATA_T>( inRads * G_INV_TAU );
+    return angle_t<T>( in_rads * cnst<T>::inv_tau );
 }
-template < typename DATA_T >
-Angle<DATA_T> Angle< DATA_T >::inGrads( DATA_T inGrads )
+template < typename T >
+angle_t<T> angle_t< T >::in_grads( T in_grads )
 {
-    return Angle<DATA_T>( inGrads * 0.005 );
+    return angle_t<T>( in_grads * 0.005 );
 }
-template < typename DATA_T >
-Angle<DATA_T> Angle< DATA_T >::inDegs( DATA_T inDegs )
+template < typename T >
+angle_t<T> angle_t< T >::in_degs( T in_degs )
 {
-    return Angle<DATA_T>( inDegs * 0.00277777777777777777777777 );
+    return angle_t<T>( in_degs * 0.00277777777777777777777777 );
 }
-template < typename DATA_T >
-DATA_T Angle< DATA_T >::toRads()
+template < typename T >
+T angle_t< T >::to_rads()
 {
-    return unians * G_TAU;
+    return unians * cnst<T>::tau;
 }
-template < typename DATA_T >
-DATA_T Angle< DATA_T >::toGrads()
+template < typename T >
+T angle_t< T >::to_grads()
 {
     return unians * 200.0;
 }
-template < typename DATA_T >
-DATA_T Angle< DATA_T >::toDegs()
+template < typename T >
+T angle_t< T >::to_degs()
 {
     return unians * 360.0;
 }
-
+/**
 /* ---- Float Specializations ---- * /
 template <>
 AngleF AngleF::inRads( float inRads )

@@ -84,20 +84,26 @@ $(OBJ)/quaternion.o: $(GMATH)/quaternion.cpp \
 newTypes: $(BIN)/datatypeTest.exe $(BIN)/operatorTest
 
 
-$(BIN)/datatypeTest.exe: $(OBJ)/datatypeTest.o $(OBJ)/swizzTest.o
+$(BIN)/datatypeTest.exe: $(OBJ)/datatypeTest.o \
+                         $(OBJ)/swizzTest.o
 
 	g++ $(OBJ)/datatypeTest.o $(OBJ)/swizzTest.o \
 	    -L ../../dev_lib -lUnitTest++ \
 	    -o $(BIN)/datatypeTest.exe
 
 	    
-$(OBJ)/swizzTest.o: $(GMATH)/swizzTest.cpp $(GMATH)/swizzTest.hpp $(GMATH)/datatype.hpp
+$(OBJ)/swizzTest.o: $(GMATH)/swizzTest.cpp \
+                    $(GMATH)/swizzTest.hpp \
+                    $(GMATH)/datatype.hpp \
+                    $(GMATH)/constant.hpp
 
 	g++ -c $(GMATH)/swizzTest.cpp $(COM) \
 	    -o $(OBJ)/swizzTest.o
 	
 
-$(OBJ)/datatypeTest.o: $(GMATH)/datatypeTest.cpp $(GMATH)/datatype.hpp
+$(OBJ)/datatypeTest.o: $(GMATH)/datatypeTest.cpp \
+                       $(GMATH)/datatype.hpp \
+                       $(GMATH)/constant.hpp
 
 	g++ -c $(GMATH)/datatypeTest.cpp $(COM) \
 	    -o $(OBJ)/datatypeTest.o
@@ -112,13 +118,15 @@ $(BIN)/operatorTest:    $(OBJ)/operatorTest.o \
 	    
 $(OBJ)/operatorTest.o:    $(GMATH)/operatorTest.cpp \
                           $(GMATH)/op.hpp \
-                          $(GMATH)/datatype.hpp
+                          $(GMATH)/datatype.hpp \
+                          $(GMATH)/constant.hpp
 	g++ -c $(GMATH)/operatorTest.cpp $(COM) \
             -o $(OBJ)/operatorTest.o
 
 $(OBJ)/op.o:    $(GMATH)/op.cpp \
                 $(GMATH)/op.hpp \
-                $(GMATH)/datatype.hpp
+                $(GMATH)/datatype.hpp \
+                $(GMATH)/constant.hpp
 	g++ -c $(GMATH)/op.cpp $(COM) \
             -o $(OBJ)/op.o
 #$(OBJ)/type.o: $(GMATH)/type.cpp $(GMATH)/type.hpp $(GMATH)/datatypes.hpp
