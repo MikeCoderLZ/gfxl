@@ -1623,12 +1623,16 @@ SUITE( Matrix3Tests )
         vec3 axis( 1.0f, 0.0f, 0.0f );
         d_angle angx = d_angle::in_degs( 90.0f );
         fmat3 amat3 = fmat3::rotation( axis, angx );
-        fmat3 bmat3 = fmat3::rotation( angx, d_angle::in_degs( 0.0 ), d_angle::in_degs( 0.0 ) );
-        fmat3 cmat3(  1.0f, 0.0f,  0.0f,
+        fmat3 bmat3 = fmat3::rotation( angx,
+                                       d_angle::in_degs( 0.0 ),
+                                       d_angle::in_degs( 0.0 ) );
+        fmat3 cmat3 = fmat3::rotation( qutn::rotation( axis, angx ) );
+        fmat3 dmat3(  1.0f, 0.0f,  0.0f,
                       0.0f, 0.0f, -1.0f,
                       0.0f, 1.0f,  0.0f );
-        CHECK_EQUAL( cmat3, amat3 );
-        CHECK_EQUAL( cmat3, bmat3 );
+        CHECK_EQUAL( dmat3, amat3 );
+        CHECK_EQUAL( dmat3, bmat3 );
+        CHECK_EQUAL( dmat3, cmat3 );
     }
 
     TEST( Matrix3Lookup )
@@ -2210,12 +2214,14 @@ SUITE( Matrix4Tests )
         fmat4 bmat4 = fmat4::rotation( angx,
                                        d_angle::in_degs( 0.0 ),
                                        d_angle::in_degs( 0.0 ) );
-        fmat4 cmat4( 1.0f, 0.0f,  0.0f, 0.0f,
+        fmat4 cmat4 = fmat4::rotation( qutn::rotation(axis, angx ) );
+        fmat4 dmat4( 1.0f, 0.0f,  0.0f, 0.0f,
                      0.0f, 0.0f, -1.0f, 0.0f,
                      0.0f, 1.0f,  0.0f, 0.0f,
                      0.0f, 0.0f,  0.0f, 1.0f );
-        CHECK_EQUAL( cmat4, amat4 );
-        CHECK_EQUAL( cmat4, bmat4 );
+        CHECK_EQUAL( dmat4, amat4 );
+        CHECK_EQUAL( dmat4, bmat4 );
+        CHECK_EQUAL( dmat4, cmat4 );
     }
 
     TEST( Matrix4Lookup )

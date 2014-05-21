@@ -663,6 +663,7 @@ public:
     static mat3_t           rotation( d_angle const& angx,
                                       d_angle const& angy,
                                       d_angle const& angz );
+    static mat3_t           rotation( qutn_t<comp_t> const& qrot );
     static mat3_t           scale( comp_t sx,
                                    comp_t sy,
                                    comp_t sz );
@@ -772,6 +773,7 @@ public:
     static mat4_t           rotation( d_angle const& angx,
                                       d_angle const& angy,
                                       d_angle const& angz );
+    static mat4_t           rotation( qutn_t<comp_t> const& qrot );
     bool                    operator==( mat4_t const& rhs ) const;
     bool                    operator<( mat4_t const& rhs ) const;
     bool                    operator>( mat4_t const& rhs ) const;
@@ -3533,6 +3535,26 @@ mat3<T>     mat3<T>::rotation( d_angle const& angx,
 }
 
 template< typename T > inline
+mat3<T>     mat3<T>::rotation( qutn_t<T> const& qrot )
+{
+    double ii = qrot(i) * qrot(i) * cnst<T>::two;
+    double ij = qrot(i) * qrot(j) * cnst<T>::two;
+    double ik = qrot(i) * qrot(k) * cnst<T>::two;
+    double im = qrot(i) * qrot(m) * cnst<T>::two;
+
+    double jj = qrot(j) * qrot(j) * cnst<T>::two;
+    double jk = qrot(j) * qrot(k) * cnst<T>::two;
+    double jm = qrot(j) * qrot(m) * cnst<T>::two;
+
+    double kk = qrot(k) * qrot(k) * cnst<T>::two;
+    double km = qrot(k) * qrot(m) * cnst<T>::two;
+    
+    return mat3<T>( cnst<T>::one - (jj + kk), ij - km,                   ik + jm,
+                    ij + km,                   cnst<T>::one - (ii + kk), jk - im,
+                    ik - jm,                   jk + im,                   cnst<T>::one - (ii + jj) );
+}
+
+template< typename T > inline
 mat3<T>     mat3<T>::scale( T sx, T sy, T sz = 1.0f )
 { return mat3( sx,           cnst<T>::zero, cnst<T>::zero,
                cnst<T>::zero, sy,           cnst<T>::zero,
@@ -4295,6 +4317,31 @@ mat4<T>     mat4<T>::rotation( d_angle const& angx,
       );
     
 }
+
+template< typename T > inline
+mat4<T>     mat4<T>::rotation( qutn_t<T> const& qrot )
+{
+    double ii = qrot(i) * qrot(i) * cnst<T>::two;
+    double ij = qrot(i) * qrot(j) * cnst<T>::two;
+    double ik = qrot(i) * qrot(k) * cnst<T>::two;
+    double im = qrot(i) * qrot(m) * cnst<T>::two;
+
+    double jj = qrot(j) * qrot(j) * cnst<T>::two;
+    double jk = qrot(j) * qrot(k) * cnst<T>::two;
+    double jm = qrot(j) * qrot(m) * cnst<T>::two;
+
+    double kk = qrot(k) * qrot(k) * cnst<T>::two;
+    double km = qrot(k) * qrot(m) * cnst<T>::two;
+    
+    return mat4<T>( cnst<T>::one
+                   -(jj + kk),     ij - km,       ik + jm,       cnst<T>::zero,
+                    ij + km,       cnst<T>::one
+                                  -(ii + kk),     jk - im,       cnst<T>::zero,
+                    ik - jm,       jk + im,       cnst<T>::one
+                                                 -(ii + jj),     cnst<T>::zero,
+                    cnst<T>::zero, cnst<T>::zero, cnst<T>::zero, cnst<T>::one  );
+}
+
 template< typename T > inline
 bool    mat4<T>::operator==( mat4<T> const& rhs ) const
 {
