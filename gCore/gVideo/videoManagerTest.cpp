@@ -90,25 +90,25 @@ int main( int argc, char* argv[] )
     }
 
 	testBuffer1.block_format( BlockSpec()
-	                           .attribute( type<fvec2>() )
-	                           .attribute( type<fvec3>() ) );
+	                           .attribute( type<vec2>() )
+	                           .attribute( type<vec3>() ) );
 	cout << testBuffer1 << endl;
 
 	if( gl::GetError() != gl::NO_ERROR_ ) {
 	    cout << "GL error detected." << endl;
 	}
 
-	vector< fvec2 > position;
-	position.push_back( fvec2( 0.5f ));
-	position.push_back( fvec2( 0.5f, -0.5f ));
-	position.push_back( fvec2( -0.5f ));
-	position.push_back( fvec2( -0.5f, 0.5f ));
+	vector< vec2 > position;
+	position.push_back( vec2( 0.5f ));
+	position.push_back( vec2( 0.5f, -0.5f ));
+	position.push_back( vec2( -0.5f ));
+	position.push_back( vec2( -0.5f, 0.5f ));
 
-	vector< fvec3 > color;
-	color.push_back( fvec3( 1.0f, 0.0f, 0.0f ) );
-	color.push_back( fvec3( 1.0f, 1.0f, 0.0f ) );
-	color.push_back( fvec3( 0.0f, 1.0f, 0.0f ) );
-	color.push_back( fvec3( 0.0f, 1.0f, 1.0f ) );
+	vector< vec3 > color;
+	color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
+	color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
+	color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
+	color.push_back( vec3( 0.0f, 1.0f, 1.0f ) );
 
 	cout << "Now will fill in the first attribute's data." << endl;
 

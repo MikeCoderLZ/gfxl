@@ -22,9 +22,9 @@ template< typename T >
 vec2 operator*( vec2 const& lhs, T rhs );
 
 template< typename T >
-fmat operator*( T lhs, fmat const& rhs );
+mat operator*( T lhs, mat const& rhs );
 template< typename T >
-fmat operator*( fmat const& lhs, T rhs );
+mat operator*( mat const& lhs, T rhs );
 
 template< typename T >
 qutn operator*( float lhs, qutn const& rhs );
@@ -32,18 +32,18 @@ template< typename T >
 qutn operator*( qutn const& lhs, float rhs );
 
 template< typename T >
-vec4 operator*( fmat const& lhs, vec4 const& rhs );
+vec4 operator*( mat const& lhs, vec4 const& rhs );
 template< typename T >
-vec3 operator*( fmat const& lhs, vec3 const& rhs );
+vec3 operator*( mat const& lhs, vec3 const& rhs );
 template< typename T >
-vec2 operator*( fmat const& lhs, vec2 const& rhs );
+vec2 operator*( mat const& lhs, vec2 const& rhs );
 
 template< typename T >
-vec4 operator*( vec4 const& lhs, fmat const& rhs );
+vec4 operator*( vec4 const& lhs, mat const& rhs );
 template< typename T >
-vec3 operator*( vec3 const& lhs, fmat const& rhs );
+vec3 operator*( vec3 const& lhs, mat const& rhs );
 template< typename T >
-vec2 operator*( vec2 const& lhs, fmat const& rhs );
+vec2 operator*( vec2 const& lhs, mat const& rhs );
 */
 
 /*
@@ -164,14 +164,14 @@ class ternary_op_exp {
 class __normalize__ : public unary_op<vec4>,
                       public unary_op<vec3>,
                       public unary_op<vec2>,
-                      public unary_op<fmat>,
+                      public unary_op<mat>,
                       public unary_op<qutn>
 {
     public:
         using unary_op<vec4>::operator();
         using unary_op<vec3>::operator();
         using unary_op<vec2>::operator();
-        using unary_op<fmat>::operator();
+        using unary_op<mat>::operator();
         using unary_op<qutn>::operator();
         friend class operator_factory;
         ~__normalize__() {}
@@ -180,7 +180,7 @@ class __normalize__ : public unary_op<vec4>,
         vec4 eval( vec4 const& ) const;
         vec3 eval( vec3 const& ) const;
         vec2 eval( vec2 const& ) const;
-        fmat eval( fmat const& ) const;
+        mat eval( mat const& ) const;
         qutn eval( qutn const& ) const;
 };
 
@@ -188,19 +188,19 @@ extern __normalize__ const norm;
 
 class __orthogonalize__ : public binary_op<vec3>
                           //public binary_op<vec2>
-                          //,public unary_op<fmat>
+                          //,public unary_op<mat>
 {
     public:
         using binary_op<vec3>::operator();
         //using binary_op<vec2>::operator();
-        //using unary_op<fmat>::operator();
+        //using unary_op<mat>::operator();
         friend class operator_factory;
         ~__orthogonalize__() {}
     private:
         __orthogonalize__() {}
         vec3 eval( vec3 const& vecA, vec3 const& vecB ) const;
         //vec2 eval( vec2 const& vecA, vec2 const& vecB ) const;
-        //fmat const eval( fmat const& fmat ) const;
+        //mat const eval( mat const& mat ) const;
 };
 
 extern __orthogonalize__ const ortho;
@@ -337,26 +337,26 @@ class __inverse_magnitude__ : public unary_op_exp<float, vec4>,
 
 extern __inverse_magnitude__ const inv_mag;
 
-class __transpose__ : public unary_op<fmat> {
+class __transpose__ : public unary_op<mat> {
     public:
-        using unary_op<fmat>::operator();
+        using unary_op<mat>::operator();
         friend class operator_factory;
         ~__transpose__() {}
     private:
         __transpose__() {}
-        fmat eval( fmat const& amat ) const;
+        mat eval( mat const& amat ) const;
 };
 
 extern __transpose__ const transpose;
 
-class __homogenize__ : public unary_op<fmat> {
+class __homogenize__ : public unary_op<mat> {
     public:
-        using unary_op<fmat>::operator();
+        using unary_op<mat>::operator();
         friend class operator_factory;
         ~__homogenize__() {}
     private:
         __homogenize__() {}
-        fmat eval( fmat const& fmat ) const;
+        mat eval( mat const& mat ) const;
 };
 
 extern __homogenize__ const homogenize;

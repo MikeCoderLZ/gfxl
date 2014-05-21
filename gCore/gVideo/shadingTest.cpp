@@ -69,13 +69,13 @@ int main( int argc, char** argv ) {
                                                    .for_array());
     checkGLError( "vertex attribute buffer created" );
 
-    testBuffer.block_format( BlockSpec().attribute( type<fvec2>() ) );
+    testBuffer.block_format( BlockSpec().attribute( type<vec2>() ) );
 
-    vector< fvec2 > position;
-    position.push_back( fvec2( 1.0f ));
-    position.push_back( fvec2( 1.0f, -1.0f ));
-    position.push_back( fvec2( -1.0f ));
-    //position.push_back( fvec2( -0.5f, 0.5f ));
+    vector< vec2 > position;
+    position.push_back( vec2( 1.0f ));
+    position.push_back( vec2( 1.0f, -1.0f ));
+    position.push_back( vec2( -1.0f ));
+    //position.push_back( vec2( -0.5f, 0.5f ));
 
     testBuffer.fill_attribute( 0, position );
 

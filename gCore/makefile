@@ -3,7 +3,7 @@ OBJ = ./obj
 BIN = ./bin
 SRC = ./src
 SDLLIBS := $(shell sdl2-config --libs)
-SDLLIBS += -lopengl32
+SDLLIBS += -lX11 -lGL
 
 SDLFLAGS := $(shell sdl2-config --cflags)
 SDLFLAGS += -IC:/MinGW/include/GL3

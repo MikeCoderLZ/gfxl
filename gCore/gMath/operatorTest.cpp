@@ -37,12 +37,12 @@ SUITE( NormTests )
     TEST( NormMat )
     {
         using namespace gfx;
-        fmat amat( 2,2 );
+        mat amat( 2,2 );
         amat(0,0) = 4.0f;
         amat(0,1) = 3.0f;
         amat(1,0) = 1.0f;
-        fmat bmat = norm( amat );
-        fmat cmat( 2,2 );
+        mat bmat = norm( amat );
+        mat cmat( 2,2 );
         cmat(0,0) = 4.0/5.0;
         cmat(0,1) = 3.0/5.0;
         cmat(1,0) = 1.0;
@@ -304,13 +304,13 @@ SUITE( TransposeTests )
     TEST( TransposeMat )
         {
             using namespace gfx;
-            fmat amat(2,2);
+            mat amat(2,2);
             amat(0,0) = 14.5f;
             amat(0,1) = -7.01f;
             amat(1,0) = 100.5f;
             amat(1,1) = -234.52f;
-            fmat bmat = transpose( amat );
-            fmat cmat(2,2);
+            mat bmat = transpose( amat );
+            mat cmat(2,2);
             cmat(0,0) = 14.5f;
             cmat(0,1) = 100.5f;
             cmat(1,0) = -7.01f;
@@ -325,13 +325,13 @@ SUITE( HomogenizeTests )
     TEST( HomogenizeMat )
         {
             using namespace gfx;
-            fmat amat(2,2);
+            mat amat(2,2);
             amat(0,0) = 14.5f;
             amat(0,1) = -7.01f;
             amat(1,0) = 100.5f;
             amat(1,1) = -234.52f;
-            fmat bmat = homogenize( amat );
-            fmat cmat(3,3);
+            mat bmat = homogenize( amat );
+            mat cmat(3,3);
             cmat(0,0) = 14.5f;
             cmat(0,1) = -7.01f;
             cmat(0,2) = 0.0f;

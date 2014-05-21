@@ -38,11 +38,11 @@ vec2 operator*( vec2 const& lhs, float rhs )
     return vec2( lhs[0] * rhs, lhs[1] * rhs );
 }
 
-fmat operator*( float lhs, fmat const& rhs )
+mat operator*( float lhs, mat const& rhs )
 {
     size_t i = 0;
 
-    fmat out( rhs.nCols(), rhs.nRows() );
+    mat out( rhs.nCols(), rhs.nRows() );
 
     for( i = 0; i < rhs.nRows() * rhs.nCols(); ++i ){
         out.e[i] = rhs.e[i] * lhs;
@@ -51,11 +51,11 @@ fmat operator*( float lhs, fmat const& rhs )
     return out;
 }
 
-fmat operator*( fmat const& lhs, float rhs )
+mat operator*( mat const& lhs, float rhs )
 {
     size_t i = 0;
 
-    fmat out( lhs.nCols(), lhs.nRows() );
+    mat out( lhs.nCols(), lhs.nRows() );
 
     for( i = 0; i < lhs.nRows() * lhs.nCols(); ++i ){
         out.e[i] = lhs.e[i] * rhs;
@@ -74,7 +74,7 @@ Qutn operator*( Qutn const& lhs, float rhs )
     return Qutn( rhs * lhs[0], rhs * lhs[1], rhs * lhs[2], rhs * lhs[3] );
 }
 
-vec4 operator*( fmat const& lhs, vec4 const& rhs )
+vec4 operator*( mat const& lhs, vec4 const& rhs )
 {
     if( lhs.nCols() != 4 || lhs.nRows() != 4 ){
         throw std::invalid_argument("dimension, column mismatch on matrix, vec4 multiply");
@@ -96,7 +96,7 @@ vec4 operator*( fmat const& lhs, vec4 const& rhs )
     return out;
 }
 
-vec3 operator*( fmat const& lhs, vec3 const& rhs )
+vec3 operator*( mat const& lhs, vec3 const& rhs )
 {
     if( lhs.nCols() != 3 || lhs.nRows() != 3 ){
         throw std::invalid_argument("dimension, column mismatch on matrix, vec3 multiply");
@@ -117,7 +117,7 @@ vec3 operator*( fmat const& lhs, vec3 const& rhs )
     return out;
 }
 
-vec2 operator*( fmat const& lhs, vec2 const& rhs )
+vec2 operator*( mat const& lhs, vec2 const& rhs )
 {
     if( lhs.nCols() != 2 || lhs.nRows() != 2 ){
         throw std::invalid_argument("dimension, column mismatch on matrix, vec2 multiply");
@@ -137,7 +137,7 @@ vec2 operator*( fmat const& lhs, vec2 const& rhs )
     return out;
 }
 
-vec4 operator*( vec4 const& lhs, fmat const& rhs )
+vec4 operator*( vec4 const& lhs, mat const& rhs )
 {
     if( rhs.nCols() != 4 || rhs.nRows() != 4 ){
         throw std::invalid_argument("dimension, column mismatch on vec4, matrix multiply");
@@ -159,7 +159,7 @@ vec4 operator*( vec4 const& lhs, fmat const& rhs )
     return out;
 }
 
-vec3 operator*( vec3 const& lhs, fmat const& rhs )
+vec3 operator*( vec3 const& lhs, mat const& rhs )
 {
     if( rhs.nCols() != 3 || rhs.nRows() != 3 ){
         throw std::invalid_argument("dimension, column mismatch on vec3, matrix multiply");
@@ -180,7 +180,7 @@ vec3 operator*( vec3 const& lhs, fmat const& rhs )
     return out;
 }
 
-vec2 operator*( vec2 const& lhs, fmat const& rhs )
+vec2 operator*( vec2 const& lhs, mat const& rhs )
 {
     if( rhs.nCols() != 2 || rhs.nRows() != 2 ){
         throw std::invalid_argument("dimension, column mismatch on vec2, matrix multiply");
@@ -263,13 +263,13 @@ vec2 __normalize__::eval( vec2 const& vec ) const
     return out*invMag;
 }
 
-fmat __normalize__::eval( fmat const& mat ) const
+mat __normalize__::eval( mat const& amat ) const
 {
     size_t row = 0;
     size_t col = 0;
 
-    size_t n_rows = mat.n_rows();
-    size_t n_cols = mat.n_cols();
+    size_t n_rows = amat.n_rows();
+    size_t n_cols = amat.n_cols();
 
     // Using double precision here promotes all operations to double _then_ truncates.
     // Slower, but more accurate and you should avoid matrix normalizations as much
@@ -277,17 +277,17 @@ fmat __normalize__::eval( fmat const& mat ) const
     double temp = 0.0;
     double invColMag = 0.0;
 
-    fmat out (mat.n_cols(), mat.n_rows());
+    mat out (amat.n_cols(), amat.n_rows());
 
     // __normalize__ each column of the matrix
     for( col = 0; col < n_cols; ++col ){
         for( row = 0; row < n_rows; ++row ){
-            temp = mat(col, row);
+            temp = amat(col, row);
             invColMag += temp * temp;
         }
         invColMag = 1.0 / sqrt(invColMag);
         for( row = 0; row < n_rows; ++row ){
-            out(col, row) = mat(col, row) * invColMag;
+            out(col, row) = amat(col, row) * invColMag;
         }
         invColMag = 0.0;
     }
@@ -483,9 +483,9 @@ float __inverse_magnitude__::eval( vec2 const& vec ) const
 
 __inverse_magnitude__ const inv_mag = operator_factory::make__inverse_magnitude__();
 
-fmat __transpose__::eval( fmat const& amat ) const
+mat __transpose__::eval( mat const& amat ) const
 {
-    fmat out ( amat.n_rows(), amat.n_cols() );
+    mat out ( amat.n_rows(), amat.n_cols() );
 
     size_t i = amat.n_comp();
     size_t amat_cols = amat.n_cols();
@@ -503,10 +503,10 @@ fmat __transpose__::eval( fmat const& amat ) const
 
 __transpose__ const transpose = operator_factory::make__transpose__();
 
-fmat __homogenize__::eval( fmat const& mat ) const
+mat __homogenize__::eval( mat const& amat ) const
 {
-    size_t cols = mat.n_cols();
-    size_t rows = mat.n_rows();
+    size_t cols = amat.n_cols();
+    size_t rows = amat.n_rows();
 
     size_t dim = 0;
 
@@ -516,7 +516,7 @@ fmat __homogenize__::eval( fmat const& mat ) const
         dim = cols + 1;
     }
 
-    fmat out = fmat::identity( dim);
+    mat out = mat::identity( dim);
     size_t size = dim * dim;
 
     size_t i = 0;
@@ -535,7 +535,7 @@ fmat __homogenize__::eval( fmat const& mat ) const
     if ( col_outside and row_outside ){
             break;
         } else if ( not (col_outside or row_outside) ){
-            out(col, row ) = mat( col, row );
+            out(col, row ) = amat( col, row );
         }
     }
 
