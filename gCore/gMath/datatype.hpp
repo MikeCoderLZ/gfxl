@@ -660,6 +660,9 @@ public:
                                          vec3_t<comp_t> const& row2 );
     static mat3_t           rotation( vec3_t<comp_t> const& axis,
                                       d_angle const& ang );
+    static mat3_t           rotation( d_angle const& angx,
+                                      d_angle const& angy,
+                                      d_angle const& angz );
     static mat3_t           scale( comp_t sx,
                                    comp_t sy,
                                    comp_t sz );
@@ -766,6 +769,9 @@ public:
                                          double far );
     static mat4_t           rotation( vec3_t<comp_t> const& axis,
                                       d_angle const& ang );
+    static mat4_t           rotation( d_angle const& angx,
+                                      d_angle const& angy,
+                                      d_angle const& angz );
     bool                    operator==( mat4_t const& rhs ) const;
     bool                    operator<( mat4_t const& rhs ) const;
     bool                    operator>( mat4_t const& rhs ) const;
@@ -3017,10 +3023,14 @@ mat2<T>     mat2<T>::scale( vec2_t<T> const& svec )
                cnst<T>::zero, svec(y)       ); }
 
 template< typename T > inline
-mat2_t<T>   mat_t<T>::rotation( d_angle const& ang )
+mat2<T>   mat2<T>::rotation( d_angle const& ang )
 {
      double radians ( ang.to_rads() );
+     float cos_rad = std::cos( radians );
+     float sin_rad = std::sin( radians );
      
+     return mat2<T>( cos_rad, -sin_rad,
+                     sin_rad, cos_rad );
 }
                
 // Comparison
@@ -3497,7 +3507,31 @@ mat3<T>     mat3<T>::rotation( vec3_t<T> const& axis,
            + mat3<T>::square( axis ) * cm_cos_t
            + mat3<T>::cross_product( axis ) * sin( radians );
 }
-               
+
+template< typename T > inline
+mat3<T>     mat3<T>::rotation( d_angle const& angx,
+                               d_angle const& angy,
+                               d_angle const& angz )
+{
+    double radx ( angx.to_rads() );
+    double rady ( angy.to_rads() );
+    double radz ( angz.to_rads() );
+    
+    double sin_x = std::sin( radx );
+    double cos_x = std::cos( radx );
+    double sin_y = std::sin( rady );
+    double cos_y = std::cos( rady );
+    double sin_z = std::sin( radz );
+    double cos_z = std::cos( radz );
+    
+    return mat3<T>(
+        cos_y*cos_z,                     -cos_y*sin_z,                      sin_y,
+        cos_x*sin_z + sin_x*sin_y*cos_z,  cos_x*cos_z - sin_x*sin_y*sin_z, -sin_x*cos_y,
+        sin_x*sin_z - cos_x*sin_y*cos_z,  sin_x*cos_z + cos_x*sin_y*sin_z,  cos_x*cos_y
+      );
+    
+}
+
 template< typename T > inline
 mat3<T>     mat3<T>::scale( T sx, T sy, T sz = 1.0f )
 { return mat3( sx,           cnst<T>::zero, cnst<T>::zero,
@@ -4235,6 +4269,31 @@ mat4<T>     mat4<T>::rotation( vec3_t<T> const& axis,
                       axis(z) * axis(x) * cm_cos_t, axis(z) * axis(y) * cm_cos_t, axis(z) * axis(z) * cm_cos_t, cnst<T>::zero,
                       cnst<T>::zero,      cnst<T>::zero,      cnst<T>::zero,      cnst<T>::one  );
     return trig_mat + axis_mat;
+}
+
+template< typename T > inline
+mat4<T>     mat4<T>::rotation( d_angle const& angx,
+                               d_angle const& angy,
+                               d_angle const& angz )
+{
+    double radx ( angx.to_rads() );
+    double rady ( angy.to_rads() );
+    double radz ( angz.to_rads() );
+    
+    double sin_x = std::sin( radx );
+    double cos_x = std::cos( radx );
+    double sin_y = std::sin( rady );
+    double cos_y = std::cos( rady );
+    double sin_z = std::sin( radz );
+    double cos_z = std::cos( radz );
+    
+    return mat4<T>(
+        cos_y*cos_z,                     -cos_y*sin_z,                      sin_y,         cnst<T>::zero,
+        cos_x*sin_z + sin_x*sin_y*cos_z,  cos_x*cos_z - sin_x*sin_y*sin_z, -sin_x*cos_y,   cnst<T>::zero,
+        sin_x*sin_z - cos_x*sin_y*cos_z,  sin_x*cos_z + cos_x*sin_y*sin_z,  cos_x*cos_y,   cnst<T>::zero,
+        cnst<T>::zero,                    cnst<T>::zero,                    cnst<T>::zero, cnst<T>::one
+      );
+    
 }
 template< typename T > inline
 bool    mat4<T>::operator==( mat4<T> const& rhs ) const
