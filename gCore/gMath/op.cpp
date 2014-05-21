@@ -551,36 +551,7 @@ float __clip_range__::eval( float const& value, float const& min, float const& m
 
 __clip_range__ const clip_rng = operator_factory::make__clip_range__();
 
-template < typename T >
-angle_t<T> angle_t< T >::in_rads( T in_rads )
-{
-    return angle_t<T>( in_rads * cnst<T>::inv_tau );
-}
-template < typename T >
-angle_t<T> angle_t< T >::in_grads( T in_grads )
-{
-    return angle_t<T>( in_grads * 0.005 );
-}
-template < typename T >
-angle_t<T> angle_t< T >::in_degs( T in_degs )
-{
-    return angle_t<T>( in_degs * 0.00277777777777777777777777 );
-}
-template < typename T >
-T angle_t< T >::to_rads()
-{
-    return unians * cnst<T>::tau;
-}
-template < typename T >
-T angle_t< T >::to_grads()
-{
-    return unians * 200.0;
-}
-template < typename T >
-T angle_t< T >::to_degs()
-{
-    return unians * 360.0;
-}
+
 /**
 /* ---- Float Specializations ---- * /
 template <>

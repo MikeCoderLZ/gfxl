@@ -373,23 +373,23 @@ class __clip_range__ : public ternary_op<float> {
 
 extern __clip_range__ const clip_rng;
 
-template< typename T >
-class angle_t {
-    public:
-        static angle_t<T> in_rads( T in_rads );
-        static angle_t<T> in_grads( T in_grads );
-        static angle_t<T> in_degs( T in_degs );
-        
-        T to_rads();
-        T to_grads();
-        T to_degs();
-    private:
-        angle_t( T new_unians ) : unians (new_unians) {};
-        T unians;
-};
-
-typedef angle_t<float> angle;
-typedef angle_t<double> d_angle;
+// template< typename T >
+// class angle_t {
+//     public:
+//         static angle_t<T> in_rads( T in_rads );
+//         static angle_t<T> in_grads( T in_grads );
+//         static angle_t<T> in_degs( T in_degs );
+//         
+//         T to_rads();
+//         T to_grads();
+//         T to_degs();
+//     private:
+//         angle_t( T new_unians ) : unians (new_unians) {};
+//         T unians;
+// };
+// 
+// typedef angle_t<float> angle;
+// typedef angle_t<double> d_angle;
 
 /**
 

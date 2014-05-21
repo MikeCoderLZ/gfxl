@@ -3,6 +3,7 @@
 //#include "type_op.hpp"
 #include "../../UnitTest++_src/UnitTest++.h"
 #include "datatype.hpp"
+#include "constant.hpp"
 #include "swizzTest.hpp"
 SUITE( RawMapTests )
 {
@@ -674,7 +675,7 @@ SUITE( QutnTests )
         using namespace gfx;
         qutn aqutn;
         qutn bqutn( 0.0f, 0.0f, 0.0f, 1.0f );
-        CHECK_EQUAL( aqutn, bqutn );
+        CHECK_EQUAL( bqutn, aqutn );
     }
 
     TEST( QutnFillConstruction )
@@ -682,7 +683,43 @@ SUITE( QutnTests )
         using namespace gfx;
         qutn aqutn( 1.0f );
         qutn bqutn( 1.0f, 1.0f, 1.0f, 1.0f );
-        CHECK_EQUAL( aqutn, bqutn );
+        CHECK_EQUAL( bqutn, aqutn );
+    }
+    
+    TEST( QutnPureConstruction )
+    {
+        using namespace gfx;
+        vec3 avec3 ( 2.0f, 8.5f, 0.0f );
+        qutn aqutn = qutn::pure( avec3 );
+        qutn bqutn( 2.0f, 8.5f, 0.0f, 0.0f );
+        CHECK_EQUAL( bqutn, aqutn );
+    }
+    
+    TEST( QutnRotationMatrix )
+    {
+        using namespace gfx;
+        vec3 axis( 1.0f, 0.0f, 0.0f );
+        d_angle ang = d_angle::in_degs( 90.0f );
+        fmat3 amat3 = fmat3::rotation( axis, ang );
+        qutn aqutn = qutn::rotation( amat3 );
+        qutn bqutn( cnst<float>::inv_sqrt_two,
+                    0.0f,
+                    0.0f,
+                    cnst<float>::inv_sqrt_two );
+        CHECK_EQUAL( bqutn, aqutn );
+    }
+    
+    TEST( QutnRotationAxisAngle )
+    {
+        using namespace gfx;
+        vec3 axis( 1.0f, 0.0f, 0.0f );
+        d_angle ang = d_angle::in_degs( 90.0f );
+        qutn aqutn = qutn::rotation( axis, ang );
+        qutn bqutn( cnst<float>::inv_sqrt_two,
+                    0.0f,
+                    0.0f,
+                    cnst<float>::inv_sqrt_two );
+        CHECK_EQUAL( bqutn, aqutn );
     }
 
     TEST( QutnCopyAssignment )
@@ -690,7 +727,7 @@ SUITE( QutnTests )
         using namespace gfx;
         qutn aqutn( 1.0f, -4.5f, 2.0f, -3.5f );
         qutn bqutn = aqutn;
-        CHECK_EQUAL( aqutn, bqutn );
+        CHECK_EQUAL( bqutn, aqutn );
         bqutn(x) = -2.5f;
         CHECK( aqutn(x) != bqutn(x) );
         CHECK( aqutn(y) != bqutn(x) );
@@ -706,7 +743,7 @@ SUITE( QutnTests )
         qutn bqutn( -2.4f, 67.8f, 4.0f, 1.0f );
         CHECK( aqutn != bqutn );
         aqutn = bqutn;
-        CHECK_EQUAL( aqutn, bqutn );
+        CHECK_EQUAL( aqutn, aqutn );
         
         bqutn(x) = -2.5f;
         CHECK( aqutn(x) != bqutn(x) );
@@ -790,6 +827,18 @@ SUITE( QutnTests )
         qutn dqutn = aqutn * bqutn;
         CHECK_EQUAL( cqutn, dqutn );
     }
+    
+    TEST( QutnNormalize )
+    {
+        using namespace gfx;
+        qutn aqutn ( 2.0f, -1.0f, 15.0f, -5.0f );
+        qutn bqutn (  2.0f / sqrt( 255.0f ),
+                      -1.0f / sqrt( 255.0f ),
+                      15.0f / sqrt( 255.0f ),
+                      -5.0f / sqrt( 255.0f ) );
+        aqutn.norm();
+        CHECK_EQUAL( bqutn, aqutn );
+    }    
 
     TEST( QutnMapping )
     {
@@ -1563,8 +1612,8 @@ SUITE( Matrix3Tests )
     {
         using namespace gfx;
         vec3 axis( 1.0f, 0.0f, 0.0f );
-        double angle ( 3.1415926535897932384626433f * 0.5f );
-        fmat3 amat3 = fmat3::rotation( axis, angle );
+        d_angle ang = d_angle::in_degs( 90.0f );
+        fmat3 amat3 = fmat3::rotation( axis, ang );
         fmat3 bmat3(  1.0f, 0.0f,  0.0f,
                       0.0f, 0.0f, -1.0f,
                       0.0f, 1.0f,  0.0f );
@@ -2145,8 +2194,8 @@ SUITE( Matrix4Tests )
     {
         using namespace gfx;
         vec3 axis( 1.0f, 0.0f, 0.0f );
-        double angle ( 3.1415926535897932384626433f * 0.5f );
-        fmat4 amat4 = fmat4::rotation( axis, angle );
+        d_angle ang = d_angle::in_degs( 90.0f );
+        fmat4 amat4 = fmat4::rotation( axis, ang );
         fmat4 bmat4( 1.0f, 0.0f,  0.0f, 0.0f,
                      0.0f, 0.0f, -1.0f, 0.0f,
                      0.0f, 1.0f,  0.0f, 0.0f,

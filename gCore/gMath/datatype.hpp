@@ -335,25 +335,27 @@ public:
                             qutn_t( qutn_t<T> const& src );
                             ~qutn_t();
                             
-    static qutn_t<T>           axis_angle( vec3_t<comp_t> const& axis,
-                                        double radians );
-    static qutn_t<T>           pure( vec3_t<comp_t> const& point );
-    static qutn_t<T>           rotation( mat3<T> const& rmat );
+    static qutn_t<T>        pure( vec3_t<comp_t> const& point );
+    static qutn_t<T>        rotation( mat3<T> const& rmat );
+    static qutn_t<T>        rotation( vec3_t<T> const& axis,
+                                      d_angle const& ang );
     
     bool                    operator==( qutn_t<T> const& rhs ) const;
     bool                    operator!=( qutn_t<T> const& rhs ) const;
-    qutn_t<T>&                 operator=( qutn_t<T> const& rhs );
+    qutn_t<T>&              operator=( qutn_t<T> const& rhs );
     
-    qutn_t<T>                  operator+( qutn_t<T> const& rhs ) const;
-    qutn_t<T>                  operator-( qutn_t<T> const& rhs ) const;
-    qutn_t<T>                  operator*( qutn_t<T> const& rhs ) const;
-    qutn_t<T>                  operator/( qutn_t<T> const& rhs ) const;
-    qutn_t<T>                  operator-() const;
+    qutn_t<T>               operator+( qutn_t<T> const& rhs ) const;
+    qutn_t<T>               operator-( qutn_t<T> const& rhs ) const;
+    qutn_t<T>               operator*( qutn_t<T> const& rhs ) const;
+    qutn_t<T>               operator/( qutn_t<T> const& rhs ) const;
+    qutn_t<T>               operator-() const;
     
     comp_t&                 operator[]( size_t i );
     comp_t                  operator[]( size_t i ) const;
     comp_t&                 operator()( swizz4 const& e0 );
     comp_t                  operator()( swizz4 const& e0 ) const;
+    
+    qutn_t<T>&              norm();
     
     template< typename U >
     friend std::ostream&    operator<<( std::ostream& out, qutn_t<U> const& src );
@@ -579,6 +581,7 @@ public:
     static mat2_t           scale( comp_t sx,                            
                                    comp_t sy );
     static mat2_t           scale( vec2_t<comp_t> const& svec );
+    static mat2_t           rotation( d_angle const& ang );
     // Comparison
     bool                    operator==( mat2_t const& rhs ) const;
     bool                    operator<( mat2_t const& rhs ) const;
@@ -591,9 +594,9 @@ public:
     mat2_t                  operator-();
     mat2_t                  operator-( mat2_t const& rhs );
     mat2_t                  operator*( mat2_t const& rhs );
-    vec2_t<comp_t>            operator*( vec2_t<comp_t> const& rhs );
+    vec2_t<comp_t>          operator*( vec2_t<comp_t> const& rhs );
     template<typename D >
-    friend vec2_t<D>          operator*( vec2_t<D> const& lhs, mat2<D> const& rhs );
+    friend vec2_t<D>        operator*( vec2_t<D> const& lhs, mat2<D> const& rhs );
     mat2_t                  operator*( comp_t rhs );
     template< typename D >
     friend mat2<D>          operator*( D lhs, mat2<D> const& rhs );
@@ -609,13 +612,13 @@ public:
     // Mutative Functions
     mat2_t&                 column( size_t col,
                                     vec2_t<comp_t> const& val );
-    vec2_t<T>                 column( size_t col ) const;
+    vec2_t<T>               column( size_t col ) const;
     mat2_t&                 columns( vec2_t<comp_t> const& col0,
                                      vec2_t<comp_t> const& col1 );
     mat2_t&                 fill( comp_t val );
     mat2_t&                 row( size_t row,
                                  vec2_t<comp_t> const& val );
-    vec2_t<T>                 row( size_t row ) const;
+    vec2_t<T>               row( size_t row ) const;
     mat2_t&                 rows( vec2_t<comp_t> const& row0,
                                   vec2_t<comp_t> const& row1 );
     mat2_t&                 transpose();
@@ -656,7 +659,7 @@ public:
                                          vec3_t<comp_t> const& row1,
                                          vec3_t<comp_t> const& row2 );
     static mat3_t           rotation( vec3_t<comp_t> const& axis,
-                                      double radians );
+                                      d_angle const& ang );
     static mat3_t           scale( comp_t sx,
                                    comp_t sy,
                                    comp_t sz );
@@ -678,9 +681,9 @@ public:
     mat3_t                  operator-();
     mat3_t                  operator-( mat3_t const& rhs );
     mat3_t                  operator*( mat3_t const& rhs );
-    vec3_t<comp_t>            operator*( vec3_t<comp_t> const& rhs );
+    vec3_t<comp_t>          operator*( vec3_t<comp_t> const& rhs );
     template< typename D >
-    friend vec3_t<D>          operator*( vec3_t<D> const& lhs, mat3<D> const& rhs );
+    friend vec3_t<D>        operator*( vec3_t<D> const& lhs, mat3<D> const& rhs );
     mat3_t                  operator*( comp_t rhs );
     template< typename D >
     friend mat3<D>          operator*( D lhs, mat3<D> const& rhs );
@@ -696,7 +699,7 @@ public:
     // Mutative Functions
     mat3_t&                 column( size_t col,
                                     vec3_t<comp_t> const& val );
-    vec3_t<T>                 column( size_t col ) const;
+    vec3_t<T>               column( size_t col ) const;
     mat3_t&                 columns( vec3_t<comp_t> const& col0,
                                      vec3_t<comp_t> const& col1,
                                      vec3_t<comp_t> const& col2 );
@@ -704,7 +707,7 @@ public:
     mat3_t&                 normalize();
     mat3_t&                 row( size_t row,
                                  vec3_t<comp_t> const& val );
-    vec3_t<T>                 row( size_t row ) const;
+    vec3_t<T>               row( size_t row ) const;
     
     mat3_t&                 rows( vec3_t<comp_t> const& row0,
                                   vec3_t<comp_t> const& row1,
@@ -762,7 +765,7 @@ public:
                                          double near,
                                          double far );
     static mat4_t           rotation( vec3_t<comp_t> const& axis,
-                                      double radians );
+                                      d_angle const& ang );
     bool                    operator==( mat4_t const& rhs ) const;
     bool                    operator<( mat4_t const& rhs ) const;
     bool                    operator>( mat4_t const& rhs ) const;
@@ -1517,8 +1520,8 @@ vec2_t<T>     vec2_t<T>::operator/( vec2_t<T> const& rhs ) const
 template<typename T> inline
 bool    vec2_t<T>::operator==( vec2_t<T> const& rhs ) const
 {
-    return     data.c[0] == rhs.data.c[0]
-           and data.c[1] == rhs.data.c[1];
+    return     std::abs(data.c[0] - rhs.data.c[0]) < cnst<T>::delta
+           and std::abs(data.c[1] - rhs.data.c[1]) < cnst<T>::delta;
 }
 
 template<typename T> inline
@@ -1708,9 +1711,9 @@ inline vec3_t<T> vec3_t<T>::operator/( vec3_t<T> const& rhs ) const
 template<typename T> inline
 bool    vec3_t<T>::operator==( vec3_t<T> const& rhs ) const
 {
-    return     data.c[0] == rhs.data.c[0]
-           and data.c[1] == rhs.data.c[1]
-           and data.c[2] == rhs.data.c[2];
+    return     std::abs(data.c[0] - rhs.data.c[0]) < cnst<T>::delta
+           and std::abs(data.c[1] - rhs.data.c[1]) < cnst<T>::delta
+           and std::abs(data.c[2] - rhs.data.c[2]) < cnst<T>::delta;
 }
 
 template<typename T> inline
@@ -1940,10 +1943,10 @@ inline vec4_t<T> vec4_t<T>::operator/( vec4_t<T> const& rhs ) const
 template< typename T > inline
 bool    vec4_t<T>::operator==( vec4_t<T> const& rhs ) const
 {
-    return     data.c[0] == rhs.data.c[0]
-           and data.c[1] == rhs.data.c[1]
-           and data.c[2] == rhs.data.c[2]
-           and data.c[3] == rhs.data.c[3];
+    return     std::abs(data.c[0] - rhs.data.c[0]) < cnst<T>::delta
+           and std::abs(data.c[1] - rhs.data.c[1]) < cnst<T>::delta
+           and std::abs(data.c[2] - rhs.data.c[2]) < cnst<T>::delta
+           and std::abs(data.c[3] - rhs.data.c[3]) < cnst<T>::delta;
 }
 
 template< typename T > inline
@@ -2008,7 +2011,7 @@ qutn_t<T>::qutn_t( comp_t ei,
 }
 
 template< typename T > inline
-qutn_t<T>::qutn_t( comp_t fill )
+qutn_t<T>::qutn_t( T fill )
 {
     this->data.c[0] = fill;
     this->data.c[1] = fill;
@@ -2029,22 +2032,9 @@ template< typename T > inline
 qutn_t<T>::~qutn_t() {}
 
 template< typename T > inline
-qutn_t<T>     qutn_t<T>::axis_angle( vec3_t<T> const& axis,
-                                 double radians      )
-{
-    double rads_half ( radians * 0.5 );
-    double sin_rads ( sin( rads_half ) );
-    
-    return qutn_t( sin_rads * axis[0],
-                 sin_rads * axis[1],
-                 sin_rads * axis[2],
-                 cos( rads_half )   );
-}
-
-template< typename T > inline
 qutn_t<T>     qutn_t<T>::pure( vec3_t<T> const& point )
 {
-    return qutn_t( point[0], point[0], point[0], cnst<T>::zero );
+    return qutn_t( point[0], point[1], point[2], cnst<T>::zero );
 }
 
 template< typename T > inline
@@ -2091,12 +2081,26 @@ qutn_t<T>     qutn_t<T>::rotation( mat3<T> const& rmat )
 }
 
 template< typename T > inline
+qutn_t<T>     qutn_t<T>::rotation( vec3_t<T> const& axis,
+                                   d_angle const& ang )
+{
+    double h_rads = ang.to_rads() * 0.5;
+    vec3_t<T> n_axis = axis;
+    n_axis.norm();
+    double sin_h_rads = sin( h_rads );
+    return qutn_t<T>( n_axis[0] * sin_h_rads,
+                      n_axis[1] * sin_h_rads,
+                      n_axis[2] * sin_h_rads,
+                      cos( h_rads )           );
+}
+
+template< typename T > inline
 bool    qutn_t<T>::operator==( qutn_t<T> const& rhs ) const
 {
-    return     data.c[0] == rhs.data.c[0]
-           and data.c[1] == rhs.data.c[1]
-           and data.c[2] == rhs.data.c[2]
-           and data.c[3] == rhs.data.c[3];
+    return     std::abs(data.c[0] - rhs.data.c[0]) < cnst<T>::delta
+           and std::abs(data.c[1] - rhs.data.c[1]) < cnst<T>::delta
+           and std::abs(data.c[2] - rhs.data.c[2]) < cnst<T>::delta
+           and std::abs(data.c[3] - rhs.data.c[3]) < cnst<T>::delta;
 }
 
 template< typename T > inline
@@ -2230,6 +2234,21 @@ template< typename T > inline
 qutn_t<T> qutn_t<T>::operator/( qutn_t<T> const& rhs ) const
 {
     return (*this) * (-rhs);
+}
+
+template< typename T > inline
+qutn_t<T>& qutn_t<T>::norm()
+{
+    T inv_mag = 1.0 / sqrt(   this->data.c[0] * this->data.c[0]
+                            + this->data.c[1] * this->data.c[1]
+                            + this->data.c[2] * this->data.c[2]
+                            + this->data.c[3] * this->data.c[3] );
+    this->data.c[0] *= inv_mag;
+    this->data.c[1] *= inv_mag;
+    this->data.c[2] *= inv_mag;
+    this->data.c[3] *= inv_mag;
+    
+    return *this;
 }
 
 template< typename U > inline
@@ -2997,6 +3016,13 @@ mat2<T>     mat2<T>::scale( vec2_t<T> const& svec )
 { return mat2( svec(x),      cnst<T>::zero,
                cnst<T>::zero, svec(y)       ); }
 
+template< typename T > inline
+mat2_t<T>   mat_t<T>::rotation( d_angle const& ang )
+{
+     double radians ( ang.to_rads() );
+     
+}
+               
 // Comparison
                
 template< typename T > inline
@@ -3462,8 +3488,9 @@ mat3<T>     mat3<T>::row_vectors( vec3_t<T> const& row0,
                
 template< typename T > inline
 mat3<T>     mat3<T>::rotation( vec3_t<T> const& axis,
-                               double radians      )
+                               d_angle const& ang )
 {
+    double radians = ang.to_rads();
     double cos_t ( cos( radians ) );
     double cm_cos_t ( 1.0 - cos_t );
     return   mat3<T>::identity() * cos_t
@@ -4192,8 +4219,9 @@ mat4<T>     mat4<T>::perspective( double fovY,
 
 template< typename T > inline
 mat4<T>     mat4<T>::rotation( vec3_t<T> const& axis,
-                               double radians      )
+                               d_angle const& ang     )
 {
+    double radians ( ang.to_rads() );
     double cos_t ( cos(radians) );
     double cm_cos_t = 1.0 - cos_t;
     double sin_t ( sin(radians) );
