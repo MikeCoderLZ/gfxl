@@ -4,7 +4,8 @@
 #include "../../UnitTest++_src/UnitTest++.h"
 #include "datatype.hpp"
 #include "constant.hpp"
-#include "swizzTest.hpp"
+//#include "swizzTest.hpp"
+
 SUITE( RawMapTests )
 {
     TEST( RawMapConstruction )
@@ -702,10 +703,10 @@ SUITE( QutnTests )
         d_angle ang = d_angle::in_degs( 90.0f );
         mat3 amat3 = mat3::rotation( axis, ang );
         qutn aqutn = qutn::rotation( amat3 );
-        qutn bqutn( cnst<float>::inv_sqrt_two,
+        qutn bqutn( lit<float>::inv_sqrt_two,
                     0.0f,
                     0.0f,
-                    cnst<float>::inv_sqrt_two );
+                    lit<float>::inv_sqrt_two );
         CHECK_EQUAL( bqutn, aqutn );
     }
     
@@ -715,10 +716,10 @@ SUITE( QutnTests )
         vec3 axis( 1.0f, 0.0f, 0.0f );
         d_angle ang = d_angle::in_degs( 90.0f );
         qutn aqutn = qutn::rotation( axis, ang );
-        qutn bqutn( cnst<float>::inv_sqrt_two,
+        qutn bqutn( lit<float>::inv_sqrt_two,
                     0.0f,
                     0.0f,
-                    cnst<float>::inv_sqrt_two );
+                    lit<float>::inv_sqrt_two );
         CHECK_EQUAL( bqutn, aqutn );
     }
 
@@ -2810,6 +2811,322 @@ SUITE( Matrix4Tests )
             --i;
             CHECK_EQUAL( test_bytes.bytes[i], amat4_map[i] );
         } 
+    }
+}
+
+SUITE( Matrix2x3 )
+{
+    TEST( Mat2x3Construction )
+    {
+        using namespace gfx;
+        mat2x3 amat2x3;
+        CHECK_EQUAL( amat2x3(0,0), 0.0f );
+        CHECK_EQUAL( amat2x3(0,1), 0.0f );
+        CHECK_EQUAL( amat2x3(0,2), 0.0f );
+        
+        CHECK_EQUAL( amat2x3(1,0), 0.0f );
+        CHECK_EQUAL( amat2x3(1,1), 0.0f );
+        CHECK_EQUAL( amat2x3(1,2), 0.0f );
+    }
+    
+    TEST( Mat2x3CopyConstruction )
+    {
+        using namespace gfx;
+        mat2x3 amat2x3( 4.7f,  0.0f,
+                        0.0f,  1.0f,
+                       -5.3f, 18.0f );
+        mat2x3 bmat2x3 = amat2x3;
+        CHECK_EQUAL( amat2x3, bmat2x3 );
+        bmat2x3(0,0) = -15.0f;
+        // No side effects
+        CHECK( amat2x3(0,0) != bmat2x3(0,0) );
+    }
+    
+    TEST( Mat2x3ExplicitConstruction )
+    {
+        using namespace gfx;
+        mat2x3 amat2x3( 4.7f,  0.0f,
+                        0.0f,  1.0f,
+                       -5.3f, 18.0f );
+        mat2x3 bmat2x3;
+        bmat2x3(0,0) =  4.7f;    bmat2x3(1,0) =  0.0f;
+        bmat2x3(0,1) =  0.0f;    bmat2x3(1,1) =  1.0f;
+        bmat2x3(0,2) = -5.3f;    bmat2x3(1,2) = 18.0f;
+        CHECK_EQUAL( bmat2x3, amat2x3 );
+    }
+    
+    TEST( Mat2x3FillConstruction )
+    {
+        using namespace gfx;
+        mat2x3 amat2x3( 4.7f );
+        mat2x3 bmat2x3;
+        bmat2x3(0,0) = 4.7f;    bmat2x3(1,0) = 4.7f;
+        bmat2x3(0,1) = 4.7f;    bmat2x3(1,1) = 4.7f;
+        bmat2x3(0,2) = 4.7f;    bmat2x3(1,2) = 4.7f;
+        CHECK_EQUAL( bmat2x3, amat2x3 );
+    }
+    
+    TEST( Mat2x3ColumnConstruction )
+    {
+        using namespace gfx;
+        vec3 col0 ( 4.7f, 0.0f, -5.3f );
+        vec3 col1 ( 0.0f, 1.0f, 18.0f );
+        mat2x3 amat2x3( col0, col1 );
+        mat2x3 bmat2x3( 4.7f,  0.0f,
+                        0.0f,  1.0f,
+                       -5.3f, 18.0f );
+        CHECK_EQUAL( bmat2x3, amat2x3 );
+    }
+    
+    TEST( Mat2x3UpperIdentity )
+    {
+        using namespace gfx;
+        mat2x3 amat2x3 = mat2x3::upper_identity();
+        mat2x3 bmat2x3( 1.0f, 0.0f,
+                        0.0f, 1.0f,
+                        0.0f, 0.0f );
+        CHECK_EQUAL( bmat2x3, amat2x3 );
+    }
+    
+    TEST( Mat2x3RowConstruction )
+    {
+        using namespace gfx;
+        vec2 row0 (  4.7f,  0.0f );
+        vec2 row1 (  0.0f,  1.0f );
+        vec2 row2 ( -5.3f, 18.0f );
+        mat2x3 amat2x3 =  mat2x3::row_vectors( row0, row1, row2 );
+        mat2x3 bmat2x3( 4.7f,  0.0f,
+                        0.0f,  1.0f,
+                       -5.3f, 18.0f );
+        CHECK_EQUAL( bmat2x3, amat2x3 );
+    }
+    
+    TEST( Mat2x3FuzzyEquality )
+    {
+        using namespace gfx;
+        mat2x3 amat2x3( 4.7f,  0.0f,
+                        0.0f,  1.0f,
+                       -5.3f, 18.0f );
+        mat2x3 bmat2x3 = amat2x3;
+        CHECK_EQUAL( amat2x3, bmat2x3 );
+        // Make sure that a modification less than
+        // the defined delta is still equal...
+        bmat2x3(0,0) += f_lit::delta * 0.5f;
+        CHECK_EQUAL( amat2x3, bmat2x3 );
+        // ...and a modification of exactly delta isn't...
+        bmat2x3(1,0) = f_lit::delta;
+        CHECK( amat2x3 != bmat2x3 );
+        // ...and that a modification greater than
+        // delta is not
+        bmat2x3(1,0) = 0.0f;
+        bmat2x3(1,0) += std::nextafter(f_lit::delta, 1.0f);
+        CHECK( amat2x3 != bmat2x3 );
+    }
+    
+    TEST( Mat2x3Inequality )
+    {
+        using namespace gfx;
+        mat2x3 amat2x3( 4.7f,  0.0f,
+                        0.0f,  1.0f,
+                       -5.3f, 18.0f );
+        mat2x3 bmat2x3 = amat2x3;
+        CHECK_EQUAL( amat2x3, bmat2x3 );
+        // Make sure that a modification less than
+        // the defined delta is still equal...
+        bmat2x3(0,0) += f_lit::delta * 0.5f;
+        CHECK( false == ( amat2x3 < bmat2x3 ) );
+        bmat2x3(0,0) = 4.7f;
+        bmat2x3(0,0) -= f_lit::delta * 0.5f;
+        CHECK( false == ( amat2x3 > bmat2x3 ) );
+        // ...and a modification of exactly delta isn't
+        bmat2x3(0,0) = 4.7f;
+        bmat2x3(0,0) += f_lit::delta;
+        bmat2x3(0,1) += f_lit::delta;
+        bmat2x3(0,2) += f_lit::delta;
+        bmat2x3(1,0) += f_lit::delta;
+        bmat2x3(1,1) += f_lit::delta;
+        bmat2x3(1,2) += f_lit::delta;
+        CHECK( amat2x3 < bmat2x3 );
+        bmat2x3 = amat2x3;
+        bmat2x3(0,0) -= f_lit::delta;
+        bmat2x3(0,1) -= f_lit::delta;
+        bmat2x3(0,2) -= f_lit::delta;
+        bmat2x3(1,0) -= f_lit::delta;
+        bmat2x3(1,1) -= f_lit::delta;
+        bmat2x3(1,2) -= f_lit::delta;
+        CHECK( amat2x3 > bmat2x3 );
+    }
+    
+    TEST( Mat2x3InequalityEquality ) // LOL, wot?
+    {
+        using namespace gfx;
+        mat2x3 amat2x3( 4.7f,  0.0f,
+                        0.0f,  1.0f,
+                       -5.3f, 18.0f );
+        mat2x3 bmat2x3 = amat2x3;
+        CHECK_EQUAL( amat2x3, bmat2x3 );
+        CHECK( amat2x3 <= bmat2x3 );
+        CHECK( amat2x3 >= bmat2x3 );
+        // Make sure that a modification less than
+        // the defined delta is still equal...
+        bmat2x3(0,0) += f_lit::delta * 0.5f;
+        CHECK(  amat2x3 <= bmat2x3 );
+        bmat2x3(0,0) = 4.7f;
+        bmat2x3(0,0) -= f_lit::delta * 0.5f;
+        CHECK( amat2x3 >= bmat2x3 );
+        // ...and a modification of exactly delta isn't
+        bmat2x3(0,0) = 4.7f;
+        bmat2x3(0,0) += f_lit::delta;
+        bmat2x3(0,1) += f_lit::delta;
+        bmat2x3(0,2) += f_lit::delta;
+        bmat2x3(1,0) += f_lit::delta;
+        bmat2x3(1,1) += f_lit::delta;
+        bmat2x3(1,2) += f_lit::delta;
+        CHECK( amat2x3 < bmat2x3 );
+        bmat2x3 = amat2x3;
+        bmat2x3(0,0) -= f_lit::delta;
+        bmat2x3(0,1) -= f_lit::delta;
+        bmat2x3(0,2) -= f_lit::delta;
+        bmat2x3(1,0) -= f_lit::delta;
+        bmat2x3(1,1) -= f_lit::delta;
+        bmat2x3(1,2) -= f_lit::delta;
+        CHECK( amat2x3 > bmat2x3 );
+    }
+    
+    TEST( Mat2x3Addition )
+    {
+        using namespace gfx;
+        mat2x3 amat2x3( 4.7f, 0.0f,
+                        0.0f, 0.0f,
+                       -5.3f, 0.0f );
+        mat2x3 bmat2x3( 0.0f, 0.0f,
+                        0.0f, 1.0f,
+                        0.0f, 18.0f );
+        mat2x3 cmat2x3 = amat2x3 + bmat2x3;
+        mat2x3 dmat2x3( 4.7f,  0.0f,
+                        0.0f,  1.0f,
+                       -5.3f, 18.0f );
+        CHECK_EQUAL( cmat2x3, dmat2x3 );
+    }
+    
+    TEST( Mat2x3Subtraction )
+    {
+        using namespace gfx;
+        mat2x3 amat2x3( 4.7f, 0.0f,
+                        0.0f, 0.0f,
+                       -5.3f, 0.0f );
+        mat2x3 bmat2x3( 0.0f, 0.0f,
+                        0.0f, 1.0f,
+                        0.0f, 18.0f );
+        mat2x3 cmat2x3 = amat2x3 - bmat2x3;
+        mat2x3 dmat2x3( 4.7f,   0.0f,
+                        0.0f,  -1.0f,
+                       -5.3f, -18.0f );
+        CHECK_EQUAL( cmat2x3, dmat2x3 );
+    }
+    
+    TEST( Mat2x3Negation )
+    {
+        using namespace gfx;
+        mat2x3 amat2x3( 4.7f,  0.0f,
+                        0.0f,  1.0f,
+                       -5.3f, 18.0f );
+        mat2x3 bmat2x3 = -amat2x3;
+        mat2x3 cmat2x3( -4.7f,   0.0f,
+                         0.0f,  -1.0f,
+                         5.3f, -18.0f );
+        CHECK_EQUAL( cmat2x3, bmat2x3 );
+    }
+    
+    TEST( Mat2x3VectorPostMultiply )
+    {
+        using namespace gfx;
+        mat2x3 amat2x3( 4.7f,  0.0f,
+                        0.0f,  1.0f,
+                       -5.3f, 18.0f );
+        vec2 avec2 ( 1.0f, -1.0f );
+        vec3 avec3 = amat2x3 * avec2;
+        vec3 bvec3 ( 4.7f, -1.0f, -23.3f );
+        CHECK_EQUAL( bvec3, avec3 );
+    }
+    
+    TEST( Mat2x3VectorPreMultiply )
+    {
+        using namespace gfx;
+        mat2x3 amat2x3( 4.7f,  0.0f,
+                        0.0f,  1.0f,
+                       -5.3f, 18.0f );
+        vec3 avec3 ( 1.0f, -1.0f, 0.0f );
+        vec2 avec2 = avec3 * amat2x3;
+        vec2 bvec2 ( 4.7f, -1.0f );
+        CHECK_EQUAL( bvec2, avec2 );
+    }
+    
+    TEST( Mat2x3ScalarPostMultiply )
+    {
+        using namespace gfx;
+        mat2x3 amat2x3( 4.7f,  0.0f,
+                        0.0f,  1.0f,
+                       -5.3f, 18.0f );
+        float anum ( 2.0f );
+        mat2x3 bmat2x3 = amat2x3 * anum;
+        mat2x3 cmat2x3(  9.4f,  0.0f,
+                         0.0f,  2.0f,
+                       -10.6f, 36.0f );
+        CHECK_EQUAL( cmat2x3, bmat2x3 );
+    }
+    
+    TEST( Mat2x3ScalarPreMultiply )
+    {
+        using namespace gfx;
+        mat2x3 amat2x3( 4.7f,  0.0f,
+                        0.0f,  1.0f,
+                       -5.3f, 18.0f );
+        float anum ( 2.0f );
+        mat2x3 bmat2x3 = anum * amat2x3;
+        mat2x3 cmat2x3(  9.4f,  0.0f,
+                         0.0f,  2.0f,
+                       -10.6f, 36.0f );
+        CHECK_EQUAL( cmat2x3, bmat2x3 );
+    }
+    
+    TEST( Mat2x3ScalarPostDivide )
+    {
+        using namespace gfx;
+        mat2x3 amat2x3( 4.7f,  0.0f,
+                        0.0f,  1.0f,
+                       -5.3f, 18.0f );
+        float anum ( 2.0f );
+        mat2x3 bmat2x3 = amat2x3 / anum;
+        mat2x3 cmat2x3( 2.35f, 0.0f,
+                        0.0f,  0.5f,
+                       -2.65f, 9.0f );
+        CHECK_EQUAL( cmat2x3, bmat2x3 );
+    }
+    
+    TEST( Mat2x3Assignment )
+    {
+        using namespace gfx;
+        mat2x3 amat2x3( 4.7f,  0.0f,
+                        0.0f,  1.0f,
+                       -5.3f, 18.0f );
+        mat2x3 bmat2x3;
+        bmat2x3 = amat2x3;
+        CHECK_EQUAL( amat2x3, bmat2x3 );
+    }
+    
+    TEST( Mat2x3Lookup )
+    {
+        using namespace gfx;
+        mat2x3 amat2x3( 4.7f,  0.0f,
+                        0.0f,  1.0f,
+                       -5.3f, 18.0f );
+        CHECK_EQUAL( amat2x3(0,0),  4.7f );
+        CHECK_EQUAL( amat2x3(0,1),  0.0f );
+        CHECK_EQUAL( amat2x3(0,2), -5.3f );
+        CHECK_EQUAL( amat2x3(1,0),  0.0f );
+        CHECK_EQUAL( amat2x3(1,1),  1.0f );
+        CHECK_EQUAL( amat2x3(1,2), 18.0f );
     }
 }
 

@@ -1,12 +1,13 @@
 
 # The testing framework will be altered to use unittest instead of simple text output
 
-newTypes: $(BIN)/datatypeTest.exe $(BIN)/operatorTest
+newTypes: $(BIN)/datatypeTest.exe \
+          $(BIN)/operatorTest \
+          $(BIN)/constant_test
 
-$(BIN)/datatypeTest.exe: $(OBJ)/datatypeTest.o \
-                         $(OBJ)/swizzTest.o
+$(BIN)/datatypeTest.exe: $(OBJ)/datatypeTest.o 
 
-	g++ $(OBJ)/datatypeTest.o $(OBJ)/swizzTest.o \
+	g++ $(OBJ)/datatypeTest.o \
 	    -L ../../dev_lib -lUnitTest++ \
 	    -o $(BIN)/datatypeTest.exe
 
@@ -48,6 +49,18 @@ $(OBJ)/op.o:    $(GMATH)/op.cpp \
                 $(GMATH)/constant.hpp
 	g++ -c $(GMATH)/op.cpp $(COM) \
             -o $(OBJ)/op.o
+            
+$(BIN)/constant_test: $(OBJ)/constant_test.o
+
+	g++ $(OBJ)/constant_test.o \
+	    -L ../../dev_lib -lUnitTest++ \
+	    -o $(BIN)/constant_test
+	    
+$(OBJ)/constant_test.o: $(GMATH)/constant_test.cpp \
+                        $(GMATH)/constant.hpp
+	g++ -c $(GMATH)/constant_test.cpp $(COM) \
+	    -L ../../dev_lib -lUnitTest++ \
+	    -o $(OBJ)/constant_test.o
 #$(OBJ)/type.o: $(GMATH)/type.cpp $(GMATH)/type.hpp $(GMATH)/datatypes.hpp
 #	g++ -c $(GMATH)/type.cpp $(COM) -o $(OBJ)/type.o
 #$(OBJ)/datatypes.o: $(GMATH)/datatypes.cpp $(GMATH)/datatypes.hpp $(GMATH)/type_op.hpp

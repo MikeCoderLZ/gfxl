@@ -12,7 +12,7 @@ namespace gfx {
 // Besides, you can never be too sure with matrices and graphics.
 
 template< typename T >
-class cnst {
+class lit {
 public:
     constexpr static T const    thousandth     = 1 / 1000;
     constexpr static T const    hundredth      = 1 / 100;
@@ -44,7 +44,7 @@ public:
 };
 
 template<>
-class cnst<float> {
+class lit<float> {
 public:
     constexpr static float const    thousandth     = 0.001f;
     constexpr static float const    hundredth      = 0.01f;
@@ -75,8 +75,10 @@ public:
     constexpr static float const    delta          = 0.00001f;
 };
 
+typedef lit<float>  f_lit;
+
 template<>
-class cnst<double> {
+class lit<double> {
 public:
     constexpr static double const    thousandth     = 0.001;
     constexpr static double const    hundredth      = 0.01;
@@ -107,6 +109,8 @@ public:
     constexpr static double const    delta          = 0.0000000001;
 };
 
+typedef lit<double>  d_lit;
+
 template< typename T >
 class angle_t {
     public:
@@ -128,32 +132,32 @@ typedef angle_t<double> d_angle;
 template < typename T > inline
 angle_t<T> angle_t< T >::in_rads( T in_rads )
 {
-    return angle_t<T>( in_rads * cnst<T>::inv_tau );
+    return angle_t<T>( in_rads * lit<T>::inv_tau );
 }
 template < typename T > inline
 angle_t<T> angle_t< T >::in_grads( T in_grads )
 {
-    return angle_t<T>( in_grads * (cnst<T>::thousandth * cnst<T>::five) );
+    return angle_t<T>( in_grads * (lit<T>::thousandth * lit<T>::five) );
 }
 template < typename T > inline
 angle_t<T> angle_t< T >::in_degs( T in_degs )
 {
-    return angle_t<T>( in_degs * cnst<T>::inv_360 );
+    return angle_t<T>( in_degs * lit<T>::inv_360 );
 }
 template < typename T > inline
 T angle_t< T >::to_rads() const
 {
-    return unians * cnst<T>::tau;
+    return unians * lit<T>::tau;
 }
 template < typename T > inline
 T angle_t< T >::to_grads() const
 {
-    return unians * (cnst<T>::two * cnst<T>::hundred);
+    return unians * (lit<T>::two * lit<T>::hundred);
 }
 template < typename T > inline
 T angle_t< T >::to_degs() const
 {
-    return unians * cnst<T>::n360;
+    return unians * lit<T>::n360;
 }
 
 }
