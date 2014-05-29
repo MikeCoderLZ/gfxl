@@ -3042,6 +3042,57 @@ SUITE( Matrix2x3 )
         CHECK_EQUAL( cmat2x3, bmat2x3 );
     }
     
+    TEST( Mat2x3Mult3x2 )
+    {
+        using namespace gfx;
+        mat3x2 amat3x2 ( 4.7f,  0.0f, -5.3f,
+                         0.0f,  1.0f, 18.0f );
+        mat2x3 amat2x3 (  1.0f, 0.0f,
+                          0.0f, 1.0f,
+                         10.0f, 5.0f );
+        
+        mat3 amat3 = amat2x3 * amat3x2;
+        mat3 bmat3 (  4.7f, 0.0f, -5.3f,
+                      0.0f, 1.0f, 18.0f,
+                     47.0f, 5.0f, 37.0f );
+        CHECK_EQUAL( bmat3, amat3 );
+        
+    }
+    
+    TEST( Mat2x3Mult4x2 )
+    {
+        using namespace gfx;
+        mat4x2 amat4x2 ( 4.7f,  0.0f, -5.3f, 10.0f,
+                         0.0f,  1.0f, 18.0f, -2.0f );
+        mat2x3 amat2x3 (  1.0f, 0.0f,
+                          0.0f, 1.0f,
+                         10.0f, 5.0f );
+        
+        mat4x3 amat4x3 = amat2x3 * amat4x2;
+        mat4x3 bmat4x3 (  4.7f, 0.0f, -5.3f, 10.0f,
+                          0.0f, 1.0f, 18.0f, -2.0f,
+                         47.0f, 5.0f, 37.0f, 90.0f );
+        CHECK_EQUAL( bmat4x3, amat4x3 );
+        
+    }
+    
+    TEST( Mat2x3Mult2 )
+    {
+        using namespace gfx;
+        mat2 amat2 ( 4.7f,  0.0f,
+                     0.0f,  1.0f );
+        mat2x3 amat2x3 (  1.0f, 0.0f,
+                          0.0f, 1.0f,
+                         10.0f, 5.0f );
+        
+        mat2x3 bmat2x3 = amat2x3 * amat2;
+        mat2x3 cmat2x3 (  4.7f, 0.0f,
+                          0.0f, 1.0f,
+                         47.0f, 5.0f );
+        CHECK_EQUAL( cmat2x3, bmat2x3 );
+        
+    }
+    
     TEST( Mat2x3VectorPostMultiply )
     {
         using namespace gfx;
@@ -3455,6 +3506,38 @@ SUITE( Matrix3x2 )
         mat2 bmat2 ( -48.3f, -26.5,
                      180.0f, 91.0f );
         CHECK_EQUAL( bmat2, amat2 );
+        
+    }
+    
+    TEST( Mat3x2Mult4x3 )
+    {
+        using namespace gfx;
+        mat3x2 amat3x2 ( 4.7f,  0.0f, 2.0f,
+                         0.0f,  1.0f, 5.0f );
+        mat4x3 amat4x3 (  4.7f, 0.0f, 2.0f, 10.0f,
+                          0.0f, 1.0f, 5.0f, -2.0f,
+                         -5.3f, 18.0f, -3.0f, 1.0f );
+        
+        mat4x2 amat4x2 = amat3x2 * amat4x3;
+        mat4x2 bmat4x2 ( 11.49f, 36.0f,   3.4f, 49.0f,
+                         -26.5f, 91.0f, -10.0f,  3.0f );
+        CHECK_EQUAL( bmat4x2, amat4x2 );
+        
+    }
+    
+    TEST( Mat3x2Mult3 )
+    {
+        using namespace gfx;
+        mat3x2 amat3x2 ( 4.7f,  0.0f, 2.0f,
+                         0.0f,  1.0f, 5.0f );
+        mat3 amat3 (  4.7f,  0.0f,  2.0f,
+                      0.0f,  1.0f,  5.0f,
+                     -5.3f, 18.0f, -3.0f );
+        
+        mat3x2 bmat3x2 = amat3x2 * amat3;
+        mat3x2 cmat3x2 ( 11.49f, 36.0f,   3.4f,
+                         -26.5f, 91.0f, -10.0f );
+        CHECK_EQUAL( cmat3x2, bmat3x2 );
         
     }
     
@@ -3884,6 +3967,25 @@ SUITE( Matrix2x4 )
                          5.3f, -18.0f,
                         -10.0f, 2.0f );
         CHECK_EQUAL( cmat2x4, bmat2x4 );
+    }
+    
+    TEST( Mat2x4Mult4x2 )
+    {
+        using namespace gfx;
+        mat4x2 amat4x2 ( 4.7f,  0.0f, -5.3f, 10.0f,
+                         0.0f,  1.0f, 18.0f, -2.0f );
+        mat2x4 amat2x4 (  1.0f, 0.0f,
+                          0.0f, 1.0f,
+                         10.0f, 5.0f,
+                         1.5f, -1.0f );
+        
+        mat4 amat4 = amat2x4 * amat4x2;
+        mat4 bmat4 ( 4.7f, 0.0f, -5.3f, 10.0f,
+                     0.0f, 1.0f, 18.0f, -2.0f,
+                     47.0f, 5.0f, 37.0f, 90.0f,
+                     7.05f, -1.0f, -25.95f, 17.0f );
+        
+        CHECK_EQUAL( bmat4, amat4 );
     }
     
     TEST( Mat2x4VectorPostMultiply )
@@ -4328,22 +4430,57 @@ SUITE( Matrix4x2 )
                          0.0f,  -1.0f, -18.0f, 2.0f );
         CHECK_EQUAL( cmat4x2, bmat4x2 );
     }
-    /*
-    TEST( Mat4x2Mult2x3 )
+    
+    TEST( Mat4x2Mult2x4 )
     {
         using namespace gfx;
-        mat4x2 amat4x2 ( 4.7f,  0.0f, -5.3f,
-                         0.0f,  1.0f, 18.0f );
-        mat2x3 amat2x3 (  1.0f, 0.0f,
+        mat4x2 amat4x2 ( 4.7f,  0.0f, -5.3f, 10.0f,
+                         0.0f,  1.0f, 18.0f, -2.0f );
+        mat2x4 amat2x4 (  1.0f, 0.0f,
                           0.0f, 1.0f,
-                         10.0f, 5.0f );
+                         10.0f, 5.0f,
+                         1.5f, -1.0f );
         
-        mat2 amat2 = amat4x2 * amat2x3;
-        mat2 bmat2 ( -48.3f, -26.5,
-                     180.0f, 91.0f );
+        mat2 amat2 = amat4x2 * amat2x4;
+        mat2 bmat2 ( -33.3f, -36.5,
+                     177.0f, 93.0f );
         CHECK_EQUAL( bmat2, amat2 );
         
-    }*/
+    }
+    
+    TEST( Mat4x2Mult3x4 )
+    {
+        using namespace gfx;
+        mat4x2 amat4x2 ( 4.7f,  0.0f, -5.3f, 10.0f,
+                         0.0f,  1.0f, 18.0f, -2.0f );
+        mat3x4 amat3x4 (  1.0f, 0.0f,  5.0f,
+                          0.0f, 1.0f,  7.0f,
+                         10.0f, 5.0f,  0.0f,
+                         1.5f, -1.0f, -2.0f );
+        
+        mat3x2 amat3x2 = amat4x2 * amat3x4;
+        mat3x2 bmat3x2 ( -33.3f, -36.5, 3.5f,
+                         177.0f, 93.0f, 11.0f );
+        CHECK_EQUAL( bmat3x2, amat3x2 );
+        
+    }
+    
+    TEST( Mat4x2Mult4 )
+    {
+        using namespace gfx;
+        mat4x2 amat4x2 ( 4.7f,  0.0f, -5.3f, 10.0f,
+                         0.0f,  1.0f, 18.0f, -2.0f );
+        mat4 amat4 (  1.0f, 0.0f,  5.0f, -6.0f,
+                      0.0f, 1.0f,  7.0f, -3.0f,
+                     10.0f, 5.0f,  0.0f,  8.0f,
+                     1.5f, -1.0f, -2.0f, 11.0f );
+        
+        mat4x2 bmat4x2 = amat4x2 * amat4;
+        mat4x2 cmat4x2 ( -33.3f, -36.5, 3.5f, 39.4f,
+                         177.0f, 93.0f, 11.0f, 119.0f );
+        CHECK_EQUAL( cmat4x2, bmat4x2 );
+        
+    }
     
     TEST( Mat4x2VectorPostMultiply )
     {
@@ -4516,6 +4653,1111 @@ SUITE( Matrix4x2 )
         mat4x2 bmat4x2( 4.7f,  0.0f, -5.3f, 10.0f,
                         0.0f,  1.0f, 18.0f, -2.0f );
         CHECK_EQUAL( bmat4x2, amat4x2 );
+    }
+}
+
+
+
+
+
+SUITE( Matrix3x4 )
+{
+    TEST( Mat3x4Construction )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4;
+        CHECK_EQUAL( 0.0f, amat3x4(0,0) );
+        CHECK_EQUAL( 0.0f, amat3x4(0,1) );
+        CHECK_EQUAL( 0.0f, amat3x4(0,2) );
+        CHECK_EQUAL( 0.0f, amat3x4(0,3) );
+        
+        CHECK_EQUAL( 0.0f, amat3x4(1,0) );
+        CHECK_EQUAL( 0.0f, amat3x4(1,1) );
+        CHECK_EQUAL( 0.0f, amat3x4(1,2) );
+        CHECK_EQUAL( 0.0f, amat3x4(1,3) );
+        
+        CHECK_EQUAL( 0.0f, amat3x4(2,0) );
+        CHECK_EQUAL( 0.0f, amat3x4(2,1) );
+        CHECK_EQUAL( 0.0f, amat3x4(2,2) );
+        CHECK_EQUAL( 0.0f, amat3x4(2,3) );
+        
+        CHECK_EQUAL( amat3x4.n_cols, 3u );
+        CHECK_EQUAL( amat3x4.n_rows, 4u );
+        CHECK_EQUAL( amat3x4.n_comp, 12u );
+    }
+    
+    TEST( Mat3x4CopyConstruction )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4( 4.7f,  0.0f,  2.0f,
+                        0.0f,  1.0f,  5.0f,
+                       -5.3f, 18.0f, -3.0f,
+                       10.0f, -2.0f,  1.0f );
+        mat3x4 bmat3x4 = amat3x4;
+        CHECK_EQUAL( amat3x4, bmat3x4 );
+        bmat3x4(2,1) = -15.0f;
+        // No side effects
+        CHECK( amat3x4(2,1) != bmat3x4(2,1) );
+    }
+    
+    TEST( Mat3x4ExplicitConstruction )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4( 4.7f,  0.0f,  2.0f,
+                        0.0f,  1.0f,  5.0f,
+                       -5.3f, 18.0f, -3.0f,
+                       10.0f, -2.0f,  1.0f );
+        mat3x4 bmat3x4;
+        bmat3x4(0,0) =  4.7f;    bmat3x4(1,0) =  0.0f;    bmat3x4(2,0) =   2.0f;
+        bmat3x4(0,1) =  0.0f;    bmat3x4(1,1) =  1.0f;    bmat3x4(2,1) =   5.0f;
+        bmat3x4(0,2) = -5.3f;    bmat3x4(1,2) = 18.0f;    bmat3x4(2,2) =  -3.0f;
+        bmat3x4(0,3) = 10.0f;    bmat3x4(1,3) = -2.0f;    bmat3x4(2,3) =   1.0f;
+        CHECK_EQUAL( bmat3x4, amat3x4 );
+    }
+    
+    TEST( Mat3x4FillConstruction )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4( 4.7f );
+        mat3x4 bmat3x4;
+        bmat3x4(0,0) = 4.7f;    bmat3x4(1,0) = 4.7f;    bmat3x4(2,0) = 4.7f;
+        bmat3x4(0,1) = 4.7f;    bmat3x4(1,1) = 4.7f;    bmat3x4(2,1) = 4.7f;
+        bmat3x4(0,2) = 4.7f;    bmat3x4(1,2) = 4.7f;    bmat3x4(2,2) = 4.7f;
+        bmat3x4(0,3) = 4.7f;    bmat3x4(1,3) = 4.7f;    bmat3x4(2,3) = 4.7f;
+        CHECK_EQUAL( bmat3x4, amat3x4 );
+    }
+    
+    TEST( Mat3x4ColumnConstruction )
+    {
+        using namespace gfx;
+        vec4 col0 ( 4.7f, 0.0f, -5.3f, 10.0f );
+        vec4 col1 ( 0.0f, 1.0f, 18.0f, -2.0f );
+        vec4 col2 ( 2.0f, 5.0f, -3.0f, 1.0f );
+        mat3x4 amat3x4( col0, col1, col2 );
+        mat3x4 bmat3x4( 4.7f,  0.0f,  2.0f,
+                        0.0f,  1.0f,  5.0f,
+                       -5.3f, 18.0f, -3.0f,
+                       10.0f, -2.0f,  1.0f );
+        CHECK_EQUAL( bmat3x4, amat3x4 );
+    }
+    
+    TEST( Mat3x4UpperIdentity )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4 = mat3x4::upper_identity();
+        mat3x4 bmat3x4( 1.0f, 0.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 0.0f, 1.0f,
+                        0.0f, 0.0f, 0.0f );
+        CHECK_EQUAL( bmat3x4, amat3x4 );
+    }
+    
+    TEST( Mat3x4RowConstruction )
+    {
+        using namespace gfx;
+        vec3 row0 (  4.7f,  0.0f,  2.0f );
+        vec3 row1 (  0.0f,  1.0f,  5.0f );
+        vec3 row2 ( -5.3f, 18.0f, -3.0f );
+        vec3 row3 ( 10.0f, -2.0f,  1.0f );
+        mat3x4 amat3x4 =  mat3x4::row_vectors( row0, row1, row2, row3 );
+        mat3x4 bmat3x4( 4.7f,  0.0f,  2.0f,
+                        0.0f,  1.0f,  5.0f,
+                       -5.3f, 18.0f, -3.0f,
+                       10.0f, -2.0f,  1.0f );
+        CHECK_EQUAL( bmat3x4, amat3x4 );
+    }
+    
+    TEST( Mat3x4FuzzyEquality )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4( 4.7f,  0.0f,  2.0f,
+                        0.0f,  1.0f,  5.0f,
+                       -5.3f, 18.0f, -3.0f,
+                       10.0f, -2.0f,  1.0f );
+        mat3x4 bmat3x4 = amat3x4;
+        CHECK_EQUAL( amat3x4, bmat3x4 );
+        // Make sure that a modification less than
+        // the defined delta is still equal...
+        bmat3x4(0,0) += f_lit::delta * 0.5f;
+        CHECK_EQUAL( amat3x4, bmat3x4 );
+        // ...and a modification of exactly delta isn't...
+        bmat3x4(1,0) = f_lit::delta;
+        CHECK( amat3x4 != bmat3x4 );
+        // ...and that a modification greater than
+        // delta is not
+        bmat3x4(1,0) = 0.0f;
+        bmat3x4(1,0) += std::nextafter(f_lit::delta, 1.0f);
+        CHECK( amat3x4 != bmat3x4 );
+    }
+    
+    TEST( Mat3x4Inequality )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4( 4.7f,  0.0f,  2.0f,
+                        0.0f,  1.0f,  5.0f,
+                       -5.3f, 18.0f, -3.0f,
+                       10.0f, -2.0f,  1.0f );
+        mat3x4 bmat3x4 = amat3x4;
+        CHECK_EQUAL( amat3x4, bmat3x4 );
+        // Make sure that a modification less than
+        // the defined delta is still equal...
+        bmat3x4(0,0) += f_lit::delta * 0.5f;
+        CHECK( false == ( amat3x4 < bmat3x4 ) );
+        bmat3x4(0,0) = 4.7f;
+        bmat3x4(0,0) -= f_lit::delta * 0.5f;
+        CHECK( false == ( amat3x4 > bmat3x4 ) );
+        // ...and a modification of exactly delta isn't
+        bmat3x4(0,0) = 4.7f;
+        bmat3x4(0,0) += f_lit::delta;
+        bmat3x4(0,1) += f_lit::delta;
+        bmat3x4(0,2) += f_lit::delta;
+        bmat3x4(0,3) += f_lit::delta;
+        
+        bmat3x4(1,0) += f_lit::delta;
+        bmat3x4(1,1) += f_lit::delta;
+        bmat3x4(1,2) += f_lit::delta;
+        bmat3x4(1,3) += f_lit::delta;
+        
+        bmat3x4(2,0) += f_lit::delta;
+        bmat3x4(2,1) += f_lit::delta;
+        bmat3x4(2,2) += f_lit::delta;
+        bmat3x4(2,3) += f_lit::delta;
+        
+        CHECK( amat3x4 < bmat3x4 );
+        bmat3x4 = amat3x4;
+        bmat3x4(0,0) -= f_lit::delta;
+        bmat3x4(0,1) -= f_lit::delta;
+        bmat3x4(0,2) -= f_lit::delta;
+        bmat3x4(0,3) -= f_lit::delta;
+        
+        bmat3x4(1,0) -= f_lit::delta;
+        bmat3x4(1,1) -= f_lit::delta;
+        bmat3x4(1,2) -= f_lit::delta;
+        bmat3x4(1,3) -= f_lit::delta;
+        
+        bmat3x4(2,0) -= f_lit::delta;
+        bmat3x4(2,1) -= f_lit::delta;
+        bmat3x4(2,2) -= f_lit::delta;
+        bmat3x4(2,3) -= f_lit::delta;
+        CHECK( amat3x4 > bmat3x4 );
+    }
+    
+    TEST( Mat3x4InequalityEquality ) // LOL, wot?
+    {
+        using namespace gfx;
+        mat3x4 amat3x4( 4.7f,  0.0f,  2.0f,
+                        0.0f,  1.0f,  5.0f,
+                       -5.3f, 18.0f, -3.0f,
+                       10.0f, -2.0f,  1.0f );
+        mat3x4 bmat3x4 = amat3x4;
+        CHECK_EQUAL( amat3x4, bmat3x4 );
+        CHECK( amat3x4 <= bmat3x4 );
+        CHECK( amat3x4 >= bmat3x4 );
+        // Make sure that a modification less than
+        // the defined delta is still equal...
+        bmat3x4(0,0) += f_lit::delta * 0.5f;
+        CHECK(  amat3x4 <= bmat3x4 );
+        bmat3x4(0,0) = 4.7f;
+        bmat3x4(0,0) -= f_lit::delta * 0.5f;
+        CHECK( amat3x4 >= bmat3x4 );
+        // ...and a modification of exactly delta isn't
+        bmat3x4(0,0) = 4.7f;
+        bmat3x4(0,0) += f_lit::delta;
+        bmat3x4(0,1) += f_lit::delta;
+        bmat3x4(0,2) += f_lit::delta;
+        bmat3x4(0,3) += f_lit::delta;
+        
+        bmat3x4(1,0) += f_lit::delta;
+        bmat3x4(1,1) += f_lit::delta;
+        bmat3x4(1,2) += f_lit::delta;
+        bmat3x4(1,3) += f_lit::delta;
+        
+        bmat3x4(2,0) += f_lit::delta;
+        bmat3x4(2,1) += f_lit::delta;
+        bmat3x4(2,2) += f_lit::delta;
+        bmat3x4(2,3) += f_lit::delta;
+        CHECK( amat3x4 < bmat3x4 );
+        bmat3x4 = amat3x4;
+        bmat3x4(0,0) -= f_lit::delta;
+        bmat3x4(0,1) -= f_lit::delta;
+        bmat3x4(0,2) -= f_lit::delta;
+        bmat3x4(0,3) -= f_lit::delta;
+        
+        bmat3x4(1,0) -= f_lit::delta;
+        bmat3x4(1,1) -= f_lit::delta;
+        bmat3x4(1,2) -= f_lit::delta;
+        bmat3x4(1,3) -= f_lit::delta;
+        
+        bmat3x4(2,0) -= f_lit::delta;
+        bmat3x4(2,1) -= f_lit::delta;
+        bmat3x4(2,2) -= f_lit::delta;
+        bmat3x4(2,3) -= f_lit::delta;
+        CHECK( amat3x4 > bmat3x4 );
+    }
+    
+    TEST( Mat3x4Addition )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4( 4.7f, 0.0f,  2.0f,
+                        0.0f, 0.0f,  0.0f,
+                       -5.3f, 0.0f, -3.0f,
+                       10.0f, 0.0f,  0.0f );
+        mat3x4 bmat3x4( 0.0f,  0.0f, 0.0f,
+                        0.0f,  1.0f, 5.0f,
+                        0.0f, 18.0f, 0.0f,
+                        0.0f, -2.0f, 1.0f );
+        mat3x4 cmat3x4 = amat3x4 + bmat3x4;
+        mat3x4 dmat3x4( 4.7f,  0.0f,  2.0f,
+                        0.0f,  1.0f,  5.0f,
+                       -5.3f, 18.0f, -3.0f,
+                       10.0f, -2.0f,  1.0f );
+        CHECK_EQUAL( cmat3x4, dmat3x4 );
+    }
+    
+    TEST( Mat3x4Subtraction )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4( 4.7f, 0.0f,  2.0f,
+                        0.0f, 0.0f,  0.0f,
+                       -5.3f, 0.0f, -3.0f,
+                       10.0f, 0.0f,  0.0f );
+        mat3x4 bmat3x4( 0.0f,  0.0f, 0.0f,
+                        0.0f,  1.0f, 5.0f,
+                        0.0f, 18.0f, 0.0f,
+                        0.0f, -2.0f, 1.0f );
+        mat3x4 cmat3x4 = amat3x4 - bmat3x4;
+        mat3x4 dmat3x4( 4.7f,   0.0f,  2.0f,
+                        0.0f,  -1.0f, -5.0f,
+                       -5.3f, -18.0f, -3.0f,
+                       10.0f,   2.0f, -1.0f );
+        CHECK_EQUAL( cmat3x4, dmat3x4 );
+    }
+    
+    TEST( Mat3x4Negation )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4( 4.7f,  0.0f,  2.0f,
+                        0.0f,  1.0f,  5.0f,
+                       -5.3f, 18.0f, -3.0f,
+                       10.0f, -2.0f,  1.0f );
+        mat3x4 bmat3x4 = -amat3x4;
+        mat3x4 cmat3x4( -4.7f,   0.0f, -2.0f,
+                         0.0f,  -1.0f, -5.0f,
+                         5.3f, -18.0f,  3.0f,
+                       -10.0f,   2.0f, -1.0f );
+        CHECK_EQUAL( cmat3x4, bmat3x4 );
+    }
+    
+    TEST( Mat3x4Mult4x3 )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3 ( 4.7f,  0.0f,  2.0f, 10.0f,
+                         0.0f,  1.0f,  5.0f, -2.0f,
+                        -5.3f, 18.0f, -3.0f,  1.0f );
+        mat3x4 amat3x4 ( 4.7f,  0.0f,  2.0f,
+                         0.0f,  1.0f,  5.0f,
+                        -5.3f, 18.0f, -3.0f,
+                        10.0f, -2.0f,  1.0f );
+        
+        mat4 amat4 = amat3x4 * amat4x3;
+        mat4 bmat4 (  11.49f, 36.0f,   3.4f,  49.0f,
+                     -26.5f,  91.0f, -10.0f,   3.0f,
+                     -9.01f, -36.0f,  88.4f, -92.0f,
+                      41.7f,  16.0f,   7.0f, 105.0f );
+        
+        CHECK_EQUAL( bmat4, amat4 );
+    }
+    
+        TEST( Mat3x4Mult2x3 )
+    {
+        using namespace gfx;
+        mat2x3 amat2x3 ( 4.7f,  0.0f,
+                         0.0f,  1.0f,
+                        -5.3f, 18.0f );
+        mat3x4 amat3x4 ( 4.7f,  0.0f,  2.0f,
+                         0.0f,  1.0f,  5.0f,
+                        -5.3f, 18.0f, -3.0f,
+                        10.0f, -2.0f,  1.0f );
+        
+        mat2x4 amat2x4 = amat3x4 * amat2x3;
+        mat2x4 bmat2x4 (  11.49f, 36.0f,
+                         -26.5f,  91.0f,
+                         -9.01f, -36.0f,
+                          41.7f,  16.0f );
+        
+        CHECK_EQUAL( bmat2x4, amat2x4 );
+    }
+    
+    TEST( Mat3x4VectorPostMultiply )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4( 4.7f,  0.0f,  2.0f,
+                        0.0f,  1.0f,  5.0f,
+                       -5.3f, 18.0f, -3.0f,
+                       10.0f, -2.0f,  1.0f );
+        vec3 avec3 ( 1.0f, -1.0f, 5.0f );
+        vec4 avec4 = amat3x4 * avec3;
+        vec4 bvec4 ( 14.7f, 24.0f, -38.3f, 17.0f );
+        CHECK_EQUAL( bvec4, avec4 );
+    }
+    
+    TEST( Mat3x4VectorPreMultiply )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4( 4.7f,  0.0f,  2.0f,
+                        0.0f,  1.0f,  5.0f,
+                       -5.3f, 18.0f, -3.0f,
+                       10.0f, -2.0f,  1.0f );
+        vec4 avec4 ( 1.0f, -1.0f, 0.0f, 10.0f );
+        vec3 avec3 = avec4 * amat3x4;
+        vec3 bvec3 ( 104.7f, -21.0f, 7.0f );
+        CHECK_EQUAL( bvec3, avec3 );
+    }
+    
+    TEST( Mat3x4ScalarPostMultiply )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4( 4.7f,  0.0f,  2.0f,
+                        0.0f,  1.0f,  5.0f,
+                       -5.3f, 18.0f, -3.0f,
+                       10.0f, -2.0f,  1.0f );
+        float anum ( 2.0f );
+        mat3x4 bmat3x4 = amat3x4 * anum;
+        mat3x4 cmat3x4(  9.4f,  0.0f, 4.0f,
+                         0.0f,  2.0f, 10.0f,
+                       -10.6f, 36.0f, -6.0f,
+                        20.0f, -4.0f, 2.0f );
+        CHECK_EQUAL( cmat3x4, bmat3x4 );
+    }
+    
+    TEST( Mat3x4ScalarPreMultiply )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4( 4.7f,  0.0f,  2.0f,
+                        0.0f,  1.0f,  5.0f,
+                       -5.3f, 18.0f, -3.0f,
+                       10.0f, -2.0f,  1.0f );
+        float anum ( 2.0f );
+        mat3x4 bmat3x4 = anum * amat3x4;
+        mat3x4 cmat3x4(  9.4f,  0.0f, 4.0f,
+                         0.0f,  2.0f, 10.0f,
+                       -10.6f, 36.0f, -6.0f,
+                        20.0f, -4.0f, 2.0f );
+        CHECK_EQUAL( cmat3x4, bmat3x4 );
+    }
+    
+    TEST( Mat3x4ScalarPostDivide )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4( 4.7f,  0.0f,  2.0f,
+                        0.0f,  1.0f,  5.0f,
+                       -5.3f, 18.0f, -3.0f,
+                       10.0f, -2.0f,  1.0f );
+        float anum ( 2.0f );
+        mat3x4 bmat3x4 = amat3x4 / anum;
+        mat3x4 cmat3x4( 2.35f, 0.0f, 1.0f,
+                        0.0f,  0.5f, 2.5f,
+                       -2.65f, 9.0f, -1.5f,
+                        5.0f, -1.0f, 0.5f );
+        CHECK_EQUAL( cmat3x4, bmat3x4 );
+    }
+    
+    TEST( Mat3x4Assignment )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4( 4.7f,  0.0f,  2.0f,
+                        0.0f,  1.0f,  5.0f,
+                       -5.3f, 18.0f, -3.0f,
+                       10.0f, -2.0f,  1.0f );
+        mat3x4 bmat3x4;
+        bmat3x4 = amat3x4;
+        CHECK_EQUAL( amat3x4, bmat3x4 );
+    }
+    
+    TEST( Mat3x4Lookup )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4( 4.7f,  0.0f,  2.0f,
+                        0.0f,  1.0f,  5.0f,
+                       -5.3f, 18.0f, -3.0f,
+                       10.0f, -2.0f,  1.0f );
+        CHECK_EQUAL(  4.7f, amat3x4(0,0) );
+        CHECK_EQUAL(  0.0f, amat3x4(0,1) );
+        CHECK_EQUAL( -5.3f, amat3x4(0,2) );
+        CHECK_EQUAL( 10.0f, amat3x4(0,3) );
+        
+        CHECK_EQUAL(  0.0f, amat3x4(1,0) );
+        CHECK_EQUAL(  1.0f, amat3x4(1,1) );
+        CHECK_EQUAL( 18.0f, amat3x4(1,2) );
+        CHECK_EQUAL( -2.0f, amat3x4(1,3) );
+        
+        CHECK_EQUAL(  2.0f, amat3x4(2,0) );
+        CHECK_EQUAL(  5.0f, amat3x4(2,1) );
+        CHECK_EQUAL( -3.0f, amat3x4(2,2) );
+        CHECK_EQUAL(  1.0f, amat3x4(2,3) );
+        
+        vec4 avec4 ( 0.0f, 1.0f, 18.0f, -2.0f );
+        CHECK_EQUAL( avec4, amat3x4[1] );
+        avec4(y) = 10.0f;
+        amat3x4[1] = avec4;
+        CHECK_EQUAL( avec4, amat3x4[1] );
+        avec4(x) = 2.0f;
+        CHECK( avec4 != amat3x4[1] );
+        amat3x4[1][0] = 2.0f;
+        CHECK_EQUAL( avec4, amat3x4[1] );
+    }
+    
+    TEST( Mat3x4ColumnLookup )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4( 4.7f,  0.0f,  2.0f,
+                        0.0f,  1.0f,  5.0f,
+                       -5.3f, 18.0f, -3.0f,
+                       10.0f, -2.0f,  1.0f );
+        CHECK_EQUAL(  4.7f, amat3x4(0,0) );
+        CHECK_EQUAL(  0.0f, amat3x4(0,1) );
+        CHECK_EQUAL( -5.3f, amat3x4(0,2) );
+        CHECK_EQUAL( 10.0f, amat3x4(0,3) );
+        
+        CHECK_EQUAL(  0.0f, amat3x4(1,0) );
+        CHECK_EQUAL(  1.0f, amat3x4(1,1) );
+        CHECK_EQUAL( 18.0f, amat3x4(1,2) );
+        CHECK_EQUAL( -2.0f, amat3x4(1,3) );
+        
+        CHECK_EQUAL(  2.0f, amat3x4(2,0) );
+        CHECK_EQUAL(  5.0f, amat3x4(2,1) );
+        CHECK_EQUAL( -3.0f, amat3x4(2,2) );
+        CHECK_EQUAL(  1.0f, amat3x4(2,3) );
+        
+        vec4 avec4 ( 0.0f, 1.0f, 18.0f, -2.0f );
+        CHECK_EQUAL( avec4, amat3x4.column(1) );
+        avec4(y) = 10.0f;
+        amat3x4.column(1) = avec4;
+        CHECK_EQUAL( avec4, amat3x4.column(1) );
+        avec4(x) = 2.0f;
+        CHECK( avec4 != amat3x4.column(1) );
+        amat3x4.column(1)[0] = 2.0f;
+        CHECK_EQUAL( avec4, amat3x4.column(1) );
+    }
+    
+    TEST( Mat3x4ColumnAssignment )
+    {
+        using namespace gfx;
+        vec4 avec4( 4.7f, 0.0f, -5.3f, 10.0f );
+        vec4 bvec4( 0.0f, 1.0f, 18.0f, -2.0f );
+        vec4 cvec4( 2.0f, 5.0f, -3.0f,  1.0f );
+        mat3x4 amat3x4;
+        amat3x4.columns( avec4, bvec4, cvec4 );
+        mat3x4 bmat3x4( 4.7f,  0.0f,  2.0f,
+                        0.0f,  1.0f,  5.0f,
+                       -5.3f, 18.0f, -3.0f,
+                       10.0f, -2.0f,  1.0f );
+        CHECK_EQUAL( bmat3x4, amat3x4 );
+    }
+    
+    TEST( Mat3x4FillAssignment )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4;
+        amat3x4.fill( 2.0f );
+        mat3x4 bmat3x4( 2.0f, 2.0f, 2.0f,
+                        2.0f, 2.0f, 2.0f,
+                        2.0f, 2.0f, 2.0f,
+                        2.0f, 2.0f, 2.0f );
+        CHECK_EQUAL( bmat3x4, amat3x4 );
+    }
+    
+    TEST( Mat3x4RowLookup )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4( 4.7f,  0.0f,  2.0f,
+                        0.0f,  1.0f,  5.0f,
+                       -5.3f, 18.0f, -3.0f,
+                       10.0f, -2.0f,  1.0f );
+        vec3 avec3( 4.7f, 0.0f, 2.0f );
+        vec3 bvec3( 0.0f, 1.0f, 5.0f );
+        vec3 cvec3( -5.3f, 18.0f, -3.0f );
+        vec3 dvec3( 10.0f, -2.0f, 1.0f );
+
+        CHECK_EQUAL( avec3, amat3x4.row(0) );
+        CHECK_EQUAL( bvec3, amat3x4.row(1) );
+        CHECK_EQUAL( cvec3, amat3x4.row(2) );
+        CHECK_EQUAL( dvec3, amat3x4.row(3) );
+        avec3(y) = 10.0f;
+        amat3x4.row(0) = avec3;
+        CHECK_EQUAL( avec3, amat3x4.row(0) );
+        avec3(x) = 2.0f;
+        CHECK( avec3 != amat3x4.row(0) );
+        amat3x4.row(0)[0] = 2.0f;
+        CHECK_EQUAL( avec3, amat3x4.row(0) );
+    }
+    
+    TEST( Mat3x4RowAssignment )
+    {
+        using namespace gfx;
+        vec3 avec3( 4.7f, 0.0f, 2.0f );
+        vec3 bvec3( 0.0f, 1.0f, 5.0f );
+        vec3 cvec3( -5.3f, 18.0f, -3.0f );
+        vec3 dvec3( 10.0f, -2.0f, 1.0f );
+        mat3x4 amat3x4;
+        amat3x4.rows( avec3, bvec3, cvec3, dvec3 );
+        mat3x4 bmat3x4( 4.7f,  0.0f,  2.0f,
+                        0.0f,  1.0f,  5.0f,
+                       -5.3f, 18.0f, -3.0f,
+                       10.0f, -2.0f,  1.0f );
+        CHECK_EQUAL( bmat3x4, amat3x4 );
+    }
+}
+
+
+
+
+
+SUITE( Matrix4x3 )
+{
+    TEST( Mat4x3Construction )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3;
+        CHECK_EQUAL( 0.0f, amat4x3(0,0) );
+        CHECK_EQUAL( 0.0f, amat4x3(0,1) );
+        CHECK_EQUAL( 0.0f, amat4x3(0,2) );
+        
+        CHECK_EQUAL( 0.0f, amat4x3(1,0) );
+        CHECK_EQUAL( 0.0f, amat4x3(1,1) );
+        CHECK_EQUAL( 0.0f, amat4x3(1,2) );
+        
+        CHECK_EQUAL( 0.0f, amat4x3(2,0) );
+        CHECK_EQUAL( 0.0f, amat4x3(2,1) );
+        CHECK_EQUAL( 0.0f, amat4x3(2,2) );
+        
+        CHECK_EQUAL( 0.0f, amat4x3(3,0) );
+        CHECK_EQUAL( 0.0f, amat4x3(3,1) );
+        CHECK_EQUAL( 0.0f, amat4x3(3,2) );
+        
+        CHECK_EQUAL( amat4x3.n_cols, 4u );
+        CHECK_EQUAL( amat4x3.n_rows, 3u );
+        CHECK_EQUAL( amat4x3.n_comp, 12u );
+    }
+    
+    TEST( Mat4x3CopyConstruction )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        mat4x3 bmat4x3 = amat4x3;
+        CHECK_EQUAL( amat4x3, bmat4x3 );
+        bmat4x3(0,0) = -15.0f;
+        // No side effects
+        CHECK( amat4x3(0,0) != bmat4x3(0,0) );
+    }
+    
+    TEST( Mat4x3ExplicitConstruction )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        mat4x3 bmat4x3;
+        bmat4x3(0,0) =  4.7f;
+        bmat4x3(0,1) =  0.0f;
+        bmat4x3(0,2) = -5.3f;
+        
+        bmat4x3(1,0) =  0.0f;
+        bmat4x3(1,1) =  1.0f;
+        bmat4x3(1,2) = 18.0f;
+        
+        bmat4x3(2,0) = 10.0f;
+        bmat4x3(2,1) = -3.0f;
+        bmat4x3(2,2) =  0.0f;
+        
+        bmat4x3(3,0) = 1.0f;
+        bmat4x3(3,1) = 5.0f;
+        bmat4x3(3,2) = 8.5f;
+        CHECK_EQUAL( bmat4x3, amat4x3 );
+    }
+    
+    TEST( Mat4x3FillConstruction )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3( 4.7f );
+        mat4x3 bmat4x3;
+        bmat4x3(0,0) = 4.7f;
+        bmat4x3(0,1) = 4.7f;
+        bmat4x3(0,2) = 4.7f;
+        
+        bmat4x3(1,0) = 4.7f;
+        bmat4x3(1,1) = 4.7f;
+        bmat4x3(1,2) = 4.7f;
+        
+        bmat4x3(2,0) = 4.7f;
+        bmat4x3(2,1) = 4.7f;
+        bmat4x3(2,2) = 4.7f;
+        
+        bmat4x3(3,0) = 4.7f;
+        bmat4x3(3,1) = 4.7f;
+        bmat4x3(3,2) = 4.7f;
+        
+        CHECK_EQUAL( bmat4x3, amat4x3 );
+    }
+    
+    TEST( Mat4x3ColumnConstruction )
+    {
+        using namespace gfx;
+        vec3 col0 (  4.7f,  0.0f, -5.3f );
+        vec3 col1 (  0.0f,  1.0f, 18.0f );
+        vec3 col2 ( 10.0f, -3.0f,  0.0f );
+        vec3 col3 (  1.0f,  5.0f,  8.5f );
+        mat4x3 amat4x3( col0, col1, col2, col3 );
+        mat4x3 bmat4x3( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        CHECK_EQUAL( bmat4x3, amat4x3 );
+    }
+    
+    TEST( Mat4x3LeftIdentity )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3 = mat4x3::left_identity();
+        mat4x3 bmat4x3( 1.0f, 0.0f, 0.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f, 0.0f,
+                        0.0f, 0.0f, 1.0f, 0.0f );
+        CHECK_EQUAL( bmat4x3, amat4x3 );
+    }
+    
+    TEST( Mat4x3RowConstruction )
+    {
+        using namespace gfx;
+        vec4 row0 (  4.7f,  0.0f, 10.0f, 1.0f );
+        vec4 row1 (  0.0f,  1.0f, -3.0f, 5.0f );
+        vec4 row2 ( -5.3f, 18.0f, 0.0f, 8.5f );
+        mat4x3 amat4x3 =  mat4x3::row_vectors( row0, row1, row2 );
+        mat4x3 bmat4x3( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        CHECK_EQUAL( bmat4x3, amat4x3 );
+    }
+    
+    TEST( Mat4x3FuzzyEquality )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        mat4x3 bmat4x3 = amat4x3;
+        CHECK_EQUAL( amat4x3, bmat4x3 );
+        // Make sure that a modification less than
+        // the defined delta is still equal...
+        bmat4x3(0,0) += f_lit::delta * 0.5f;
+        CHECK_EQUAL( amat4x3, bmat4x3 );
+        // ...and a modification of exactly delta isn't...
+        bmat4x3(1,0) = f_lit::delta;
+        CHECK( amat4x3 != bmat4x3 );
+        // ...and that a modification greater than
+        // delta is not
+        bmat4x3(1,0) = 0.0f;
+        bmat4x3(1,0) += std::nextafter(f_lit::delta, 1.0f);
+        CHECK( amat4x3 != bmat4x3 );
+    }
+    
+    TEST( Mat4x3Inequality )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        mat4x3 bmat4x3 = amat4x3;
+        CHECK_EQUAL( amat4x3, bmat4x3 );
+        // Make sure that a modification less than
+        // the defined delta is still equal...
+        bmat4x3(0,0) += f_lit::delta * 0.5f;
+        CHECK( false == ( amat4x3 < bmat4x3 ) );
+        bmat4x3(0,0) = 4.7f;
+        bmat4x3(0,0) -= f_lit::delta * 0.5f;
+        CHECK( false == ( amat4x3 > bmat4x3 ) );
+        // ...and a modification of exactly delta isn't
+        bmat4x3(0,0) = 4.7f;
+        bmat4x3(0,0) += f_lit::delta;
+        bmat4x3(0,1) += f_lit::delta;
+        bmat4x3(0,2) += f_lit::delta;
+        
+        bmat4x3(1,0) += f_lit::delta;
+        bmat4x3(1,1) += f_lit::delta;
+        bmat4x3(1,2) += f_lit::delta;
+        
+        bmat4x3(2,0) += f_lit::delta;
+        bmat4x3(2,1) += f_lit::delta;
+        bmat4x3(2,2) += f_lit::delta;
+        
+        bmat4x3(3,0) += f_lit::delta;
+        bmat4x3(3,1) += f_lit::delta;
+        bmat4x3(3,2) += f_lit::delta;
+        
+        CHECK( amat4x3 < bmat4x3 );
+        bmat4x3 = amat4x3;
+        bmat4x3(0,0) -= f_lit::delta;
+        bmat4x3(0,1) -= f_lit::delta;
+        bmat4x3(0,2) -= f_lit::delta;
+        
+        bmat4x3(1,0) -= f_lit::delta;
+        bmat4x3(1,1) -= f_lit::delta;
+        bmat4x3(1,2) -= f_lit::delta;
+        
+        bmat4x3(2,0) -= f_lit::delta;
+        bmat4x3(2,1) -= f_lit::delta;
+        bmat4x3(2,2) -= f_lit::delta;
+        
+        bmat4x3(3,0) -= f_lit::delta;
+        bmat4x3(3,1) -= f_lit::delta;
+        bmat4x3(3,2) -= f_lit::delta;
+        
+        CHECK( amat4x3 > bmat4x3 );
+    }
+    
+    TEST( Mat4x3InequalityEquality ) // LOL, wot?
+    {
+        using namespace gfx;
+        mat4x3 amat4x3( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        mat4x3 bmat4x3 = amat4x3;
+        CHECK_EQUAL( amat4x3, bmat4x3 );
+        CHECK( amat4x3 <= bmat4x3 );
+        CHECK( amat4x3 >= bmat4x3 );
+        // Make sure that a modification less than
+        // the defined delta is still equal...
+        bmat4x3(0,0) += f_lit::delta * 0.5f;
+        CHECK(  amat4x3 <= bmat4x3 );
+        bmat4x3(0,0) = 4.7f;
+        bmat4x3(0,0) -= f_lit::delta * 0.5f;
+        CHECK( amat4x3 >= bmat4x3 );
+        // ...and a modification of exactly delta isn't
+        bmat4x3(0,0) = 4.7f;
+        bmat4x3(0,0) += f_lit::delta;
+        bmat4x3(0,1) += f_lit::delta;
+        bmat4x3(0,2) += f_lit::delta;
+        
+        bmat4x3(1,0) += f_lit::delta;
+        bmat4x3(1,1) += f_lit::delta;
+        bmat4x3(1,2) += f_lit::delta;
+        
+        bmat4x3(2,0) += f_lit::delta;
+        bmat4x3(2,1) += f_lit::delta;
+        bmat4x3(2,2) += f_lit::delta;
+        
+        bmat4x3(3,0) += f_lit::delta;
+        bmat4x3(3,1) += f_lit::delta;
+        bmat4x3(3,2) += f_lit::delta;
+        
+        CHECK( amat4x3 < bmat4x3 );
+        bmat4x3 = amat4x3;
+        
+        bmat4x3(0,0) -= f_lit::delta;
+        bmat4x3(0,1) -= f_lit::delta;
+        bmat4x3(0,2) -= f_lit::delta;
+        
+        bmat4x3(1,0) -= f_lit::delta;
+        bmat4x3(1,1) -= f_lit::delta;
+        bmat4x3(1,2) -= f_lit::delta;
+        
+        bmat4x3(2,0) -= f_lit::delta;
+        bmat4x3(2,1) -= f_lit::delta;
+        bmat4x3(2,2) -= f_lit::delta;
+        
+        bmat4x3(3,0) -= f_lit::delta;
+        bmat4x3(3,1) -= f_lit::delta;
+        bmat4x3(3,2) -= f_lit::delta;
+        
+        CHECK( amat4x3 > bmat4x3 );
+    }
+    
+    TEST( Mat4x3Addition )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3( 4.7f, 0.0f, 10.0f, 0.0f,
+                        0.0f, 0.0f, -3.0f, 0.0f,
+                       -5.3f, 0.0f,  0.0f, 0.0f );
+        mat4x3 bmat4x3( 0.0f,  0.0f, 0.0f, 1.0f,
+                        0.0f,  1.0f, 0.0f, 5.0f,
+                        0.0f, 18.0f, 0.0f, 8.5f );
+        mat4x3 cmat4x3 = amat4x3 + bmat4x3;
+        mat4x3 dmat4x3( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        CHECK_EQUAL( cmat4x3, dmat4x3 );
+    }
+    
+    TEST( Mat4x3Subtraction )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3( 4.7f, 0.0f, 10.0f, 1.0f,
+                        0.0f, 0.0f,  0.0f, 0.0f,
+                       -5.3f, 0.0f,  0.0f, 8.5f );
+        mat4x3 bmat4x3( 0.0f,  0.0f,  0.0f, 0.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                        0.0f, 18.0f,  0.0f, 0.0f );
+        mat4x3 cmat4x3 = amat4x3 - bmat4x3;
+        mat4x3 dmat4x3( 4.7f,   0.0f, 10.0f, 1.0f,
+                        0.0f,  -1.0f, 3.0f, -5.0f,
+                       -5.3f, -18.0f,  0.0f, 8.5f );
+        CHECK_EQUAL( cmat4x3, dmat4x3 );
+    }
+    
+    TEST( Mat4x3Negation )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        mat4x3 bmat4x3 = -amat4x3;
+        mat4x3 cmat4x3( -4.7f,  0.0f, -10.0f, -1.0f,
+                         0.0f,  -1.0f,  3.0f, -5.0f,
+                         5.3f, -18.0f,  0.0f, -8.5f );
+        CHECK_EQUAL( cmat4x3, bmat4x3 );
+    }
+    
+    TEST( Mat4x3Mult3x4 )
+    {
+        using namespace gfx;
+        mat3x4 amat3x4 ( 4.7f,  0.0f, -5.3f,
+                         0.0f,  1.0f, 18.0f,
+                         5.0f, 7.0f, -2.0f,
+                         -1.0f, 11.0f, 10.0f );
+        mat4x3 amat4x3 ( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        
+        mat3 amat3 = amat4x3 * amat3x4;
+        mat3 bmat3 (  71.09f, 81.0f, -34.91f,
+                      -20.0f, 35.0f, 74.0f,
+                     -33.41f, 111.5f, 437.09f );
+        CHECK_EQUAL( bmat3, amat3 );
+        
+    }
+    
+    TEST( Mat4x3Mult2x4 )
+    {
+        using namespace gfx;
+        mat2x4 amat2x4 ( 4.7f,  0.0f,
+                         0.0f,  1.0f,
+                         5.0f, 7.0f,
+                         -1.0f, 11.0f );
+        mat4x3 amat4x3 ( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        
+        mat2x3 amat2x3 = amat4x3 * amat2x4;
+        mat2x3 bmat2x3 (  71.09f, 81.0f,
+                       -20.0f, 35.0f,
+                       -33.41f, 111.5f );
+        CHECK_EQUAL( bmat2x3, amat2x3 );
+        
+    }
+    
+    TEST( Mat4x3VectorPostMultiply )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        vec4 avec4 ( 4.7f, 0.0f, 5.0f, -1.0f );
+        vec3 avec3 = amat4x3 * avec4;
+        vec3 bvec3 ( 71.09f, -20.0f, -33.41f );
+        CHECK_EQUAL( bvec3, avec3 );
+    }
+    
+    TEST( Mat4x3VectorPreMultiply )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        vec3 avec3 ( 1.0f, -1.0f, 0.0f );
+        vec4 avec4 = avec3 * amat4x3;
+        vec4 bvec4 ( 4.7f, -1.0f, 13.0f, -4.0f );
+        CHECK_EQUAL( bvec4, avec4 );
+    }
+    
+    TEST( Mat4x3ScalarPostMultiply )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        float anum ( 2.0f );
+        mat4x3 bmat4x3 = amat4x3 * anum;
+        mat4x3 cmat4x3(  9.4f,  0.0f, 20.0f, 2.0f,
+                         0.0f,  2.0f, -6.0f, 10.0f,
+                         -10.6f, 36.0f, 0.0f, 17.0f );
+        CHECK_EQUAL( cmat4x3, bmat4x3 );
+    }
+    
+    TEST( Mat4x3ScalarPreMultiply )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        float anum ( 2.0f );
+        mat4x3 bmat4x3 = anum * amat4x3;
+        mat4x3 cmat4x3(  9.4f,  0.0f, 20.0f, 2.0f,
+                         0.0f,  2.0f, -6.0f, 10.0f,
+                         -10.6f, 36.0f, 0.0f, 17.0f );
+        CHECK_EQUAL( cmat4x3, bmat4x3 );
+    }
+    
+    TEST( Mat4x3ScalarPostDivide )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        float anum ( 2.0f );
+        mat4x3 bmat4x3 = amat4x3 / anum;
+        mat4x3 cmat4x3( 2.35f, 0.0f, 5.0f, 0.5f,
+                        0.0f,  0.5f, -1.5f, 2.5f,
+                       -2.65f, 9.0f, 0.0f, 4.25f );
+        CHECK_EQUAL( cmat4x3, bmat4x3 );
+    }
+    
+    TEST( Mat4x3Assignment )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        mat4x3 bmat4x3;
+        bmat4x3 = amat4x3;
+        CHECK_EQUAL( amat4x3, bmat4x3 );
+    }
+    
+    TEST( Mat4x3Lookup )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        CHECK_EQUAL( amat4x3(0,0),  4.7f );
+        CHECK_EQUAL( amat4x3(0,1),  0.0f );
+        CHECK_EQUAL( amat4x3(0,2), -5.3f );
+        
+        CHECK_EQUAL( amat4x3(1,0),  0.0f );
+        CHECK_EQUAL( amat4x3(1,1),  1.0f );
+        CHECK_EQUAL( amat4x3(1,2), 18.0f );
+        
+        CHECK_EQUAL( amat4x3(2,0), 10.0f );
+        CHECK_EQUAL( amat4x3(2,1), -3.0f );
+        CHECK_EQUAL( amat4x3(2,2),  0.0f );
+        
+        CHECK_EQUAL( amat4x3(3,0), 1.0f );
+        CHECK_EQUAL( amat4x3(3,1), 5.0f );
+        CHECK_EQUAL( amat4x3(3,2), 8.5f );
+        
+        vec3 avec3 ( 4.7f, 0.0f, -5.3f );
+        CHECK_EQUAL( avec3, amat4x3[0] );
+        avec3(y) = 10.0f;
+        amat4x3[0] = avec3;
+        CHECK_EQUAL( avec3, amat4x3[0] );
+        avec3(x) = 2.0f;
+        CHECK( avec3 != amat4x3[0] );
+        amat4x3[0][0] = 2.0f;
+        CHECK_EQUAL( avec3, amat4x3[0] );
+    }
+
+    TEST( Mat4x3ColumnLookup )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        CHECK_EQUAL( amat4x3(0,0),  4.7f );
+        CHECK_EQUAL( amat4x3(0,1),  0.0f );
+        CHECK_EQUAL( amat4x3(0,2), -5.3f );
+        
+        CHECK_EQUAL( amat4x3(1,0),  0.0f );
+        CHECK_EQUAL( amat4x3(1,1),  1.0f );
+        CHECK_EQUAL( amat4x3(1,2), 18.0f );
+        
+        CHECK_EQUAL( amat4x3(2,0),  10.0f );
+        CHECK_EQUAL( amat4x3(2,1),  -3.0f );
+        CHECK_EQUAL( amat4x3(2,2), 0.0f );
+        
+        CHECK_EQUAL( amat4x3(3,0),  1.0f );
+        CHECK_EQUAL( amat4x3(3,1),  5.0f );
+        CHECK_EQUAL( amat4x3(3,2), 8.5f );
+        
+        vec3 avec3 ( 10.0f, -3.0f, 0.0f );
+        CHECK_EQUAL( avec3, amat4x3.column(2) );
+        avec3(y) = 10.0f;
+        amat4x3.column(2) = avec3;
+        CHECK_EQUAL( avec3, amat4x3.column(2) );
+        avec3(x) = 2.0f;
+        CHECK( avec3 != amat4x3.column(2) );
+        amat4x3.column(2)[0] = 2.0f;
+        CHECK_EQUAL( avec3, amat4x3.column(2) );
+    }
+    
+    TEST( Mat4x3ColumnAssignment )
+    {
+        using namespace gfx;
+        vec3 avec3( 4.7f, 0.0f, -5.3f );
+        vec3 bvec3( 0.0f, 1.0f, 18.0f );
+        vec3 cvec3( 10.0f, -3.0f, 0.0f );
+        vec3 dvec3( 1.0f, 5.0f, 8.5f );
+        mat4x3 amat4x3;
+        amat4x3.columns( avec3, bvec3, cvec3, dvec3 );
+        mat4x3 bmat4x3( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        CHECK_EQUAL( bmat4x3, amat4x3 );
+    }
+    
+    TEST( Mat4x3FillAssignment )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3;
+        amat4x3.fill( 2.0f );
+        mat4x3 bmat4x3( 2.0f, 2.0f, 2.0f, 2.0f,
+                        2.0f, 2.0f, 2.0f, 2.0f,
+                        2.0f, 2.0f, 2.0f, 2.0f );
+        CHECK_EQUAL( bmat4x3, amat4x3 );
+    }
+    
+    TEST( Mat4x3RowLookup )
+    {
+        using namespace gfx;
+        mat4x3 amat4x3( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        vec4 avec4( 4.7f, 0.0f, 10.0f, 1.0f );
+        vec4 bvec4( 0.0f, 1.0f, -3.0f, 5.0f );
+        vec4 cvec4( -5.3f, 18.0f, 0.0f, 8.5f );
+
+        CHECK_EQUAL( avec4, amat4x3.row(0) );
+        CHECK_EQUAL( bvec4, amat4x3.row(1) );
+        CHECK_EQUAL( cvec4, amat4x3.row(2) );
+        avec4(y) = 10.0f;
+        amat4x3.row(0) = avec4;
+        CHECK_EQUAL( avec4, amat4x3.row(0) );
+        avec4(x) = 2.0f;
+        CHECK( avec4 != amat4x3.row(0) );
+        amat4x3.row(0)[0] = 2.0f;
+        CHECK_EQUAL( avec4, amat4x3.row(0) );
+    }
+    
+    TEST( Mat4x3RowAssignment )
+    {
+        using namespace gfx;
+        vec4 avec4( 4.7f, 0.0f, 10.0f, 1.0f );
+        vec4 bvec4( 0.0f, 1.0f, -3.0f, 5.0f );
+        vec4 cvec4( -5.3f, 18.0f, 0.0f, 8.5f );
+        mat4x3 amat4x3;
+        amat4x3.rows( avec4, bvec4, cvec4 );
+        mat4x3 bmat4x3( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        CHECK_EQUAL( bmat4x3, amat4x3 );
     }
 }
 

@@ -479,6 +479,7 @@ public:
                 operator vec3_t<comp_t>() const;
     template< typename U > friend class mat3_t;
     template< typename U > friend class mat2x3_t;
+    template< typename U > friend class mat4x3_t;
                 ~col3();
     template< typename U > friend
     std::ostream&   operator<<( std::ostream& out,
@@ -502,6 +503,7 @@ public:
                 operator vec3_t<comp_t>() const;
     template< typename U > friend class mat3_t;
     template< typename U > friend class mat3x2_t;
+    template< typename U > friend class mat3x4_t;
                 ~row3();
     template< typename U > friend
     std::ostream&   operator<<( std::ostream& out,
@@ -534,6 +536,7 @@ public:
                 operator vec4_t<comp_t>() const;
     template< typename U > friend class mat4_t;
     template< typename U > friend class mat2x4_t;
+    template< typename U > friend class mat3x4_t;
                 ~col4();
     template< typename U > friend
     std::ostream&   operator<<( std::ostream& out,
@@ -557,6 +560,7 @@ public:
                 operator vec4_t<comp_t>() const;
     template< typename U > friend class mat4_t;
     template< typename U > friend class mat4x2_t;
+    template< typename U > friend class mat4x3_t;
                 ~row4();
     template< typename U > friend
     std::ostream&   operator<<( std::ostream& out,
@@ -721,6 +725,8 @@ public:
     mat2_t<T>&              transpose();
     // Utility
     virtual raw_map const   to_map() const;
+    
+    template< typename U > friend class mat2x3_t;
 protected:
     union {
         comp_t          c[4];
@@ -814,6 +820,8 @@ public:
     mat3_t<T>&                 transpose();
     // Utility
     virtual raw_map const   to_map() const;
+    
+    template< typename U > friend class mat3x2_t;
 protected:
     union {
         comp_t          c[9];
@@ -909,6 +917,7 @@ public:
                                         vec4_t<comp_t> const& col2,
                                         vec4_t<comp_t> const& col3 );
     virtual raw_map const   to_map() const;
+    template< typename U > friend class mat4x2_t;
 protected:
     union {
         comp_t          c[16];
@@ -955,7 +964,9 @@ public:
     mat2x3_t<comp_t>        operator+( mat2x3_t<comp_t> const& rhs ) const;
     mat2x3_t<comp_t>        operator-() const;
     mat2x3_t<comp_t>        operator-( mat2x3_t<comp_t> const& rhs ) const;
-    //mat2x3_t<comp_t>        operator*( mat3x2_t<comp_t> const& rhs );
+    mat3_t<comp_t>          operator*( mat3x2_t<comp_t> const& rhs ) const;
+    mat4x3_t<comp_t>        operator*( mat4x2_t<comp_t> const& rhs ) const;
+    mat2x3_t<comp_t>        operator*( mat2_t<comp_t> const& rhs ) const;
     vec3_t<comp_t>          operator*( vec2_t<comp_t> const& rhs ) const;
     template<typename D > friend
     vec2_t<D>               operator*( vec3_t<D> const& lhs, mat2x3_t<D> const& rhs );
@@ -986,6 +997,7 @@ public:
     virtual raw_map const   to_map() const;
     
     template< typename U > friend class mat3x2_t;
+    template< typename U > friend class mat3x4_t;
 protected:
     union {
         comp_t          c[6];
@@ -1029,8 +1041,9 @@ public:
     mat3x2_t<comp_t>        operator+( mat3x2_t<comp_t> const& rhs ) const;
     mat3x2_t<comp_t>        operator-() const;
     mat3x2_t<comp_t>        operator-( mat3x2_t<comp_t> const& rhs ) const;
-    
     mat2_t<comp_t>          operator*( mat2x3_t<comp_t> const& rhs ) const;
+    mat4x2_t<comp_t>        operator*( mat4x3_t<comp_t> const& rhs ) const;
+    mat3x2_t<comp_t>        operator*( mat3_t<comp_t> const& rhs ) const;
     vec2_t<comp_t>          operator*( vec3_t<comp_t> const& rhs ) const;
     template<typename D > friend
     vec3_t<D>               operator*( vec2_t<D> const& lhs, mat3x2_t<D> const& rhs );
@@ -1106,7 +1119,7 @@ public:
     mat2x4_t<comp_t>        operator+( mat2x4_t<comp_t> const& rhs ) const;
     mat2x4_t<comp_t>        operator-() const;
     mat2x4_t<comp_t>        operator-( mat2x4_t<comp_t> const& rhs ) const;
-    //mat4_t<comp_t>        operator*( mat4x2_t<comp_t> const& rhs );
+    mat4_t<comp_t>          operator*( mat4x2_t<comp_t> const& rhs ) const;
     vec4_t<comp_t>          operator*( vec2_t<comp_t> const& rhs ) const;
     template<typename D > friend
     vec2_t<D>               operator*( vec4_t<D> const& lhs, mat2x4_t<D> const& rhs );
@@ -1138,6 +1151,7 @@ public:
     virtual raw_map const   to_map() const;
     
     template< typename U > friend class mat4x2_t;
+    template< typename U > friend class mat4x3_t;
 protected:
     union {
         comp_t          c[8];
@@ -1182,8 +1196,9 @@ public:
     mat4x2_t<comp_t>        operator+( mat4x2_t<comp_t> const& rhs ) const;
     mat4x2_t<comp_t>        operator-() const;
     mat4x2_t<comp_t>        operator-( mat4x2_t<comp_t> const& rhs ) const;
-//     
-//     //mat2_t<comp_t>          operator*( mat2x4_t<comp_t> const& rhs ) const;
+    mat2_t<comp_t>          operator*( mat2x4_t<comp_t> const& rhs ) const;
+    mat3x2_t<comp_t>        operator*( mat3x4_t<comp_t> const& rhs ) const;
+    mat4x2_t<comp_t>        operator*( mat4_t<comp_t> const& rhs ) const;
     vec2_t<comp_t>          operator*( vec4_t<comp_t> const& rhs ) const;
     template<typename D > friend
     vec4_t<D>               operator*( vec2_t<D> const& lhs, mat4x2_t<D> const& rhs );
@@ -1215,10 +1230,172 @@ public:
     virtual raw_map const   to_map() const;
     
     template< typename U > friend class mat2x4_t;
+    template< typename U > friend class mat2x3_t;
 protected:
     union {
         comp_t          c[8];
         unsigned char   bytes[sizeof(comp_t) * 8];
+    } data;
+};
+
+template< typename T >
+class mat3x4_t : public raw_mappable {
+public:
+    typedef T               comp_t;
+    size_t const            n_cols = 3;
+    size_t const            n_rows = 4;
+    size_t const            n_comp = 12;
+    // Construction
+                            mat3x4_t();
+                            mat3x4_t( mat3x4_t const& copy );
+                            mat3x4_t( comp_t e00, comp_t e10, comp_t e20,
+                                      comp_t e01, comp_t e11, comp_t e21,
+                                      comp_t e02, comp_t e12, comp_t e22,
+                                      comp_t e03, comp_t e13, comp_t e23 );
+                            mat3x4_t( comp_t fill );
+                            mat3x4_t( vec4_t<comp_t> const& col0,
+                                      vec4_t<comp_t> const& col1,
+                                      vec4_t<comp_t> const& col2 );
+    // Named Construction
+    static mat3x4_t<T>      upper_identity();
+    
+    static mat3x4_t<T>      row_vectors( vec3_t<comp_t> const& row0,
+                                         vec3_t<comp_t> const& row1,
+                                         vec3_t<comp_t> const& row2,
+                                         vec3_t<comp_t> const& row3 );
+    // Comparison
+
+    bool                    operator==( mat3x4_t<comp_t> const& rhs ) const;
+    
+    bool                    operator<( mat3x4_t<comp_t> const& rhs ) const;
+    bool                    operator>( mat3x4_t<comp_t> const& rhs ) const;
+    bool                    operator<=( mat3x4_t<comp_t> const& rhs ) const;
+    bool                    operator>=( mat3x4_t<comp_t> const& rhs ) const;
+    bool                    operator!=( mat3x4_t<comp_t> const& rhs ) const;
+    // Arithmetic
+    
+    mat3x4_t<comp_t>        operator+( mat3x4_t<comp_t> const& rhs ) const;
+    mat3x4_t<comp_t>        operator-() const;
+    mat3x4_t<comp_t>        operator-( mat3x4_t<comp_t> const& rhs ) const;
+    mat4_t<comp_t>          operator*( mat4x3_t<comp_t> const& rhs ) const;
+    mat2x4_t<comp_t>        operator*( mat2x3_t<comp_t> const& rhs ) const;
+    vec4_t<comp_t>          operator*( vec3_t<comp_t> const& rhs ) const;
+    template<typename D > friend
+    vec3_t<D>               operator*( vec4_t<D> const& lhs, mat3x4_t<D> const& rhs );
+    mat3x4_t<comp_t>        operator*( comp_t rhs ) const;
+    template< typename D > friend
+    mat3x4_t<D>             operator*( D lhs, mat3x4_t<D> const& rhs );
+    mat3x4_t<comp_t>        operator/( comp_t rhs ) const;
+//     // Mutatative Operators
+    mat3x4_t<comp_t>&       operator=( mat3x4_t<comp_t> const& rhs );
+    col4<comp_t>            operator[]( size_t i );
+    col4<comp_t>            operator[]( size_t i ) const;
+    comp_t&                 operator()( size_t col,
+                                        size_t row );
+    comp_t                  operator()( size_t col,
+                                        size_t row ) const;
+//     // Mutative Functions
+    col4<comp_t>            column( size_t col );
+    col4<comp_t>            column( size_t col ) const;
+    mat3x4_t<T>&            columns( vec4_t<comp_t> const& col0,
+                                     vec4_t<comp_t> const& col1,
+                                     vec4_t<comp_t> const& col2 );
+    mat3x4_t<T>&            fill( comp_t val ); 
+    row3<comp_t>            row( size_t row );
+    row3<comp_t>            row( size_t row ) const;
+    mat3x4_t<T>&            rows( vec3_t<comp_t> const& row0,
+                                  vec3_t<comp_t> const& row1,
+                                  vec3_t<comp_t> const& row2,
+                                  vec3_t<comp_t> const& row3 );
+    // Utility
+    virtual raw_map const   to_map() const;
+    
+    template< typename U > friend class mat4x3_t;
+    template< typename U > friend class mat4x2_t;
+protected:
+    union {
+        comp_t          c[12];
+        unsigned char   bytes[sizeof(comp_t) * 12];
+    } data;
+};
+
+
+template< typename T >
+class mat4x3_t : public raw_mappable {
+public:
+    typedef T               comp_t;
+    size_t const            n_cols = 4;
+    size_t const            n_rows = 3;
+    size_t const            n_comp = 12;
+    // Construction
+                            mat4x3_t();
+                            mat4x3_t( mat4x3_t const& copy );
+                            mat4x3_t( comp_t e00, comp_t e10, comp_t e20, comp_t e30,
+                                      comp_t e01, comp_t e11, comp_t e21, comp_t e31,
+                                      comp_t e02, comp_t e12, comp_t e22, comp_t e32 );
+                            mat4x3_t( comp_t fill );
+                            mat4x3_t( vec3_t<comp_t> const& col0,
+                                      vec3_t<comp_t> const& col1,
+                                      vec3_t<comp_t> const& col2,
+                                      vec3_t<comp_t> const& col3 );
+    // Named Construction
+    static mat4x3_t<T>      left_identity();
+    static mat4x3_t<T>      row_vectors( vec4_t<comp_t> const& row0,
+                                         vec4_t<comp_t> const& row1,
+                                         vec4_t<comp_t> const& row2 );
+    // Comparison
+
+    bool                    operator==( mat4x3_t<comp_t> const& rhs ) const;
+    
+    bool                    operator<( mat4x3_t<comp_t> const& rhs ) const;
+    bool                    operator>( mat4x3_t<comp_t> const& rhs ) const;
+    bool                    operator<=( mat4x3_t<comp_t> const& rhs ) const;
+    bool                    operator>=( mat4x3_t<comp_t> const& rhs ) const;
+    bool                    operator!=( mat4x3_t<comp_t> const& rhs ) const;
+    // Arithmetic
+    
+    mat4x3_t<comp_t>        operator+( mat4x3_t<comp_t> const& rhs ) const;
+    mat4x3_t<comp_t>        operator-() const;
+    mat4x3_t<comp_t>        operator-( mat4x3_t<comp_t> const& rhs ) const;
+    mat3_t<comp_t>          operator*( mat3x4_t<comp_t> const& rhs ) const;
+    mat2x3_t<comp_t>        operator*( mat2x4_t<comp_t> const& rhs ) const;
+    vec3_t<comp_t>          operator*( vec4_t<comp_t> const& rhs ) const;
+    template<typename D > friend
+    vec4_t<D>               operator*( vec3_t<D> const& lhs, mat4x3_t<D> const& rhs );
+    mat4x3_t<comp_t>        operator*( comp_t rhs ) const;
+    template< typename D > friend
+    mat4x3_t<D>             operator*( D lhs, mat4x3_t<D> const& rhs );
+    mat4x3_t<comp_t>        operator/( comp_t rhs ) const;
+    // Mutatative Operators
+    mat4x3_t<comp_t>&       operator=( mat4x3_t<comp_t> const& rhs );
+    col3<comp_t>            operator[]( size_t i );
+    col3<comp_t>            operator[]( size_t i ) const;
+    comp_t&                 operator()( size_t col,
+                                        size_t row );
+    comp_t                  operator()( size_t col,
+                                        size_t row ) const;
+    // Mutative Functions
+    col3<comp_t>            column( size_t col );
+    col3<comp_t>            column( size_t col ) const;
+    mat4x3_t<T>&            columns( vec3_t<comp_t> const& col0,
+                                     vec3_t<comp_t> const& col1,
+                                     vec3_t<comp_t> const& col2,
+                                     vec3_t<comp_t> const& col3 );
+    mat4x3_t<T>&            fill( comp_t val ); 
+    row4<comp_t>            row( size_t row );
+    row4<comp_t>            row( size_t row ) const;
+    mat4x3_t<T>&            rows( vec4_t<comp_t> const& row0,
+                                  vec4_t<comp_t> const& row1,
+                                  vec4_t<comp_t> const& row2 );
+    // Utility
+    virtual raw_map const   to_map() const;
+    
+    template< typename U > friend class mat3x4_t;
+    template< typename U > friend class mat3x2_t;
+protected:
+    union {
+        comp_t          c[12];
+        unsigned char   bytes[sizeof(comp_t) * 12];
     } data;
 };
 
@@ -1231,6 +1408,8 @@ typedef     mat2x3_t<float>         mat2x3;
 typedef     mat3x2_t<float>         mat3x2;
 typedef     mat2x4_t<float>         mat2x4;
 typedef     mat4x2_t<float>         mat4x2;
+typedef     mat3x4_t<float>         mat3x4;
+typedef     mat4x3_t<float>         mat4x3;
 
 typedef     mat_t<double>           dmat;
 typedef     mat2_t<double>          dmat2;
@@ -1240,374 +1419,9 @@ typedef     mat2x3_t<double>        dmat2x3;
 typedef     mat3x2_t<double>        dmat3x2;
 typedef     mat2x4_t<double>        dmat2x4;
 typedef     mat4x2_t<double>        dmat4x2;
+typedef     mat3x4_t<double>        dmat3x4;
+typedef     mat4x3_t<double>        dmat4x3;
 
-/**
-template< typename T >
-class mat2_tx4 : public mat_t<T> {
-public:
-    typedef mat_t<T>      base_t;
-    typedef mat2_tx4<T>   mat2_tx4_t;
-    typedef T           comp_t;
-    
-                        mat2_tx4();                    
-                        mat2_tx4( comp_t e00, comp_t e10,
-                                comp_t e01, comp_t e11,
-                                comp_t e01, comp_t e12,
-                                comp_t e03, comp_t e13 );
-    static mat2_tx4_t     row_vectors( vec2_t<comp_t> const& row0,
-                                     vec2_t<comp_t> const& row1,
-                                     vec2_t<comp_t> const& row2,
-                                     vec2_t<comp_t> const& row3 );
-    static mat2_tx4_t     column_vectors( vec4_t<comp_t> const& col0,
-                                        vec4_t<comp_t> const& col1 );
-    comp_t&             operator()( swizz2 col,
-                                    swizz4 row );
-    comp_t              operator()( swizz2 col,
-                                    swizz4 row ) const;
-    //mat2_tx3_t          operator*( mat3_tx2_t const& rhs );
-    //mat4_tx2_t          operator*( mat4_tx2_t const& rhs );
-    mat2_tx4_t            operator*( T rhs );
-    template< typename D >
-    friend mat2_tx4<D>    operator*( D lhs, mat2_tx4<D> const& rhs );
-    mat2_tx4_t&           row( swizz4 const& row,
-                             vec2_t<comp_t> const& val );
-    vec2_t<T>             row( swizz4 const& row ) const;
-    mat2_tx4_t&           column( swizz2 const& col,
-                                vec4_t<comp_t> const& val );
-    vec4_t<T>             column( swizz2 const& col ) const;
-    mat2_tx4_t&           rows( vec2_t<comp_t> const& row0,
-                              vec2_t<comp_t> const& row1,
-                              vec2_t<comp_t> const& row2,
-                              vec2_t<comp_t> const& row3 );
-    mat2_tx4_t&           columns( vec4_t<comp_t> const& col0,
-                                 vec4_t<comp_t> const& col1 );
-};
-
-template< typename T >
-class mat3_t : public mat_t<T> {
-public:
-    typedef mat_t<T>      base_t;
-    typedef mat3_t<T>     mat3_t<T>;
-    typedef T           comp_t;
-    
-                        mat3_t();
-                        mat3_t( comp_t e00, comp_t e10, comp_t e20,
-                              comp_t e01, comp_t e11, comp_t e21,
-                              comp_t e02, comp_t e12, comp_t e22 );
-    static mat3_t<T>       row_vectors( vec3_t<comp_t> const& row0,
-                                     vec3_t<comp_t> const& row1,
-                                     vec3_t<comp_t> const& row2 );
-    static mat3_t<T>       column_vectors( vec3_t<comp_t> const& col0,
-                                        vec3_t<comp_t> const& col1,
-                                        vec3_t<comp_t> const& col2 );
-    static mat3_t<T>       scale( comp_t sx,
-                               comp_t sy,
-                               comp_t sz = lit<comp_t>.one );
-    static mat3_t<T>       scale( vec3_t<comp_t> const& svec );
-    static mat3_t<T>       scale( vec2_t<comp_t> const& svec );
-    comp_t&             operator()( swizz3 col,
-                                    swizz3 row );
-    comp_t              operator()( swizz3 col,
-                                    swizz3 row ) const;
-    mat3_t<T>              operator*( mat3_t<T> const& rhs );
-    //mat2_tx3_t          operator*( mat2_tx3_t const& rhs );
-    //mat4_tx3_t          operator*( mat4_tx3_t const& rhs );
-    template< typename D >
-    friend mat3_t<D>      operator*( D lhs, mat3_t<D> const& rhs );
-    template< typename D >
-    friend mat3_t<D>      operator*( mat3_t<D> const& lhs, D rhs );
-    mat3_t<T>&             row( swizz3 const& row,
-                             vec3_t<comp_t> const& val );
-    vec3_t<T>             row( swizz3 const& row ) const;
-    mat3_t<T>&             column( swizz3 const& col,
-                                vec3_t<comp_t> const& val );
-    vec3_t<T>             column( swizz3 const& col ) const;
-    mat3_t<T>&             rows( vec3_t<comp_t> const& row0,
-                              vec3_t<comp_t> const& row1,
-                              vec3_t<comp_t> const& row2 );
-    mat3_t<T>&             columns( vec3_t<comp_t> const& col0,
-                                 vec3_t<comp_t> const& col1,
-                                 vec3_t<comp_t> const& col2 );
-};
-
-template< typename T >
-class mat4_t : public mat_t<T> {
-public:
-    typedef mat_t<T>      base_t;
-    typedef mat4_t<T>     mat4_t<T>;
-    typedef T           comp_t;
-    
-                        mat4_t();
-                        mat4_t( comp_t e00, comp_t e10, comp_t e20, comp_t e30,
-                              comp_t e01, comp_t e11, comp_t e21, comp_t e31,
-                              comp_t e02, comp_t e12, comp_t e22, comp_t e32,
-                              comp_t e03, comp_t e13, comp_t e23, comp_t e33 );
-    static mat4_t<T>       row_vectors( vec4_t<comp_t> const& row0,
-                                     vec4_t<comp_t> const& row1,
-                                     vec4_t<comp_t> const& row2,
-                                     vec4_t<comp_t> const& row3 );
-    static mat4_t<T>       column_vectors( vec4_t<comp_t> const& col0,
-                                        vec4_t<comp_t> const& col1,
-                                        vec4_t<comp_t> const& col2,
-                                        vec4_t<comp_t> const& col3 );
-    static mat4_t<T>       scale( comp_t sx,
-                               comp_t sy,
-                               comp_t sz,
-                               comp_t sw = lit<comp_t>.one );
-    static mat4_t<T>       scale( vec4_t<comp_t> const& svec );
-    static mat4_t<T>       scale( vec3_t<comp_t> const& svec );
-    comp_t&             operator()( swizz4 col,
-                                    swizz4 row );
-    comp_t              operator()( swizz4 col,
-                                    swizz4 row ) const;
-    mat4_t<T>              operator*( mat4_t<T> const& rhs );
-    //mat2_tx4_t          operator*( mat2_tx4_t const& rhs );
-    //mat3_tx4_t          operator*( mat3_tx4_t const& rhs );
-    template< typename D >
-    friend mat4_t<D>      operator*( D lhs, mat4_t<D> const& rhs );
-    template< typename D >
-    friend mat4_t<D>      operator*( mat4_t<D> const& lhs, D rhs );
-    mat4_t<T>&             row( swizz4 const& row,
-                             vec4_t<comp_t> const& val );
-    vec4_t<T>             row( swizz4 const& row ) const;
-    mat4_t<T>&             column( swizz4 const& col,
-                                vec4_t<comp_t> const& val );
-    vec4_t<T>             column( swizz4 const& col ) const;
-    mat4_t<T>&             rows( vec4_t<comp_t> const& row0,
-                              vec4_t<comp_t> const& row1,
-                              vec4_t<comp_t> const& row2,
-                              vec4_t<comp_t> const& row3 );
-    mat4_t<T>&             columns( vec4_t<comp_t> const& col0,
-                                 vec4_t<comp_t> const& col1,
-                                 vec4_t<comp_t> const& col2,
-                                 vec4_t<comp_t> const& col3 );
-};*/
-
-/**class mat2_tx3 : public mat_t<2,3,float> {
-public:
-    typedef mat_t<2,3,float>  base_t;
-    
-                            mat2_tx3() : base_t() {};
-                            mat2_tx3( float e00, float e10,
-                                    float e01, float e11,
-                                    float e02, float e12 );
-    mat2_tx3&                 row( swizz3 const& row,
-                                 fvec2_t const& val );
-    mat2_tx3&                 column( swizz2 const& row,
-                                    fvec3_t const& val );
-    static mat2_tx3           rows( fvec2_t const& row1,
-                                  fvec2_t const& row2,
-                                  fvec2_t const& row3 );
-    static mat2_tx3           columns( fvec3_t const& col1,
-                                     fvec3_t const& col2 );
-    
-    float&                  operator()( swizz2 col,
-                                        swizz3 row );
-    float                   operator()( swizz2 col,
-                                        swizz3 row ) const;
-};
-
-class mat2_tx4 : public mat_t<2,4,float> {
-public:
-    typedef mat_t<2,4,float>  base_t;
-    
-                            mat2_tx4() : base_t() {};
-                            mat2_tx4( float e00, float e10,
-                                    float e01, float e11,
-                                    float e02, float e12,
-                                    float e03, float e13 );
-    mat2_tx4&                 row( swizz4 const& row,
-                                 fvec2_t const& val );
-    mat2_tx4&                 column( swizz2 const& row,
-                                    fvec4_t const& val );
-    static mat2_tx4           rows( fvec2_t const& row1,
-                                  fvec2_t const& row2,
-                                  fvec2_t const& row3,
-                                  fvec2_t const& row4 );
-    static mat2_tx4           columns( fvec4_t const& col1,
-                                     fvec4_t const& col2 );
-    
-    float&                  operator()( swizz2 col,
-                                        swizz4 row );
-    float                   operator()( swizz2 col,
-                                        swizz4 row ) const;
-};
-
-class mat3_t : public mat_t<3,3,float> {
-public:
-    typedef mat_t<3,3,float>  base_t;
-    
-                            mat3_t() : base_t() {};
-                            mat3_t( float e00, float e10, float e20,
-                                  float e01, float e11, float e21,
-                                  float e02, float e12, float e22 );
-    mat3_t&                   row( swizz3 const& row,
-                                 fvec3_t const& val );
-    mat3_t&                   column( swizz3 const& col,
-                                    fvec3_t const& val );
-    static mat3_t             rows( fvec3_t const& row1,
-                                  fvec3_t const& row2,
-                                  fvec3_t const& row3 );
-    static mat3_t             columns( fvec3_t const& col1,
-                                     fvec3_t const& col2,
-                                     fvec3_t const& col3 );
-    static mat3_t             translate( float tx,
-                                       float ty );
-    static mat3_t             translate( fvec2_t const& tvec );
-    static mat3_t             scale( float sx,
-                                   float sy );
-    static mat3_t             scale( fvec2_t const& svec );
-    static mat3_t             scale( float sx,
-                                   float sy,
-                                   float sz );
-    static mat3_t             scale( fvec3_t const& svec );
-    
-    float&                  operator()( swizz3 col,
-                                        swizz3 row );
-    float                   operator()( swizz3 col,
-                                        swizz3 row ) const;
-};
-
-class mat3_tx2 : public mat_t<3,2,float> {
-public:
-    typedef mat_t<3,2,float>  base_t;
-    
-                            mat3_tx2() : base_t() {};
-                            mat3_tx2( float e00, float e10, float e20,
-                                    float e01, float e11, float e21 );
-    mat3_tx2&                 row( swizz2 const& row,
-                                 fvec3_t const& val );
-    mat3_tx2&                 column( swizz3 const& row,
-                                    fvec2_t const& val );
-    static mat3_tx2           rows( fvec3_t const& row1,
-                                  fvec3_t const& row2 );
-    static mat3_tx2           columns( fvec2_t const& col1,
-                                     fvec2_t const& col2,
-                                     fvec2_t const& col3 );
-    
-    float&                  operator()( swizz3 col,
-                                        swizz2 row );
-    float                   operator()( swizz3 col,
-                                        swizz2 row ) const;
-};
-
-class mat3_tx4 : public mat_t<3,4,float> {
-public:
-    typedef mat_t<3,4,float>  base_t;
-    
-                            mat3_tx4() : base_t() {};
-                            mat3_tx4( float e00, float e10, float e20,
-                                    float e01, float e11, float e21,
-                                    float e02, float e12, float e22,
-                                    float e03, float e13, float e23 );
-    mat3_tx4&                 row( swizz4 const& row,
-                                 fvec3_t const& val );
-    mat3_tx4&                 column( swizz3 const& row,
-                                    fvec4_t const& val );
-    static mat3_tx4           rows( fvec3_t const& row1,
-                                  fvec3_t const& row2,
-                                  fvec3_t const& row3,
-                                  fvec3_t const& row4 );
-    static mat3_tx4           columns( fvec4_t const& col1,
-                                     fvec4_t const& col2,
-                                     fvec4_t const& col3 );
-    
-    float&                  operator()( swizz3 col,
-                                        swizz4 row );
-    float                   operator()( swizz3 col,
-                                        swizz4 row ) const;
-};
-
-class mat4_t : public mat_t<4,4,float> {
-public:
-    typedef mat_t<4,4,float>  base_t;
-    
-                            mat4_t() : base_t() {};
-                            mat4_t( float e00, float e10, float e20, float e30,
-                                  float e01, float e11, float e21, float e31,
-                                  float e02, float e12, float e22, float e32,
-                                  float e03, float e13, float e23, float e33 );
-    mat4_t&                   row( swizz4 const& row,
-                                 fvec4_t const& val );
-    mat4_t&                   column( swizz4 const& col,
-                                    fvec4_t const& val );
-    static mat4_t             rows( fvec4_t const& row1,
-                                  fvec4_t const& row2,
-                                  fvec4_t const& row3,
-                                  fvec4_t const& row4 );
-    static mat4_t             columns( fvec4_t const& col1,
-                                     fvec4_t const& col2,
-                                     fvec4_t const& col3,
-                                     fvec4_t const& col4 );
-    static mat4_t             translate( float tx,
-                                       float ty,
-                                       float tz );
-    static mat4_t             translate( fvec3_t const& tvec );
-    static mat4_t             scale( float sx,
-                                   float sy,
-                                   float sz );
-    static mat4_t             scale( fvec3_t const& svec );
-    static mat4_t             scale( float sx,
-                                   float sy,
-                                   float sz,
-                                   float sw );
-    static mat4_t             scale( fvec4_t const& svec );
-    
-    float&                  operator()( swizz4 col,
-                                        swizz4 row );
-    float                   operator()( swizz4 col,
-                                        swizz4 row ) const;
-};
-
-class mat4_tx2 : public mat_t<4,2,float> {
-public:
-    typedef mat_t<4,2,float>  base_t;
-    
-                            mat4_tx2() : base_t() {};
-                            mat4_tx2( float e00, float e10, float e20, float e30,
-                                    float e01, float e11, float e21, float e31 );
-    mat4_tx2&                 row( swizz2 const& row,
-                                 fvec4_t const& val );
-    mat4_tx2&                 column( swizz4 const& row,
-                                    fvec2_t const& val );
-    static mat4_tx2           rows( fvec4_t const& row1,
-                                  fvec4_t const& row2 );
-    static mat4_tx2           columns( fvec2_t const& col1,
-                                     fvec2_t const& col2,
-                                     fvec2_t const& col3,
-                                     fvec2_t const& col4 );
-    
-    float&                  operator()( swizz4 col,
-                                        swizz2 row );
-    float                   operator()( swizz4 col,
-                                        swizz2 row ) const;
-};
-
-class mat4_tx3 : public mat_t<4,3,float> {
-public:
-    typedef mat_t<4,3,float>  base_t;
-    
-                            mat4_tx3() : base_t() {};
-                            mat4_tx3( float e00, float e10, float e20, float e30,
-                                    float e01, float e11, float e21, float e31,
-                                    float e02, float e12, float e22, float e32 );
-    mat4_tx3&                 row( swizz3 const& row,
-                                 fvec4_t const& val );
-    mat4_tx3&                 column( swizz4 const& row,
-                                    fvec3_t const& val );
-    static mat4_tx3           rows( fvec4_t const& row1,
-                                  fvec4_t const& row2,
-                                  fvec4_t const& row3 );
-    static mat4_tx3           columns( fvec3_t const& col1,
-                                     fvec3_t const& col2,
-                                     fvec3_t const& col3,
-                                     fvec3_t const& col4 );
-    
-    float&                  operator()( swizz4 col,
-                                        swizz3 row );
-    float                   operator()( swizz4 col,
-                                        swizz3 row ) const;
-}; */
 
 class swizz4 {
     public:
@@ -5844,6 +5658,75 @@ mat2x3_t<T>     mat2x3_t<T>::operator-( mat2x3_t<T> const& rhs ) const
 }
 
 template< typename T > inline
+mat3_t<T>   mat2x3_t<T>::operator*( mat3x2_t<T> const& rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    T const* rhs_c = rhs.data.c;
+    
+    T e00 = lhs_c[0] * rhs_c[0] + lhs_c[3] * rhs_c[1];
+    T e01 = lhs_c[1] * rhs_c[0] + lhs_c[4] * rhs_c[1];
+    T e02 = lhs_c[2] * rhs_c[0] + lhs_c[5] * rhs_c[1];
+    
+    T e10 = lhs_c[0] * rhs_c[2] + lhs_c[3] * rhs_c[3];
+    T e11 = lhs_c[1] * rhs_c[2] + lhs_c[4] * rhs_c[3];
+    T e12 = lhs_c[2] * rhs_c[2] + lhs_c[5] * rhs_c[3];
+    
+    T e20 = lhs_c[0] * rhs_c[4] + lhs_c[3] * rhs_c[5];
+    T e21 = lhs_c[1] * rhs_c[4] + lhs_c[4] * rhs_c[5];
+    T e22 = lhs_c[2] * rhs_c[4] + lhs_c[5] * rhs_c[5];
+    
+    return mat3_t<T>( e00, e10, e20,
+                      e01, e11, e21,
+                      e02, e12, e22 );
+}
+
+template< typename T > inline
+mat4x3_t<T>   mat2x3_t<T>::operator*( mat4x2_t<T> const& rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    T const* rhs_c = rhs.data.c;
+    
+    T e00 = lhs_c[0] * rhs_c[0] + lhs_c[3] * rhs_c[1];
+    T e01 = lhs_c[1] * rhs_c[0] + lhs_c[4] * rhs_c[1];
+    T e02 = lhs_c[2] * rhs_c[0] + lhs_c[5] * rhs_c[1];
+    
+    T e10 = lhs_c[0] * rhs_c[2] + lhs_c[3] * rhs_c[3];
+    T e11 = lhs_c[1] * rhs_c[2] + lhs_c[4] * rhs_c[3];
+    T e12 = lhs_c[2] * rhs_c[2] + lhs_c[5] * rhs_c[3];
+    
+    T e20 = lhs_c[0] * rhs_c[4] + lhs_c[3] * rhs_c[5];
+    T e21 = lhs_c[1] * rhs_c[4] + lhs_c[4] * rhs_c[5];
+    T e22 = lhs_c[2] * rhs_c[4] + lhs_c[5] * rhs_c[5];
+    
+    T e30 = lhs_c[0] * rhs_c[6] + lhs_c[3] * rhs_c[7];
+    T e31 = lhs_c[1] * rhs_c[6] + lhs_c[4] * rhs_c[7];
+    T e32 = lhs_c[2] * rhs_c[6] + lhs_c[5] * rhs_c[7];
+    
+    return mat4x3_t<T>( e00, e10, e20, e30,
+                        e01, e11, e21, e31,
+                        e02, e12, e22, e32 );
+}
+
+template< typename T > inline
+mat2x3_t<T>   mat2x3_t<T>::operator*( mat2_t<T> const& rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    T const* rhs_c = rhs.data.c;
+    
+    T e00 = lhs_c[0] * rhs_c[0] + lhs_c[3] * rhs_c[1];
+    T e01 = lhs_c[1] * rhs_c[0] + lhs_c[4] * rhs_c[1];
+    T e02 = lhs_c[2] * rhs_c[0] + lhs_c[5] * rhs_c[1];
+    
+    T e10 = lhs_c[0] * rhs_c[2] + lhs_c[3] * rhs_c[3];
+    T e11 = lhs_c[1] * rhs_c[2] + lhs_c[4] * rhs_c[3];
+    T e12 = lhs_c[2] * rhs_c[2] + lhs_c[5] * rhs_c[3];
+    
+    return mat2x3_t<T>( e00, e10,
+                        e01, e11,
+                        e02, e12 );
+}
+
+template< typename T > inline
 vec3_t<T>     mat2x3_t<T>::operator*( vec2_t<T> const& rhs ) const
 {
     T const* lhs_c = this->data.c;
@@ -6287,6 +6170,47 @@ mat2_t<T>     mat3x2_t<T>::operator*( mat2x3_t<T> const& rhs ) const
     
     return mat2_t<T>( e00, e10,
                       e01, e11 );
+}
+
+template< typename T > inline
+mat4x2_t<T>     mat3x2_t<T>::operator*( mat4x3_t<T> const& rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    T const* rhs_c = rhs.data.c;
+    
+    T e00 = lhs_c[0] * rhs_c[0] + lhs_c[2] * rhs_c[1] + lhs_c[4] * rhs_c[2];
+    T e01 = lhs_c[1] * rhs_c[0] + lhs_c[3] * rhs_c[1] + lhs_c[5] * rhs_c[2];
+    
+    T e10 = lhs_c[0] * rhs_c[3] + lhs_c[2] * rhs_c[4] + lhs_c[4] * rhs_c[5];
+    T e11 = lhs_c[1] * rhs_c[3] + lhs_c[3] * rhs_c[4] + lhs_c[5] * rhs_c[5];
+    
+    T e20 = lhs_c[0] * rhs_c[6] + lhs_c[2] * rhs_c[7] + lhs_c[4] * rhs_c[8];
+    T e21 = lhs_c[1] * rhs_c[6] + lhs_c[3] * rhs_c[7] + lhs_c[5] * rhs_c[8];
+    
+    T e30 = lhs_c[0] * rhs_c[9] + lhs_c[2] * rhs_c[10] + lhs_c[4] * rhs_c[11];
+    T e31 = lhs_c[1] * rhs_c[9] + lhs_c[3] * rhs_c[10] + lhs_c[5] * rhs_c[11];
+    
+    return mat4x2_t<T>( e00, e10, e20, e30,
+                        e01, e11, e21, e31 );
+}
+
+template< typename T > inline
+mat3x2_t<T>     mat3x2_t<T>::operator*( mat3_t<T> const& rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    T const* rhs_c = rhs.data.c;
+    
+    T e00 = lhs_c[0] * rhs_c[0] + lhs_c[2] * rhs_c[1] + lhs_c[4] * rhs_c[2];
+    T e01 = lhs_c[1] * rhs_c[0] + lhs_c[3] * rhs_c[1] + lhs_c[5] * rhs_c[2];
+    
+    T e10 = lhs_c[0] * rhs_c[3] + lhs_c[2] * rhs_c[4] + lhs_c[4] * rhs_c[5];
+    T e11 = lhs_c[1] * rhs_c[3] + lhs_c[3] * rhs_c[4] + lhs_c[5] * rhs_c[5];
+    
+    T e20 = lhs_c[0] * rhs_c[6] + lhs_c[2] * rhs_c[7] + lhs_c[4] * rhs_c[8];
+    T e21 = lhs_c[1] * rhs_c[6] + lhs_c[3] * rhs_c[7] + lhs_c[5] * rhs_c[8];
+    
+    return mat3x2_t<T>( e00, e10, e20,
+                        e01, e11, e21 );
 }
 
 template< typename T > inline
@@ -6749,6 +6673,38 @@ mat2x4_t<T>     mat2x4_t<T>::operator-( mat2x4_t<T> const& rhs ) const
                         e01, e11,
                         e02, e12,
                         e03, e13 );
+}
+
+template< typename T > inline
+mat4_t<T>     mat2x4_t<T>::operator*( mat4x2_t<T> const& rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    T const* rhs_c = rhs.data.c;
+    
+    T e00 = lhs_c[0] * rhs_c[0] + lhs_c[4] * rhs_c[1];
+    T e01 = lhs_c[1] * rhs_c[0] + lhs_c[5] * rhs_c[1];
+    T e02 = lhs_c[2] * rhs_c[0] + lhs_c[6] * rhs_c[1];
+    T e03 = lhs_c[3] * rhs_c[0] + lhs_c[7] * rhs_c[1];
+    
+    T e10 = lhs_c[0] * rhs_c[2] + lhs_c[4] * rhs_c[3];
+    T e11 = lhs_c[1] * rhs_c[2] + lhs_c[5] * rhs_c[3];
+    T e12 = lhs_c[2] * rhs_c[2] + lhs_c[6] * rhs_c[3];
+    T e13 = lhs_c[3] * rhs_c[2] + lhs_c[7] * rhs_c[3];
+    
+    T e20 = lhs_c[0] * rhs_c[4] + lhs_c[4] * rhs_c[5];
+    T e21 = lhs_c[1] * rhs_c[4] + lhs_c[5] * rhs_c[5];
+    T e22 = lhs_c[2] * rhs_c[4] + lhs_c[6] * rhs_c[5];
+    T e23 = lhs_c[3] * rhs_c[4] + lhs_c[7] * rhs_c[5];
+    
+    T e30 = lhs_c[0] * rhs_c[6] + lhs_c[4] * rhs_c[7];
+    T e31 = lhs_c[1] * rhs_c[6] + lhs_c[5] * rhs_c[7];
+    T e32 = lhs_c[2] * rhs_c[6] + lhs_c[6] * rhs_c[7];
+    T e33 = lhs_c[3] * rhs_c[6] + lhs_c[7] * rhs_c[7];
+    
+    return mat4_t<T>( e00, e10, e20, e30,
+                      e01, e11, e21, e31,
+                      e02, e12, e22, e32,
+                      e03, e13, e23, e33 );
 }
 
 template< typename T > inline
@@ -7228,20 +7184,57 @@ mat4x2_t<T>     mat4x2_t<T>::operator-( mat4x2_t<T> const& rhs ) const
                         e01, e11, e21, e31 );
 }  
 
-// template< typename T > inline
-// mat2_t<T>     mat4x2_t<T>::operator*( mat2x4_t<T> const& rhs ) const
-// {
-//     T const* lhs_c = this->data.c;
-//     T const* rhs_c = rhs.data.c;
-//     
-//     T e00 = lhs_c[0] * rhs_c[0] + lhs_c[2] * rhs_c[1] + lhs_c[4] * rhs_c[2] + lhs_c[6] * rhs_c[3];
-//     T e01 = lhs_c[1] * rhs_c[0] + lhs_c[3] * rhs_c[1] + lhs_c[5] * rhs_c[2] + lhs_c[7] * rhs_c[3];
-//     T e10 = lhs_c[0] * rhs_c[3] + lhs_c[2] * rhs_c[4] + lhs_c[4] * rhs_c[5] + lhs_c[6] * rhs_c[5];
-//     T e11 = lhs_c[1] * rhs_c[3] + lhs_c[3] * rhs_c[4] + lhs_c[5] * rhs_c[5] + lhs_c[7] * rhs_c[5];
-//     
-//     return mat2_t<T>( e00, e10,
-//                       e01, e11 );
-// }
+template< typename T > inline
+mat2_t<T>     mat4x2_t<T>::operator*( mat2x4_t<T> const& rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    T const* rhs_c = rhs.data.c;
+    
+    T e00 = lhs_c[0] * rhs_c[0] + lhs_c[2] * rhs_c[1] + lhs_c[4] * rhs_c[2] + lhs_c[6] * rhs_c[3];
+    T e01 = lhs_c[1] * rhs_c[0] + lhs_c[3] * rhs_c[1] + lhs_c[5] * rhs_c[2] + lhs_c[7] * rhs_c[3];
+    T e10 = lhs_c[0] * rhs_c[4] + lhs_c[2] * rhs_c[5] + lhs_c[4] * rhs_c[6] + lhs_c[6] * rhs_c[7];
+    T e11 = lhs_c[1] * rhs_c[4] + lhs_c[3] * rhs_c[5] + lhs_c[5] * rhs_c[6] + lhs_c[7] * rhs_c[7];
+    
+    return mat2_t<T>( e00, e10,
+                      e01, e11 );
+}
+
+template< typename T > inline
+mat3x2_t<T>     mat4x2_t<T>::operator*( mat3x4_t<T> const& rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    T const* rhs_c = rhs.data.c;
+    
+    T e00 = lhs_c[0] * rhs_c[0] + lhs_c[2] * rhs_c[1] + lhs_c[4] * rhs_c[2] + lhs_c[6] * rhs_c[3];
+    T e01 = lhs_c[1] * rhs_c[0] + lhs_c[3] * rhs_c[1] + lhs_c[5] * rhs_c[2] + lhs_c[7] * rhs_c[3];
+    T e10 = lhs_c[0] * rhs_c[4] + lhs_c[2] * rhs_c[5] + lhs_c[4] * rhs_c[6] + lhs_c[6] * rhs_c[7];
+    T e11 = lhs_c[1] * rhs_c[4] + lhs_c[3] * rhs_c[5] + lhs_c[5] * rhs_c[6] + lhs_c[7] * rhs_c[7];
+    T e20 = lhs_c[0] * rhs_c[8] + lhs_c[2] * rhs_c[9] + lhs_c[4] * rhs_c[10] + lhs_c[6] * rhs_c[11];
+    T e21 = lhs_c[1] * rhs_c[8] + lhs_c[3] * rhs_c[9] + lhs_c[5] * rhs_c[10] + lhs_c[7] * rhs_c[11];
+    
+    return mat3x2_t<T>( e00, e10, e20,
+                        e01, e11, e21 );
+}
+
+template< typename T > inline
+mat4x2_t<T>     mat4x2_t<T>::operator*( mat4_t<T> const& rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    T const* rhs_c = rhs.data.c;
+    
+    T e00 = lhs_c[0] * rhs_c[0] + lhs_c[2] * rhs_c[1] + lhs_c[4] * rhs_c[2] + lhs_c[6] * rhs_c[3];
+    T e01 = lhs_c[1] * rhs_c[0] + lhs_c[3] * rhs_c[1] + lhs_c[5] * rhs_c[2] + lhs_c[7] * rhs_c[3];
+    T e10 = lhs_c[0] * rhs_c[4] + lhs_c[2] * rhs_c[5] + lhs_c[4] * rhs_c[6] + lhs_c[6] * rhs_c[7];
+    T e11 = lhs_c[1] * rhs_c[4] + lhs_c[3] * rhs_c[5] + lhs_c[5] * rhs_c[6] + lhs_c[7] * rhs_c[7];
+    T e20 = lhs_c[0] * rhs_c[8] + lhs_c[2] * rhs_c[9] + lhs_c[4] * rhs_c[10] + lhs_c[6] * rhs_c[11];
+    T e21 = lhs_c[1] * rhs_c[8] + lhs_c[3] * rhs_c[9] + lhs_c[5] * rhs_c[10] + lhs_c[7] * rhs_c[11];
+    T e30 = lhs_c[0] * rhs_c[12] + lhs_c[2] * rhs_c[13] + lhs_c[4] * rhs_c[14] + lhs_c[6] * rhs_c[15];
+    T e31 = lhs_c[1] * rhs_c[12] + lhs_c[3] * rhs_c[13] + lhs_c[5] * rhs_c[14] + lhs_c[7] * rhs_c[15];
+    
+    return mat4x2_t<T>( e00, e10, e20, e30,
+                        e01, e11, e21, e31 );
+}
+
 
 template< typename T > inline
 vec2_t<T>     mat4x2_t<T>::operator*( vec4_t<T> const& rhs ) const
@@ -7486,6 +7479,1257 @@ std::ostream& operator<<( std::ostream& stream, mat4x2_t<T> const& src )
     stream << "[ " << src(0,1) << " " << src(1,1) << " " << src(2,1) << " " << src(3,1) << " ]" << std::endl;
     return stream;
 }
+
+
+
+// -------------- Matrix 3x4 -----------------
+
+template< typename T > inline
+mat3x4_t<T>::mat3x4_t()
+{ T* c = this->data.c;
+  c[0] = lit<T>::zero;   c[4] = lit<T>::zero;   c[8] = lit<T>::zero;
+  c[1] = lit<T>::zero;   c[5] = lit<T>::zero;   c[9] = lit<T>::zero;
+  c[2] = lit<T>::zero;   c[6] = lit<T>::zero;   c[10] = lit<T>::zero;
+  c[3] = lit<T>::zero;   c[7] = lit<T>::zero;   c[11] = lit<T>::zero; }
+  
+template< typename T > inline
+mat3x4_t<T>::mat3x4_t( mat3x4_t<T> const& copy )
+{ T* c = this->data.c;
+  c[0] = copy.data.c[0];
+  c[1] = copy.data.c[1];
+  c[2] = copy.data.c[2];
+  c[3] = copy.data.c[3];
+  c[4] = copy.data.c[4];
+  c[5] = copy.data.c[5];
+  c[6] = copy.data.c[6];
+  c[7] = copy.data.c[7];
+  c[8] = copy.data.c[8];
+  c[9] = copy.data.c[9];
+  c[10] = copy.data.c[10];
+  c[11] = copy.data.c[11];
+}
+
+template< typename T >
+mat3x4_t<T>::mat3x4_t( T e00, T e10, T e20,
+                       T e01, T e11, T e21,
+                       T e02, T e12, T e22,
+                       T e03, T e13, T e23 )
+{ T* c = this->data.c;
+  c[0] = e00;   c[4] = e10;   c[8]  = e20;
+  c[1] = e01;   c[5] = e11;   c[9]  = e21;
+  c[2] = e02;   c[6] = e12;   c[10] = e22;
+  c[3] = e03;   c[7] = e13;   c[11] = e23; }
+  
+template< typename T >
+mat3x4_t<T>::mat3x4_t( T fill )
+{ T* c = this->data.c;
+  c[0] = fill;   c[4] = fill;   c[8]  = fill;
+  c[1] = fill;   c[5] = fill;   c[9]  = fill;
+  c[2] = fill;   c[6] = fill;   c[10] = fill;
+  c[3] = fill;   c[7] = fill;   c[11] = fill; }
+  
+template< typename T > inline
+mat3x4_t<T>::mat3x4_t( vec4_t<T> const& col0,
+                       vec4_t<T> const& col1,
+                       vec4_t<T> const& col2 )
+{ T* c = this->data.c;
+  c[0] = col0[0];   c[4] = col1[0];   c[8]  = col2[0];
+  c[1] = col0[1];   c[5] = col1[1];   c[9]  = col2[1];
+  c[2] = col0[2];   c[6] = col1[2];   c[10] = col2[2];
+  c[3] = col0[3];   c[7] = col1[3];   c[11] = col2[3]; }
+  
+template< typename T >
+mat3x4_t<T>     mat3x4_t<T>::upper_identity()
+{ return mat3x4_t<T>( lit<T>::one,  lit<T>::zero, lit<T>::zero,
+                      lit<T>::zero, lit<T>::one,  lit<T>::zero,
+                      lit<T>::zero, lit<T>::zero, lit<T>::one,
+                      lit<T>::zero, lit<T>::zero, lit<T>::zero ); }
+                      
+template< typename T > inline
+mat3x4_t<T>     mat3x4_t<T>::row_vectors( vec3_t<T> const& row0,
+                                          vec3_t<T> const& row1,
+                                          vec3_t<T> const& row2,
+                                          vec3_t<T> const& row3 )
+{ return mat3x4_t( row0[0], row0[1], row0[2],
+                   row1[0], row1[1], row1[2],
+                   row2[0], row2[1], row2[2],
+                   row3[0], row3[1], row3[2] ); }
+
+template< typename T > inline
+bool    mat3x4_t<T>::operator==( mat3x4_t<T> const& rhs ) const
+{
+    T const* rhs_c = rhs.data.c;
+    T const* lhs_c = this->data.c;
+    return     std::abs(lhs_c[0] - rhs_c[0]) < lit<T>::delta
+           and std::abs(lhs_c[1] - rhs_c[1]) < lit<T>::delta
+           and std::abs(lhs_c[2] - rhs_c[2]) < lit<T>::delta
+           and std::abs(lhs_c[3] - rhs_c[3]) < lit<T>::delta
+           and std::abs(lhs_c[4] - rhs_c[4]) < lit<T>::delta
+           and std::abs(lhs_c[5] - rhs_c[5]) < lit<T>::delta
+           and std::abs(lhs_c[6] - rhs_c[6]) < lit<T>::delta
+           and std::abs(lhs_c[7] - rhs_c[7]) < lit<T>::delta
+           and std::abs(lhs_c[8] - rhs_c[8]) < lit<T>::delta
+           and std::abs(lhs_c[9] - rhs_c[9]) < lit<T>::delta
+           and std::abs(lhs_c[10] - rhs_c[10]) < lit<T>::delta
+           and std::abs(lhs_c[11] - rhs_c[11]) < lit<T>::delta;
+}
+
+template< typename T > inline
+bool    mat3x4_t<T>::operator<( mat3x4_t<T> const& rhs ) const
+{
+    T const* rhs_c = rhs.data.c;
+    T const* lhs_c = this->data.c;
+    bool less = true;
+    
+    if ( (*this) != rhs ) {
+        less =     lhs_c[0] < rhs_c[0]
+               and lhs_c[1] < rhs_c[1]
+               and lhs_c[2] < rhs_c[2]
+               and lhs_c[3] < rhs_c[3]
+               and lhs_c[4] < rhs_c[4]
+               and lhs_c[5] < rhs_c[5]
+               and lhs_c[6] < rhs_c[6]
+               and lhs_c[7] < rhs_c[7]
+               and lhs_c[8] < rhs_c[8]
+               and lhs_c[9] < rhs_c[9]
+               and lhs_c[10] < rhs_c[10]
+               and lhs_c[11] < rhs_c[11];
+    } else {
+        less = false;
+    }
+
+    return less;
+}
+
+template< typename T > inline
+bool    mat3x4_t<T>::operator>( mat3x4_t<T> const& rhs ) const
+{
+    T const* rhs_c = rhs.data.c;
+    T const* lhs_c = this->data.c;
+    bool greater = true;
+    
+    if ( (*this) != rhs ) {
+        greater =     lhs_c[0] > rhs_c[0]
+                  and lhs_c[1] > rhs_c[1]
+                  and lhs_c[2] > rhs_c[2]
+                  and lhs_c[3] > rhs_c[3]
+                  and lhs_c[4] > rhs_c[4]
+                  and lhs_c[5] > rhs_c[5]
+                  and lhs_c[6] > rhs_c[6]
+                  and lhs_c[7] > rhs_c[7]
+                  and lhs_c[8] > rhs_c[8]
+                  and lhs_c[9] > rhs_c[9]
+                  and lhs_c[10] > rhs_c[10]
+                  and lhs_c[11] > rhs_c[11];
+    } else {
+        greater = false;
+    }
+
+    return greater;
+}
+
+
+template< typename T > inline
+bool    mat3x4_t<T>::operator<=( mat3x4_t<T> const& rhs ) const
+{
+    bool less = true;
+    
+    if ( not ((*this) > rhs) ) {
+        less = true;
+    } else {
+        less = false;
+    }
+
+    return less;
+}
+
+template< typename T > inline
+bool    mat3x4_t<T>::operator>=( mat3x4_t<T> const& rhs ) const
+{
+    bool greater = true;
+    
+    if ( not ((*this) < rhs) ) {
+        greater = true;
+    } else {
+        greater = false;
+    }
+
+    return greater;
+}
+
+
+template< typename T > inline
+bool    mat3x4_t<T>::operator!=( mat3x4_t<T> const& rhs ) const
+{
+    T const* rhs_c = rhs.data.c;
+    T const* lhs_c = this->data.c;
+    return     std::abs( lhs_c[0] - rhs_c[0] ) >= lit<T>::delta
+            or std::abs( lhs_c[1] - rhs_c[1] ) >= lit<T>::delta
+            or std::abs( lhs_c[2] - rhs_c[2] ) >= lit<T>::delta
+            or std::abs( lhs_c[3] - rhs_c[3] ) >= lit<T>::delta
+            or std::abs( lhs_c[4] - rhs_c[4] ) >= lit<T>::delta
+            or std::abs( lhs_c[5] - rhs_c[5] ) >= lit<T>::delta
+            or std::abs( lhs_c[6] - rhs_c[6] ) >= lit<T>::delta
+            or std::abs( lhs_c[7] - rhs_c[7] ) >= lit<T>::delta
+            or std::abs( lhs_c[8] - rhs_c[8] ) >= lit<T>::delta
+            or std::abs( lhs_c[9] - rhs_c[9] ) >= lit<T>::delta
+            or std::abs( lhs_c[10] - rhs_c[10] ) >= lit<T>::delta
+            or std::abs( lhs_c[11] - rhs_c[11] ) >= lit<T>::delta;
+}
+
+template< typename T > inline
+mat3x4_t<T>     mat3x4_t<T>::operator+( mat3x4_t<T> const& rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    T const* rhs_c = rhs.data.c;
+    
+    T e00 = lhs_c[0] + rhs_c[0];
+    T e01 = lhs_c[1] + rhs_c[1];
+    T e02 = lhs_c[2] + rhs_c[2];
+    T e03 = lhs_c[3] + rhs_c[3];
+    
+    T e10 = lhs_c[4] + rhs_c[4];
+    T e11 = lhs_c[5] + rhs_c[5];
+    T e12 = lhs_c[6] + rhs_c[6];
+    T e13 = lhs_c[7] + rhs_c[7];
+    
+    T e20 = lhs_c[8] + rhs_c[8];
+    T e21 = lhs_c[9] + rhs_c[9];
+    T e22 = lhs_c[10] + rhs_c[10];
+    T e23 = lhs_c[11] + rhs_c[11];
+    
+    return mat3x4_t<T>( e00, e10, e20,
+                        e01, e11, e21,
+                        e02, e12, e22,
+                        e03, e13, e23 );
+}
+
+template< typename T > inline
+mat3x4_t<T>     mat3x4_t<T>::operator-() const
+{
+    T const* lhs_c = this->data.c;
+    
+    T e00 = -lhs_c[0];
+    T e01 = -lhs_c[1];
+    T e02 = -lhs_c[2];
+    T e03 = -lhs_c[3];
+    
+    T e10 = -lhs_c[4];
+    T e11 = -lhs_c[5];
+    T e12 = -lhs_c[6];
+    T e13 = -lhs_c[7];
+    
+    T e20 = -lhs_c[8];
+    T e21 = -lhs_c[9];
+    T e22 = -lhs_c[10];
+    T e23 = -lhs_c[11];
+    
+    return mat3x4_t( e00, e10, e20,
+                     e01, e11, e21,
+                     e02, e12, e22,
+                     e03, e13, e23 );
+}
+
+template< typename T > inline
+mat3x4_t<T>     mat3x4_t<T>::operator-( mat3x4_t<T> const& rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    T const* rhs_c = rhs.data.c;
+    
+    T e00 = lhs_c[0] - rhs_c[0];
+    T e01 = lhs_c[1] - rhs_c[1];
+    T e02 = lhs_c[2] - rhs_c[2];
+    T e03 = lhs_c[3] - rhs_c[3];
+    
+    T e10 = lhs_c[4] - rhs_c[4];
+    T e11 = lhs_c[5] - rhs_c[5];
+    T e12 = lhs_c[6] - rhs_c[6];
+    T e13 = lhs_c[7] - rhs_c[7];
+    
+    T e20 = lhs_c[8] - rhs_c[8];
+    T e21 = lhs_c[9] - rhs_c[9];
+    T e22 = lhs_c[10] - rhs_c[10];
+    T e23 = lhs_c[11] - rhs_c[11];
+    
+    return mat3x4_t<T>( e00, e10, e20,
+                        e01, e11, e21,
+                        e02, e12, e22,
+                        e03, e13, e23 );
+}
+
+template< typename T > inline
+mat4_t<T>     mat3x4_t<T>::operator*( mat4x3_t<T> const& rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    T const* rhs_c = rhs.data.c;
+    
+    T e00 = lhs_c[0] * rhs_c[0] + lhs_c[4] * rhs_c[1] + lhs_c[8] * rhs_c[2];
+    T e01 = lhs_c[1] * rhs_c[0] + lhs_c[5] * rhs_c[1] + lhs_c[9] * rhs_c[2];
+    T e02 = lhs_c[2] * rhs_c[0] + lhs_c[6] * rhs_c[1] + lhs_c[10] * rhs_c[2];
+    T e03 = lhs_c[3] * rhs_c[0] + lhs_c[7] * rhs_c[1] + lhs_c[11] * rhs_c[2];
+    
+    T e10 = lhs_c[0] * rhs_c[3] + lhs_c[4] * rhs_c[4] + lhs_c[8] * rhs_c[5];
+    T e11 = lhs_c[1] * rhs_c[3] + lhs_c[5] * rhs_c[4] + lhs_c[9] * rhs_c[5];
+    T e12 = lhs_c[2] * rhs_c[3] + lhs_c[6] * rhs_c[4] + lhs_c[10] * rhs_c[5];
+    T e13 = lhs_c[3] * rhs_c[3] + lhs_c[7] * rhs_c[4] + lhs_c[11] * rhs_c[5];
+    
+    T e20 = lhs_c[0] * rhs_c[6] + lhs_c[4] * rhs_c[7] + lhs_c[8] * rhs_c[8];
+    T e21 = lhs_c[1] * rhs_c[6] + lhs_c[5] * rhs_c[7] + lhs_c[9] * rhs_c[8];
+    T e22 = lhs_c[2] * rhs_c[6] + lhs_c[6] * rhs_c[7] + lhs_c[10] * rhs_c[8];
+    T e23 = lhs_c[3] * rhs_c[6] + lhs_c[7] * rhs_c[7] + lhs_c[11] * rhs_c[8];
+    
+    T e30 = lhs_c[0] * rhs_c[9] + lhs_c[4] * rhs_c[10] + lhs_c[8] * rhs_c[11];
+    T e31 = lhs_c[1] * rhs_c[9] + lhs_c[5] * rhs_c[10] + lhs_c[9] * rhs_c[11];
+    T e32 = lhs_c[2] * rhs_c[9] + lhs_c[6] * rhs_c[10] + lhs_c[10] * rhs_c[11];
+    T e33 = lhs_c[3] * rhs_c[9] + lhs_c[7] * rhs_c[10] + lhs_c[11] * rhs_c[11];
+    
+    return mat4_t<T>( e00, e10, e20, e30,
+                      e01, e11, e21, e31,
+                      e02, e12, e22, e32,
+                      e03, e13, e23, e33 );
+}
+
+template< typename T > inline
+mat2x4_t<T>     mat3x4_t<T>::operator*( mat2x3_t<T> const& rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    T const* rhs_c = rhs.data.c;
+    
+    T e00 = lhs_c[0] * rhs_c[0] + lhs_c[4] * rhs_c[1] + lhs_c[8] * rhs_c[2];
+    T e01 = lhs_c[1] * rhs_c[0] + lhs_c[5] * rhs_c[1] + lhs_c[9] * rhs_c[2];
+    T e02 = lhs_c[2] * rhs_c[0] + lhs_c[6] * rhs_c[1] + lhs_c[10] * rhs_c[2];
+    T e03 = lhs_c[3] * rhs_c[0] + lhs_c[7] * rhs_c[1] + lhs_c[11] * rhs_c[2];
+    
+    T e10 = lhs_c[0] * rhs_c[3] + lhs_c[4] * rhs_c[4] + lhs_c[8] * rhs_c[5];
+    T e11 = lhs_c[1] * rhs_c[3] + lhs_c[5] * rhs_c[4] + lhs_c[9] * rhs_c[5];
+    T e12 = lhs_c[2] * rhs_c[3] + lhs_c[6] * rhs_c[4] + lhs_c[10] * rhs_c[5];
+    T e13 = lhs_c[3] * rhs_c[3] + lhs_c[7] * rhs_c[4] + lhs_c[11] * rhs_c[5];
+    
+    return mat2x4_t<T>( e00, e10,
+                        e01, e11,
+                        e02, e12,
+                        e03, e13 );
+}
+
+template< typename T > inline
+vec4_t<T>     mat3x4_t<T>::operator*( vec3_t<T> const& rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    
+    T x0 = lhs_c[0] * rhs[0] + lhs_c[4] * rhs[1] + lhs_c[8] * rhs[2];
+    T x1 = lhs_c[1] * rhs[0] + lhs_c[5] * rhs[1] + lhs_c[9] * rhs[2];
+    T x2 = lhs_c[2] * rhs[0] + lhs_c[6] * rhs[1] + lhs_c[10] * rhs[2];
+    T x3 = lhs_c[3] * rhs[0] + lhs_c[7] * rhs[1] + lhs_c[11] * rhs[2];
+    
+    return vec4_t<T>( x0, x1, x2, x3 );
+}
+
+template< typename T > inline
+vec3_t<T>     operator*( vec4_t<T> const& lhs,
+                         mat3x4_t<T> const& rhs )
+{
+    T const* rhs_c = rhs.data.c;
+    
+    T x0 = rhs_c[0] * lhs[0] + rhs_c[1] * lhs[1] + rhs_c[2] * lhs[2] + rhs_c[3] * lhs[3];
+    T x1 = rhs_c[4] * lhs[0] + rhs_c[5] * lhs[1] + rhs_c[6] * lhs[2] + rhs_c[7] * lhs[3];
+    T x2 = rhs_c[8] * lhs[0] + rhs_c[9] * lhs[1] + rhs_c[10] * lhs[2] + rhs_c[11] * lhs[3];
+    
+    return vec3_t<T>( x0, x1, x2 );
+}
+
+template< typename T >
+mat3x4_t<T>     mat3x4_t<T>::operator*( T rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    
+    T e00 = lhs_c[0] * rhs;
+    T e01 = lhs_c[1] * rhs;
+    T e02 = lhs_c[2] * rhs;
+    T e03 = lhs_c[3] * rhs;
+    
+    T e10 = lhs_c[4] * rhs;
+    T e11 = lhs_c[5] * rhs;
+    T e12 = lhs_c[6] * rhs;
+    T e13 = lhs_c[7] * rhs;
+    
+    T e20 = lhs_c[8] * rhs;
+    T e21 = lhs_c[9] * rhs;
+    T e22 = lhs_c[10] * rhs;
+    T e23 = lhs_c[11] * rhs;
+    
+    return mat3x4_t( e00, e10, e20,
+                     e01, e11, e21,
+                     e02, e12, e22,
+                     e03, e13, e23 );
+}
+
+template< typename D >
+mat3x4_t<D>     operator*( D lhs, mat3x4_t<D> const& rhs )
+{
+    D const* rhs_c = rhs.data.c;
+    
+    D e00 = rhs_c[0] * lhs;
+    D e01 = rhs_c[1] * lhs;
+    D e02 = rhs_c[2] * lhs;
+    D e03 = rhs_c[3] * lhs;
+    
+    D e10 = rhs_c[4] * lhs;
+    D e11 = rhs_c[5] * lhs;
+    D e12 = rhs_c[6] * lhs;
+    D e13 = rhs_c[7] * lhs;
+    
+    D e20 = rhs_c[8] * lhs;
+    D e21 = rhs_c[9] * lhs;
+    D e22 = rhs_c[10] * lhs;
+    D e23 = rhs_c[11] * lhs;
+    
+    return mat3x4_t<D>( e00, e10, e20,
+                        e01, e11, e21,
+                        e02, e12, e22,
+                        e03, e13, e23 );
+}
+
+template< typename T >
+mat3x4_t<T>     mat3x4_t<T>::operator/( T rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    
+    T e00 = lhs_c[0] / rhs;
+    T e01 = lhs_c[1] / rhs;
+    T e02 = lhs_c[2] / rhs;
+    T e03 = lhs_c[3] / rhs;
+    
+    T e10 = lhs_c[4] / rhs;
+    T e11 = lhs_c[5] / rhs;
+    T e12 = lhs_c[6] / rhs;
+    T e13 = lhs_c[7] / rhs;
+    
+    T e20 = lhs_c[8] / rhs;
+    T e21 = lhs_c[9] / rhs;
+    T e22 = lhs_c[10] / rhs;
+    T e23 = lhs_c[11] / rhs;
+    
+    return mat3x4_t<T>( e00, e10, e20,
+                        e01, e11, e21,
+                        e02, e12, e22,
+                        e03, e13, e23 );
+}
+
+
+template< typename T > inline
+mat3x4_t<T>&    mat3x4_t<T>::operator=( mat3x4_t<T> const& rhs )
+{
+    T const* rhs_c = rhs.data.c;
+    T* lhs_c = this->data.c;
+    lhs_c[0] = rhs_c[0];
+    lhs_c[1] = rhs_c[1];
+    lhs_c[2] = rhs_c[2];
+    lhs_c[3] = rhs_c[3];
+    lhs_c[4] = rhs_c[4];
+    lhs_c[5] = rhs_c[5];
+    lhs_c[6] = rhs_c[6];
+    lhs_c[7] = rhs_c[7];
+    lhs_c[8] = rhs_c[8];
+    lhs_c[9] = rhs_c[9];
+    lhs_c[10] = rhs_c[10];
+    lhs_c[11] = rhs_c[11];
+    return *this;
+}
+
+
+template< typename T > inline
+col4<T>     mat3x4_t<T>::operator[]( size_t i )
+{
+    if ( i > 2 or i < 0 ) {
+        throw std::out_of_range( "index to column vector lookup on mat3x4_t out of range" );
+    }
+    
+    return col4<T>( this->data.c + (4*i), true );
+}
+
+template< typename T > inline
+col4<T>     mat3x4_t<T>::operator[]( size_t i ) const
+{
+    if ( i > 2 or i < 0 ) {
+        throw std::out_of_range( "index to column vector lookup on mat3x4_t out of range" );
+    }
+    
+    T* col_cpy = new T[4];
+    
+    col_cpy[0] = this-data->c[ 4 * i ];
+    col_cpy[1] = this-data->c[ 4 * i + 1 ];
+    col_cpy[2] = this-data->c[ 4 * i + 2 ];
+    col_cpy[3] = this-data->c[ 4 * i + 3 ];
+    
+    return col4<T>( col_cpy, false );
+}
+
+
+template< typename T > inline
+T&     mat3x4_t<T>::operator()( size_t col,
+                                size_t row )
+{
+    if ( col > 2 or row > 3 or col < 0 or row < 0 ) {
+        throw std::out_of_range("Indexing of mat3x4_t used out of bounds index");
+    }
+    
+    return this->data.c[col * 4 + row];
+}
+
+template< typename T > inline
+T      mat3x4_t<T>::operator()( size_t col,
+                                size_t row ) const
+{
+    if ( col > 2 or row > 3 or col < 0 or row < 0 ) {
+        throw std::out_of_range("Indexing of mat3x4_t used out of bounds index");
+    }
+    
+    return this->data.c[col * 4 + row];
+}
+
+
+template< typename T > inline
+col4<T>    mat3x4_t<T>::column( size_t col )
+{ return (*this)[col]; }
+
+template< typename T > inline
+col4<T>     mat3x4_t<T>::column( size_t col ) const
+{ return (*this)[col]; }
+
+template< typename T > inline
+mat3x4_t<T>&    mat3x4_t<T>::columns( vec4_t<T> const& col0,
+                                      vec4_t<T> const& col1,
+                                      vec4_t<T> const& col2 )
+{
+    T* cm = this->data.c;
+    
+    cm[0] = col0[0];
+    cm[1] = col0[1];
+    cm[2] = col0[2];
+    cm[3] = col0[3];
+    
+    cm[4] = col1[0];
+    cm[5] = col1[1];
+    cm[6] = col1[2];
+    cm[7] = col1[3];
+    
+    cm[8] = col2[0];
+    cm[9] = col2[1];
+    cm[10] = col2[2];
+    cm[11] = col2[3];
+    
+    return *this;
+}
+
+
+template< typename T >
+mat3x4_t<T>& mat3x4_t<T>::fill( T val )
+{
+    T* c = this->data.c;
+    c[0] = val;
+    c[1] = val;
+    c[2] = val;
+    c[3] = val;
+    c[4] = val;
+    c[5] = val;
+    c[6] = val;
+    c[7] = val;
+    c[8] = val;
+    c[9] = val;
+    c[10] = val;
+    c[11] = val;
+    return *this;
+}
+
+
+template< typename T > inline
+row3<T>    mat3x4_t<T>::row( size_t row )
+{
+    if ( row > 3 or row < 0 ) {
+        throw std::out_of_range( "index to row vector lookup on mat3x4_t out of range" );
+    }
+    
+    return row3<T>( this->data.c + row,
+                    this->data.c + 4 + row,
+                    this->data.c + 8 + row,
+                    true );
+}
+
+template< typename T > inline
+row3<T>     mat3x4_t<T>::row( size_t row ) const
+{
+    if ( row > 3 or row < 0 ) {
+        throw std::out_of_range( "index to row vector lookup on mat3x4_t out of range" );
+    }
+    
+    return row3<T>( this->data.c[row],
+                    this->data.c[4 + row],
+                    this->data.c[4 + row] );
+}
+
+
+template< typename T > inline
+mat3x4_t<T>& mat3x4_t<T>::rows( vec3_t<T> const& row0,
+                                vec3_t<T> const& row1,
+                                vec3_t<T> const& row2,
+                                vec3_t<T> const& row3 )
+{
+    T* cm = this->data.c;
+    
+    cm[0] = row0[0];
+    cm[4] = row0[1];
+    cm[8] = row0[2];
+    
+    cm[1] = row1[0];
+    cm[5] = row1[1];
+    cm[9] = row1[2];
+    
+    cm[2] = row2[0];
+    cm[6] = row2[1];
+    cm[10] = row2[2];
+    
+    cm[3] = row3[0];
+    cm[7] = row3[1];
+    cm[11] = row3[2];
+    
+    return *this;
+}
+
+
+template< typename T > inline
+raw_map const   mat3x4_t<T>::to_map() const
+{
+    return map_bytes( sizeof(T) * 12, this->data.bytes );
+}
+
+template<typename T>
+std::ostream& operator<<( std::ostream& stream, mat3x4_t<T> const& src )
+{
+    stream << "[ " << src(0,0) << " " << src(1,0) << " " << src(2,0) << " ]" << '\n';
+    stream << "[ " << src(0,1) << " " << src(1,1) << " " << src(2,1) << " ]" << '\n';
+    stream << "[ " << src(0,2) << " " << src(1,2) << " " << src(2,2) << " ]" << '\n';
+    stream << "[ " << src(0,3) << " " << src(1,3) << " " << src(2,3) << " ]" << std::endl;
+    return stream;
+}
+
+
+
+
+// --------------- Matrix 4x3 --------------
+
+
+template< typename T > inline
+mat4x3_t<T>::mat4x3_t()
+{ T* c = this->data.c;
+  c[0] = lit<T>::zero;   c[3] = lit<T>::zero;   c[6] = lit<T>::zero;   c[9] = lit<T>::zero;
+  c[1] = lit<T>::zero;   c[4] = lit<T>::zero;   c[7] = lit<T>::zero;   c[10] = lit<T>::zero;
+  c[2] = lit<T>::zero;   c[5] = lit<T>::zero;   c[8] = lit<T>::zero;   c[11] = lit<T>::zero; }
+
+template< typename T > inline
+mat4x3_t<T>::mat4x3_t( mat4x3_t<T> const& copy )
+{ T* c = this->data.c;
+  c[0] = copy.data.c[0];
+  c[1] = copy.data.c[1];
+  c[2] = copy.data.c[2];
+  c[3] = copy.data.c[3];
+  c[4] = copy.data.c[4];
+  c[5] = copy.data.c[5];
+  c[6] = copy.data.c[6];
+  c[7] = copy.data.c[7];
+  c[8] = copy.data.c[8];
+  c[9] = copy.data.c[9];
+  c[10] = copy.data.c[10];
+  c[11] = copy.data.c[11];
+}
+  
+template< typename T >
+mat4x3_t<T>::mat4x3_t( T e00, T e10, T e20, T e30,
+                       T e01, T e11, T e21, T e31,
+                       T e02, T e12, T e22, T e32 )
+{ T* c = this->data.c;
+  c[0] = e00;   c[3] = e10;   c[6] = e20;   c[9]  = e30;
+  c[1] = e01;   c[4] = e11;   c[7] = e21;   c[10] = e31;
+  c[2] = e02;   c[5] = e12;   c[8] = e22;   c[11] = e32; }
+
+template< typename T >
+mat4x3_t<T>::mat4x3_t( T fill )
+{ T* c = this->data.c;
+  c[0] = fill;   c[3] = fill;   c[6] = fill;   c[9] = fill;
+  c[1] = fill;   c[4] = fill;   c[7] = fill;   c[10] = fill;
+  c[2] = fill;   c[5] = fill;   c[8] = fill;   c[11] = fill; }
+
+
+template< typename T > inline
+mat4x3_t<T>::mat4x3_t( vec3_t<T> const& col0,
+                       vec3_t<T> const& col1,
+                       vec3_t<T> const& col2,
+                       vec3_t<T> const& col3 )
+{ T* c = this->data.c;
+  c[0] = col0[0];   c[3] = col1[0];   c[6] = col2[0];   c[9]  = col3[0];
+  c[1] = col0[1];   c[4] = col1[1];   c[7] = col2[1];   c[10] = col3[1];
+  c[2] = col0[2];   c[5] = col1[2];   c[8] = col2[2];   c[11] = col3[2]; }
+
+// Named Construction
+template< typename T >
+mat4x3_t<T>     mat4x3_t<T>::left_identity()
+{ return mat4x3_t<T>( lit<T>::one,  lit<T>::zero, lit<T>::zero, lit<T>::zero,
+                      lit<T>::zero, lit<T>::one, lit<T>::zero, lit<T>::zero,
+                      lit<T>::zero, lit<T>::zero, lit<T>::one, lit<T>::zero ); }
+
+template< typename T > inline
+mat4x3_t<T>     mat4x3_t<T>::row_vectors( vec4_t<T> const& row0,
+                                          vec4_t<T> const& row1,
+                                          vec4_t<T> const& row2 )
+{ return mat4x3_t( row0[0], row0[1], row0[2], row0[3],
+                   row1[0], row1[1], row1[2], row1[3],
+                   row2[0], row2[1], row2[2], row2[3] ); }
+
+// Comparison
+               
+template< typename T > inline
+bool    mat4x3_t<T>::operator==( mat4x3_t<T> const& rhs ) const
+{
+    T const* rhs_c = rhs.data.c;
+    T const* lhs_c = this->data.c;
+    return     std::abs(lhs_c[0] - rhs_c[0]) < lit<T>::delta
+           and std::abs(lhs_c[1] - rhs_c[1]) < lit<T>::delta
+           and std::abs(lhs_c[2] - rhs_c[2]) < lit<T>::delta
+           and std::abs(lhs_c[3] - rhs_c[3]) < lit<T>::delta
+           and std::abs(lhs_c[4] - rhs_c[4]) < lit<T>::delta
+           and std::abs(lhs_c[5] - rhs_c[5]) < lit<T>::delta
+           and std::abs(lhs_c[6] - rhs_c[6]) < lit<T>::delta
+           and std::abs(lhs_c[7] - rhs_c[7]) < lit<T>::delta
+           and std::abs(lhs_c[8] - rhs_c[8]) < lit<T>::delta
+           and std::abs(lhs_c[9] - rhs_c[9]) < lit<T>::delta
+           and std::abs(lhs_c[10] - rhs_c[10]) < lit<T>::delta
+           and std::abs(lhs_c[11] - rhs_c[11]) < lit<T>::delta;
+}
+
+template< typename T > inline
+bool    mat4x3_t<T>::operator<( mat4x3_t<T> const& rhs ) const
+{
+    T const* rhs_c = rhs.data.c;
+    T const* lhs_c = this->data.c;
+    bool less = true;
+    
+    if ( (*this) != rhs ) {
+        less =     lhs_c[0] < rhs_c[0]
+               and lhs_c[1] < rhs_c[1]
+               and lhs_c[2] < rhs_c[2]
+               and lhs_c[3] < rhs_c[3]
+               and lhs_c[4] < rhs_c[4]
+               and lhs_c[5] < rhs_c[5]
+               and lhs_c[6] < rhs_c[6]
+               and lhs_c[7] < rhs_c[7]
+               and lhs_c[8] < rhs_c[8]
+               and lhs_c[9] < rhs_c[9]
+               and lhs_c[10] < rhs_c[10]
+               and lhs_c[11] < rhs_c[11];
+    } else {
+        less = false;
+    }
+
+    return less;
+}
+
+template< typename T > inline
+bool    mat4x3_t<T>::operator>( mat4x3_t<T> const& rhs ) const
+{
+    T const* rhs_c = rhs.data.c;
+    T const* lhs_c = this->data.c;
+    bool greater = true;
+    
+    if ( (*this) != rhs ) {
+        greater =     lhs_c[0] > rhs_c[0]
+                  and lhs_c[1] > rhs_c[1]
+                  and lhs_c[2] > rhs_c[2]
+                  and lhs_c[3] > rhs_c[3]
+                  and lhs_c[4] > rhs_c[4]
+                  and lhs_c[5] > rhs_c[5]
+                  and lhs_c[6] > rhs_c[6]
+                  and lhs_c[7] > rhs_c[7]
+                  and lhs_c[8] > rhs_c[8]
+                  and lhs_c[9] > rhs_c[9]
+                  and lhs_c[10] > rhs_c[10]
+                  and lhs_c[11] > rhs_c[11];
+    } else {
+        greater = false;
+    }
+
+    return greater;
+}
+
+template< typename T > inline
+bool    mat4x3_t<T>::operator<=( mat4x3_t<T> const& rhs ) const
+{
+    bool less = true;
+    
+    if ( not ((*this) > rhs) ) {
+        less = true;
+    } else {
+        less = false;
+    }
+
+    return less;
+}
+
+template< typename T > inline
+bool    mat4x3_t<T>::operator>=( mat4x3_t<T> const& rhs ) const
+{
+    bool greater = true;
+    
+    if ( not ((*this) < rhs) ) {
+        greater = true;
+    } else {
+        greater = false;
+    }
+
+    return greater;
+}
+
+template< typename T > inline
+bool    mat4x3_t<T>::operator!=( mat4x3_t<T> const& rhs ) const
+{
+    T const* rhs_c = rhs.data.c;
+    T const* lhs_c = this->data.c;
+    return     std::abs( lhs_c[0] - rhs_c[0] ) >= lit<T>::delta
+            or std::abs( lhs_c[1] - rhs_c[1] ) >= lit<T>::delta
+            or std::abs( lhs_c[2] - rhs_c[2] ) >= lit<T>::delta
+            or std::abs( lhs_c[3] - rhs_c[3] ) >= lit<T>::delta
+            or std::abs( lhs_c[4] - rhs_c[4] ) >= lit<T>::delta
+            or std::abs( lhs_c[5] - rhs_c[5] ) >= lit<T>::delta
+            or std::abs( lhs_c[6] - rhs_c[6] ) >= lit<T>::delta
+            or std::abs( lhs_c[7] - rhs_c[7] ) >= lit<T>::delta
+            or std::abs( lhs_c[8] - rhs_c[8] ) >= lit<T>::delta
+            or std::abs( lhs_c[9] - rhs_c[9] ) >= lit<T>::delta
+            or std::abs( lhs_c[10] - rhs_c[10] ) >= lit<T>::delta
+            or std::abs( lhs_c[11] - rhs_c[11] ) >= lit<T>::delta;
+}
+
+// Arithmetic
+
+template< typename T > inline
+mat4x3_t<T>     mat4x3_t<T>::operator+( mat4x3_t<T> const& rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    T const* rhs_c = rhs.data.c;
+    
+    T e00 = lhs_c[0] + rhs_c[0];
+    T e01 = lhs_c[1] + rhs_c[1];
+    T e02 = lhs_c[2] + rhs_c[2];
+    
+    T e10 = lhs_c[3] + rhs_c[3];
+    T e11 = lhs_c[4] + rhs_c[4];
+    T e12 = lhs_c[5] + rhs_c[5];
+    
+    T e20 = lhs_c[6] + rhs_c[6];
+    T e21 = lhs_c[7] + rhs_c[7];
+    T e22 = lhs_c[8] + rhs_c[8];
+    
+    T e30 = lhs_c[9] + rhs_c[9];
+    T e31 = lhs_c[10] + rhs_c[10];
+    T e32 = lhs_c[11] + rhs_c[11];
+    
+    return mat4x3_t<T>( e00, e10, e20, e30,
+                        e01, e11, e21, e31,
+                        e02, e12, e22, e32 );
+}
+
+template< typename T > inline
+mat4x3_t<T>     mat4x3_t<T>::operator-() const
+{
+    T const* lhs_c = this->data.c;
+    
+    T e00 = -lhs_c[0];
+    T e01 = -lhs_c[1];
+    T e02 = -lhs_c[2];
+    
+    T e10 = -lhs_c[3];
+    T e11 = -lhs_c[4];
+    T e12 = -lhs_c[5];
+    
+    T e20 = -lhs_c[6];
+    T e21 = -lhs_c[7];
+    T e22 = -lhs_c[8];
+   
+    T e30 = -lhs_c[9];
+    T e31 = -lhs_c[10];
+    T e32 = -lhs_c[11];
+    
+    return mat4x3_t( e00, e10, e20, e30,
+                     e01, e11, e21, e31,
+                     e02, e12, e22, e32 );
+}
+
+template< typename T > inline
+mat4x3_t<T>     mat4x3_t<T>::operator-( mat4x3_t<T> const& rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    T const* rhs_c = rhs.data.c;
+    
+    T e00 = lhs_c[0] - rhs_c[0];
+    T e01 = lhs_c[1] - rhs_c[1];
+    T e02 = lhs_c[2] - rhs_c[2];
+    
+    T e10 = lhs_c[3] - rhs_c[3];
+    T e11 = lhs_c[4] - rhs_c[4];
+    T e12 = lhs_c[5] - rhs_c[5];
+    
+    T e20 = lhs_c[6] - rhs_c[6];
+    T e21 = lhs_c[7] - rhs_c[7];
+    T e22 = lhs_c[8] - rhs_c[8];
+    
+    T e30 = lhs_c[9] - rhs_c[9];
+    T e31 = lhs_c[10] - rhs_c[10];
+    T e32 = lhs_c[11] - rhs_c[11];
+    
+    return mat4x3_t<T>( e00, e10, e20, e30,
+                        e01, e11, e21, e31,
+                        e02, e12, e22, e32 );
+}
+
+template< typename T > inline
+mat3_t<T>   mat4x3_t<T>::operator*( mat3x4_t<T> const& rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    T const* rhs_c = rhs.data.c;
+    
+    T e00 = lhs_c[0] * rhs_c[0] + lhs_c[3] * rhs_c[1] + lhs_c[6] * rhs_c[2] + lhs_c[9] * rhs_c[3];
+    T e01 = lhs_c[1] * rhs_c[0] + lhs_c[4] * rhs_c[1] + lhs_c[7] * rhs_c[2] + lhs_c[10] * rhs_c[3];
+    T e02 = lhs_c[2] * rhs_c[0] + lhs_c[5] * rhs_c[1] + lhs_c[8] * rhs_c[2] + lhs_c[11] * rhs_c[3];
+    
+    T e10 = lhs_c[0] * rhs_c[4] + lhs_c[3] * rhs_c[5] + lhs_c[6] * rhs_c[6] + lhs_c[9] * rhs_c[7];
+    T e11 = lhs_c[1] * rhs_c[4] + lhs_c[4] * rhs_c[5] + lhs_c[7] * rhs_c[6] + lhs_c[10] * rhs_c[7];
+    T e12 = lhs_c[2] * rhs_c[4] + lhs_c[5] * rhs_c[5] + lhs_c[8] * rhs_c[6] + lhs_c[11] * rhs_c[7];
+    
+    T e20 = lhs_c[0] * rhs_c[8] + lhs_c[3] * rhs_c[9] + lhs_c[6] * rhs_c[10] + lhs_c[9] * rhs_c[11];
+    T e21 = lhs_c[1] * rhs_c[8] + lhs_c[4] * rhs_c[9] + lhs_c[7] * rhs_c[10] + lhs_c[10] * rhs_c[11];
+    T e22 = lhs_c[2] * rhs_c[8] + lhs_c[5] * rhs_c[9] + lhs_c[8] * rhs_c[10] + lhs_c[11] * rhs_c[11];
+    
+    return mat3_t<T>( e00, e10, e20,
+                      e01, e11, e21,
+                      e02, e12, e22 );
+}
+
+template< typename T > inline
+mat2x3_t<T>   mat4x3_t<T>::operator*( mat2x4_t<T> const& rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    T const* rhs_c = rhs.data.c;
+    
+    T e00 = lhs_c[0] * rhs_c[0] + lhs_c[3] * rhs_c[1] + lhs_c[6] * rhs_c[2] + lhs_c[9] * rhs_c[3];
+    T e01 = lhs_c[1] * rhs_c[0] + lhs_c[4] * rhs_c[1] + lhs_c[7] * rhs_c[2] + lhs_c[10] * rhs_c[3];
+    T e02 = lhs_c[2] * rhs_c[0] + lhs_c[5] * rhs_c[1] + lhs_c[8] * rhs_c[2] + lhs_c[11] * rhs_c[3];
+    
+    T e10 = lhs_c[0] * rhs_c[4] + lhs_c[3] * rhs_c[5] + lhs_c[6] * rhs_c[6] + lhs_c[9] * rhs_c[7];
+    T e11 = lhs_c[1] * rhs_c[4] + lhs_c[4] * rhs_c[5] + lhs_c[7] * rhs_c[6] + lhs_c[10] * rhs_c[7];
+    T e12 = lhs_c[2] * rhs_c[4] + lhs_c[5] * rhs_c[5] + lhs_c[8] * rhs_c[6] + lhs_c[11] * rhs_c[7];
+
+    return mat2x3_t<T>( e00, e10,
+                        e01, e11,
+                        e02, e12 );
+}
+
+template< typename T > inline
+vec3_t<T>     mat4x3_t<T>::operator*( vec4_t<T> const& rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    
+    T x0 = lhs_c[0] * rhs[0] + lhs_c[3] * rhs[1] + lhs_c[6] * rhs[2] + lhs_c[9] * rhs[3];
+    T x1 = lhs_c[1] * rhs[0] + lhs_c[4] * rhs[1] + lhs_c[7] * rhs[2] + lhs_c[10] * rhs[3];;
+    T x2 = lhs_c[2] * rhs[0] + lhs_c[5] * rhs[1] + lhs_c[8] * rhs[2] + lhs_c[11] * rhs[3];;
+    
+    return vec3_t<T>( x0, x1, x2 );
+}
+
+template< typename T > inline
+vec4_t<T>     operator*( vec3_t<T> const& lhs,
+                         mat4x3_t<T> const& rhs )
+{
+    T const* rhs_c = rhs.data.c;
+    
+    T x0 = rhs_c[0] * lhs[0] + rhs_c[1] * lhs[1] + rhs_c[2] * lhs[2];
+    T x1 = rhs_c[3] * lhs[0] + rhs_c[4] * lhs[1] + rhs_c[5] * lhs[2];
+    T x2 = rhs_c[6] * lhs[0] + rhs_c[7] * lhs[1] + rhs_c[8] * lhs[2];
+    T x3 = rhs_c[9] * lhs[0] + rhs_c[10] * lhs[1] + rhs_c[11] * lhs[2];
+    
+    return vec4_t<T>( x0, x1, x2, x3 );
+}
+
+template< typename T >
+mat4x3_t<T>     mat4x3_t<T>::operator*( T rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    
+    T e00 = lhs_c[0] * rhs;
+    T e01 = lhs_c[1] * rhs;
+    T e02 = lhs_c[2] * rhs;
+    
+    T e10 = lhs_c[3] * rhs;
+    T e11 = lhs_c[4] * rhs;
+    T e12 = lhs_c[5] * rhs;
+    
+    T e20 = lhs_c[6] * rhs;
+    T e21 = lhs_c[7] * rhs;
+    T e22 = lhs_c[8] * rhs;
+    
+    T e30 = lhs_c[9] * rhs;
+    T e31 = lhs_c[10] * rhs;
+    T e32 = lhs_c[11] * rhs;
+    
+    return mat4x3_t( e00, e10, e20, e30,
+                     e01, e11, e21, e31,
+                     e02, e12, e22, e32 );
+}
+
+template< typename D >
+mat4x3_t<D>     operator*( D lhs, mat4x3_t<D> const& rhs )
+{
+    D const* rhs_c = rhs.data.c;
+    
+    D e00 = rhs_c[0] * lhs;
+    D e01 = rhs_c[1] * lhs;
+    D e02 = rhs_c[2] * lhs;
+    
+    D e10 = rhs_c[3] * lhs;
+    D e11 = rhs_c[4] * lhs;
+    D e12 = rhs_c[5] * lhs;
+    
+    D e20 = rhs_c[6] * lhs;
+    D e21 = rhs_c[7] * lhs;
+    D e22 = rhs_c[8] * lhs;
+    
+    D e30 = rhs_c[9] * lhs;
+    D e31 = rhs_c[10] * lhs;
+    D e32 = rhs_c[11] * lhs;
+    
+    return mat4x3_t<D>( e00, e10, e20, e30,
+                        e01, e11, e21, e31,
+                        e02, e12, e22, e32 );
+}
+
+template< typename T >
+mat4x3_t<T>     mat4x3_t<T>::operator/( T rhs ) const
+{
+    T const* lhs_c = this->data.c;
+    
+    T e00 = lhs_c[0] / rhs;
+    T e01 = lhs_c[1] / rhs;
+    T e02 = lhs_c[2] / rhs;
+    
+    T e10 = lhs_c[3] / rhs;
+    T e11 = lhs_c[4] / rhs;
+    T e12 = lhs_c[5] / rhs;
+    
+    T e20 = lhs_c[6] / rhs;
+    T e21 = lhs_c[7] / rhs;
+    T e22 = lhs_c[8] / rhs;
+    
+    T e30 = lhs_c[9] / rhs;
+    T e31 = lhs_c[10] / rhs;
+    T e32 = lhs_c[11] / rhs;
+    
+    return mat4x3_t<T>( e00, e10, e20, e30,
+                        e01, e11, e21, e31,
+                        e02, e12, e22, e32 );
+}
+
+// Mutative Operators
+
+template< typename T > inline
+mat4x3_t<T>&    mat4x3_t<T>::operator=( mat4x3_t<T> const& rhs )
+{
+    T const* rhs_c = rhs.data.c;
+    T* lhs_c = this->data.c;
+    lhs_c[0] = rhs_c[0];
+    lhs_c[1] = rhs_c[1];
+    lhs_c[2] = rhs_c[2];
+    lhs_c[3] = rhs_c[3];
+    lhs_c[4] = rhs_c[4];
+    lhs_c[5] = rhs_c[5];
+    lhs_c[6] = rhs_c[6];
+    lhs_c[7] = rhs_c[7];
+    lhs_c[8] = rhs_c[8];
+    lhs_c[9] = rhs_c[9];
+    lhs_c[10] = rhs_c[10];
+    lhs_c[11] = rhs_c[11];
+    return *this;
+}
+
+template< typename T > inline
+col3<T>     mat4x3_t<T>::operator[]( size_t i )
+{
+    if ( i > 3 or i < 0 ) {
+        throw std::out_of_range( "index to column vector lookup on mat4x3_t out of range" );
+    }
+    
+    return col3<T>( this->data.c + (3*i), true );
+}
+
+template< typename T > inline
+col3<T>     mat4x3_t<T>::operator[]( size_t i ) const
+{
+    if ( i > 3 or i < 0 ) {
+        throw std::out_of_range( "index to column vector lookup on mat4x3_t out of range" );
+    }
+    
+    T* col_cpy = new T[3];
+    
+    col_cpy[0] = this-data->c[ 3 * i ];
+    col_cpy[1] = this-data->c[ 3 * i + 1 ];
+    col_cpy[2] = this-data->c[ 3 * i + 2 ];
+    
+    return col3<T>( col_cpy, false );
+}
+
+template< typename T > inline
+T&     mat4x3_t<T>::operator()( size_t col,
+                                size_t row )
+{
+    if ( col > 3 or row > 2 or col < 0 or row < 0 ) {
+        throw std::out_of_range("Indexing of mat4x3_t used out of bounds index");
+    }
+    
+    return this->data.c[col * 3 + row];
+}
+
+template< typename T > inline
+T      mat4x3_t<T>::operator()( size_t col,
+                                size_t row ) const
+{
+    if ( col > 3 or row > 2 or col < 0 or row < 0 ) {
+        throw std::out_of_range("Indexing of mat4x3_t used out of bounds index");
+    }
+    
+    return this->data.c[col * 3 + row];
+}
+
+// Mutative Functions
+
+template< typename T > inline
+col3<T>    mat4x3_t<T>::column( size_t col )
+{ return (*this)[col]; }
+
+template< typename T > inline
+col3<T>     mat4x3_t<T>::column( size_t col ) const
+{ return (*this)[col]; }
+
+template< typename T > inline
+mat4x3_t<T>&    mat4x3_t<T>::columns( vec3_t<T> const& col0,
+                                      vec3_t<T> const& col1,
+                                      vec3_t<T> const& col2,
+                                      vec3_t<T> const& col3 )
+{
+    T* cm = this->data.c;
+    
+    cm[0] = col0[0];
+    cm[1] = col0[1];
+    cm[2] = col0[2];
+    
+    cm[3] = col1[0];
+    cm[4] = col1[1];
+    cm[5] = col1[2];
+    
+    cm[6] = col2[0];
+    cm[7] = col2[1];
+    cm[8] = col2[2];
+    
+    cm[9]  = col3[0];
+    cm[10] = col3[1];
+    cm[11] = col3[2];
+    
+    return *this;
+}
+
+template< typename T >
+mat4x3_t<T>& mat4x3_t<T>::fill( T val )
+{
+    T* c = this->data.c;
+    c[0] = val;
+    c[1] = val;
+    c[2] = val;
+    c[3] = val;
+    c[4] = val;
+    c[5] = val;
+    c[6] = val;
+    c[7] = val;
+    c[8] = val;
+    c[9] = val;
+    c[10] = val;
+    c[11] = val;
+    return *this;
+}
+
+template< typename T > inline
+row4<T>    mat4x3_t<T>::row( size_t row )
+{
+    if ( row > 2 or row < 0 ) {
+        throw std::out_of_range( "index to row vector lookup on mat4x3_t out of range" );
+    }
+    
+    return row4<T>( this->data.c + row,
+                    this->data.c + 3 + row,
+                    this->data.c + 6 + row,
+                    this->data.c + 9 + row,
+                    true );
+}
+
+template< typename T > inline
+row4<T>     mat4x3_t<T>::row( size_t row ) const
+{
+    if ( row > 2 or row < 0 ) {
+        throw std::out_of_range( "index to row vector lookup on mat4x3_t out of range" );
+    }
+    
+    return row4<T>( this->data.c[row],
+                    this->data.c[3 + row],
+                    this->data.c[6 + row],
+                    this->data.c[9 + row] );
+}
+
+template< typename T > inline
+mat4x3_t<T>& mat4x3_t<T>::rows( vec4_t<T> const& row0,
+                                vec4_t<T> const& row1,
+                                vec4_t<T> const& row2 )
+{
+    T* cm = this->data.c;
+    
+    cm[0] = row0[0];
+    cm[3] = row0[1];
+    cm[6] = row0[2];
+    cm[9] = row0[3];
+    
+    cm[1] = row1[0];
+    cm[4] = row1[1];
+    cm[7] = row1[2];
+    cm[10] = row1[3];
+    
+    cm[2] = row2[0];
+    cm[5] = row2[1];
+    cm[8] = row2[2];
+    cm[11] = row2[3];
+    
+    return *this;
+}
+
+// Utility
+
+template< typename T > inline
+raw_map const   mat4x3_t<T>::to_map() const
+{
+    return map_bytes( sizeof(T) * 12, this->data.bytes );
+}
+
+template<typename T>
+std::ostream& operator<<( std::ostream& stream, mat4x3_t<T> const& src )
+{
+    stream << "[ " << src(0,0) << " " << src(1,0) << " " << src(2,0) << " " << src(3,0) << " ]" << '\n';
+    stream << "[ " << src(0,1) << " " << src(1,1) << " " << src(2,1) << " " << src(3,1) << " ]" << '\n';
+    stream << "[ " << src(0,2) << " " << src(1,2) << " " << src(2,2) << " " << src(3,2) << " ]" << std::endl;
+    return stream;
+}
+
+
 
 }
 
