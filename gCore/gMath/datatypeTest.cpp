@@ -1310,6 +1310,26 @@ SUITE( Matrix2Tests )
         CHECK( emat2(1,1) != cmat2(1,1) ); // no side effects
     }
     
+    TEST( Matrix2Mult3x2 )
+    {
+        using namespace gfx;
+        mat2 amat2 = mat2::identity();
+        mat3x2 amat3x2( 14.5f,   100.5f,   5.0f,
+                      -7.01f, -234.52f, -2.0f );
+        mat3x2 bmat3x2 = amat2 * amat3x2;
+        CHECK_EQUAL( amat3x2, bmat3x2 );
+    }
+    
+    TEST( Matrix2Mult4x2 )
+    {
+        using namespace gfx;
+        mat2 amat2 = mat2::identity();
+        mat4x2 amat4x2( 14.5f,   100.5f,   5.0f, 7.0f,
+                        -7.01f, -234.52f, -2.0f, 11.0f );
+        mat4x2 bmat4x2 = amat2 * amat4x2;
+        CHECK_EQUAL( amat4x2, bmat4x2 );
+    }
+    
     TEST( Matrix2VectorMultiplication )
     {
         using namespace gfx;
@@ -1837,6 +1857,29 @@ SUITE( Matrix3Tests )
         CHECK( emat3(2,1) != cmat3(1,1) );
         CHECK( emat3(2,2) != cmat3(1,1) ); // no side effects
     }
+    
+    TEST( Matrix3Mult2x3 )
+    {
+        using namespace gfx;
+        mat3 amat3 = mat3::identity();
+        mat2x3 amat2x3( 14.5f,   100.5f, 
+                        -7.01f, -234.52f,
+                         5.0f,    -2.0f );
+        mat2x3 bmat2x3 = amat3 * amat2x3;
+        CHECK_EQUAL( amat2x3, bmat2x3 );
+    }
+    
+    TEST( Matrix3Mult4x3 )
+    {
+        using namespace gfx;
+        mat3 amat3 = mat3::identity();
+        mat4x3 amat4x3( 14.5f,   100.5f,   2.0f, 654.0f,
+                        -7.01f, -234.52f, 11.0f, -67.0f,
+                         5.0f,    -2.0f,  -5.0f, 354.3f );
+        mat4x3 bmat4x3 = amat3 * amat4x3;
+        CHECK_EQUAL( amat4x3, bmat4x3 );
+    }
+    
     
     TEST( Matrix3VectorMultiplication )
     {
@@ -2510,6 +2553,30 @@ SUITE( Matrix4Tests )
         CHECK( bmat4(3,1) != cmat4(1,1) );
         CHECK( bmat4(3,2) != cmat4(1,1) );
         CHECK( bmat4(3,3) != cmat4(1,1) ); // no side effects
+    }
+    
+    TEST( Matrix4Mult2x4 )
+    {
+        using namespace gfx;
+        mat4 amat4 = mat4::identity();
+        mat2x4 amat2x4( 14.5f,   100.5f, 
+                        -7.01f, -234.52f,
+                         5.0f,    -2.0f,
+                         7.0f,   -11.0f );
+        mat2x4 bmat2x4 = amat4 * amat2x4;
+        CHECK_EQUAL( amat2x4, bmat2x4 );
+    }
+    
+    TEST( Matrix4Mult3x4 )
+    {
+        using namespace gfx;
+        mat4 amat4 = mat4::identity();
+        mat3x4 amat3x4( 14.5f,   100.5f,   2.0f,
+                        -7.01f, -234.52f, 11.0f,
+                         5.0f,    -2.0f,  -5.0f,
+                       654.0f,   -67.0f, 354.3f );
+        mat3x4 bmat3x4 = amat4 * amat3x4;
+        CHECK_EQUAL( amat3x4, bmat3x4 );
     }
     
     TEST( Matrix4VectorMultiplication )
@@ -3988,6 +4055,39 @@ SUITE( Matrix2x4 )
         CHECK_EQUAL( bmat4, amat4 );
     }
     
+    TEST( Mat2x4Mult3x2 )
+    {
+        using namespace gfx;
+        mat2x4 amat2x4 ( 4.7f,  0.0f,
+                         0.0f,  1.0f, 
+                        -5.3f, 10.0f,
+                        18.0f, -2.0f );
+        mat3x2 amat3x2 ( 1.0f, 0.0f,  1.5f,
+                         0.0f, 1.0f, -1.0f );
+        
+        mat3x4 amat3x4 = amat2x4 * amat3x2;
+        mat3x4 bmat3x4 (  4.7f,  0.0f,   7.05,
+                          0.0f,  1.0f,  -1.0f,
+                         -5.3f, 10.0f, -17.95f,
+                         18.0f, -2.0f,  29.0f  );
+        
+        CHECK_EQUAL( bmat3x4, amat3x4 );
+    }
+    
+    TEST( Mat2x4Mult2 )
+    {
+        using namespace gfx;
+        mat2x4 amat2x4 ( 4.7f,  0.0f,
+                         0.0f,  1.0f, 
+                        -5.3f, 10.0f,
+                        18.0f, -2.0f );
+        mat2 amat2 = mat2::identity();
+        
+        mat2x4 bmat2x4 = amat2x4 * amat2;
+        
+        CHECK_EQUAL( amat2x4, bmat2x4 );
+    }
+    
     TEST( Mat2x4VectorPostMultiply )
     {
         using namespace gfx;
@@ -4968,7 +5068,7 @@ SUITE( Matrix3x4 )
         CHECK_EQUAL( bmat4, amat4 );
     }
     
-        TEST( Mat3x4Mult2x3 )
+    TEST( Mat3x4Mult2x3 )
     {
         using namespace gfx;
         mat2x3 amat2x3 ( 4.7f,  0.0f,
@@ -4986,6 +5086,20 @@ SUITE( Matrix3x4 )
                           41.7f,  16.0f );
         
         CHECK_EQUAL( bmat2x4, amat2x4 );
+    }
+    
+    TEST( Mat3x4Mult3 )
+    {
+        using namespace gfx;
+        mat3 amat3 = mat3::identity();
+        mat3x4 amat3x4 ( 4.7f,  0.0f,  2.0f,
+                         0.0f,  1.0f,  5.0f,
+                        -5.3f, 18.0f, -3.0f,
+                        10.0f, -2.0f,  1.0f );
+        
+        mat3x4 bmat3x4 = amat3x4 * amat3;
+        
+        CHECK_EQUAL( amat3x4, bmat3x4 );
     }
     
     TEST( Mat3x4VectorPostMultiply )
@@ -5552,6 +5666,20 @@ SUITE( Matrix4x3 )
                        -20.0f, 35.0f,
                        -33.41f, 111.5f );
         CHECK_EQUAL( bmat2x3, amat2x3 );
+        
+    }
+    
+    TEST( Mat4x3Mult4 )
+    {
+        using namespace gfx;
+        mat4 amat4 = mat4::identity();
+        mat4x3 amat4x3 ( 4.7f,  0.0f, 10.0f, 1.0f,
+                        0.0f,  1.0f, -3.0f, 5.0f,
+                       -5.3f, 18.0f,  0.0f, 8.5f );
+        
+        mat4x3 bmat4x3 = amat4x3 * amat4;
+        
+        CHECK_EQUAL( amat4x3, bmat4x3 );
         
     }
     
