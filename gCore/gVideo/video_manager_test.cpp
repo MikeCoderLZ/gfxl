@@ -25,7 +25,7 @@ SUITE( WindowTests )
     TEST( WindowXPosition )
     {
         window test_wndw = test_mngr.new_window( window::settings()
-                                                 .center_x_at( 256 )
+                                                 .x_pos( 256 )
                                                  .title("WindowXPosition") );
         CHECK_EQUAL( 256, test_wndw.x_pos() );
         test_wndw.x_pos( 128 );
@@ -35,7 +35,7 @@ SUITE( WindowTests )
     TEST( WindowYPosition )
     {
         window test_wndw = test_mngr.new_window( window::settings()
-                                                 .center_y_at( 256 )
+                                                 .y_pos( 256 )
                                                  .title("WindowYPosition") );
         CHECK_EQUAL( 256, test_wndw.y_pos() );
         test_wndw.y_pos( 128 );
@@ -45,7 +45,7 @@ SUITE( WindowTests )
     TEST( WindowPosition )
     {
         window test_wndw = test_mngr.new_window( window::settings()
-                                                 .center_at( 256, 256 )
+                                                 .position( 256, 256 )
                                                  .title("WindowPosition") );
         CHECK_EQUAL( ivec2( 256, 256 ), test_wndw.position() );
         test_wndw.position( 128, 128 );
@@ -100,6 +100,26 @@ SUITE( WindowTests )
         CHECK_EQUAL( ivec2( 512, 512 ), test_wndw.dimensions() );
         test_wndw.dimensions( ivec2( 128, 128 ) );
         CHECK_EQUAL( ivec2( 128, 128 ), test_wndw.dimensions() );
+    }
+    
+    TEST( WindowCorners )
+    {
+        window test_wndw = test_mngr.new_window( window::settings()
+                                                 .corners( 128, 128,
+                                                           256, 256 )
+                                                 .title("WindowDimension") );
+        CHECK_EQUAL( ivec2( 128, 128 ), test_wndw.ul_corner() );
+        CHECK_EQUAL( ivec2( 256, 256 ), test_wndw.lr_corner() );
+        CHECK_EQUAL( ivec2( 128, 128 ), test_wndw.dimensions() );
+        test_wndw.corners( 200, 200, 300, 300 );
+        CHECK_EQUAL( ivec2( 200, 200 ), test_wndw.ul_corner() );
+        CHECK_EQUAL( ivec2( 300, 300 ), test_wndw.lr_corner() );
+        CHECK_EQUAL( ivec2( 100, 100 ), test_wndw.dimensions() );
+        test_wndw.corners( ivec2( 100, 100 ),
+                           ivec2( 400, 400 )  );
+        CHECK_EQUAL( ivec2( 100, 100 ), test_wndw.ul_corner() );
+        CHECK_EQUAL( ivec2( 400, 400 ), test_wndw.lr_corner() );
+        CHECK_EQUAL( ivec2( 300, 300 ), test_wndw.dimensions() );
     }
     
     TEST( WindowMaximized )
@@ -181,15 +201,42 @@ SUITE( WindowTests )
 //                                                  .title("WindowFocus") );
 //         CHECK( test_wndw.has_focus() );
 //     }
-//     TEST( WindowDefaultCreation )
-//     {
-//         window test_wndw1 = test_mngr.new_window();
-//         std::cout << "Created default window, centered on screen and 512×512." << std::endl;
-//         std::cout << "Confirm [y/n]: ";
-//         std::string confirmation;
-//         std::cin >> confirmation;
-//         CHECK_EQUAL( "y", confirmation );
-//     }
+    TEST( WindowDefaultCreation )
+    {
+        window test_wndw1 = test_mngr.new_window();
+        SDL_Rect bounds;
+        SDL_GetDisplayBounds( 0, &bounds );
+        CHECK_EQUAL( bounds.w / 2, test_wndw1.width() );
+        CHECK_EQUAL( bounds.h / 2, test_wndw1.height() );
+        CHECK_EQUAL( bounds.w / 2, test_wndw1.x_pos() );
+        CHECK_EQUAL( bounds.h / 2, test_wndw1.y_pos() );
+        CHECK_EQUAL( "untitled", test_wndw1.title() );
+        CHECK( not test_wndw1.has_3D() );
+        CHECK( test_wndw1.has_border() );
+    }
+}
+
+SUITE( ContextTests )
+{
+    TEST( ContextCreation )
+    {
+        window test_wndw1 = test_mngr.new_window();
+
+        try {
+            context fail_cntx = test_mngr.new_context( test_wndw1 );
+        } catch (std::logic_error& e ) {
+            CHECK_EQUAL( "The creation of a context current in window 'untitled', was attempted, but this window does not support OpenGL.",
+                         e.what() );
+        }
+        window test_wndw2 = test_mngr.new_window( window::settings()
+                                                    .has_3D()       );
+        context test_cntx = test_mngr.new_context( test_wndw2 );
+        
+        CHECK( 1u <= test_cntx.major_version() );
+        CHECK( 4u <= test_cntx.minor_version() );
+        CHECK( 16 <= test_cntx.depth_bits() );
+        CHECK_EQUAL( true, test_cntx.double_buffered() );
+    }
 }
 
 int main( int argc, char* argv[] )

@@ -7,6 +7,10 @@
 
 namespace gfx {
     
+    window::~window()
+    {
+        owner->del_window( *this );
+    }
     void window::swap()
     {
         if ( this->has_3D() ) {
@@ -30,49 +34,77 @@ namespace gfx {
     
     int     window::x_pos() const
     {
-        int xp;
-        int yp;
-        SDL_GetWindowPosition( sys_window, &xp, &yp );
-        return xp;
+        int ul_x;
+        int ul_y;
+        SDL_GetWindowPosition( sys_window, &ul_x, &ul_y );
+        int dw;
+        int dh;
+        SDL_GetWindowSize( sys_window, &dw, &dh );
+        
+        return ul_x + dw / 2;
     }
     
     void     window::x_pos( int xp )
     {
-        int yp = this->y_pos();
-        SDL_SetWindowPosition( sys_window, xp, yp );
+        int ul_y = this->ul_corner()[1];
+        int dw;
+        int dh;
+        SDL_GetWindowSize( sys_window, &dw, &dh );
+        
+        SDL_SetWindowPosition( sys_window, dw / -2 + xp, ul_y );
     }
     
     int     window::y_pos() const
     {
-        int xp;
-        int yp;
-        SDL_GetWindowPosition( sys_window, &xp, &yp );
-        return yp;
+        int ul_x;
+        int ul_y;
+        SDL_GetWindowPosition( sys_window, &ul_x, &ul_y );
+        int dw;
+        int dh;
+        SDL_GetWindowSize( sys_window, &dw, &dh );
+        
+        return ul_y + dh / 2;
     }
     
     void     window::y_pos( int yp )
     {
-        int xp = this->x_pos();
-        SDL_SetWindowPosition( sys_window, xp, yp );
+        int ul_x = this->ul_corner()[0];
+        int dw;
+        int dh;
+        SDL_GetWindowSize( sys_window, &dw, &dh );
+        
+        SDL_SetWindowPosition( sys_window, ul_x, dh / -2 + yp );
     }
     
     ivec2   window::position() const
     {
-        int xp;
-        int yp;
-        SDL_GetWindowPosition( sys_window, &xp, &yp );
-        return ivec2( xp, yp );
+        int ul_x;
+        int ul_y;
+        SDL_GetWindowPosition( sys_window, &ul_x, &ul_y );
+        int dw;
+        int dh;
+        SDL_GetWindowSize( sys_window, &dw, &dh );
+
+        return ivec2( ul_x + dw / 2, ul_y + dh / 2 );
     }
     
     void     window::position( int xp,
                                int yp )
     {
-        SDL_SetWindowPosition( sys_window, xp, yp );
+        int dw;
+        int dh;
+        SDL_GetWindowSize( sys_window, &dw, &dh );
+        
+        SDL_SetWindowPosition( sys_window, dw / -2 + xp, dh / -2 + yp );
     }
     
     void     window::position( ivec2 const& pos )
     {
-        SDL_SetWindowPosition( sys_window, pos[0], pos[1] );
+        int dw;
+        int dh;
+        SDL_GetWindowSize( sys_window, &dw, &dh );
+        
+        SDL_SetWindowPosition( sys_window, dw / -2 + pos[0], dh / -2 + pos[1] );
     }
     
     bool    window::is_x_centered() const
@@ -156,13 +188,14 @@ namespace gfx {
         SDL_SetWindowSize( sys_window, dim[0], dim[1] );
     }
     
-//     ivec2   window::ul_corner() const
-//     {
-//         int ulx = this->width() / -2 + this->x_pos();
-//         int uly = this->height() / -2 + this->y_pos();
-//         return ivec2( ulx, uly );
-//     }
-//     
+    ivec2   window::ul_corner() const
+    {
+        int ulx;
+        int uly;
+        SDL_GetWindowPosition( sys_window, &ulx, &uly );
+        return ivec2( ulx, uly );
+    }
+    
 //     void    window::ul_corner( int ulx,
 //                                int uly )
 //     {
@@ -187,14 +220,10 @@ namespace gfx {
 //         SDL_SetWindowSize( sys_window, dim[0], dim[1] );
 //         SDL_SetWindowPosition( sys_window, pos[0], pos[1] );
 //     }
-//     
-//     ivec2   window::lr_corner() const
-//     {
-//         int lrx = this->width() / 2 + this->x_pos();
-//         int lry = this->height() / 2 + this->y_pos();
-//         return ivec2( lrx, lry );
-//     }
-//     
+    
+    ivec2   window::lr_corner() const
+    { return this->ul_corner() + this->dimensions(); }
+    
 //     void    window::lr_corner( int lrx,
 //                                int lry )
 //     {
@@ -219,28 +248,26 @@ namespace gfx {
 //         SDL_SetWindowSize( sys_window, dim[0], dim[1] );
 //         SDL_SetWindowPosition( sys_window, pos[0], pos[1] );
 //     }
-//     
-//     void    window::corners( int ulx,
-//                              int uly,
-//                              int lrx,
-//                              int lry )
-//     {
-//         ivec2 ulc ( ulx, uly );
-//         ivec2 lrc ( lrx, lry );
-//         ivec2 dim = lrc - ulc;
-//         ivec2 pos = ulc + dim / 2;
-//         SDL_SetWindowSize( sys_window, dim[0], dim[1] );
-//         SDL_SetWindowPosition( sys_window, pos[0], pos[1] );
-//     }
-//     
-//     void    window::corners( ivec2 const& ulc,
-//                              ivec2 const& lrc )
-//     {
-//         ivec2 dim = lrc - ulc;
-//         ivec2 pos = ulc + dim / 2;
-//         SDL_SetWindowSize( sys_window, dim[0], dim[1] );
-//         SDL_SetWindowPosition( sys_window, pos[0], pos[1] );
-//     }
+    
+    void    window::corners( int ulx,
+                             int uly,
+                             int lrx,
+                             int lry )
+    {
+        ivec2 ulc ( ulx, uly );
+        ivec2 lrc ( lrx, lry );
+        ivec2 dim = lrc - ulc;
+        SDL_SetWindowSize( sys_window, dim[0], dim[1] );
+        SDL_SetWindowPosition( sys_window, ulc[0], ulc[1] );
+    }
+    
+    void    window::corners( ivec2 const& ulc,
+                             ivec2 const& lrc )
+    {
+        ivec2 dim = lrc - ulc;
+        SDL_SetWindowSize( sys_window, dim[0], dim[1] );
+        SDL_SetWindowPosition( sys_window, ulc[0], ulc[1] );
+    }
     
     bool    window::is_maximized() const
     { return bool( SDL_GetWindowFlags( sys_window ) & SDL_WINDOW_MAXIMIZED ); }
@@ -290,15 +317,124 @@ namespace gfx {
 //         return out;
 //     }
     
-    
-    video_manager::video_manager()
+    context::~context()
     {
-        this->windows = new window_vector();
-        //this->contexts = new context_vector();
-    //     this->programs = new program_vector();
-    //     this->buffers = new buffer_vector();
-    //     active_context = 0;
+        owner->del_context( *this );
+    }
+    
+    void context::clear_color( float red, float green, float blue, float alpha )
+    {
+        if ( not this->is_active() ) {
+            throw std::logic_error( "Render operation 'clear_color()' called on Context that is not active." );
+        }
 
+        gl::ClearColor( red, green, blue, alpha );
+        gl::Clear( gl::COLOR_BUFFER_BIT );
+    }
+    
+    unsigned int    context::major_version() const
+    {
+        if ( not this->is_active() ) {
+            throw std::logic_error( "Property query 'major_version()' called on Context that is not active." );
+        }
+        int maj_ver;
+        int ret = SDL_GL_GetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, &maj_ver );
+        if ( ret != 0 ) {
+            std::string msg ( "Property query 'major_version()' failed:\n\t" );
+            msg += SDL_GetError();
+            throw std::runtime_error( msg );
+        }
+        return (unsigned int)  maj_ver;
+    }
+    
+    unsigned int    context::minor_version() const
+    {
+        if ( not this->is_active() ) {
+            throw std::logic_error( "Property query 'minor_version()' called on Context that is not active." );
+        }
+        int min_ver;
+        int ret = SDL_GL_GetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, &min_ver );
+        if ( ret != 0 ) {
+            std::string msg ( "Property query 'minor_version()' failed:\n\t" );
+            msg += SDL_GetError();
+            throw std::runtime_error( msg );
+        }
+        return (unsigned int) min_ver ;
+    }
+    
+    uvec2    context::version() const
+    {
+        if ( not this->is_active() ) {
+            throw std::logic_error( "Property query 'version()' called on Context that is not active." );
+        }
+        int maj_ver;
+        int ret = SDL_GL_GetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, &maj_ver );
+        if ( ret != 0 ) {
+            std::string msg ( "Property query 'major_version()' failed:\n\t" );
+            msg += SDL_GetError();
+            throw std::runtime_error( msg );
+        }
+        
+        int min_ver;
+        ret = SDL_GL_GetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, &min_ver );
+        if ( ret != 0 ) {
+            std::string msg ( "Property query 'minor_version()' failed:\n\t" );
+            msg += SDL_GetError();
+            throw std::runtime_error( msg );
+        }
+        return uvec2( (unsigned int) maj_ver, (unsigned int) min_ver );
+    }
+    
+    unsigned int    context::depth_bits() const
+    {
+        if ( not this->is_active() ) {
+            throw std::logic_error( "Property query 'depth_bits()' called on Context that is not active." );
+        }
+        int bits;
+        int ret = SDL_GL_GetAttribute( SDL_GL_DEPTH_SIZE, &bits );
+        if ( ret != 0 ) {
+            std::string msg ( "Property query 'depth_bits()' failed:\n\t" );
+            msg += SDL_GetError();
+            throw std::runtime_error( msg );
+        }
+        return (unsigned int) bits;
+    }
+    
+    bool    context::double_buffered() const
+    {
+        if ( not this->is_active() ) {
+            throw std::logic_error( "Property query 'double_buffered()' called on Context that is not active." );
+        }
+        int buffed;
+        int ret = SDL_GL_GetAttribute( SDL_GL_DOUBLEBUFFER, &buffed );
+        if ( ret != 0 ) {
+            std::string msg ( "Property query 'double_buffered()' failed:\n\t" );
+            msg += SDL_GetError();
+            throw std::runtime_error( msg );
+        }
+        return bool( buffed );
+    }
+    
+    video_manager::video_manager( video_manager::settings const& set ) :
+        windows( new window_map() ),
+        nxt_w_id( 0 ),
+        contexts( new context_map() ),
+        nxt_c_id( 0 ),
+        active_context( 0 ),
+        zombie( false )
+    {
+        // These three OpenGL attributes must be set before any window
+        // which uses OpenGL can be created. If you create two
+        // video_manager objects with different settings and create
+        // windows with the first before the second, then all the windows
+        // created by the second will inherit the first's settings and
+        // it's own will have no effect.
+        // At least that is what the docs say.
+        // So that is why this setting information is discarded:
+        // After the first set, it won't matter.
+        SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK,  set.profile_v );
+        SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, set.maj_ver_v );
+        SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, set.min_ver_v );
         if ( not SDL_WasInit( SDL_INIT_VIDEO ) ) {
             if ( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
                 std::string msg ("Cannot initialize SDL Video subsystem:\n");
@@ -318,10 +454,10 @@ namespace gfx {
         * empty memory, and that will be messy.  Constructed
         * objects need to report to the Manager that they are
         * dying. */
-        window_vector::iterator i;
-        for( i = windows->begin(); i != windows->end(); ++i)
-            { delete *i; }
-        delete windows;
+        zombie = true;
+        contexts->clear();
+        windows->clear();
+        
 
 //         context_vector::iterator j;
 //         for( j = contexts->begin(); j != contexts->end(); ++j)
@@ -339,8 +475,44 @@ namespace gfx {
 //         delete buffers;
     }
     
-    window& video_manager::new_window( window::settings const& set )
+    window& video_manager::new_window( window::settings const& set,
+                                       window::settings_3D const& set_3D )
     {
+        SDL_GL_SetAttribute( SDL_GL_RED_SIZE, set_3D.r_bits_v );
+        SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, set_3D.g_bits_v );
+        SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE, set_3D.b_bits_v );
+        SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, set_3D.a_bits_v );
+        
+        SDL_GL_SetAttribute( SDL_GL_BUFFER_SIZE, set_3D.framebuffer_bits_v );
+        SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, set_3D.depth_bits_v );
+        SDL_GL_SetAttribute( SDL_GL_STENCIL_SIZE, set_3D.stencil_bits_v );
+        if ( set_3D.doublebuffered_v ) {
+            SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
+        } else {
+            SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 0 );
+        }
+        
+        SDL_GL_SetAttribute( SDL_GL_ACCUM_RED_SIZE, set_3D.r_accumulator_bits_v );
+        SDL_GL_SetAttribute( SDL_GL_ACCUM_GREEN_SIZE, set_3D.g_accumulator_bits_v );
+        SDL_GL_SetAttribute( SDL_GL_ACCUM_BLUE_SIZE, set_3D.b_accumulator_bits_v );
+        SDL_GL_SetAttribute( SDL_GL_ACCUM_ALPHA_SIZE, set_3D.a_accumulator_bits_v );
+        
+        if ( set_3D.in_stereo_v ) {
+            SDL_GL_SetAttribute( SDL_GL_STEREO, 1 );
+        }
+        
+        if ( set_3D.multisample_v ) {
+            SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1 );
+            SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, set_3D.samples_v );
+        }
+        
+        if ( set_3D.force_hw_v ) {
+            SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
+        }
+        
+        if ( set_3D.force_sw_v ) {
+            SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 0 );
+        }
 
         int SDL_flags = 0;
 
@@ -376,13 +548,13 @@ namespace gfx {
             SDL_flags |= SDL_WINDOW_INPUT_GRABBED;
         }
 
-        int x_argument = set.center_x_v;
+        int x_argument = set.ulc_v[0];
 
         if ( set.center_on_x ) {
             x_argument = SDL_WINDOWPOS_CENTERED;
         }
 
-        int y_argument = set.center_y_v;
+        int y_argument = set.ulc_v[1];
 
         if ( set.center_on_y ) {
             y_argument = SDL_WINDOWPOS_CENTERED;
@@ -404,16 +576,90 @@ namespace gfx {
             SDL_MinimizeWindow( new_sys_window );
         }
 
-        window* new_window = new window( set.title_v, this, new_sys_window );
-        windows->push_back( new_window );
+        window* new_window = new window( set.title_v, this, nxt_w_id, new_sys_window );
+        (*windows)[nxt_w_id] = new_window;
+        ++nxt_w_id;
         return *new_window;
     }
     
-//     void    video_manager::del_window( window const& wndw )
-//     {
-//         if ( this->owns( wndw ) ) {
-//             
-//         }
-//     }
+    void    video_manager::del_window( window const& wndw )
+    {
+        if ( this->owns( wndw ) ) {
+            SDL_DestroyWindow( wndw.sys_window );
+            if ( not this->zombie ) {
+                // Someone else is calling the deletion
+                windows->erase( wndw.g_id );
+            }
+            // If we are not a zombie, we are destructing
+            // the video_manager and do not want a looping
+            // deletion cascade, where the window is deleted
+            // by windows->clear() which calls this function
+            // which in turn calls ~window() when
+            // windows->erase( ... ) is used.
+            // Since ~window() is already being called on the
+            // pointer in the map, no memory is
+            // leaking.
+        }
+    }
+    
+    context& video_manager::new_context( window const& window,
+                                         context::settings const& settings )
+    {
+        if ( not window.has_3D() ) {
+            std::string msg = "The creation of a context current in window '";
+            msg += window.title();
+            msg += "', was attempted, but this window does not support OpenGL.";
+            throw std::logic_error( msg );
+        }
+
+        SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, settings.maj_ver );
+        SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, settings.min_ver );
+
+        int doubleBuffered = (settings.is_double_buffered ? 1 : 0 );
+        SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, doubleBuffered );
+
+        SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, settings.depth_bits_v );
+
+        SDL_GLContext new_sys_context = SDL_GL_CreateContext( window.sys_window );
+
+        context* new_context = new context( this, nxt_c_id, &window, new_sys_context );
+
+        (*contexts)[nxt_c_id] = new_context;
+        ++nxt_c_id;
+        
+        activate_context( *new_context );        
+        
+        return *new_context;
+    }
+    
+    void    video_manager::del_context( context const& cntx )
+    {
+        if ( this->owns( cntx ) ) {
+            SDL_GL_DeleteContext( cntx.sys_context );
+            if ( not this->zombie ) {
+                // Someone else is calling the deletion
+                contexts->erase( cntx.g_id );
+            }
+        }
+    }
+    
+    void video_manager::activate_context( context& cntx )
+    {
+        if ( (not owns( *cntx.target_window )) or (not owns( cntx )) ) {
+            std::string msg = "Illegal activation of Context on Window '";
+            msg += cntx.target_window->title();
+            msg += "': ";
+            if ( not owns( *cntx.target_window ) ) {
+                msg += "Window not owned by manager. ";
+            }
+            if ( not owns( cntx ) ) {
+                msg += "Context not owned by manager.";
+            }
+            throw std::logic_error( msg );
+        }
+
+        SDL_GL_MakeCurrent( cntx.target_window->sys_window, cntx.sys_context );
+        active_context = &cntx;
+    }
     
 }
