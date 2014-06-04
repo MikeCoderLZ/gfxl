@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "videoManager.hpp"
+#include "../../UnitTest++_src/UnitTest++.h"
 
 unsigned int delay = 1000;
 

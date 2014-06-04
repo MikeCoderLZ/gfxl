@@ -40,7 +40,7 @@ public:
     constexpr static T const    sqrt_three     = 1.7320508075688772935274463;
     constexpr static T const    inv_sqrt_three = 0.57735026919;
     constexpr static T const    phi            = 1.6180339887498948482045868;
-    constexpr static T const    delta          = 0;
+    constexpr static T const    delta          = 1;
 };
 
 template<>
