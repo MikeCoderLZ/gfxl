@@ -13,6 +13,7 @@ video_manager test_mngr;
 
 SUITE( WindowTests )
 {
+    
     TEST( WindowTitle )
     {
         window test_wndw1 = test_mngr.new_window( window::settings()
@@ -237,7 +238,37 @@ SUITE( ContextTests )
         CHECK( 16 <= test_cntx.depth_bits() );
         CHECK_EQUAL( true, test_cntx.double_buffered() );
     }
+    
+    TEST( ContextSwap )
+    {
+        window test_wndw = test_mngr.new_window( window::settings()
+                                                 .has_3D()          );
+        context test_cntx = test_mngr.new_context( test_wndw );
+        test_mngr.attach_context( test_wndw, test_cntx );
+        
+        std::cout << "Interactive test; press any key to continue. ";
+        
+        std::string input;
+        std::cin >> input;
+        
+        std::cout << "First the window will appear yellow.\nConfirm [y/n]: ";
+        
+        test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
+        test_wndw.swap();
+        
+        std::cin >> input;        
+        CHECK_EQUAL( "y", input );
+        
+        std::cout << "Now the window will appear magenta.\nConfirm [y/n]: ";
+        
+        test_cntx.clear_color( 1.0f, 0.0f, 1.0f );
+        test_wndw.swap();
+        
+        std::cin >> input;
+        CHECK_EQUAL( "y", input );
+    }
 }
+
 
 int main( int argc, char* argv[] )
 {

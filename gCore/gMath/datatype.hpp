@@ -367,6 +367,9 @@ protected:
     } data;
 };
 
+template< typename T >
+G_TYPE( qutn_t<T>, 4 * type<T>().n_components(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
+
 // Here we instantiate all the datatypes that GLSL supports
 // and provide typedef names.
 
@@ -1016,6 +1019,8 @@ protected:
     } data;
 };
 
+template< typename T >
+G_TYPE( mat2x3_t<T>, 6 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
 template< typename T >
 class mat3x2_t : public raw_mappable {
@@ -1093,6 +1098,9 @@ protected:
         unsigned char   bytes[sizeof(comp_t) * 6];
     } data;
 };
+
+template< typename T >
+G_TYPE( mat3x2_t<T>, 6 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
 template< typename T >
 class mat2x4_t : public raw_mappable {
@@ -1175,6 +1183,8 @@ protected:
     } data;
 };
 
+template< typename T >
+G_TYPE( mat2x4_t<T>, 8 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
 template< typename T >
 class mat4x2_t : public raw_mappable {
@@ -1254,6 +1264,9 @@ protected:
         unsigned char   bytes[sizeof(comp_t) * 8];
     } data;
 };
+
+template< typename T >
+G_TYPE( mat4x2_t<T>, 8 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
 template< typename T >
 class mat3x4_t : public raw_mappable {
@@ -1338,6 +1351,8 @@ protected:
     } data;
 };
 
+template< typename T >
+G_TYPE( mat3x4_t<T>, 12 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
 template< typename T >
 class mat4x3_t : public raw_mappable {
@@ -1420,6 +1435,8 @@ protected:
     } data;
 };
 
+template< typename T >
+G_TYPE( mat4x3_t<T>, 12 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
 typedef     mat_t<float>            mat;
 typedef     mat2_t<float>           mat2;
