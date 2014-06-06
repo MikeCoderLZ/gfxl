@@ -3,7 +3,8 @@
 videoTests: $(BIN)/videoManagerTest.exe \
             $(BIN)/shadingTest.exe \
             $(BIN)/video_manager_test \
-            $(BIN)/program_shader_test
+            $(BIN)/program_shader_test \
+            $(BIN)/program_laboratory 
 
 $(BIN)/video_manager_test: $(OBJ)/video_manager_test.o \
                            $(OBJ)/video_manager.o \
@@ -32,6 +33,24 @@ $(OBJ)/video_manager.o: $(GVID)/video_manager.cpp \
 	    $(GVID)/video_manager.cpp \
 	    $(SDLFLAGS) -o $(OBJ)/video_manager.o
 
+$(BIN)/program_laboratory: $(OBJ)/program_laboratory.o \
+                            $(OBJ)/video_manager.o \
+                            $(OBJ)/gl_core_3_3.o
+	g++ $(OBJ)/program_laboratory.o \
+	    $(OBJ)/video_manager.o \
+	    $(OBJ)/gl_core_3_3.o \
+	    -L ../../dev_lib -lUnitTest++ \
+	    $(SDLLIBS) -o $(BIN)/program_laboratory
+    
+$(OBJ)/program_laboratory.o: $(GVID)/program_laboratory.cpp \
+                              $(GVID)/video_manager.hpp \
+                              $(GVID)/gl_core_3_3.hpp \
+                              $(GMATH)/datatype.hpp
+	g++ -c $(COM) \
+	    -Wno-sign-compare -Wno-unused-but-set-variable \
+	    $(GVID)/program_laboratory.cpp \
+	    $(SDLFLAGS) -o $(OBJ)/program_laboratory.o
+	    
 $(BIN)/program_shader_test: $(OBJ)/program_shader_test.o \
                             $(OBJ)/video_manager.o \
                             $(OBJ)/gl_core_3_3.o
