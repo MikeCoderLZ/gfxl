@@ -7,17 +7,17 @@ videoTests: $(BIN)/videoManagerTest.exe \
             $(BIN)/program_laboratory 
 
 $(BIN)/video_manager_test: $(OBJ)/video_manager_test.o \
-                           $(OBJ)/video_manager.o \
+                           $(OBJ)/video.o \
                            $(OBJ)/gl_core_3_3.o
                            
 	g++ $(OBJ)/video_manager_test.o \
-	    $(OBJ)/video_manager.o \
+	    $(OBJ)/video.o \
 	    $(OBJ)/gl_core_3_3.o \
 	    -L ../../dev_lib -lUnitTest++ \
 	    $(SDLLIBS) -o $(BIN)/video_manager_test
 
 $(OBJ)/video_manager_test.o: $(GVID)/video_manager_test.cpp \
-                             $(GVID)/video_manager.hpp \
+                             $(GVID)/video.hpp \
                              $(GVID)/gl_core_3_3.hpp \
                              $(GMATH)/datatype.hpp
 	g++ -c $(COM) \
@@ -25,25 +25,25 @@ $(OBJ)/video_manager_test.o: $(GVID)/video_manager_test.cpp \
 	    $(GVID)/video_manager_test.cpp \
 	    $(SDLFLAGS) -o $(OBJ)/video_manager_test.o
 
-$(OBJ)/video_manager.o: $(GVID)/video_manager.cpp \
-                        $(GVID)/video_manager.hpp \
+$(OBJ)/video.o: $(GVID)/video.cpp \
+                        $(GVID)/video.hpp \
                         $(GVID)/gl_core_3_3.hpp \
                         $(GMATH)/datatype.hpp
 	g++ -c $(COM) -Wno-sign-compare \
-	    $(GVID)/video_manager.cpp \
-	    $(SDLFLAGS) -o $(OBJ)/video_manager.o
+	    $(GVID)/video.cpp \
+	    $(SDLFLAGS) -o $(OBJ)/video.o
 
 $(BIN)/program_laboratory: $(OBJ)/program_laboratory.o \
-                            $(OBJ)/video_manager.o \
+                            $(OBJ)/video.o \
                             $(OBJ)/gl_core_3_3.o
 	g++ $(OBJ)/program_laboratory.o \
-	    $(OBJ)/video_manager.o \
+	    $(OBJ)/video.o \
 	    $(OBJ)/gl_core_3_3.o \
 	    -L ../../dev_lib -lUnitTest++ \
 	    $(SDLLIBS) -o $(BIN)/program_laboratory
     
 $(OBJ)/program_laboratory.o: $(GVID)/program_laboratory.cpp \
-                              $(GVID)/video_manager.hpp \
+                              $(GVID)/video.hpp \
                               $(GVID)/gl_core_3_3.hpp \
                               $(GMATH)/datatype.hpp
 	g++ -c $(COM) \
@@ -52,16 +52,16 @@ $(OBJ)/program_laboratory.o: $(GVID)/program_laboratory.cpp \
 	    $(SDLFLAGS) -o $(OBJ)/program_laboratory.o
 	    
 $(BIN)/program_shader_test: $(OBJ)/program_shader_test.o \
-                            $(OBJ)/video_manager.o \
+                            $(OBJ)/video.o \
                             $(OBJ)/gl_core_3_3.o
 	g++ $(OBJ)/program_shader_test.o \
-	    $(OBJ)/video_manager.o \
+	    $(OBJ)/video.o \
 	    $(OBJ)/gl_core_3_3.o \
 	    -L ../../dev_lib -lUnitTest++ \
 	    $(SDLLIBS) -o $(BIN)/program_shader_test
     
 $(OBJ)/program_shader_test.o: $(GVID)/program_shader_test.cpp \
-                              $(GVID)/video_manager.hpp \
+                              $(GVID)/video.hpp \
                               $(GVID)/gl_core_3_3.hpp \
                               $(GMATH)/datatype.hpp
 	g++ -c $(COM) \

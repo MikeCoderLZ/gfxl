@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-#include "video_manager.hpp"
+#include "video.hpp"
 #include "../gMath/datatype.hpp"
 #include "../../UnitTest++_src/UnitTest++.h"
 #include "gl_core_3_3.hpp"
