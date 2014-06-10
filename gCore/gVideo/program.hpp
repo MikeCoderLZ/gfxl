@@ -8,14 +8,8 @@ namespace gfx {
         explicit compilation_error( std::string const& msg ) : logic_error( msg ) {};
     };
                                 
-    class program : public managed {
+    class program {
     public:
-                                ~program();
-        void                    compile();
-        void                    link();
-        void                    use();
-        friend std::ostream&    operator <<( std::ostream& out, program const& rhs );
-        GLuint                  get_prog_ID() const { return prog_ID; }
         
         class settings {
         public:
@@ -45,12 +39,17 @@ namespace gfx {
             bool                has_frag_v;
             bool                has_geom_v;
             bool                has_tess_v;
-            friend              class video_manager;
+            friend              class program;
         };
-
+        
+                                program( settings const& set = settings() );
+                                ~program();
+        void                    compile();
+        void                    link();
+        void                    use();
+        friend std::ostream&    operator <<( std::ostream& out, program const& rhs );
+        GLuint                  get_prog_ID() const { return prog_ID; }
     private:
-        friend                  class video_manager;
-                                program( video_manager* const manager, size_t g_id );
         void                    compile( GLuint stage_ID, std::string const& stage_path );
         std::string             vert_path;
         std::string             frag_path;
@@ -62,6 +61,7 @@ namespace gfx {
         GLuint                  prog_ID;
         unsigned int            maj_ver;
         unsigned int            min_ver;
+        friend                  class video_manager;
     };
 
     inline  program::settings::settings() :

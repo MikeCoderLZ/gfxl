@@ -15,6 +15,7 @@
 #include "version.hpp"
 namespace gfx {
     class video_manager;
+    class context;
 }
 #include "managed.hpp"
 #include "window.hpp"

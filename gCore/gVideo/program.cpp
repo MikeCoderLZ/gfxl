@@ -1,8 +1,70 @@
 namespace gfx {
 
+    program::program( settings const& set ) :
+                      vert_path ( "" ),
+                      frag_path ( "" ),
+                      geom_path ( "" ),
+                      vert_ID ( 0 ),
+                      frag_ID ( 0 ),
+                      geom_ID ( 0 ),
+                      tess_ID ( 0 ),
+                      prog_ID ( 0 ),
+                      maj_ver ( 2 ),
+                      min_ver ( 0 )
+    {
+        /**
+        * This code assumes that this VideoManager is the sole purveyor
+        * in the program; no attempt is made to find out if anyone else
+        * has created an OpenGL context. It is irrelevant anyway because
+        * only this VideoManager can use the program, so we aren't
+        * making an incorrect assumption. */
+        /** Add check for adequate version number of a context;
+        * OpenGL version should probably be pushed into VideoManager
+        * so the whole Manager only uses one version.
+        * */
+        
+        // ^ That guy really knew what he was talking about. ^
+
+        maj_ver = set.maj_ver_v;
+        min_ver = set.min_ver_v;
+
+        if ( set.has_vert_v ) {
+            vert_ID = gl::CreateShader( gl::VERTEX_SHADER );
+            vert_path = set.vert_path;
+        }
+        if ( set.has_frag_v ) {
+                frag_ID = gl::CreateShader( gl::FRAGMENT_SHADER );
+                frag_path = set.frag_path;
+        }
+        if ( set.has_geom_v ) {
+                geom_ID = gl::CreateShader( gl::GEOMETRY_SHADER );
+                geom_path = set.geom_path;
+        }
+        /** if ( set.has_tess_shader ) {
+                    tess_ID = gl::CreateShader( gl::TESSALLATION_SHADER_ARB );
+            }*/
+
+        prog_ID = gl::CreateProgram();
+    }
+    
     program::~program()
     {
-        owner->del_program( *this );
+        if ( gl::IsProgram( prog_ID ) ) {
+                gl::DeleteProgram( prog_ID );
+        }
+        if ( gl::IsShader( vert_ID ) ) {
+            gl::DeleteShader( vert_ID );
+        }
+        if ( gl::IsShader( frag_ID ) ) {
+            gl::DeleteShader( frag_ID );
+        }
+        if ( gl::IsShader( geom_ID ) ) {
+            gl::DeleteShader( geom_ID );
+        }
+        if ( gl::IsShader( tess_ID ) ) {
+            gl::DeleteShader( tess_ID );
+        }
+        
         // I do not know if this code is needed.
 //         GLint n_shdr;
 //         if (     gl::IsProgram( prog_ID )
@@ -21,7 +83,7 @@ namespace gfx {
 //                 gl::DetachShader( prog_ID, tess_ID );
 //             }
 //         }
-        
+//         
 //         gl::DeleteProgram( prog_ID );
 //         gl::DeleteShader( vert_ID );
 //         gl::DeleteShader( frag_ID );
@@ -95,20 +157,6 @@ namespace gfx {
         // out << "\ttessallation shader ID: " << rhs.tess_ID << "\n";
         return out;
     }
-    
-    program::program( video_manager* const owner,
-                      size_t g_id ) :
-                      managed( owner, g_id ),
-                      vert_path ( "" ),
-                      frag_path ( "" ),
-                      geom_path ( "" ),
-                      vert_ID ( 0 ),
-                      frag_ID ( 0 ),
-                      geom_ID ( 0 ),
-                      tess_ID ( 0 ),
-                      prog_ID ( 0 ),
-                      maj_ver ( 2 ),
-                      min_ver ( 0 )  {}
     
     void    program::compile( GLuint stage_ID, std::string const& stage_path )
     {

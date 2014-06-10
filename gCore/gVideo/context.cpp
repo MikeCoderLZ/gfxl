@@ -1,9 +1,23 @@
 namespace gfx {
 
-    context::~context()
+    context::context( window const& window,
+                      settings const& set  ) :
+                          target_window( &window )
     {
-        owner->del_context( *this );
+        if ( not window.has_3D() ) {
+            std::string msg = "The creation of a context current in window '";
+            msg += window.title();
+            msg += "', was attempted, but this window does not support OpenGL.";
+            throw std::logic_error( msg );
+        }
+        
+        sys_context = SDL_GL_CreateContext( window.sys_window );
+        
+        video_manager::get().activate_context( *this );        
     }
+    
+    context::~context()
+    { SDL_GL_DeleteContext( sys_context ); }
     
     void context::clear_color( float red, float green, float blue, float alpha )
     {
@@ -14,6 +28,9 @@ namespace gfx {
         gl::ClearColor( red, green, blue, alpha );
         gl::Clear( gl::COLOR_BUFFER_BIT );
     }
+    
+    bool    context::is_active() const
+    { return (*this) == video_manager::get().get_active_context(); }
     
     unsigned int    context::major_version() const
     {

@@ -14,13 +14,13 @@ SUITE( GLSLShadingTests )
 {    
     TEST( CIELabProgram )
     {
-        window test_wndw = video_manager::get().new_window( window::settings()
-                                                   .has_3D()        );
-        context test_cntx = video_manager::get().new_context( test_wndw );
+        window test_wndw ( window::settings()
+                           .has_3D()        );
+        context test_cntx ( test_wndw );
         video_manager::get().attach_context( test_wndw, test_cntx );
-        program test_prgm = video_manager::get().new_program( program::settings()
-                                                    .use_vert( "./shader/testVert_LAB.glsl" )
-                                                    .use_frag( "./shader/testFrag_LAB.glsl" ) );
+        program test_prgm ( program::settings()
+                            .use_vert( "./shader/testVert_LAB.glsl" )
+                            .use_frag( "./shader/testFrag_LAB.glsl" ) );
         test_prgm.compile();
         
         buffer test_buff = video_manager::get().new_buffer( buffer::settings().blocks(4) );

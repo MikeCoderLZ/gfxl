@@ -10,11 +10,21 @@ namespace gfx {
     * 
     */
                                 
-    class context : public managed {
+    class context {
     public:
         typedef std::vector<GLubyte>  ub_indexer;
         typedef std::vector<GLushort> us_indexer;
         typedef std::vector<GLuint>   ui_indexer;
+        
+        class settings {
+        public:
+                                settings();
+        private:
+            friend              class video_manager;
+        };
+        
+                                context( window const& target_window,
+                                         settings const& set = settings() );
                                 ~context();
         void                    clear_color( float red, float green,
                                             float blue, float alpha = 1.0f );
@@ -28,18 +38,10 @@ namespace gfx {
         
         void                    draw_triangles( size_t const tris,
                                                 ui_indexer const& indices );
-        class settings {
-        public:
-                                settings();
-        private:
-            friend              class video_manager;
-        };
+
         
     private:
-                                context( video_manager* const owner,
-                                        size_t g_id,
-                                        window const* target_window,
-                                        SDL_GLContext sys_context);
+                                
         window const*           target_window;
         SDL_GLContext           sys_context;
         friend                  class video_manager;
@@ -61,13 +63,5 @@ namespace gfx {
                         gl::UNSIGNED_INT,
                         &indices[0] );
     }
-
-    inline context::context( video_manager* const owner,
-                            size_t g_id,
-                            window const* target_window,
-                            SDL_GLContext sys_context    ) :
-                                managed( owner, g_id ),
-                                target_window( target_window ),
-                                sys_context( sys_context )      {}
 }
 #endif

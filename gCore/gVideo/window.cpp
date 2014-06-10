@@ -1,8 +1,116 @@
 namespace gfx {
-window::~window()
+    
+    window::window( settings const& set,
+                    settings_3D const& set_3D ) :
+                    sys_window ( 0 )
     {
-        owner->del_window( *this );
+        SDL_GL_SetAttribute( SDL_GL_RED_SIZE, set_3D.r_bits_v );
+        SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, set_3D.g_bits_v );
+        SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE, set_3D.b_bits_v );
+        SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, set_3D.a_bits_v );
+        
+        SDL_GL_SetAttribute( SDL_GL_BUFFER_SIZE, set_3D.framebuffer_bits_v );
+        SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, set_3D.depth_bits_v );
+        SDL_GL_SetAttribute( SDL_GL_STENCIL_SIZE, set_3D.stencil_bits_v );
+        if ( set_3D.doublebuffered_v ) {
+            SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
+        } else {
+            SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 0 );
+        }
+        
+        SDL_GL_SetAttribute( SDL_GL_ACCUM_RED_SIZE, set_3D.r_accumulator_bits_v );
+        SDL_GL_SetAttribute( SDL_GL_ACCUM_GREEN_SIZE, set_3D.g_accumulator_bits_v );
+        SDL_GL_SetAttribute( SDL_GL_ACCUM_BLUE_SIZE, set_3D.b_accumulator_bits_v );
+        SDL_GL_SetAttribute( SDL_GL_ACCUM_ALPHA_SIZE, set_3D.a_accumulator_bits_v );
+        
+        if ( set_3D.in_stereo_v ) {
+            SDL_GL_SetAttribute( SDL_GL_STEREO, 1 );
+        }
+        
+        if ( set_3D.multisample_v ) {
+            SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1 );
+            SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, set_3D.samples_v );
+        }
+        
+        if ( set_3D.force_hw_v ) {
+            SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
+        }
+        
+        if ( set_3D.force_sw_v ) {
+            SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 0 );
+        }
+
+        //SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, set_3D.maj_ver_v );
+        //SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, set_3D.min_ver_v );
+        
+        int SDL_flags = 0;
+
+        if ( set.minimized_v ) {
+            SDL_flags |= SDL_WINDOW_MINIMIZED;
+        } else if ( set.maximized_v ) {
+            SDL_flags |= SDL_WINDOW_MAXIMIZED;
+        } else if ( set.fullscreen_v ) {
+            SDL_flags |= SDL_WINDOW_FULLSCREEN;
+        }
+
+        if ( set.resizable_v ) {
+            SDL_flags |= SDL_WINDOW_RESIZABLE;
+        }
+
+        if ( set.uses_opengl ) {
+            SDL_flags |= SDL_WINDOW_OPENGL;
+        }
+
+        if ( set.visible_v ) {
+            SDL_flags |= SDL_WINDOW_SHOWN;
+        }
+
+        if ( not set.has_border_v ) {
+            SDL_flags |= SDL_WINDOW_BORDERLESS;
+        }
+        
+        if ( set.has_focus_v ) {
+            SDL_flags |= SDL_WINDOW_INPUT_FOCUS;
+        }
+
+        if ( set.grab_input_v ) {
+            SDL_flags |= SDL_WINDOW_INPUT_GRABBED;
+        }
+
+        int x_argument = set.ulc_v[0];
+
+        if ( set.center_on_x ) {
+            x_argument = SDL_WINDOWPOS_CENTERED;
+        }
+
+        int y_argument = set.ulc_v[1];
+
+        if ( set.center_on_y ) {
+            y_argument = SDL_WINDOWPOS_CENTERED;
+        }
+
+        sys_window = SDL_CreateWindow( set.title_v.c_str(),
+                                           x_argument,
+                                           y_argument,
+                                           set.width_v,
+                                           set.height_v,
+                                           SDL_flags );
+        if ( !sys_window ) {
+            std::string msg( "Unable to create new system window.\n" );
+            msg += SDL_GetError();
+            throw std::runtime_error( msg );
+        }
+        // Can't get it to be created minimized!
+        if ( set.minimized_v ) {
+            SDL_MinimizeWindow( sys_window );
+        }
+
+        title_str = set.title_v;
     }
+    
+    window::~window()
+    { SDL_DestroyWindow( sys_window ); }
+    
     void window::swap()
     {
         if ( this->has_3D() ) {

@@ -11,10 +11,10 @@ namespace gfx {
             settings&       maj_ver( unsigned int maj_ver );
             settings&       min_ver( unsigned int min_ver );
             settings&       sub_ver( unsigned int sub_ver );
-            settings&       version( unsigned int maj_ver,
+            settings&       ver( unsigned int maj_ver,
                                      unsigned int min_ver,
                                      unsigned int sub_ver = 0 );
-            settings&       version( version const& ver );
+            settings&       ver( version const& ver );
             settings&       core_profile();
             settings&       compatibility_profile();
             settings&       es_profile();
@@ -30,23 +30,14 @@ namespace gfx {
                                         ~video_manager();
         static video_manager&           get();
         version const&                  get_version() const;
-        window&                         new_window( window::settings const& set =
-                                                        window::settings(),
-                                                    window::settings_3D const& set_3D =
-                                                        window::settings_3D() 
-                                                );
-        void                            del_window( window const& wndw );
-        context&                        new_context( window const& window,
-                                                    context::settings const& settings = context::settings() );
-        void                            del_context( context const& cntx );
         void                            attach_context( window const& window,
                                                         context& context );
         void                            activate_context( context& context );
         context const&                  get_active_context() const;
         context&                        get_active_context();
-        program&                        new_program( program::settings const& settings =
-                                                        program::settings() );
-        void                            del_program( program const& prgm );
+//         program&                        new_program( program::settings const& settings =
+//                                                         program::settings() );
+//         void                            del_program( program const& prgm );
         buffer&                         new_buffer( buffer::settings const& settings );
         void                            del_buffer( buffer const& buff );
         friend std::ostream&            operator <<( std::ostream& out,
@@ -55,23 +46,14 @@ namespace gfx {
                                             video_manager();
         static video_manager* const         instance;
         version                             vid_ver;
-        bool                                owns( window const& wndw );
-        bool                                owns( context const& cntx );
-        bool                                owns( program const& prgm );
+//         bool                                owns( program const& prgm );
         bool                                owns( buffer const& buff );
         
-        typedef std::map<size_t, window*>   window_map;
-        window_map*                         windows;
-        size_t                              nxt_w_id;
-        
-        typedef std::map<size_t, context*>  context_map;
-        context_map*                        contexts;
-        size_t                              nxt_c_id;
         context*                            active_context;
         
-        typedef std::map<size_t, program*>  program_map;
-        program_map*                        programs;
-        size_t                              nxt_p_id;
+//         typedef std::map<size_t, program*>  program_map;
+//         program_map*                        programs;
+//         size_t                              nxt_p_id;
         
         typedef std::map<size_t, buffer*>   buffer_map;
         buffer_map*                         buffers;
@@ -101,7 +83,7 @@ namespace gfx {
     { sub_ver_v = sub_ver; return *this; }
     
     inline video_manager::settings&
-    video_manager::settings::version( unsigned int maj_ver,
+    video_manager::settings::ver( unsigned int maj_ver,
                                       unsigned int min_ver,
                                       unsigned int sub_ver )
     { 
@@ -112,7 +94,7 @@ namespace gfx {
     }
     
     inline video_manager::settings&
-    video_manager::settings::version( version const& ver )
+    video_manager::settings::ver( version const& ver )
     { 
         maj_ver_v = ver.maj_ver();
         min_ver_v = ver.min_ver();
@@ -134,40 +116,25 @@ namespace gfx {
     
     inline video_manager::video_manager() :
                             vid_ver ( 0, 0 ),
-                            windows( new window_map() ),
-                            nxt_w_id( 0 ),
-                            contexts( new context_map() ),
-                            nxt_c_id( 0 ),
                             active_context( 0 ),
-                            programs( new program_map ),
-                            nxt_p_id( 0 ),
                             buffers( new buffer_map ),
                             nxt_b_id( 0 ),
                             zombie( false ) {}
                             
-    video_manager&  video_manager::get()
+    inline video_manager&  video_manager::get()
     { return *video_manager::instance; }
     
-    version const&  video_manager::get_version()
+    inline version const&  video_manager::get_version() const
     { return vid_ver; }
     
     inline  context const&    video_manager::get_active_context() const
-    { return *active_context; }
+    { return *(video_manager::instance->active_context); }
 
     inline  context&    video_manager::get_active_context()
-    { return *active_context; }
+    { return *(video_manager::instance->active_context); }
 
-    inline  bool    context::is_active() const
-    { return (*this) == owner->get_active_context(); }
-
-    inline  bool    video_manager::owns( window const& wndw )
-    { return this == wndw.owner; }
-
-    inline  bool    video_manager::owns( context const& cntx )
-    { return this == cntx.owner; }
-
-    inline  bool    video_manager::owns( program const& prgm )
-    { return this == prgm.owner; }
+//     inline  bool    video_manager::owns( program const& prgm )
+//     { return this == prgm.owner; }
 
     inline  bool    video_manager::owns( buffer const& buff )
     { return this == buff.owner; }

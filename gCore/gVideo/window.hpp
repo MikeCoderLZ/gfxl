@@ -3,8 +3,111 @@
 
 namespace gfx {
 
-    class window : public managed {
+    class window {
     public:
+        
+        class settings {
+            public:
+                                    settings();
+                settings&           title( std::string const& title );
+                settings&           x_pos( int xp );
+                settings&           y_pos( int yp );
+                settings&           position( int xp,
+                                            int yp );
+                settings&           center_x();
+                settings&           center_y();
+                settings&           center();
+                settings&           width( int dw );
+                settings&           height( int dh );
+                settings&           dimensions( int dw,
+                                                int dh );
+                settings&           corners( int ul_x,
+                                            int ul_y,
+                                            int lr_x,
+                                            int lr_y );
+                settings&           corners( ivec2 const& ulc,
+                                            ivec2 const& lrc );
+                settings&           maximized();
+                settings&           minimized();
+                settings&           resizable();
+                settings&           lock_size();
+                settings&           has_3D();
+                settings&           visible();
+                settings&           no_border();
+                settings&           has_border();
+                settings&           fullscreen();
+                settings&           grab_input();
+                settings&           has_focus();
+                settings&           no_focus();
+            private:
+                std::string         title_v;
+                ivec2               pos_v;
+                ivec2               ulc_v;
+                int                 width_v;
+                int                 height_v;
+                bool                center_on_x;
+                bool                center_on_y;
+                bool                minimized_v;
+                bool                maximized_v;
+                bool                fullscreen_v;
+                bool                resizable_v;
+                bool                uses_opengl;
+                bool                visible_v;
+                bool                has_border_v;
+                bool                has_focus_v;
+                bool                grab_input_v;
+                friend              class video_manager;
+                friend              class window;
+        };
+        
+        class settings_3D {
+            public:
+                                    settings_3D();
+                settings_3D&        r_bits( unsigned int b );
+                settings_3D&        g_bits( unsigned int b );
+                settings_3D&        b_bits( unsigned int b );
+                settings_3D&        a_bits( unsigned int b );
+                settings_3D&        framebuffer_bits( unsigned int b );
+                settings_3D&        doublebuffered();
+                settings_3D&        not_doublebuffered();
+                settings_3D&        depth_bits( unsigned int b );
+                settings_3D&        stencil_bits( unsigned int b );
+                settings_3D&        r_accumulator_bits( unsigned int b );
+                settings_3D&        g_accumulator_bits( unsigned int b );
+                settings_3D&        b_accumulator_bits( unsigned int b );
+                settings_3D&        a_accumulator_bits( unsigned int b );
+                settings_3D&        in_stereo();
+                settings_3D&        multisample( unsigned int samples );
+                settings_3D&        force_hardware();
+                settings_3D&        force_software();
+        //         settings_3D&        version( unsigned int maj_ver,
+        //                                      unsigned int min_ver );
+            private:
+                unsigned int        r_bits_v;
+                unsigned int        g_bits_v;
+                unsigned int        b_bits_v;
+                unsigned int        a_bits_v;
+                unsigned int        framebuffer_bits_v;
+                bool                doublebuffered_v;
+                unsigned int        depth_bits_v;
+                unsigned int        stencil_bits_v;
+                unsigned int        r_accumulator_bits_v;
+                unsigned int        g_accumulator_bits_v;
+                unsigned int        b_accumulator_bits_v;
+                unsigned int        a_accumulator_bits_v;
+                bool                in_stereo_v;
+                bool                multisample_v;
+                unsigned int        samples_v;
+                bool                force_hw_v;
+                bool                force_sw_v;
+        //         unsigned int        maj_ver_v;
+        //         unsigned int        min_ver_v;
+                friend class        video_manager;
+                friend              class window;
+        };
+        
+                                window( settings const& set = settings(),
+                                        settings_3D const& set_3D = settings_3D() );
                                 ~window();
         void                    swap();
         bool                    operator ==( window const& rhs ) const;
@@ -57,112 +160,11 @@ namespace gfx {
         friend                  std::ostream& operator <<( std::ostream& out,
                                                         window const& rhs );
         
-        class settings {
-            public:
-                                    settings();
-                settings&           title( std::string const& title );
-                settings&           x_pos( int xp );
-                settings&           y_pos( int yp );
-                settings&           position( int xp,
-                                            int yp );
-                settings&           center_x();
-                settings&           center_y();
-                settings&           center();
-                settings&           width( int dw );
-                settings&           height( int dh );
-                settings&           dimensions( int dw,
-                                                int dh );
-                settings&           corners( int ul_x,
-                                            int ul_y,
-                                            int lr_x,
-                                            int lr_y );
-                settings&           corners( ivec2 const& ulc,
-                                            ivec2 const& lrc );
-                settings&           maximized();
-                settings&           minimized();
-                settings&           resizable();
-                settings&           lock_size();
-                settings&           has_3D();
-                settings&           visible();
-                settings&           no_border();
-                settings&           has_border();
-                settings&           fullscreen();
-                settings&           grab_input();
-                settings&           has_focus();
-                settings&           no_focus();
-            private:
-                friend              class video_manager;
-                std::string         title_v;
-                ivec2               pos_v;
-                ivec2               ulc_v;
-                int                 width_v;
-                int                 height_v;
-                bool                center_on_x;
-                bool                center_on_y;
-                bool                minimized_v;
-                bool                maximized_v;
-                bool                fullscreen_v;
-                bool                resizable_v;
-                bool                uses_opengl;
-                bool                visible_v;
-                bool                has_border_v;
-                bool                has_focus_v;
-                bool                grab_input_v;
-        };
-        
-        class settings_3D {
-        public:
-                                settings_3D();
-            settings_3D&        r_bits( unsigned int b );
-            settings_3D&        g_bits( unsigned int b );
-            settings_3D&        b_bits( unsigned int b );
-            settings_3D&        a_bits( unsigned int b );
-            settings_3D&        framebuffer_bits( unsigned int b );
-            settings_3D&        doublebuffered();
-            settings_3D&        not_doublebuffered();
-            settings_3D&        depth_bits( unsigned int b );
-            settings_3D&        stencil_bits( unsigned int b );
-            settings_3D&        r_accumulator_bits( unsigned int b );
-            settings_3D&        g_accumulator_bits( unsigned int b );
-            settings_3D&        b_accumulator_bits( unsigned int b );
-            settings_3D&        a_accumulator_bits( unsigned int b );
-            settings_3D&        in_stereo();
-            settings_3D&        multisample( unsigned int samples );
-            settings_3D&        force_hardware();
-            settings_3D&        force_software();
-    //         settings_3D&        version( unsigned int maj_ver,
-    //                                      unsigned int min_ver );
-        private:
-            unsigned int        r_bits_v;
-            unsigned int        g_bits_v;
-            unsigned int        b_bits_v;
-            unsigned int        a_bits_v;
-            unsigned int        framebuffer_bits_v;
-            bool                doublebuffered_v;
-            unsigned int        depth_bits_v;
-            unsigned int        stencil_bits_v;
-            unsigned int        r_accumulator_bits_v;
-            unsigned int        g_accumulator_bits_v;
-            unsigned int        b_accumulator_bits_v;
-            unsigned int        a_accumulator_bits_v;
-            bool                in_stereo_v;
-            bool                multisample_v;
-            unsigned int        samples_v;
-            bool                force_hw_v;
-            bool                force_sw_v;
-    //         unsigned int        maj_ver_v;
-    //         unsigned int        min_ver_v;
-            friend class        video_manager;
-        };
-        
     private:
-                                window( std::string const& title,
-                                        video_manager* const owner,
-                                        size_t g_id,
-                                        SDL_Window* sys_window );
         std::string             title_str;
         SDL_Window*             sys_window;
         friend                  class video_manager;
+        friend                  class context;
     };
 
     std::ostream&   operator <<( std::ostream& out, window const& rhs );
@@ -408,14 +410,6 @@ namespace gfx {
 
     inline  bool    window::operator ==( window const& rhs ) const
     { return this->sys_window == rhs.sys_window; }
-
-    inline  window::window( std::string const& title,
-                            video_manager* const owner,
-                            size_t g_id,
-                            SDL_Window* system_window ) :
-                                managed( owner, g_id ),
-                                title_str ( title ),
-                                sys_window( system_window ) {};
 
 }
 #endif
