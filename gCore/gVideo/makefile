@@ -26,9 +26,21 @@ $(OBJ)/video_manager_test.o: $(GVID)/video_manager_test.cpp \
 	    $(SDLFLAGS) -o $(OBJ)/video_manager_test.o
 
 $(OBJ)/video.o: $(GVID)/video.cpp \
-                        $(GVID)/video.hpp \
-                        $(GVID)/gl_core_3_3.hpp \
-                        $(GMATH)/datatype.hpp
+                $(GVID)/video.hpp \
+                $(GVID)/version.hpp \
+                $(GVID)/video_manager.cpp \
+                $(GVID)/video_manager.hpp \
+                $(GVID)/window.cpp \
+                $(GVID)/window.hpp \
+                $(GVID)/context.cpp \
+                $(GVID)/context.hpp \
+                $(GVID)/buffer.cpp \
+                $(GVID)/buffer.hpp \
+                $(GVID)/program.cpp \
+                $(GVID)/program.hpp \
+                $(GVID)/managed.hpp \
+                $(GVID)/gl_core_3_3.hpp \
+                $(GMATH)/datatype.hpp
 	g++ -c $(COM) -Wno-sign-compare \
 	    $(GVID)/video.cpp \
 	    $(SDLFLAGS) -o $(OBJ)/video.o

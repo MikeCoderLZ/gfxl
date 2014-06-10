@@ -10,24 +10,20 @@
 
 using namespace gfx;
 
-video_manager test_mngr ( video_manager::settings()
-                          .maj_ver( 3 )
-                          .min_ver( 3 )            );
-
 SUITE( GLSLShadingTests )
 {    
     TEST( CIELabProgram )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                    .has_3D()        );
-        context test_cntx = test_mngr.new_context( test_wndw );
-        test_mngr.attach_context( test_wndw, test_cntx );
-        program test_prgm = test_mngr.new_program( program::settings()
+        context test_cntx = video_manager::get().new_context( test_wndw );
+        video_manager::get().attach_context( test_wndw, test_cntx );
+        program test_prgm = video_manager::get().new_program( program::settings()
                                                     .use_vert( "./shader/testVert_LAB.glsl" )
                                                     .use_frag( "./shader/testFrag_LAB.glsl" ) );
         test_prgm.compile();
         
-        buffer test_buff = test_mngr.new_buffer( buffer::settings().blocks(4) );
+        buffer test_buff = video_manager::get().new_buffer( buffer::settings().blocks(4) );
         test_buff.block_format( block_spec()
                                 .attribute( type<vec2>() )
                                 .attribute( type<vec3>() ) );
@@ -81,5 +77,9 @@ SUITE( GLSLShadingTests )
 
 int main( int argc, char* argv[] )
 {
+    video_manager::get().initialize( video_manager::settings()
+                                        .maj_ver( 3 )
+                                        .min_ver( 3 )            );
+
     return UnitTest::RunAllTests();
 }

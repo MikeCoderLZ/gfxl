@@ -3,20 +3,17 @@
 #include <vector>
 #include <string>
 
-#include "video.hpp"
 #include "../gMath/datatype.hpp"
 #include "../../UnitTest++_src/UnitTest++.h"
+#include "video.hpp"
 
 using namespace gfx;
 
-video_manager test_mngr;
-
 SUITE( WindowTests )
 {
-    
     TEST( WindowTitle )
     {
-        window test_wndw1 = test_mngr.new_window( window::settings()
+        window test_wndw1 = video_manager::get().new_window( window::settings()
                                                   .title("Fiddlesticks") );
         CHECK_EQUAL( "Fiddlesticks", test_wndw1.title() );
         test_wndw1.title( "Brittlebits" );
@@ -25,7 +22,7 @@ SUITE( WindowTests )
     
     TEST( WindowXPosition )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                  .x_pos( 256 )
                                                  .title("WindowXPosition") );
         CHECK_EQUAL( 256, test_wndw.x_pos() );
@@ -35,7 +32,7 @@ SUITE( WindowTests )
     
     TEST( WindowYPosition )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                  .y_pos( 256 )
                                                  .title("WindowYPosition") );
         CHECK_EQUAL( 256, test_wndw.y_pos() );
@@ -45,7 +42,7 @@ SUITE( WindowTests )
     
     TEST( WindowPosition )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                  .position( 256, 256 )
                                                  .title("WindowPosition") );
         CHECK_EQUAL( ivec2( 256, 256 ), test_wndw.position() );
@@ -57,7 +54,7 @@ SUITE( WindowTests )
     
     TEST( WindowXCentering )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                  .center_x()
                                                  .title("WindowXCentering") );
         CHECK( test_wndw.is_x_centered() );
@@ -65,7 +62,7 @@ SUITE( WindowTests )
     
     TEST( WindowYCentering )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                  .center_y()
                                                  .title("WindowYCentering") );
         CHECK( test_wndw.is_y_centered() );
@@ -73,7 +70,7 @@ SUITE( WindowTests )
     
     TEST( WindowWidth )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                  .width( 256 )
                                                  .title("WindowWidth") );
         CHECK_EQUAL( 256, test_wndw.width() );
@@ -83,7 +80,7 @@ SUITE( WindowTests )
     
     TEST( WindowHeight )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                  .height( 256 )
                                                  .title("WindowHeight") );
         CHECK_EQUAL( 256, test_wndw.height() );
@@ -93,7 +90,7 @@ SUITE( WindowTests )
     
     TEST( WindowDimensions )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                  .dimensions( 256, 256 )
                                                  .title("WindowDimension") );
         CHECK_EQUAL( ivec2( 256, 256 ), test_wndw.dimensions() );
@@ -105,7 +102,7 @@ SUITE( WindowTests )
     
     TEST( WindowCorners )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                  .corners( 128, 128,
                                                            256, 256 )
                                                  .title("WindowDimension") );
@@ -125,7 +122,7 @@ SUITE( WindowTests )
     
     TEST( WindowMaximized )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                  .maximized()
                                                  .title("WindowMaximized") );
         CHECK( test_wndw.is_maximized() );
@@ -136,7 +133,7 @@ SUITE( WindowTests )
     
 //     TEST( WindowMinimized )
 //     {
-//         window test_wndw = test_mngr.new_window( window::settings()
+//         window test_wndw = video_manager::get().new_window( window::settings()
 //                                                  .minimized()
 //                                                  .title("WindowMinimized") );
 //         std::cout << "Is Minimized? " << test_wndw.is_minimized() << std::endl;
@@ -155,7 +152,7 @@ SUITE( WindowTests )
 
     TEST( WindowResizable )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                  .resizable()
                                                  .title("WindowResizable") );
         CHECK( test_wndw.is_resizable() );
@@ -163,7 +160,7 @@ SUITE( WindowTests )
     
     TEST( WindowOpenGL )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                  .has_3D()
                                                  .title("WindowOpenGL") );
         CHECK( test_wndw.has_3D() );
@@ -171,7 +168,7 @@ SUITE( WindowTests )
     
     TEST( WindowVisibility )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                  .visible()
                                                  .title("WindowVisiblity") );
         CHECK( test_wndw.is_visible() );
@@ -184,12 +181,12 @@ SUITE( WindowTests )
     
     TEST( WindowBorders )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                  .has_border()
                                                  .title("WindowBorders1") );
         CHECK( test_wndw.has_border() );
         
-        window test_wndw1 = test_mngr.new_window( window::settings()
+        window test_wndw1 = video_manager::get().new_window( window::settings()
                                                   .no_border()
                                                   .title("WindowBorders2") );
         CHECK_EQUAL( false, test_wndw1.has_border() );
@@ -197,14 +194,14 @@ SUITE( WindowTests )
     
 //     TEST( WindowFocus )
 //     {
-//         window test_wndw = test_mngr.new_window( window::settings()
+//         window test_wndw = video_manager::get().new_window( window::settings()
 //                                                  .has_focus()
 //                                                  .title("WindowFocus") );
 //         CHECK( test_wndw.has_focus() );
 //     }
     TEST( WindowDefaultCreation )
     {
-        window test_wndw1 = test_mngr.new_window();
+        window test_wndw1 = video_manager::get().new_window();
         SDL_Rect bounds;
         SDL_GetDisplayBounds( 0, &bounds );
         CHECK_EQUAL( bounds.w / 2, test_wndw1.width() );
@@ -221,17 +218,17 @@ SUITE( ContextTests )
 {
     TEST( ContextCreation )
     {
-        window test_wndw1 = test_mngr.new_window();
+        window test_wndw1 = video_manager::get().new_window();
 
         try {
-            context fail_cntx = test_mngr.new_context( test_wndw1 );
+            context fail_cntx = video_manager::get().new_context( test_wndw1 );
         } catch (std::logic_error& e ) {
             CHECK_EQUAL( "The creation of a context current in window 'untitled', was attempted, but this window does not support OpenGL.",
                          e.what() );
         }
-        window test_wndw2 = test_mngr.new_window( window::settings()
+        window test_wndw2 = video_manager::get().new_window( window::settings()
                                                     .has_3D()       );
-        context test_cntx = test_mngr.new_context( test_wndw2 );
+        context test_cntx = video_manager::get().new_context( test_wndw2 );
         
         CHECK( 1u <= test_cntx.major_version() );
         CHECK( 4u <= test_cntx.minor_version() );
@@ -241,10 +238,10 @@ SUITE( ContextTests )
     
     TEST( ContextSwap )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                  .has_3D()          );
-        context test_cntx = test_mngr.new_context( test_wndw );
-        test_mngr.attach_context( test_wndw, test_cntx );
+        context test_cntx = video_manager::get().new_context( test_wndw );
+        video_manager::get().attach_context( test_wndw, test_cntx );
         
         std::cout << "Interactive test; press any key to continue. ";
         
@@ -272,5 +269,6 @@ SUITE( ContextTests )
 
 int main( int argc, char* argv[] )
 {
+    video_manager::get().initialize( video_manager::settings() );
     return UnitTest::RunAllTests();
 }

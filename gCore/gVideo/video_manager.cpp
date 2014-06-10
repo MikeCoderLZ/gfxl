@@ -1,16 +1,8 @@
 namespace gfx {
 
-    video_manager::video_manager( video_manager::settings const& set ) :
-        windows( new window_map() ),
-        nxt_w_id( 0 ),
-        contexts( new context_map() ),
-        nxt_c_id( 0 ),
-        active_context( 0 ),
-        programs( new program_map ),
-        nxt_p_id( 0 ),
-        buffers( new buffer_map ),
-        nxt_b_id( 0 ),
-        zombie( false )
+    video_manager* const video_manager::instance = new video_manager();
+    
+    video_manager&  video_manager::initialize( video_manager::settings const& set )
     {
         if ( not SDL_WasInit( SDL_INIT_VIDEO ) ) {
             if ( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
@@ -29,8 +21,21 @@ namespace gfx {
         // So that is why this setting information is discarded:
         // After the first set, it won't matter.
         SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK,  set.profile_v );
+        unsigned int min_ver = set.min_ver_v;
+        
+        if ( min_ver < 10u and set.sub_ver_v > 0u ) {
+            min_ver *= 10u;
+            min_ver += set.sub_ver_v;
+        }
+        
         SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, set.maj_ver_v );
-        SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, set.min_ver_v );
+        SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, min_ver );
+        
+        video_manager::instance->vid_ver = version( set.maj_ver_v,
+                                                    set.min_ver_v,
+                                                    set.sub_ver_v );
+        
+        return video_manager::instance;
     }
 
     video_manager::~video_manager()

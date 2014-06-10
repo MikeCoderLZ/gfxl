@@ -12,6 +12,7 @@
 #include "../gUtility/datatypeinfo.hpp"
 #include "../gMath/datatype.hpp"
 
+#include "version.hpp"
 namespace gfx {
     class video_manager;
 }

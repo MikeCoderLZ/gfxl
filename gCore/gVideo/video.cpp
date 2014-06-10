@@ -2,8 +2,8 @@
 #include <fstream>
 #include <string>
 #include "gl_core_3_3.hpp"
-#include "video.hpp"
 #include "SDL.h"
+#include "video.hpp"
 
 #include "window.cpp"
 #include "context.cpp"

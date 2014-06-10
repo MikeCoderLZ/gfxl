@@ -10,42 +10,38 @@
 
 using namespace gfx;
 
-video_manager test_mngr ( video_manager::settings()
-                          .maj_ver( 3 )
-                          .min_ver( 3 )            );
-
 SUITE( ProgramTests )
 {
     TEST( ProgramContextPrerequisite )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                    .has_3D()        );
         // No OpenGL context has been created;
         // the program will refuse to be created
         std::string excepted = "Exception not caught.";
         try {
-            program test_prgm1 = test_mngr.new_program();
+            program test_prgm1 = video_manager::get().new_program();
         } catch ( std::logic_error& e ) {
             excepted = "Exception caught.";
         }
         CHECK_EQUAL( "Exception caught.", excepted );
         
-        context test_cntx = test_mngr.new_context( test_wndw );
+        context test_cntx = video_manager::get().new_context( test_wndw );
         CHECK( 2u <= test_cntx.major_version() );
         CHECK( 0u <= test_cntx.minor_version() );
         
-        program test_prgm2 = test_mngr.new_program();
+        program test_prgm2 = video_manager::get().new_program();
     }
     
     TEST( ProgramSourcePrerequisite )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                    .has_3D()        );
-        context test_cntx = test_mngr.new_context( test_wndw );
+        context test_cntx = video_manager::get().new_context( test_wndw );
         CHECK( 2u <= test_cntx.major_version() );
         CHECK( 0u <= test_cntx.minor_version() );
         
-        program test_prgm = test_mngr.new_program();
+        program test_prgm = video_manager::get().new_program();
         
         std::string excepted = "Exception not caught.";
         try {
@@ -59,10 +55,10 @@ SUITE( ProgramTests )
     
     TEST( ProgramVertexCompilationError )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                    .has_3D()        );
-        context test_cntx = test_mngr.new_context( test_wndw );
-        program test_prgm = test_mngr.new_program( program::settings()
+        context test_cntx = video_manager::get().new_context( test_wndw );
+        program test_prgm = video_manager::get().new_program( program::settings()
                                                     .use_vert( "./shader/testVert_syntax_error.glsl" )
                                                     .use_frag( "./shader/testFrag.glsl" ) );
         std::string e_header = "Exception not caught";
@@ -76,10 +72,10 @@ SUITE( ProgramTests )
     
     TEST( ProgramFragmentCompilationError )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                    .has_3D()        );
-        context test_cntx = test_mngr.new_context( test_wndw );
-        program test_prgm = test_mngr.new_program( program::settings()
+        context test_cntx = video_manager::get().new_context( test_wndw );
+        program test_prgm = video_manager::get().new_program( program::settings()
                                                     .use_vert( "./shader/testVert.glsl" )
                                                     .use_frag( "./shader/testFrag_syntax_error.glsl" ) );
         std::string e_header = "Exception not caught";
@@ -96,21 +92,21 @@ SUITE( BufferTests )
 {
     TEST( BufferCreation )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                    .has_3D()        );
         std::string excepted = "Exception not caught.";
         try {
-            buffer test_buff1 = test_mngr.new_buffer( buffer::settings().blocks(4) );
+            buffer test_buff1 = video_manager::get().new_buffer( buffer::settings().blocks(4) );
         } catch ( std::logic_error& e ) {
             excepted = "Exception caught.";
         }
         CHECK_EQUAL( "Exception caught.", excepted );
         
-        context test_cntx = test_mngr.new_context( test_wndw );
+        context test_cntx = video_manager::get().new_context( test_wndw );
         
         excepted = "Exception not caught.";
         try {
-            buffer test_buff2 = test_mngr.new_buffer( buffer::settings().blocks(4) );
+            buffer test_buff2 = video_manager::get().new_buffer( buffer::settings().blocks(4) );
         } catch ( std::logic_error& e ) {
             excepted = "Exception caught.";
         }
@@ -119,10 +115,10 @@ SUITE( BufferTests )
     
     TEST( BufferAlignment )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                    .has_3D()        );
-        context test_cntx = test_mngr.new_context( test_wndw );
-        buffer test_buff = test_mngr.new_buffer( buffer::settings().blocks(4) );
+        context test_cntx = video_manager::get().new_context( test_wndw );
+        buffer test_buff = video_manager::get().new_buffer( buffer::settings().blocks(4) );
         
         std::string excepted = "Exception not caught.";
         try {
@@ -158,10 +154,10 @@ SUITE( BufferTests )
     
     TEST( BufferFill )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                    .has_3D()        );
-        context test_cntx = test_mngr.new_context( test_wndw );
-        buffer test_buff = test_mngr.new_buffer( buffer::settings().blocks(4) );        
+        context test_cntx = video_manager::get().new_context( test_wndw );
+        buffer test_buff = video_manager::get().new_buffer( buffer::settings().blocks(4) );        
         
         std::vector< vec2 > position;
         position.push_back( vec2( 0.5f ));
@@ -219,16 +215,16 @@ SUITE( GLSLShadingTests )
 {
     TEST( BufferProgramInteraction )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                    .has_3D()        );
-        context test_cntx = test_mngr.new_context( test_wndw );
-        test_mngr.attach_context( test_wndw, test_cntx );
-        program test_prgm = test_mngr.new_program( program::settings()
+        context test_cntx = video_manager::get().new_context( test_wndw );
+        video_manager::get().attach_context( test_wndw, test_cntx );
+        program test_prgm = video_manager::get().new_program( program::settings()
                                                     .use_vert( "./shader/testVert.glsl" )
                                                     .use_frag( "./shader/testFrag.glsl" ) );
         test_prgm.compile();
         
-        buffer test_buff = test_mngr.new_buffer( buffer::settings().blocks(4) );
+        buffer test_buff = video_manager::get().new_buffer( buffer::settings().blocks(4) );
         test_buff.block_format( block_spec()
                                 .attribute( type<vec2>() ) );
         std::vector< vec2 > position;
@@ -273,16 +269,16 @@ SUITE( GLSLShadingTests )
     
     TEST( MultipleBufferProgramInteraction )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                    .has_3D()        );
-        context test_cntx = test_mngr.new_context( test_wndw );
-        test_mngr.attach_context( test_wndw, test_cntx );
-        program test_prgm = test_mngr.new_program( program::settings()
+        context test_cntx = video_manager::get().new_context( test_wndw );
+        video_manager::get().attach_context( test_wndw, test_cntx );
+        program test_prgm = video_manager::get().new_program( program::settings()
                                                     .use_vert( "./shader/testVert_colored.glsl" )
                                                     .use_frag( "./shader/testFrag_colored.glsl" ) );
         test_prgm.compile();
         
-        buffer test_buff = test_mngr.new_buffer( buffer::settings().blocks(4) );
+        buffer test_buff = video_manager::get().new_buffer( buffer::settings().blocks(4) );
         test_buff.block_format( block_spec()
                                 .attribute( type<vec2>() )
                                 .attribute( type<vec3>() ) );
@@ -335,16 +331,16 @@ SUITE( GLSLShadingTests )
     
     TEST( CIELabProgram )
     {
-        window test_wndw = test_mngr.new_window( window::settings()
+        window test_wndw = video_manager::get().new_window( window::settings()
                                                    .has_3D()        );
-        context test_cntx = test_mngr.new_context( test_wndw );
-        test_mngr.attach_context( test_wndw, test_cntx );
-        program test_prgm = test_mngr.new_program( program::settings()
+        context test_cntx = video_manager::get().new_context( test_wndw );
+        video_manager::get().attach_context( test_wndw, test_cntx );
+        program test_prgm = video_manager::get().new_program( program::settings()
                                                     .use_vert( "./shader/testVert_LAB.glsl" )
                                                     .use_frag( "./shader/testFrag_LAB.glsl" ) );
         test_prgm.compile();
         
-        buffer test_buff = test_mngr.new_buffer( buffer::settings().blocks(4) );
+        buffer test_buff = video_manager::get().new_buffer( buffer::settings().blocks(4) );
         test_buff.block_format( block_spec()
                                 .attribute( type<vec2>() )
                                 .attribute( type<vec3>() ) );
@@ -398,5 +394,9 @@ SUITE( GLSLShadingTests )
 
 int main( int argc, char* argv[] )
 {
+    video_manager::get().initialize( video_manager::settings()
+                                     .maj_ver( 3 )
+                                     .min_ver( 3 )            );
+
     return UnitTest::RunAllTests();
 }

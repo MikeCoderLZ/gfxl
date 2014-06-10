@@ -5,26 +5,31 @@ namespace gfx {
 
     class video_manager {
     public:
-        
         class settings {
         public:
             settings();
             settings&       maj_ver( unsigned int maj_ver );
             settings&       min_ver( unsigned int min_ver );
+            settings&       sub_ver( unsigned int sub_ver );
             settings&       version( unsigned int maj_ver,
-                                     unsigned int min_ver );
+                                     unsigned int min_ver,
+                                     unsigned int sub_ver = 0 );
+            settings&       version( version const& ver );
             settings&       core_profile();
             settings&       compatibility_profile();
             settings&       es_profile();
         private:
             unsigned int    maj_ver_v;
             unsigned int    min_ver_v;
+            unsigned int    sub_ver_v;
             int             profile_v;
             friend class video_manager;
         };
-                                        video_manager( video_manager::settings const& set =
-                                                        video_manager::settings() );
+        video_manager&                  initialize( video_manager::settings const& set =
+                                                        video_manager::settings()        );
                                         ~video_manager();
+        static video_manager&           get();
+        version const&                  get_version() const;
         window&                         new_window( window::settings const& set =
                                                         window::settings(),
                                                     window::settings_3D const& set_3D =
@@ -47,6 +52,9 @@ namespace gfx {
         friend std::ostream&            operator <<( std::ostream& out,
                                                     video_manager const& rhs);
     private:
+                                            video_manager();
+        static video_manager* const         instance;
+        version                             vid_ver;
         bool                                owns( window const& wndw );
         bool                                owns( context const& cntx );
         bool                                owns( program const& prgm );
@@ -77,6 +85,7 @@ namespace gfx {
     inline  video_manager::settings::settings() :
                                         maj_ver_v( 1u ),
                                         min_ver_v( 4u ),
+                                        sub_ver_v( 0u ),
                                         profile_v( SDL_GL_CONTEXT_PROFILE_CORE ) {}
 
     inline video_manager::settings&
@@ -86,6 +95,30 @@ namespace gfx {
     inline video_manager::settings&
     video_manager::settings::min_ver( unsigned int min_ver )
     { min_ver_v = min_ver; return *this; }
+    
+    inline video_manager::settings&
+    video_manager::settings::sub_ver( unsigned int sub_ver )
+    { sub_ver_v = sub_ver; return *this; }
+    
+    inline video_manager::settings&
+    video_manager::settings::version( unsigned int maj_ver,
+                                      unsigned int min_ver,
+                                      unsigned int sub_ver )
+    { 
+        maj_ver_v = maj_ver;
+        min_ver_v = min_ver;
+        sub_ver_v = sub_ver;
+        return *this;
+    }
+    
+    inline video_manager::settings&
+    video_manager::settings::version( version const& ver )
+    { 
+        maj_ver_v = ver.maj_ver();
+        min_ver_v = ver.min_ver();
+        sub_ver_v = ver.sub_ver();
+        return *this;
+    }
 
     inline video_manager::settings&
     video_manager::settings::core_profile()
@@ -98,7 +131,26 @@ namespace gfx {
     inline video_manager::settings&
     video_manager::settings::es_profile()
     { profile_v = SDL_GL_CONTEXT_PROFILE_ES; return *this; }
-
+    
+    inline video_manager::video_manager() :
+                            vid_ver ( 0, 0 ),
+                            windows( new window_map() ),
+                            nxt_w_id( 0 ),
+                            contexts( new context_map() ),
+                            nxt_c_id( 0 ),
+                            active_context( 0 ),
+                            programs( new program_map ),
+                            nxt_p_id( 0 ),
+                            buffers( new buffer_map ),
+                            nxt_b_id( 0 ),
+                            zombie( false ) {}
+                            
+    video_manager&  video_manager::get()
+    { return *video_manager::instance; }
+    
+    version const&  video_manager::get_version()
+    { return vid_ver; }
+    
     inline  context const&    video_manager::get_active_context() const
     { return *active_context; }
 
