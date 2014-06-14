@@ -268,7 +268,7 @@ SUITE( GLSLShadingTests )
         CHECK_EQUAL( "y", input );
     }
     
-    TEST( TextureProgramInteraction )
+    TEST( Texture1DProgramInteraction )
     {
         window test_wndw ( window::settings()
                            .has_3D()        );
@@ -328,6 +328,82 @@ SUITE( GLSLShadingTests )
         std::cin >> input;
         
         std::cout << "A white rectangle with a red edge will appear on a yellow background.\nConfirm [y/n]: ";
+        
+        test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
+        
+        gl::DrawElements( gl::TRIANGLES,
+                          6,
+                          gl::UNSIGNED_INT,
+                          elements );
+        test_wndw.swap();
+        
+        
+        
+        std::cin >> input;        
+        CHECK_EQUAL( "y", input );
+    }
+    
+    TEST( Texture2DProgramInteraction )
+    {
+        window test_wndw ( window::settings()
+                           .has_3D()        );
+        context test_cntx ( test_wndw );
+        video_system::get().attach_context( test_wndw, test_cntx );
+        program test_prgm ( program::settings()
+                            .use_vert( "./shader/testVert_2Dtextured.glsl" )
+                            .use_frag( "./shader/testFrag_2Dtextured.glsl" ) );
+        test_prgm.compile();
+        
+        buffer test_buff ( buffer::settings().blocks(4) );
+        test_buff.block_format( block_spec()
+                                .attribute( type<vec2>() )
+                                .attribute( type<vec2>() ) );
+        std::vector< vec2 > position;
+        position.push_back( vec2( 0.5f ));
+        position.push_back( vec2( 0.5f, -0.5f ));
+        position.push_back( vec2( -0.5f ));
+        position.push_back( vec2( -0.5f, 0.5f ));
+        
+        std::vector< vec2 > uv;
+        uv.push_back( vec2( 1.0f ) );
+        uv.push_back( vec2( 1.0f, 0.0f ) );
+        uv.push_back( vec2( 0.0f ) );
+        uv.push_back( vec2( 0.0f, 1.0f ) );
+        
+        test_buff.fill_attribute( 0, position );
+        test_buff.fill_attribute( 1, uv );
+        
+        test_buff.load_data();
+        test_buff.align_vertices();
+        
+        texture_2D test_txtr ( texture_2D::settings()
+                               .file( "./tex/test_2D.png" )
+                               .unsigned_norm_3( eight_bit, b, g, r )
+                               .sample_magnification( linear ) );
+        test_txtr.decode_file();
+        test_txtr.load_data();
+        
+        test_prgm.link();
+        
+        GLint txtr_loc = gl::GetUniformLocation( test_prgm.get_prog_ID(), "smilie" );
+        
+        
+        
+        test_prgm.use();
+        
+        gl::Uniform1i( txtr_loc, 0 );
+        
+        GLuint elements[] = { 0, 1, 2, 0, 2, 3 };
+        
+        test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
+        test_wndw.swap();
+        
+        std::cout << "Interactive test; press any key to continue. ";
+        
+        std::string input;
+        std::cin >> input;
+        
+        std::cout << "A white rectangle with a black and red smilie will appear on a yellow background.\nConfirm [y/n]: ";
         
         test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
         

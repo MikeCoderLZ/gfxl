@@ -31,6 +31,7 @@ namespace gfx {
         static video_system&            get();
         version const&                  get_version() const;
         bool                            context_present() const;
+        void                            check_acceleration_error( std::string const& tag );
         void                            attach_context( window const& window,
                                                         context& context );
         void                            activate_context( context& context );

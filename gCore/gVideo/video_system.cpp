@@ -43,6 +43,36 @@ namespace gfx {
         zombie = true;    
     }
     
+    void    video_system::check_acceleration_error( std::string const& tag )
+    {
+        if ( context_present() ) {
+            std::string msg ("");
+            GLint error = gl::GetError();
+            switch ( error ) {
+                case gl::INVALID_ENUM:
+                    msg += "Invalid enum at ";
+                    break;
+                case gl::INVALID_VALUE:
+                    msg += "Invalid value at ";
+                    break;
+                case gl::INVALID_OPERATION:
+                    msg +=  "Invalid operation at ";
+                    break;
+                case gl::INVALID_FRAMEBUFFER_OPERATION:
+                    msg += "Invalid framebuffer operation at ";
+                    break;
+                case gl::OUT_OF_MEMORY:
+                    msg += "Out of memory at ";
+                    break;
+                default:
+                    msg += "No error on load at ";
+                    break;
+            }
+            msg += tag;
+            std::cerr << msg << std::endl;
+        }
+    }
+    
     void video_system::attach_context( window const& wndw,
                                         context& cntx)
     {

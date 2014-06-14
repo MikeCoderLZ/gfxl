@@ -100,21 +100,25 @@ namespace gfx {
     class filter_t {
         protected: virtual GLint   val() const = 0;
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     
     class min_filter_t : public virtual filter_t {
         protected: virtual GLint   val() const = 0;
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     
     class mag_filter_t : public virtual filter_t {
         protected: virtual GLint   val() const = 0;
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     
     class nearest_t : public min_filter_t, public mag_filter_t {
         protected: virtual GLint   val() const { return gl::NEAREST; };
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     
     nearest_t const nearest;
@@ -122,47 +126,55 @@ namespace gfx {
     class linear_t : public min_filter_t, public mag_filter_t {
         protected: virtual GLint   val() const { return gl::LINEAR; };
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     linear_t const linear;
     
     class nearest_mipmap_t : public min_filter_t {
         protected: virtual GLint   val() const { return gl::NEAREST_MIPMAP_NEAREST; };
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     nearest_mipmap_t const nearest_mipmap;
     
     class linear_mipmap_t : public min_filter_t {
         protected: virtual GLint   val() const { return gl::LINEAR_MIPMAP_LINEAR; };
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     linear_mipmap_t const linear_mipmap;
     
     class linear_mipmap_nearest_t : public min_filter_t {
         protected: virtual GLint   val() const { return gl::LINEAR_MIPMAP_NEAREST; };
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     linear_mipmap_nearest_t const linear_mipmap_nearest;
     
     class nearest_mipmap_linear_t : public min_filter_t {
         protected: virtual GLint   val() const { return gl::NEAREST_MIPMAP_LINEAR; };
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     nearest_mipmap_linear_t const nearest_mipmap_linear;
     
     class wrap_mode_t {
         protected: virtual GLint   val() const = 0;
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     
     class clamp_to_border_t : public wrap_mode_t {
         protected: virtual GLint   val() const { return gl::CLAMP_TO_BORDER; };
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     clamp_to_border_t const clamp_to_border;
     
     class clamp_to_edge_t : public wrap_mode_t {
         protected: virtual GLint   val() const { return gl::CLAMP_TO_EDGE; };
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     clamp_to_edge_t const clamp_to_edge;
     
@@ -175,88 +187,78 @@ namespace gfx {
     class mirrored_repeat_t : public wrap_mode_t {
         protected: virtual GLint   val() const { return gl::MIRRORED_REPEAT; };
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     mirrored_repeat_t const mirrored_repeat;
     
     class repeat_t : public wrap_mode_t {
         protected: virtual GLint   val() const { return gl::REPEAT; };
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     repeat_t const repeat;
     
     class comparison_function_t {
         protected: virtual GLint   val() const = 0;
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     
     class less_or_equal_t : public comparison_function_t {
         protected: virtual GLint   val() const { return gl::LEQUAL; };
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     less_or_equal_t const less_or_equal;
     
     class greater_or_equal_t : public comparison_function_t {
         protected: virtual GLint   val() const { return gl::GEQUAL; };
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     greater_or_equal_t const greater_or_equal;
     
     class less_t : public comparison_function_t {
         protected: virtual GLint   val() const { return gl::LESS; };
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     less_t const less;
     
     class greater_t : public comparison_function_t {
         protected: virtual GLint   val() const { return gl::GREATER; };
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     greater_t const greater;
     
     class equal_t : public comparison_function_t {
         protected: virtual GLint   val() const { return gl::EQUAL; };
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     equal_t const equal;
     
     class not_equal_t : public comparison_function_t {
         protected: virtual GLint   val() const { return gl::NOTEQUAL; };
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     not_equal_t const not_equal;
     
     class always_t : public comparison_function_t {
         protected: virtual GLint   val() const { return gl::ALWAYS; };
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     always_t const always;
     
     class never_t : public comparison_function_t {
         protected: virtual GLint   val() const { return gl::NEVER; };
         friend                      class texture_1D;
+        friend                      class texture_2D;
     };
     never_t const never;
-    
-//     class texture;
-//     class pixel_array;
-//     class pixel_sheet;
-//     class pixel_volume;
-//     class RGBA_array;
-    
-//     class sub_tex_1D {
-//     public:
-//                             
-//     private:
-//         texture const*      src_texture;
-//         pixel_array const*  src_data;
-//         uvec2               w_range;
-//         uvec2               h_range;
-//         uvec2               d_range;
-//                             sub_tex_1D( texture const* src_texture,
-//                                         pixel_array const* src_data  );
-//                             
-//         friend              class texture;
-//     };
     
     class texture_1D {
     public:
@@ -509,11 +511,7 @@ namespace gfx {
         
         return *this;
     }
-        if ( set.r_src_v == gl::BLUE ) {
-            std::cout << "Red swizzle reading from blue channel" << std::endl;
-        } else {
-            std::cout << "Red swizzle not reading from blue channel" << std::endl;
-        }
+
     inline  texture_1D::settings&
     texture_1D::settings::unsigned_norm_3( RGB const& depth,
                                            swizz3 const& r_src,
@@ -1634,6 +1632,1389 @@ namespace gfx {
     
     inline texture_1D::settings&    texture_1D::settings::file( std::string const& path )
     { path_v = path; return *this; }
+
+    
+    
+    
+    
+    
+    
+class texture_2D {
+    public:
+        
+        class settings {
+        public:
+            settings();
+            settings&       dimensions( size_t const dw,
+                                        size_t const dh );
+            settings&       array( size_t const layers );
+            settings&       unsigned_norm_1( R const& depth );
+            settings&       unsigned_norm_2( RG const& depth,
+                                             swizz2 const& r_src = r,
+                                             swizz2 const& g_src = g );
+            settings&       unsigned_norm_3( RGB const& depth,
+                                             swizz3 const& r_src = r,
+                                             swizz3 const& g_src = g,
+                                             swizz3 const& b_src = b  );
+            settings&       unsigned_norm_4( RGBA const& depth,
+                                             swizz4 const& r_src = r,
+                                             swizz4 const& g_src = g,
+                                             swizz4 const& b_src = b,
+                                             swizz4 const& a_src = a );
+            settings&       signed_norm_1( Rsn const& depth );
+            settings&       signed_norm_2( RGsn const& depth,
+                                             swizz2 const& r_src = r,
+                                             swizz2 const& g_src = g  );
+            settings&       signed_norm_3( RGBsn const& depth,
+                                             swizz3 const& r_src = r,
+                                             swizz3 const& g_src = g,
+                                             swizz3 const& b_src = b );
+            settings&       signed_norm_4( RGBAsn const& depth,
+                                             swizz4 const& r_src = r,
+                                             swizz4 const& g_src = g,
+                                             swizz4 const& b_src = b,
+                                             swizz4 const& a_src = a );
+            settings&       unsigned_int_1( Rui const& depth );
+            settings&       unsigned_int_2( RGui const& depth,
+                                             swizz2 const& r_src = r,
+                                             swizz2 const& g_src = g  );
+            settings&       unsigned_int_3( RGBui const& depth,
+                                             swizz3 const& r_src = r,
+                                             swizz3 const& g_src = g,
+                                             swizz3 const& b_src = b );
+            settings&       unsigned_int_4( RGBAui const& depth,
+                                             swizz4 const& r_src = r,
+                                             swizz4 const& g_src = g,
+                                             swizz4 const& b_src = b,
+                                             swizz4 const& a_src = a );
+            settings&       signed_int_1( Ri const& depth );
+            settings&       signed_int_2( RGi const& depth,
+                                             swizz2 const& r_src = r,
+                                             swizz2 const& g_src = g  );
+            settings&       signed_int_3( RGBi const& depth,
+                                             swizz3 const& r_src = r,
+                                             swizz3 const& g_src = g,
+                                             swizz3 const& b_src = b );
+            settings&       signed_int_4( RGBAi const& depth,
+                                             swizz4 const& r_src = r,
+                                             swizz4 const& g_src = g,
+                                             swizz4 const& b_src = b,
+                                             swizz4 const& a_src = a );
+            settings&       floating_point_1( Rf const& depth );
+            settings&       floating_point_2( RGf const& depth,
+                                             swizz2 const& r_src = r,
+                                             swizz2 const& g_src = g  );
+            settings&       floating_point_3( RGBf const& depth,
+                                             swizz3 const& r_src = r,
+                                             swizz3 const& g_src = g,
+                                             swizz3 const& b_src = b );
+            settings&       floating_point_4( RGBAf const& depth,
+                                             swizz4 const& r_src = r,
+                                             swizz4 const& g_src = g,
+                                             swizz4 const& b_src = b,
+                                             swizz4 const& a_src = a );
+            settings&       packed_3channel_8bit();
+            settings&       packed_4channel_16bit();
+            settings&       packed_4channel_32bit();
+            settings&       packed_4channel_32bit_unsigned();
+            settings&       packed_3channel_32bit_float();
+            settings&       if_you_find_a_use_for_this_image_format_you_get_a_cookie(); //No, seriously
+            settings&       sRGB_8bit();
+            settings&       sRGBA_8bit();
+            settings&       mipmap_range( size_t const base,
+                                          size_t const max );
+            settings&       sample_range( float const base,
+                                          float const max );
+            settings&       sample_bias( float const bias );
+            settings&       sample_minification( min_filter_t const& min );
+            settings&       sample_magnification( mag_filter_t const& mag );
+            settings&       wrap_s( wrap_mode_t const& mode );
+            settings&       wrap_t( wrap_mode_t const& mode );
+            settings&       comparison_function( comparison_function_t const& func );
+            settings&       file( std::string const& path );
+        private:
+            size_t          dw_v;
+            size_t          dh_v;
+            bool            as_cube_v;
+            bool            as_array_v;
+            size_t          layers_v;
+            GLuint          image_format_v;
+            size_t          pixels_v;
+            size_t          pixel_size_v;
+            size_t          channels_v;
+            size_t          base_level_v;
+            size_t          max_level_v;
+            float           base_lod_v;
+            float           max_lod_v;
+            float           lod_bias_v;
+            GLint           min_filter_v;
+            GLint           mag_filter_v;
+            GLint           wrap_s_v;
+            GLint           wrap_t_v;
+            GLint           compare_func_v;
+            GLint           r_src_v;
+            GLint           g_src_v;
+            GLint           b_src_v;
+            GLint           a_src_v;
+            std::string     path_v;
+            friend          class texture_2D;
+        };
+                            texture_2D( settings const& set = settings() );
+                            ~texture_2D();
+        size_t              width() const;
+        size_t              height() const;
+        size_t              pixels() const;
+        size_t              pixel_bits() const;
+        void                file( std::string const& path );
+        void                decode_file();
+        void                load_data();
+        void                use();
+//         sub_tex_1D          get_sub_texture( size_t const w_start = 0,
+//                                              size_t const w_end   = 0 );
+    private:    
+        
+        GLuint              tex_ID;
+        GLuint              target;
+        size_t              width_v;
+        size_t              height_v;
+        size_t              pixels_v;
+        size_t              pixel_bits_v;
+        GLuint              image_format;
+        std::string         path;
+        
+        unsigned char*      data;
+        
+        size_t              bytes();
+    };
+    
+    inline texture_2D::settings::settings() :
+                                    dw_v ( 0 ),
+                                    dh_v ( 0 ),
+                                    as_cube_v ( false ),
+                                    as_array_v ( false ),
+                                    layers_v ( 0 ),
+                                    image_format_v ( 0 ),
+                                    pixels_v ( 0 ),
+                                    pixel_size_v ( 0 ),
+                                    channels_v ( 1 ),
+                                    base_level_v ( 0 ),
+                                    max_level_v ( 0 ),
+                                    base_lod_v ( 0.0f ),
+                                    max_lod_v ( 0.0f ),
+                                    lod_bias_v ( 0.0f ),
+                                    min_filter_v ( gl::NEAREST ),
+                                    mag_filter_v ( gl::NEAREST ),
+                                    wrap_s_v ( gl::CLAMP_TO_EDGE ),
+                                    wrap_t_v ( gl::CLAMP_TO_EDGE ),
+                                    compare_func_v ( 0 ),
+                                    r_src_v ( gl::RED ),
+                                    g_src_v ( gl::GREEN ),
+                                    b_src_v ( gl::BLUE ),
+                                    a_src_v ( gl::ALPHA ),
+                                    path_v ( "" ) {}
+    
+    inline  texture_2D::settings&  texture_2D::settings::dimensions( size_t const dw,
+                                                                     size_t const dh )
+    {
+        dw_v = dw;
+        dh_v = dh;
+        pixels_v = dw * dh; return *this; }
+    
+    inline  texture_2D::settings&  texture_2D::settings::array( size_t const layers )
+    {
+        as_array_v = true;
+        layers_v = layers;
+        return *this;
+    }
+    
+    inline  texture_2D::settings&
+    texture_2D::settings::unsigned_norm_1( R const& depth )
+    {
+        switch ( depth.n() ) {
+            case 8:
+                image_format_v = gl::R8;
+                pixel_size_v = 8u;
+                break;
+            case 16:
+                image_format_v = gl::R16;
+                pixel_size_v = 16u;
+                break;
+            default:
+                std::string msg ( "Bit depth " );
+                msg += depth.n();
+                msg += " is illegal for single channel normalized unsigned integer image formats.";
+                throw std::invalid_argument( msg );
+        }
+        channels_v = 1;
+        
+        return *this;
+    }
+
+
+    inline  texture_2D::settings&
+    texture_2D::settings::unsigned_norm_2( RG const& depth,
+                                           swizz2 const& r_src,
+                                           swizz2 const& g_src )
+    {
+        switch ( depth.n() ) {
+            case 8:
+                image_format_v = gl::RG8;
+                pixel_size_v = 16u;
+                break;
+            case 16:
+                image_format_v = gl::RG16;
+                pixel_size_v = 32u;
+                break;
+            default:
+                std::string msg ( "Bit depth " );
+                msg += depth.n();
+                msg += " is illegal for dual channel normalized unsigned integer image formats.";
+                throw std::invalid_argument( msg );
+        }
+        uvec2 mask ( 0, 1 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+        }
+        channels_v = 2;
+        
+        return *this;
+    }
+    
+    inline  texture_2D::settings&
+    texture_2D::settings::unsigned_norm_3( RGB const& depth,
+                                           swizz3 const& r_src,
+                                           swizz3 const& g_src,
+                                           swizz3 const& b_src )
+    {
+        switch ( depth.n() ) {
+            case 4:
+                image_format_v = gl::RGB4;
+                pixel_size_v = 12u;
+                break;
+            case 5:
+                image_format_v = gl::RGB5;
+                pixel_size_v = 15u;
+                break;
+            case 8:
+                image_format_v = gl::RGB8;
+                pixel_size_v = 24u;
+                break;
+            case 10:
+                image_format_v = gl::RGB10;
+                pixel_size_v = 30u;
+                break;
+            case 12:
+                image_format_v = gl::RGB12;
+                pixel_size_v = 36u;
+                break;
+            case 16:
+                image_format_v = gl::RGB16;
+                pixel_size_v = 48u;
+                break;
+            default:
+                std::string msg ( "Bit depth " );
+                msg += depth.n();
+                msg += " is illegal for triple channel normalized unsigned integer image formats.";
+                throw std::invalid_argument( msg );
+        }
+        
+        uvec3 mask ( 0, 1, 2 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+            case 2:
+                r_src_v = gl::BLUE;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+            case 2:
+                g_src_v = gl::BLUE;
+                break;
+        }
+        
+        switch ( mask( b_src ) ) {
+            case 0:
+                b_src_v = gl::RED;
+                break;
+            case 1:
+                b_src_v = gl::GREEN;
+                break;
+            case 2:
+                b_src_v = gl::BLUE;
+                break;
+        }
+        channels_v = 3;
+        return *this;
+    }
+
+    inline  texture_2D::settings&
+    texture_2D::settings::unsigned_norm_4( RGBA const& depth,
+                                           swizz4 const& r_src,
+                                           swizz4 const& g_src,
+                                           swizz4 const& b_src,
+                                           swizz4 const& a_src )
+    {
+        switch ( depth.n() ) {
+            case 2:
+                image_format_v = gl::RGBA2;
+                pixel_size_v = 8u;
+                break;
+            case 4:
+                image_format_v = gl::RGBA4;
+                pixel_size_v = 16u;
+                break;
+//             case 5:
+//                 image_format_v = gl::RGBA5;
+//                 pixel_size_v = 20u;
+            case 8:
+                image_format_v = gl::RGBA8;
+                pixel_size_v = 32u;
+                break;
+            case 12:
+                image_format_v = gl::RGBA12;
+                pixel_size_v = 48u;
+                break;
+            case 16:
+                image_format_v = gl::RGBA16;
+                pixel_size_v = 64u;
+                break;
+            default:
+                std::string msg ( "Bit depth " );
+                msg += depth.n();
+                msg += " is illegal for quad channel normalized unsigned integer image formats.";
+                throw std::invalid_argument( msg );
+        }
+        uvec4 mask ( 0, 1, 2, 3 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+            case 2:
+                r_src_v = gl::BLUE;
+                break;
+            case 3:
+                r_src_v = gl::ALPHA;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+            case 2:
+                g_src_v = gl::BLUE;
+                break;
+            case 3:
+                g_src_v = gl::ALPHA;
+                break;
+        }
+        
+        switch ( mask( b_src ) ) {
+            case 0:
+                b_src_v = gl::RED;
+                break;
+            case 1:
+                b_src_v = gl::GREEN;
+                break;
+            case 2:
+                b_src_v = gl::BLUE;
+                break;
+            case 3:
+                b_src_v = gl::ALPHA;
+                break;
+        }
+        switch ( mask( a_src ) ) {
+            case 0:
+                a_src_v = gl::RED;
+                break;
+            case 1:
+                a_src_v = gl::GREEN;
+                break;
+            case 2:
+                a_src_v = gl::BLUE;
+                break;
+            case 3:
+                a_src_v = gl::ALPHA;
+                break;
+        }
+        channels_v = 4;
+        return *this;
+    }
+
+    inline  texture_2D::settings&   texture_2D::settings::signed_norm_1( Rsn const& depth )
+        {
+            switch ( depth.n() ) {
+                case 8:
+                    image_format_v = gl::R8_SNORM;
+                    pixel_size_v = 8u;
+                    break;
+                case 16:
+                    image_format_v = gl::R16_SNORM;
+                    pixel_size_v = 16u;
+                    break;
+                default:
+                    std::string msg ( "Bit depth " );
+                    msg += depth.n();
+                    msg += " is illegal for single channel normalized signed integer image formats.";
+                    throw std::invalid_argument( msg );
+            }
+            channels_v = 1;
+            return *this;
+        }
+
+    inline  texture_2D::settings&
+    texture_2D::settings::signed_norm_2( RGsn const& depth,
+                                           swizz2 const& r_src,
+                                           swizz2 const& g_src  )
+    {
+        switch ( depth.n() ) {
+            case 8:
+                image_format_v = gl::RG8_SNORM;
+                pixel_size_v = 16u;
+                break;
+            case 16:
+                image_format_v = gl::RG16_SNORM;
+                pixel_size_v = 32u;
+                break;
+            default:
+                std::string msg ( "Bit depth " );
+                msg += depth.n();
+                msg += " is illegal for dual channel normalized signed integer image formats.";
+                throw std::invalid_argument( msg );
+        }
+        
+        uvec2 mask ( 0, 1 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+        }
+        channels_v = 2;
+        return *this;
+    }
+
+    inline  texture_2D::settings&
+    texture_2D::settings::signed_norm_3( RGBsn const& depth,
+                                         swizz3 const& r_src,
+                                         swizz3 const& g_src,
+                                         swizz3 const& b_src )
+    {
+        switch ( depth.n() ) {
+            case 8:
+                image_format_v = gl::RGB8_SNORM;
+                pixel_size_v = 24u;
+                break;
+            case 16:
+                image_format_v = gl::RGB16_SNORM;
+                pixel_size_v = 48u;
+                break;
+            default:
+                std::string msg ( "Bit depth " );
+                msg += depth.n();
+                msg += " is illegal for triple channel normalized signed integer image formats.";
+                throw std::invalid_argument( msg );
+        }
+        
+        uvec3 mask ( 0, 1, 2 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+            case 2:
+                r_src_v = gl::BLUE;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+            case 2:
+                g_src_v = gl::BLUE;
+                break;
+        }
+        
+        switch ( mask( b_src ) ) {
+            case 0:
+                b_src_v = gl::RED;
+                break;
+            case 1:
+                b_src_v = gl::GREEN;
+                break;
+            case 2:
+                b_src_v = gl::BLUE;
+                break;
+        }
+        channels_v = 3;
+        return *this;
+    }
+
+    inline  texture_2D::settings&
+    texture_2D::settings::signed_norm_4( RGBAsn const& depth,
+                                         swizz4 const& r_src,
+                                         swizz4 const& g_src,
+                                         swizz4 const& b_src,
+                                         swizz4 const& a_src )
+    {
+        switch ( depth.n() ) {
+            case 8:
+                image_format_v = gl::RGBA8_SNORM;
+                pixel_size_v = 32u;
+                break;
+            case 16:
+                image_format_v = gl::RGBA16_SNORM;
+                pixel_size_v = 64u;
+                break;
+            default:
+                std::string msg ( "Bit depth " );
+                msg += depth.n();
+                msg += " is illegal for quad channel normalized signed integer image formats.";
+                throw std::invalid_argument( msg );
+        }
+        uvec4 mask ( 0, 1, 2, 3 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+            case 2:
+                r_src_v = gl::BLUE;
+                break;
+            case 3:
+                r_src_v = gl::ALPHA;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+            case 2:
+                g_src_v = gl::BLUE;
+                break;
+            case 3:
+                g_src_v = gl::ALPHA;
+                break;
+        }
+        
+        switch ( mask( b_src ) ) {
+            case 0:
+                b_src_v = gl::RED;
+                break;
+            case 1:
+                b_src_v = gl::GREEN;
+                break;
+            case 2:
+                b_src_v = gl::BLUE;
+                break;
+            case 3:
+                b_src_v = gl::ALPHA;
+                break;
+        }
+        switch ( mask( a_src ) ) {
+            case 0:
+                a_src_v = gl::RED;
+                break;
+            case 1:
+                a_src_v = gl::GREEN;
+                break;
+            case 2:
+                a_src_v = gl::BLUE;
+                break;
+            case 3:
+                a_src_v = gl::ALPHA;
+                break;
+        }
+        channels_v = 4;
+        return *this;
+    }
+
+    inline  texture_2D::settings&   texture_2D::settings::unsigned_int_1( Rui const& depth )
+        {
+            switch ( depth.n() ) {
+                case 8:
+                    image_format_v = gl::R8UI;
+                    pixel_size_v = 8u;
+                    break;
+                case 16:
+                    image_format_v = gl::R16UI;
+                    pixel_size_v = 16u;
+                    break;
+                case 32:
+                    image_format_v = gl::R32UI;
+                    pixel_size_v = 32u;
+                    break;
+                default:
+                    std::string msg ( "Bit depth " );
+                    msg += depth.n();
+                    msg += " is illegal for single channel unsigned integer image formats.";
+                    throw std::invalid_argument( msg );
+            }
+            channels_v = 1;
+            return *this;
+        }
+
+    inline  texture_2D::settings&
+    texture_2D::settings::unsigned_int_2( RGui const& depth,
+                                           swizz2 const& r_src,
+                                           swizz2 const& g_src  )
+    {
+        switch ( depth.n() ) {
+            case 8:
+                image_format_v = gl::RG8UI;
+                pixel_size_v = 16u;
+                break;
+            case 16:
+                image_format_v = gl::RG16UI;
+                pixel_size_v = 32u;
+                break;
+            case 32:
+                image_format_v = gl::RG32UI;
+                pixel_size_v = 64u;
+                break;
+            default:
+                std::string msg ( "Bit depth " );
+                msg += depth.n();
+                msg += " is illegal for dual channel unsigned integer image formats.";
+                throw std::invalid_argument( msg );
+        }
+        uvec2 mask ( 0, 1 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+        }
+        channels_v = 2;
+        return *this;
+    }
+
+    inline  texture_2D::settings&
+    texture_2D::settings::unsigned_int_3( RGBui const& depth,
+                                          swizz3 const& r_src,
+                                          swizz3 const& g_src,
+                                          swizz3 const& b_src )
+    {
+        switch ( depth.n() ) {
+            case 8:
+                image_format_v = gl::RGB8UI;
+                pixel_size_v = 24u;
+                break;
+            case 16:
+                image_format_v = gl::RGB16UI;
+                pixel_size_v = 48u;
+                break;
+            case 32:
+                image_format_v = gl::RGB32UI;
+                pixel_size_v = 96u;
+                break;
+            default:
+                std::string msg ( "Bit depth " );
+                msg += depth.n();
+                msg += " is illegal for triple channel unsigned integer image formats.";
+                throw std::invalid_argument( msg );
+        }
+        uvec3 mask ( 0, 1, 2 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+            case 2:
+                r_src_v = gl::BLUE;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+            case 2:
+                g_src_v = gl::BLUE;
+                break;
+        }
+        
+        switch ( mask( b_src ) ) {
+            case 0:
+                b_src_v = gl::RED;
+                break;
+            case 1:
+                b_src_v = gl::GREEN;
+                break;
+            case 2:
+                b_src_v = gl::BLUE;
+                break;
+        }
+        channels_v = 3;
+        return *this;
+    }
+
+    inline  texture_2D::settings&
+    texture_2D::settings::unsigned_int_4( RGBAui const& depth,
+                                          swizz4 const& r_src,
+                                          swizz4 const& g_src,
+                                          swizz4 const& b_src,
+                                          swizz4 const& a_src )
+    {
+        switch ( depth.n() ) {
+            case 8:
+                image_format_v = gl::RGBA8UI;
+                pixel_size_v = 32u;
+                break;
+            case 16:
+                image_format_v = gl::RGBA16UI;
+                pixel_size_v = 64u;
+                break;
+            case 32:
+                image_format_v = gl::RGBA32UI;
+                pixel_size_v = 128u;
+                break;
+            default:
+                std::string msg ( "Bit depth " );
+                msg += depth.n();
+                msg += " is illegal for quad channel unsigned integer image formats.";
+                throw std::invalid_argument( msg );
+        }
+        uvec4 mask ( 0, 1, 2, 3 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+            case 2:
+                r_src_v = gl::BLUE;
+                break;
+            case 3:
+                r_src_v = gl::ALPHA;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+            case 2:
+                g_src_v = gl::BLUE;
+                break;
+            case 3:
+                g_src_v = gl::ALPHA;
+                break;
+        }
+        
+        switch ( mask( b_src ) ) {
+            case 0:
+                b_src_v = gl::RED;
+                break;
+            case 1:
+                b_src_v = gl::GREEN;
+                break;
+            case 2:
+                b_src_v = gl::BLUE;
+                break;
+            case 3:
+                b_src_v = gl::ALPHA;
+                break;
+        }
+        switch ( mask( a_src ) ) {
+            case 0:
+                a_src_v = gl::RED;
+                break;
+            case 1:
+                a_src_v = gl::GREEN;
+                break;
+            case 2:
+                a_src_v = gl::BLUE;
+                break;
+            case 3:
+                a_src_v = gl::ALPHA;
+                break;
+        }
+        channels_v = 4;
+        return *this;
+    }
+
+    inline  texture_2D::settings&   texture_2D::settings::signed_int_1( Ri const& depth )
+        {
+            switch ( depth.n() ) {
+                case 8:
+                    image_format_v = gl::R8I;
+                    pixel_size_v = 8u;
+                    break;
+                case 16:
+                    image_format_v = gl::R16I;
+                    pixel_size_v = 16u;
+                    break;
+                case 32:
+                    image_format_v = gl::R32I;
+                    pixel_size_v = 32u;
+                    break;
+                default:
+                    std::string msg ( "Bit depth " );
+                    msg += depth.n();
+                    msg += " is illegal for single channel signed integer image formats.";
+                    throw std::invalid_argument( msg );
+            }
+            channels_v = 1;
+            return *this;
+        }
+
+    inline  texture_2D::settings&
+    texture_2D::settings::signed_int_2( RGi const& depth,
+                                           swizz2 const& r_src,
+                                           swizz2 const& g_src  )
+    {
+        switch ( depth.n() ) {
+            case 8:
+                image_format_v = gl::RG8I;
+                pixel_size_v = 16u;
+                break;
+            case 16:
+                image_format_v = gl::RG16I;
+                pixel_size_v = 32u;
+                break;
+            case 32:
+                image_format_v = gl::RG32I;
+                pixel_size_v = 64u;
+                break;
+            default:
+                std::string msg ( "Bit depth " );
+                msg += depth.n();
+                msg += " is illegal for dual channel signed integer image formats.";
+                throw std::invalid_argument( msg );
+        }
+        uvec2 mask ( 0, 1 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+        }
+        channels_v = 2;
+        return *this;
+    }
+
+    inline  texture_2D::settings&
+    texture_2D::settings::signed_int_3( RGBi const& depth,
+                                        swizz3 const& r_src,
+                                        swizz3 const& g_src,
+                                        swizz3 const& b_src )
+    {
+        switch ( depth.n() ) {
+            case 8:
+                image_format_v = gl::RGB8I;
+                pixel_size_v = 24u;
+                break;
+            case 16:
+                image_format_v = gl::RGB16I;
+                pixel_size_v = 48u;
+                break;
+            case 32:
+                image_format_v = gl::RGB32I;
+                pixel_size_v = 96u;
+                break;
+            default:
+                std::string msg ( "Bit depth " );
+                msg += depth.n();
+                msg += " is illegal for triple channel signed integer image formats.";
+                throw std::invalid_argument( msg );
+        }
+        uvec3 mask ( 0, 1, 2 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+            case 2:
+                r_src_v = gl::BLUE;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+            case 2:
+                g_src_v = gl::BLUE;
+                break;
+        }
+        
+        switch ( mask( b_src ) ) {
+            case 0:
+                b_src_v = gl::RED;
+                break;
+            case 1:
+                b_src_v = gl::GREEN;
+                break;
+            case 2:
+                b_src_v = gl::BLUE;
+                break;
+        }
+        channels_v = 3;
+        return *this;
+    }
+
+    inline  texture_2D::settings&
+    texture_2D::settings::signed_int_4( RGBAi const& depth,
+                                        swizz4 const& r_src,
+                                        swizz4 const& g_src,
+                                        swizz4 const& b_src,
+                                        swizz4 const& a_src )
+    {
+        switch ( depth.n() ) {
+            case 8:
+                image_format_v = gl::RGBA8I;
+                pixel_size_v = 32u;
+                break;
+            case 16:
+                image_format_v = gl::RGBA16I;
+                pixel_size_v = 64u;
+                break;
+            case 32:
+                image_format_v = gl::RGBA32I;
+                pixel_size_v = 128u;
+                break;
+            default:
+                std::string msg ( "Bit depth " );
+                msg += depth.n();
+                msg += " is illegal for quad channel signed integer image formats.";
+                throw std::invalid_argument( msg );
+        }
+        uvec4 mask ( 0, 1, 2, 3 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+            case 2:
+                r_src_v = gl::BLUE;
+                break;
+            case 3:
+                r_src_v = gl::ALPHA;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+            case 2:
+                g_src_v = gl::BLUE;
+                break;
+            case 3:
+                g_src_v = gl::ALPHA;
+                break;
+        }
+        
+        switch ( mask( b_src ) ) {
+            case 0:
+                b_src_v = gl::RED;
+                break;
+            case 1:
+                b_src_v = gl::GREEN;
+                break;
+            case 2:
+                b_src_v = gl::BLUE;
+                break;
+            case 3:
+                b_src_v = gl::ALPHA;
+                break;
+        }
+        switch ( mask( a_src ) ) {
+            case 0:
+                a_src_v = gl::RED;
+                break;
+            case 1:
+                a_src_v = gl::GREEN;
+                break;
+            case 2:
+                a_src_v = gl::BLUE;
+                break;
+            case 3:
+                a_src_v = gl::ALPHA;
+                break;
+        }
+        channels_v = 4;
+        return *this;
+    }
+
+    inline  texture_2D::settings&   texture_2D::settings::floating_point_1( Rf const& depth )
+        {
+            switch ( depth.n() ) {
+                case 16:
+                    image_format_v = gl::R16F;
+                    pixel_size_v = 16u;
+                    break;
+                case 32:
+                    image_format_v = gl::R32F;
+                    pixel_size_v = 32u;
+                    break;
+                default:
+                    std::string msg ( "Bit depth " );
+                    msg += depth.n();
+                    msg += " is illegal for single channel floating point image formats.";
+                    throw std::invalid_argument( msg );
+            }
+            channels_v = 1;
+            return *this;
+        }
+
+    inline  texture_2D::settings&
+    texture_2D::settings::floating_point_2( RGf const& depth,
+                                           swizz2 const& r_src,
+                                           swizz2 const& g_src  )
+    {
+        switch ( depth.n() ) {
+            case 16:
+                image_format_v = gl::RG16F;
+                pixel_size_v = 32u;
+                break;
+            case 32:
+                image_format_v = gl::RG32F;
+                pixel_size_v = 64u;
+                break;
+            default:
+                std::string msg ( "Bit depth " );
+                msg += depth.n();
+                msg += " is illegal for dual channel floating point image formats.";
+                throw std::invalid_argument( msg );
+        }
+        uvec2 mask ( 0, 1 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+        }
+        channels_v = 2;
+        return *this;
+    }
+
+    inline  texture_2D::settings&
+    texture_2D::settings::floating_point_3( RGBf const& depth,
+                                            swizz3 const& r_src,
+                                            swizz3 const& g_src,
+                                            swizz3 const& b_src  )
+    {
+        switch ( depth.n() ) {
+            case 16:
+                image_format_v = gl::RGB16F;
+                pixel_size_v = 48u;
+                break;
+            case 32:
+                image_format_v = gl::RGB32F;
+                pixel_size_v = 96u;
+                break;
+            default:
+                std::string msg ( "Bit depth " );
+                msg += depth.n();
+                msg += " is illegal for triple channel floating point image formats.";
+                throw std::invalid_argument( msg );
+        }
+        uvec3 mask ( 0, 1, 2 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+            case 2:
+                r_src_v = gl::BLUE;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+            case 2:
+                g_src_v = gl::BLUE;
+                break;
+        }
+        
+        switch ( mask( b_src ) ) {
+            case 0:
+                b_src_v = gl::RED;
+                break;
+            case 1:
+                b_src_v = gl::GREEN;
+                break;
+            case 2:
+                b_src_v = gl::BLUE;
+                break;
+        }
+        channels_v = 3;
+        return *this;
+    }
+
+    inline  texture_2D::settings&
+    texture_2D::settings::floating_point_4( RGBAf const& depth,
+                                            swizz4 const& r_src,
+                                            swizz4 const& g_src,
+                                            swizz4 const& b_src,
+                                            swizz4 const& a_src )
+    {
+        switch ( depth.n() ) {
+            case 16:
+                image_format_v = gl::RGBA16F;
+                pixel_size_v = 64u;
+                break;
+            case 32:
+                image_format_v = gl::RGBA32F;
+                pixel_size_v = 128u;
+                break;
+            default:
+                std::string msg ( "Bit depth " );
+                msg += depth.n();
+                msg += " is illegal for quad channel floating point image formats.";
+                throw std::invalid_argument( msg );
+        }
+        uvec4 mask ( 0, 1, 2, 3 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+            case 2:
+                r_src_v = gl::BLUE;
+                break;
+            case 3:
+                r_src_v = gl::ALPHA;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+            case 2:
+                g_src_v = gl::BLUE;
+                break;
+            case 3:
+                g_src_v = gl::ALPHA;
+                break;
+        }
+        
+        switch ( mask( b_src ) ) {
+            case 0:
+                b_src_v = gl::RED;
+                break;
+            case 1:
+                b_src_v = gl::GREEN;
+                break;
+            case 2:
+                b_src_v = gl::BLUE;
+                break;
+            case 3:
+                b_src_v = gl::ALPHA;
+                break;
+        }
+        switch ( mask( a_src ) ) {
+            case 0:
+                a_src_v = gl::RED;
+                break;
+            case 1:
+                a_src_v = gl::GREEN;
+                break;
+            case 2:
+                a_src_v = gl::BLUE;
+                break;
+            case 3:
+                a_src_v = gl::ALPHA;
+                break;
+        }
+        channels_v = 4;
+        return *this;
+    }
+
+    inline  texture_2D::settings&  texture_2D::settings::packed_3channel_8bit()
+    { image_format_v = gl::R3_G3_B2; pixel_size_v = 8u; return *this; }
+
+    inline  texture_2D::settings&  texture_2D::settings::packed_4channel_16bit()
+    { image_format_v = gl::RGB5_A1; pixel_size_v = 16u; return *this; }
+
+    inline  texture_2D::settings&  texture_2D::settings::packed_4channel_32bit()
+    { image_format_v = gl::RGB10_A2; pixel_size_v = 32u; return *this; }
+
+    inline  texture_2D::settings&  texture_2D::settings::packed_4channel_32bit_unsigned()
+    { image_format_v = gl::RGB10_A2UI; pixel_size_v = 32u; return *this; }
+
+    inline  texture_2D::settings&  texture_2D::settings::packed_3channel_32bit_float()
+    { image_format_v = gl::R11F_G11F_B10F; pixel_size_v = 32u; return *this; }
+        
+    inline texture_2D::settings&
+    texture_2D::settings::if_you_find_a_use_for_this_image_format_you_get_a_cookie()
+    { image_format_v = gl::RGB9_E5; pixel_size_v = 32u; return *this; }
+
+    inline  texture_2D::settings&  texture_2D::settings::sRGB_8bit()
+    { image_format_v = gl::SRGB8; pixel_size_v = 24u; return *this; }
+
+    inline  texture_2D::settings&  texture_2D::settings::sRGBA_8bit()
+    { image_format_v = gl::SRGB8_ALPHA8; pixel_size_v = 32u; return *this; }
+    
+    inline  texture_2D::settings&
+    texture_2D::settings::mipmap_range( size_t const base,
+                                        size_t const max )
+    {
+        base_level_v = base;
+        max_level_v = max;
+        return *this;
+    }
+    
+    inline  texture_2D::settings&
+    texture_2D::settings::sample_range( float const base,
+                                        float const max )
+    {
+        base_lod_v = base;
+        max_lod_v = max;
+        return *this;
+    }
+    
+    inline  texture_2D::settings&
+    texture_2D::settings::sample_bias( float const bias )
+    {
+        lod_bias_v = bias;
+        return *this;
+    }
+    
+    inline  texture_2D::settings&
+    texture_2D::settings::sample_minification( min_filter_t const& min )
+    { min_filter_v = min.val(); return *this; }
+    
+    inline  texture_2D::settings&
+    texture_2D::settings::sample_magnification( mag_filter_t const& mag )
+    { mag_filter_v = mag.val(); return *this; }
+    
+    inline  texture_2D::settings&
+    texture_2D::settings::wrap_s( wrap_mode_t const& mode )
+    { wrap_s_v = mode.val(); return *this; }
+    
+    inline  texture_2D::settings&
+    texture_2D::settings::wrap_t( wrap_mode_t const& mode )
+    { wrap_t_v = mode.val(); return *this; }
+    
+    inline  texture_2D::settings&
+    texture_2D::settings::comparison_function( comparison_function_t const& func )
+    { compare_func_v = func.val(); return *this; }
+    
+    inline texture_2D::settings&    texture_2D::settings::file( std::string const& path )
+    { path_v = path; return *this; }    
+    
 
 //     class texture_1D {
 //     public:

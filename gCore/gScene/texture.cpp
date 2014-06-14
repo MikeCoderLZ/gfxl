@@ -466,12 +466,6 @@ namespace gfx {
             while( bytes ) {
                 --bytes;
                 data[bytes] = bits[bytes];
-                if ( bytes == 0 ) {
-                    unsigned int first_red = bits[bytes];
-                    unsigned int first_green = bits[bytes+1];
-                    unsigned int first_blue = bits[bytes+2];
-                    std::cout << first_red << " " << first_green << " " << first_blue << std::endl;
-                }
             }
             
             FreeImage_Unload( src );
@@ -497,27 +491,8 @@ namespace gfx {
                         gl::RGB,
                         gl::UNSIGNED_BYTE,
                         data              );
-        GLint error = gl::GetError();
-        switch ( error ) {
-            case gl::INVALID_ENUM:
-                std::cout << "Invalid enum." << std::endl;
-                break;
-            case gl::INVALID_VALUE:
-                std::cout << "Invalid value." << std::endl;
-                break;
-            case gl::INVALID_OPERATION:
-                std::cout << "Invalid operation." << std::endl;
-                break;
-            case gl::INVALID_FRAMEBUFFER_OPERATION:
-                std::cout << "Invalid framebuffer operation." << std::endl;
-                break;
-            case gl::OUT_OF_MEMORY:
-                std::cout << "Out of memory." << std::endl;
-                break;
-            default:
-                std::cout << "No error on load." << std::endl;
-                break;
-            }
+        //video_system::get().check_acceleration_error("Texture_1D load_data");
+        
     }
     
     void    texture_1D::use()
@@ -530,6 +505,149 @@ namespace gfx {
     }
     
     size_t  texture_1D::bytes()
+    { return pixel_bits_v * pixels_v; }
+    
+    
+    
+    
+    
+    
+    
+    
+        texture_2D::texture_2D( settings const& set ) :
+                            tex_ID ( 0 ),
+                            target ( 0 ),
+                            width_v ( set.dw_v ),
+                            height_v ( set.dh_v ),
+                            pixels_v ( set.pixels_v ),
+                            pixel_bits_v ( set.pixel_size_v ),
+                            image_format ( set.image_format_v ),
+                            path ( set.path_v ),
+                            data ( 0 )
+    {
+        gl::GenTextures( 1, &tex_ID );
+        if ( set.as_array_v ) {
+            target = gl::TEXTURE_2D_ARRAY;
+        } else {
+            target = gl::TEXTURE_2D;
+        }
+        gl::ActiveTexture( gl::TEXTURE0 );
+        gl::BindTexture( target, tex_ID );
+        
+        gl::TexParameteri( target, gl::TEXTURE_BASE_LEVEL, set.base_level_v );
+        gl::TexParameteri( target, gl::TEXTURE_MAX_LEVEL, set.max_level_v );
+        gl::TexParameteri( target, gl::TEXTURE_SWIZZLE_R, set.r_src_v );
+        if ( set.channels_v > 1 ) {
+            gl::TexParameteri( target, gl::TEXTURE_SWIZZLE_G, set.g_src_v );
+            if ( set.channels_v > 2 ) {
+                gl::TexParameteri( target, gl::TEXTURE_SWIZZLE_B, set.b_src_v );
+                if ( set.channels_v > 3 ) {
+                    gl::TexParameteri( target, gl::TEXTURE_SWIZZLE_A, set.a_src_v );
+                }
+            }
+        }
+        gl::TexParameterf( target, gl::TEXTURE_MIN_LOD, set.base_lod_v );
+        gl::TexParameterf( target, gl::TEXTURE_MAX_LOD, set.max_lod_v );
+        gl::TexParameterf( target, gl::TEXTURE_LOD_BIAS, set.lod_bias_v );
+        
+        gl::TexParameteri( target, gl::TEXTURE_MIN_FILTER, set.min_filter_v );
+        gl::TexParameteri( target, gl::TEXTURE_MAG_FILTER, set.mag_filter_v );
+        
+        gl::TexParameteri( target, gl::TEXTURE_WRAP_S, set.wrap_s_v );
+        gl::TexParameteri( target, gl::TEXTURE_WRAP_T, set.wrap_t_v );
+        
+        if ( set.compare_func_v == 0 ) {
+            gl::TexParameteri( target, gl::TEXTURE_COMPARE_MODE, gl::NONE );
+        } else {
+            gl::TexParameteri( target,
+                               gl::TEXTURE_COMPARE_MODE,
+                               gl::COMPARE_REF_TO_TEXTURE );
+            gl::TexParameteri( target,
+                               gl::TEXTURE_COMPARE_FUNC,
+                               set.compare_func_v );
+        }
+        gl::BindTexture( target, 0 );
+    }
+    
+    texture_2D::~texture_2D()
+    {
+        delete[] data;
+    }
+    
+    size_t  texture_2D::width() const
+    { return width_v; }
+    
+    size_t  texture_2D::height() const
+    { return height_v; }
+    
+    size_t  texture_2D::pixels() const
+    { return pixels_v; }
+    
+    size_t  texture_2D::pixel_bits() const
+    { return pixel_bits_v; }
+    
+    void    texture_2D::file( std::string const& path )
+    { this->path = path; }
+    
+    void    texture_2D::decode_file()
+    {
+        FIBITMAP* src = FreeImage_Load( FIF_PNG, path.c_str(), PNG_DEFAULT );
+        
+        if ( src ) {
+            width_v = FreeImage_GetWidth( src );
+            height_v = FreeImage_GetHeight( src );
+            pixels_v = width_v * height_v;
+            pixel_bits_v = FreeImage_GetBPP( src );
+            size_t pixel_bytes = pixel_bits_v / 8;
+            
+            BYTE* bits = FreeImage_GetBits( src );
+
+            size_t bytes = pixel_bytes * pixels_v;
+            
+            data = new unsigned char[bytes];
+            
+            while( bytes ) {
+                --bytes;
+                data[bytes] = bits[bytes];
+            }
+            
+            FreeImage_Unload( src );
+        }
+        
+    }
+    
+    void    texture_2D::load_data()
+    {
+        if ( not video_system::get().context_present() ) {
+            throw std::logic_error( "No OpenGL context available to load texture to." );
+        }
+        if ( data == 0 ) {
+            throw std::logic_error( "Texture data not initialized." );
+        }
+        gl::ActiveTexture( gl::TEXTURE0 );
+        gl::BindTexture( target, tex_ID );
+        gl::TexImage2D( target,
+                        0,
+                        image_format,
+                        width_v,
+                        height_v,
+                        0,
+                        gl::RGB,
+                        gl::UNSIGNED_BYTE,
+                        data              );
+        //video_system::get().check_acceleration_error("Texture_2D load_data");
+    }
+    
+    void    texture_2D::use()
+    {
+        if ( not video_system::get().context_present() ) {
+            throw std::logic_error( "No OpenGL context available to bind texture to." );
+        }
+        gl::ActiveTexture( gl::TEXTURE0 );
+        gl::BindTexture( target, tex_ID );
+    }
+    
+    size_t  texture_2D::bytes()
     { return pixel_bits_v * pixels_v; }
     
     
