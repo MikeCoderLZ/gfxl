@@ -32,35 +32,12 @@ namespace gfx {
     {   info* new_attrib = (info*) proto.copy();
         attributes->push_back( new_attrib );
         return *this; }
-
-    class binding_error : public std::logic_error {
-    public:
-        explicit binding_error( std::string const& msg ) : logic_error( msg ) {};
-    };
-
-    class unformatted_error : public std::logic_error {
-    public:
-        explicit unformatted_error( std::string const& msg ) : logic_error( msg ) {};
-    };
         
-    class buffer : public managed {
+    class buffer {
     public:
-        friend                      class video_manager;
-        friend std::ostream&        operator <<( std::ostream& out, buffer const& rhs );
-                                    ~buffer();
-        void                        block_format( block_spec const& spec );
-        void                        blocks( GLsizeiptr const blocks );
-        void                        add_blocks( GLsizeiptr const more_blocks );
-        template< typename DATA >
-        void                        fill_attribute( GLuint index,
-                                                    std::vector< DATA > const& attrib_data );
-        void                        load_data();
-        void                        align_vertices();
-        GLuint                      get_id() const { return buff_ID; }
         
         class settings {
         public:
-            friend              class video_manager;
                                 settings();
             settings&           blocks( GLsizeiptr new_n_blocks );
             settings&           static_draw();
@@ -89,28 +66,35 @@ namespace gfx {
             GLsizeiptr          blocks_v;
             GLenum              usage_v;
             GLenum              target_v;
+            friend              class buffer;
         };
-        
+                                    buffer( settings const& set = settings() );
+        friend std::ostream&        operator <<( std::ostream& out, buffer const& rhs );
+                                    ~buffer();
+        void                        block_format( block_spec const& spec );
+        void                        set_blocks( GLsizeiptr const n_blocks );
+        void                        add_blocks( GLsizeiptr const more_blocks );
+        template< typename DATA >
+        void                        fill_attribute( GLuint index,
+                                                    std::vector< DATA > const& attrib_data );
+        void                        load_data();
+        void                        align_vertices();
+        GLuint                      get_id() const { return buff_ID; }
     private:
         unsigned char*              data;
-        GLsizeiptr                  n_blocks;
+        GLsizeiptr                  blocks;
         GLsizeiptr                  stride;
         GLuint                      vao_ID;
         GLuint                      buff_ID;
         GLenum                      usage;
-        GLenum                      intended_target;
+        GLenum                      target;
         bool                        data_loaded;
         bool                        verts_specified;
         typedef std::vector<info*>  attrib_vector;
         attrib_vector*              attributes;
-                                    buffer( video_manager* owner,
-                                            size_t g_ID,
-                                            GLsizeiptr n_blocks,
-                                            GLuint vao_ID,
-                                            GLuint buff_ID,
-                                            GLenum usage,
-                                            GLenum target );
+                                    
         GLsizeiptr                  attribute_offset( GLuint index ) const;
+        friend                      class video_system;
     };
 
     inline buffer::settings::settings() :
@@ -175,24 +159,7 @@ namespace gfx {
     inline buffer::settings&     buffer::settings::for_uniform()
     { target_v = gl::UNIFORM_BUFFER; return *this; }
 
-    inline buffer::buffer( video_manager* owner,
-                        size_t g_id,
-                        GLsizeiptr n_blocks,
-                        GLuint vao_ID,
-                        GLuint buff_ID,
-                        GLenum usage,
-                        GLenum target ) :
-                            managed         ( owner, g_id ),
-                            data            ( 0 ),
-                            n_blocks        ( n_blocks ),
-                            stride          ( 0 ),
-                            vao_ID          ( vao_ID ),
-                            buff_ID         ( buff_ID ),
-                            usage           ( usage ),
-                            intended_target ( target ),
-                            data_loaded     ( false ),
-                            verts_specified ( false ),
-                            attributes      ( new attrib_vector ) {}
+
                             
     template< typename DATA >
     void buffer::fill_attribute( GLuint index, std::vector< DATA > const& attrib_data )
@@ -210,9 +177,9 @@ namespace gfx {
             msg += ".";
             throw std::invalid_argument( msg );
         }
-        if ( attrib_data.size() > n_blocks ) {
+        if ( attrib_data.size() > blocks ) {
             std::string msg = "Attribute value assignment attempted with ";
-            msg += n_blocks;
+            msg += blocks;
             msg += " allocated data blocks but ";
             msg += attrib_data.size();
             msg += " attribute values.";
@@ -220,13 +187,13 @@ namespace gfx {
         }
 
         if ( data == 0 ) {
-            data = new unsigned char[n_blocks * stride];
+            data = new unsigned char[blocks * stride];
         }
 
         GLsizeiptr block;
         unsigned char* cursor = data;
         cursor += attribute_offset( index );
-        for( block = 0; block < n_blocks; ++block ) {
+        for( block = 0; block < blocks; ++block ) {
             raw_map const mapped_data = attrib_data[block].to_map();
             for( size_t b = 0; b < mapped_data.n_bytes; ++b ) {
                 cursor[b] = mapped_data[b];
@@ -237,12 +204,12 @@ namespace gfx {
 
     inline  void    buffer::load_data()
     {
-        if( intended_target == gl::ELEMENT_ARRAY_BUFFER ){
+        if( target == gl::ELEMENT_ARRAY_BUFFER ){
             gl::BindVertexArray( vao_ID );
             checkGLError( "vao bound for element data load" );
         }
-        gl::BindBuffer( intended_target, buff_ID );
-        gl::BufferData( intended_target, n_blocks * stride, data, usage );
+        gl::BindBuffer( target, buff_ID );
+        gl::BufferData( target, blocks * stride, data, usage );
 
         data_loaded = true;
     }

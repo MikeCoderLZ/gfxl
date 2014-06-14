@@ -2,11 +2,6 @@
 #define PROGRAM_HPP
 
 namespace gfx {
-
-    class compilation_error : public std::logic_error {
-    public:
-        explicit compilation_error( std::string const& msg ) : logic_error( msg ) {};
-    };
                                 
     class program {
     public:
@@ -61,7 +56,7 @@ namespace gfx {
         GLuint                  prog_ID;
         unsigned int            maj_ver;
         unsigned int            min_ver;
-        friend                  class video_manager;
+        friend                  class video_system;
     };
 
     inline  program::settings::settings() :

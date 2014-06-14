@@ -5,6 +5,7 @@
 
 #include "video.hpp"
 #include "../gMath/datatype.hpp"
+#include "../gScene/texture.hpp"
 #include "../../UnitTest++_src/UnitTest++.h"
 #include "gl_core_3_3.hpp"
 
@@ -96,7 +97,7 @@ SUITE( BufferTests )
                            .has_3D()        );
         std::string excepted = "Exception not caught.";
         try {
-            buffer test_buff1 = video_manager::get().new_buffer( buffer::settings().blocks(4) );
+            buffer test_buff1 ( buffer::settings().blocks(4) );
         } catch ( std::logic_error& e ) {
             excepted = "Exception caught.";
         }
@@ -106,7 +107,7 @@ SUITE( BufferTests )
         
         excepted = "Exception not caught.";
         try {
-            buffer test_buff2 = video_manager::get().new_buffer( buffer::settings().blocks(4) );
+            buffer test_buff2 ( buffer::settings().blocks(4) );
         } catch ( std::logic_error& e ) {
             excepted = "Exception caught.";
         }
@@ -118,7 +119,7 @@ SUITE( BufferTests )
         window test_wndw ( window::settings()
                            .has_3D()        );
         context test_cntx ( test_wndw );
-        buffer test_buff = video_manager::get().new_buffer( buffer::settings().blocks(4) );
+        buffer test_buff ( buffer::settings().blocks(4) );
         
         std::string excepted = "Exception not caught.";
         try {
@@ -157,7 +158,7 @@ SUITE( BufferTests )
         window test_wndw ( window::settings()
                            .has_3D()        );
         context test_cntx ( test_wndw );
-        buffer test_buff = video_manager::get().new_buffer( buffer::settings().blocks(4) );        
+        buffer test_buff ( buffer::settings().blocks(4) );        
         
         std::vector< vec2 > position;
         position.push_back( vec2( 0.5f ));
@@ -218,13 +219,13 @@ SUITE( GLSLShadingTests )
         window test_wndw ( window::settings()
                            .has_3D()        );
         context test_cntx ( test_wndw );
-        video_manager::get().attach_context( test_wndw, test_cntx );
+        video_system::get().attach_context( test_wndw, test_cntx );
         program test_prgm ( program::settings()
                             .use_vert( "./shader/testVert.glsl" )
                             .use_frag( "./shader/testFrag.glsl" ) );
         test_prgm.compile();
         
-        buffer test_buff = video_manager::get().new_buffer( buffer::settings().blocks(4) );
+        buffer test_buff ( buffer::settings().blocks(4) );
         test_buff.block_format( block_spec()
                                 .attribute( type<vec2>() ) );
         std::vector< vec2 > position;
@@ -267,18 +268,95 @@ SUITE( GLSLShadingTests )
         CHECK_EQUAL( "y", input );
     }
     
+    TEST( TextureProgramInteraction )
+    {
+        window test_wndw ( window::settings()
+                           .has_3D()        );
+        context test_cntx ( test_wndw );
+        video_system::get().attach_context( test_wndw, test_cntx );
+        program test_prgm ( program::settings()
+                            .use_vert( "./shader/testVert_1Dtextured.glsl" )
+                            .use_frag( "./shader/testFrag_1Dtextured.glsl" ) );
+        test_prgm.compile();
+        
+        buffer test_buff ( buffer::settings().blocks(4) );
+        test_buff.block_format( block_spec()
+                                .attribute( type<vec2>() )
+                                .attribute( type<float32>() ) );
+        std::vector< vec2 > position;
+        position.push_back( vec2( 0.5f ));
+        position.push_back( vec2( 0.5f, -0.5f ));
+        position.push_back( vec2( -0.5f ));
+        position.push_back( vec2( -0.5f, 0.5f ));
+        
+        std::vector< float32 > uv;
+        uv.push_back( float32( 1.0f ) );
+        uv.push_back( float32( 1.0f ) );
+        uv.push_back( float32( 0.0f ) );
+        uv.push_back( float32( 0.0f ) );
+        
+        test_buff.fill_attribute( 0, position );
+        test_buff.fill_attribute( 1, uv );
+        
+        test_buff.load_data();
+        test_buff.align_vertices();
+        
+        texture_1D test_txtr ( texture_1D::settings()
+                               .file( "./tex/test_1D.png" )
+                               .unsigned_norm_3( eight_bit ) );
+        test_txtr.decode_file();
+        test_txtr.load_data();
+        gl::TexParameteri( gl::TEXTURE_1D, gl::TEXTURE_MAX_LEVEL, 0 );
+        //test_txtr.use();
+        
+        test_prgm.link();
+        
+        GLint txtr_loc = gl::GetUniformLocation( test_prgm.get_prog_ID(), "line" );
+        
+        
+        
+        test_prgm.use();
+        
+        gl::Uniform1i( txtr_loc, 0 );
+        
+        GLuint elements[] = { 0, 1, 2, 0, 2, 3 };
+        
+        test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
+        test_wndw.swap();
+        
+        std::cout << "Interactive test; press any key to continue. ";
+        
+        std::string input;
+        std::cin >> input;
+        
+        std::cout << "A white rectangle with a red edge will appear on a yellow background.\nConfirm [y/n]: ";
+        
+        test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
+        
+        gl::DrawElements( gl::TRIANGLES,
+                          6,
+                          gl::UNSIGNED_INT,
+                          elements );
+        test_wndw.swap();
+        
+        
+        
+        std::cin >> input;        
+        CHECK_EQUAL( "y", input );
+    }
+    
     TEST( MultipleBufferProgramInteraction )
     {
         window test_wndw ( window::settings()
                            .has_3D()        );
         context test_cntx ( test_wndw );
-        video_manager::get().attach_context( test_wndw, test_cntx );
+        video_system::get().attach_context( test_wndw, test_cntx );
         program test_prgm ( program::settings()
                             .use_vert( "./shader/testVert_colored.glsl" )
                             .use_frag( "./shader/testFrag_colored.glsl" ) );
         test_prgm.compile();
         
-        buffer test_buff = video_manager::get().new_buffer( buffer::settings().blocks(4) );
+        buffer test_buff ( buffer::settings().blocks(4) );
         test_buff.block_format( block_spec()
                                 .attribute( type<vec2>() )
                                 .attribute( type<vec3>() ) );
@@ -334,13 +412,13 @@ SUITE( GLSLShadingTests )
         window test_wndw ( window::settings()
                            .has_3D()        );
         context test_cntx ( test_wndw );
-        video_manager::get().attach_context( test_wndw, test_cntx );
+        video_system::get().attach_context( test_wndw, test_cntx );
         program test_prgm ( program::settings()
                             .use_vert( "./shader/testVert_LAB.glsl" )
                             .use_frag( "./shader/testFrag_LAB.glsl" ) );
         test_prgm.compile();
         
-        buffer test_buff = video_manager::get().new_buffer( buffer::settings().blocks(4) );
+        buffer test_buff ( buffer::settings().blocks(4) );
         test_buff.block_format( block_spec()
                                 .attribute( type<vec2>() )
                                 .attribute( type<vec3>() ) );
@@ -394,7 +472,7 @@ SUITE( GLSLShadingTests )
 
 int main( int argc, char* argv[] )
 {
-    video_manager::get().initialize( video_manager::settings()
+    video_system::get().initialize( video_system::settings()
                                      .maj_ver( 3 )
                                      .min_ver( 3 )            );
 

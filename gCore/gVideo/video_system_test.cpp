@@ -133,7 +133,7 @@ SUITE( WindowTests )
     
 //     TEST( WindowMinimized )
 //     {
-//         window test_wndw = video_manager::get().new_window( window::settings()
+//         window test_wndw = video_system::get().new_window( window::settings()
 //                                                  .minimized()
 //                                                  .title("WindowMinimized") );
 //         std::cout << "Is Minimized? " << test_wndw.is_minimized() << std::endl;
@@ -194,7 +194,7 @@ SUITE( WindowTests )
     
 //     TEST( WindowFocus )
 //     {
-//         window test_wndw = video_manager::get().new_window( window::settings()
+//         window test_wndw = video_system::get().new_window( window::settings()
 //                                                  .has_focus()
 //                                                  .title("WindowFocus") );
 //         CHECK( test_wndw.has_focus() );
@@ -241,7 +241,7 @@ SUITE( ContextTests )
         window test_wndw ( window::settings()
                            .has_3D()          );
         context test_cntx ( test_wndw );
-        video_manager::get().attach_context( test_wndw, test_cntx );
+        video_system::get().attach_context( test_wndw, test_cntx );
         
         std::cout << "Interactive test; press any key to continue. ";
         
@@ -269,6 +269,6 @@ SUITE( ContextTests )
 
 int main( int argc, char* argv[] )
 {
-    video_manager::get().initialize( video_manager::settings() );
+    video_system::get().initialize( video_system::settings() );
     return UnitTest::RunAllTests();
 }

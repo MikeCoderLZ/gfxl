@@ -56,7 +56,7 @@ namespace gfx {
                 bool                has_border_v;
                 bool                has_focus_v;
                 bool                grab_input_v;
-                friend              class video_manager;
+                friend              class video_system;
                 friend              class window;
         };
         
@@ -102,7 +102,7 @@ namespace gfx {
                 bool                force_sw_v;
         //         unsigned int        maj_ver_v;
         //         unsigned int        min_ver_v;
-                friend class        video_manager;
+                friend class        video_system;
                 friend              class window;
         };
         
@@ -163,7 +163,7 @@ namespace gfx {
     private:
         std::string             title_str;
         SDL_Window*             sys_window;
-        friend                  class video_manager;
+        friend                  class video_system;
         friend                  class context;
     };
 

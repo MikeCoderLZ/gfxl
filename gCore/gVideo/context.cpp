@@ -13,11 +13,15 @@ namespace gfx {
         
         sys_context = SDL_GL_CreateContext( window.sys_window );
         
-        video_manager::get().activate_context( *this );        
+        video_system::get().register_context( this );
+        video_system::get().activate_context( *this );        
     }
     
     context::~context()
-    { SDL_GL_DeleteContext( sys_context ); }
+    {
+        video_system::get().unregister_context( this );
+        SDL_GL_DeleteContext( sys_context );
+    }
     
     void context::clear_color( float red, float green, float blue, float alpha )
     {
@@ -30,7 +34,7 @@ namespace gfx {
     }
     
     bool    context::is_active() const
-    { return (*this) == video_manager::get().get_active_context(); }
+    { return (*this) == video_system::get().get_active_context(); }
     
     unsigned int    context::major_version() const
     {

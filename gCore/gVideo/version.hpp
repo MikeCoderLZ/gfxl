@@ -9,12 +9,12 @@ namespace gfx {
                                  unsigned int const min_ver,
                                  unsigned int sub_ver = 0   );
                         version( version const& copy );
-        bool            operator==( version const& rhs );
-        bool            operator!=( version const& rhs );
-        bool            operator<=( version const& rhs );
-        bool            operator>=( version const& rhs );
-        bool            operator>( version const& rhs );
-        bool            operator<( version const& rhs );
+        bool            operator==( version const& rhs ) const;
+        bool            operator!=( version const& rhs ) const;
+        bool            operator<=( version const& rhs ) const;
+        bool            operator>=( version const& rhs ) const;
+        bool            operator>( version const& rhs ) const;
+        bool            operator<( version const& rhs ) const;
         unsigned int    maj_ver() const;
         unsigned int    min_ver() const;
         unsigned int    sub_ver() const;
@@ -38,42 +38,42 @@ namespace gfx {
         sub_ver_v = copy.sub_ver_v;
     }
                                  
-    inline bool     version::operator==( version const& rhs )
+    inline bool     version::operator==( version const& rhs ) const
     {
         return     maj_ver_v == rhs.maj_ver_v
                and min_ver_v == rhs.min_ver_v
                and sub_ver_v == rhs.sub_ver_v;
     }
     
-    inline bool     version::operator!=( version const& rhs )
+    inline bool     version::operator!=( version const& rhs ) const
     {
         return    maj_ver_v != rhs.maj_ver_v
                or min_ver_v != rhs.min_ver_v
                or sub_ver_v != rhs.sub_ver_v;
     }
     
-    inline bool     version::operator<=( version const& rhs )
+    inline bool     version::operator<=( version const& rhs ) const
     {
         return     maj_ver_v <= rhs.maj_ver_v
                and min_ver_v <= rhs.min_ver_v
                and sub_ver_v <= rhs.sub_ver_v;
     }
     
-    inline bool     version::operator>=( version const& rhs )
+    inline bool     version::operator>=( version const& rhs ) const
     {
         return     maj_ver_v >= rhs.maj_ver_v
                and min_ver_v >= rhs.min_ver_v
                and sub_ver_v >= rhs.sub_ver_v;
     }
     
-    inline bool     version::operator<( version const& rhs )
+    inline bool     version::operator<( version const& rhs ) const
     {
         return     maj_ver_v < rhs.maj_ver_v
                or (maj_ver_v == rhs.maj_ver_v and min_ver_v < rhs.min_ver_v)
                or (maj_ver_v == rhs.maj_ver_v and min_ver_v == rhs.min_ver_v and sub_ver_v < rhs.sub_ver_v);
     }
     
-    inline bool     version::operator>( version const& rhs )
+    inline bool     version::operator>( version const& rhs ) const
     {
         return     maj_ver_v > rhs.maj_ver_v
                or (maj_ver_v == rhs.maj_ver_v and min_ver_v > rhs.min_ver_v)

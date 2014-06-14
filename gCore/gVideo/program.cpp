@@ -12,6 +12,14 @@ namespace gfx {
                       maj_ver ( 2 ),
                       min_ver ( 0 )
     {
+        
+        if ( video_system::get().get_version() < opengl_2_0 ) {
+            throw version_error( "Program cannot be created: video system version insufficient (requires 2.0+).");
+        }
+        
+        if ( not video_system::get().context_present() ) {
+            throw initialization_error( "Program cannot be created: no context present.");
+        }
         /**
         * This code assumes that this VideoManager is the sole purveyor
         * in the program; no attempt is made to find out if anyone else

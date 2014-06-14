@@ -2,34 +2,34 @@
 
 videoTests: $(BIN)/videoManagerTest.exe \
             $(BIN)/shadingTest.exe \
-            $(BIN)/video_manager_test \
+            $(BIN)/video_system_test \
             $(BIN)/program_shader_test \
             $(BIN)/program_laboratory 
 
-$(BIN)/video_manager_test: $(OBJ)/video_manager_test.o \
+$(BIN)/video_system_test: $(OBJ)/video_system_test.o \
                            $(OBJ)/video.o \
                            $(OBJ)/gl_core_3_3.o
                            
-	g++ $(OBJ)/video_manager_test.o \
+	g++ $(OBJ)/video_system_test.o \
 	    $(OBJ)/video.o \
 	    $(OBJ)/gl_core_3_3.o \
 	    -L ../../dev_lib -lUnitTest++ \
-	    $(SDLLIBS) -o $(BIN)/video_manager_test
+	    $(SDLLIBS) -o $(BIN)/video_system_test
 
-$(OBJ)/video_manager_test.o: $(GVID)/video_manager_test.cpp \
+$(OBJ)/video_system_test.o: $(GVID)/video_system_test.cpp \
                              $(GVID)/video.hpp \
                              $(GVID)/gl_core_3_3.hpp \
                              $(GMATH)/datatype.hpp
 	g++ -c $(COM) \
 	    -Wno-sign-compare -Wno-unused-but-set-variable \
-	    $(GVID)/video_manager_test.cpp \
-	    $(SDLFLAGS) -o $(OBJ)/video_manager_test.o
+	    $(GVID)/video_system_test.cpp \
+	    $(SDLFLAGS) -o $(OBJ)/video_system_test.o
 
 $(OBJ)/video.o: $(GVID)/video.cpp \
                 $(GVID)/video.hpp \
                 $(GVID)/version.hpp \
-                $(GVID)/video_manager.cpp \
-                $(GVID)/video_manager.hpp \
+                $(GVID)/video_system.cpp \
+                $(GVID)/video_system.hpp \
                 $(GVID)/window.cpp \
                 $(GVID)/window.hpp \
                 $(GVID)/context.cpp \
@@ -38,7 +38,7 @@ $(OBJ)/video.o: $(GVID)/video.cpp \
                 $(GVID)/buffer.hpp \
                 $(GVID)/program.cpp \
                 $(GVID)/program.hpp \
-                $(GVID)/managed.hpp \
+                $(GVID)/gfx_exception.hpp \
                 $(GVID)/gl_core_3_3.hpp \
                 $(GMATH)/datatype.hpp
 	g++ -c $(COM) -Wno-sign-compare \
@@ -65,11 +65,14 @@ $(OBJ)/program_laboratory.o: $(GVID)/program_laboratory.cpp \
 	    
 $(BIN)/program_shader_test: $(OBJ)/program_shader_test.o \
                             $(OBJ)/video.o \
+                            $(OBJ)/texture.o \
                             $(OBJ)/gl_core_3_3.o
 	g++ $(OBJ)/program_shader_test.o \
 	    $(OBJ)/video.o \
+	    $(OBJ)/texture.o \
 	    $(OBJ)/gl_core_3_3.o \
 	    -L ../../dev_lib -lUnitTest++ \
+	    -lfreeimage \
 	    $(SDLLIBS) -o $(BIN)/program_shader_test
     
 $(OBJ)/program_shader_test.o: $(GVID)/program_shader_test.cpp \

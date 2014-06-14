@@ -5,7 +5,7 @@ namespace gfx {
 
     /**
     * The way in which contexts and windows interact is obscure;
-    * It is possible that soem OpenGL setting need to be saved in
+    * It is possible that some OpenGL settings need to be saved in
     * order to make this all work correctly.
     * 
     */
@@ -20,7 +20,7 @@ namespace gfx {
         public:
                                 settings();
         private:
-            friend              class video_manager;
+            friend              class video_system;
         };
         
                                 context( window const& target_window,
@@ -44,7 +44,7 @@ namespace gfx {
                                 
         window const*           target_window;
         SDL_GLContext           sys_context;
-        friend                  class video_manager;
+        friend                  class video_system;
     };
 
     inline context::settings::settings() {};

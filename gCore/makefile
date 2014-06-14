@@ -14,6 +14,7 @@ MATHDPND = vec.o op.o matrix.o quaternion.o
 GMATH := ./gMath
 GSYS := ./gSys
 GVID := ./gVideo
+GSCN := ./gScene
 GUTIL := ./gUtility
 
 
@@ -21,9 +22,10 @@ include ./gMath/makefile
 include ./gUtility/makefile
 include ./gSys/makefile
 include ./gVideo/makefile
+include ./gScene/makefile
 
 
-all: mathTests systemTests videoTests utilities
+all: mathTests systemTests videoTests texture_tests utilities
 
 gEngine.exe: $(OBJ)/gEngine.o $(MATHOBJ) makefile
 	g++ $(OBJ)/gEngine.o $(MATHOBJ) $(SDLLIBS) -o $(BIN)/gEngine.exe

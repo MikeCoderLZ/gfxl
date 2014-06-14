@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <vector>
-#include <map>
+#include <set>
 #include <string>
 #include <stdexcept>
 #include "checkError.hpp"
@@ -13,16 +13,17 @@
 #include "../gMath/datatype.hpp"
 
 #include "version.hpp"
+#include "gfx_exception.hpp"
+
 namespace gfx {
-    class video_manager;
+    class video_system;
     class context;
 }
-#include "managed.hpp"
 #include "window.hpp"
 #include "context.hpp"
 #include "program.hpp"
 #include "buffer.hpp"
 
-#include "video_manager.hpp"
+#include "video_system.hpp"
 
 #endif

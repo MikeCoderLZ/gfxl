@@ -17,13 +17,13 @@ SUITE( GLSLShadingTests )
         window test_wndw ( window::settings()
                            .has_3D()        );
         context test_cntx ( test_wndw );
-        video_manager::get().attach_context( test_wndw, test_cntx );
+        video_system::get().attach_context( test_wndw, test_cntx );
         program test_prgm ( program::settings()
                             .use_vert( "./shader/testVert_LAB.glsl" )
                             .use_frag( "./shader/testFrag_LAB.glsl" ) );
         test_prgm.compile();
         
-        buffer test_buff = video_manager::get().new_buffer( buffer::settings().blocks(4) );
+        buffer test_buff ( buffer::settings().blocks(4) );
         test_buff.block_format( block_spec()
                                 .attribute( type<vec2>() )
                                 .attribute( type<vec3>() ) );
@@ -77,7 +77,7 @@ SUITE( GLSLShadingTests )
 
 int main( int argc, char* argv[] )
 {
-    video_manager::get().initialize( video_manager::settings()
+    video_system::get().initialize( video_system::settings()
                                         .maj_ver( 3 )
                                         .min_ver( 3 )            );
 

@@ -1,0 +1,500 @@
+#include <FreeImage.h>
+#include "texture.hpp"
+
+
+namespace gfx {
+    
+//     struct pixel_RGBA2 {
+//         uint8_t red : 2;
+//         uint8_t green : 2;
+//         uint8_t blue : 2;
+//         uint8_t alpha : 2;
+//     };
+    
+//     struct pixel_RGBA4 {
+//         uint16_t red : 4;
+//         uint16_t green : 4;
+//         uint16_t blue : 4;
+//         uint16_t alpha : 4;
+//     };
+//     
+//     struct pixel_RGB4 {
+//         uint16_t red : 4;
+//         uint16_t green : 4;
+//         uint16_t blue : 4;
+//     };
+//     
+//     struct pixel_RGB5 {
+//         uint16_t red : 5;
+//         uint16_t green : 5;
+//         uint16_t blue : 5;
+//     };
+//     
+//     struct pixel_RGBA5 {
+//         uint32_t red : 5;
+//         uint32_t green : 5;
+//         uint32_t blue : 5;
+//         uint32_t alpha : 5;
+//     };
+// 
+//     struct pixel_R8 {
+//         uint8_t red;
+//     };
+//     
+//     struct pixel_RG8 {
+//         uint8_t red;
+//         uint8_t green;
+//     };
+//     
+//     struct pixel_RGB8 {
+//         uint8_t red;
+//         uint8_t green;
+//         uint8_t blue;
+//     };
+//     
+//     struct pixel_RGBA8 {
+//         uint8_t red;
+//         uint8_t green;
+//         uint8_t blue;
+//         uint8_t alpha;
+//     };
+//     
+//     struct pixel_R8s {
+//         int8_t red;
+//     };
+//     
+//     struct pixel_RG8s {
+//         int8_t red;
+//         int8_t green;
+//     };
+//     
+//     struct pixel_RGB8s {
+//         int8_t red;
+//         int8_t green;
+//         int8_t blue;
+//     };
+//     
+//     struct pixel_RGBA8s {
+//         int8_t red;
+//         int8_t green;
+//         int8_t blue;
+//         int8_t alpha;
+//     };
+// 
+//     struct pixel_RGB10 {
+//         uint32_t red : 10;
+//         uint32_t green : 10;
+//         uint32_t blue : 10;
+//     };
+//     
+//     struct pixel_RGB12 {
+//         unsigned int red : 12;
+//         unsigned int green : 12;
+//         unsigned int blue : 12;
+//     };
+//     
+//     struct pixel_RGBA12 {
+//         unsigned int red : 12;
+//         unsigned int green : 12;
+//         unsigned int blue : 12;
+//         unsigned int alpha : 12;
+//     };
+//     
+//     struct pixel_R16 {
+//         uint16_t red;
+//     };
+//     
+//     struct pixel_RG16 {
+//         uint16_t red;
+//         uint16_t green;
+//     };
+//     
+//     struct pixel_RGB16 {
+//         uint16_t red;
+//         uint16_t green;
+//         uint16_t blue;
+//     };
+//     
+//     struct pixel_RGBA16 {
+//         uint16_t red;
+//         uint16_t green;
+//         uint16_t blue;
+//         uint16_t alpha;
+//     };
+//     
+//     struct pixel_R16s {
+//         int16_t red;
+//     };
+//     
+//     struct pixel_RG16s {
+//         int16_t red;
+//         int16_t green;
+//     };
+//     
+//     struct pixel_RGB16s {
+//         int16_t red;
+//         int16_t green;
+//         int16_t blue;
+//     };
+//     
+//     struct pixel_RGBA16s {
+//         int16_t red;
+//         int16_t green;
+//         int16_t blue;
+//         int16_t alpha;
+//     };
+//     
+//     struct pixel_R32 {
+//         uint32_t red;
+//     };
+//     
+//     struct pixel_RG32 {
+//         uint32_t red;
+//         uint32_t green;
+//     };
+//     
+//     struct pixel_RGB32 {
+//         uint32_t red;
+//         uint32_t green;
+//         uint32_t blue;
+//     };
+//     
+//     struct pixel_RGBA32 {
+//         uint32_t red;
+//         uint32_t green;
+//         uint32_t blue;
+//         uint32_t alpha;
+//     };
+//     
+//     struct pixel_R32s {
+//         int32_t red;
+//     };
+//     
+//     struct pixel_RG32s {
+//         int32_t red;
+//         int32_t green;
+//     };
+//     
+//     struct pixel_RGB32s {
+//         int32_t red;
+//         int32_t green;
+//         int32_t blue;
+//     };
+//     
+//     struct pixel_RGBA32s {
+//         int32_t red;
+//         int32_t green;
+//         int32_t blue;
+//         int32_t alpha;
+//     };
+//     
+//     struct pixel_R32f {
+//         float red;
+//     };
+//     
+//     struct pixel_RG32f {
+//         float red;
+//         float green;
+//     };
+//     
+//     struct pixel_RGB32f {
+//         float red;
+//         float green;
+//         float blue;
+//     };
+//     
+//     struct pixel_RGBA32f {
+//         float red;
+//         float green;
+//         float blue;
+//         float alpha;
+//     };
+//     
+//     struct pixel_R16f {
+//         union {
+//             struct {
+//                 uint16_t sign : 1;
+//                 uint16_t mantissa : 10;
+//                 uint16_t exponent : 5;
+//             };
+//             uint16_t chunk;
+//         } red;
+//     };
+//     
+//     struct pixel_RG16f {
+//         union {
+//             struct {
+//                 uint16_t sign : 1;
+//                 uint16_t mantissa : 10;
+//                 uint16_t exponent : 5;
+//             };
+//             uint16_t chunk;
+//         } red;
+//         union {
+//             struct {
+//                 uint16_t sign : 1;
+//                 uint16_t mantissa : 10;
+//                 uint16_t exponent : 5;
+//             };
+//             uint16_t chunk;
+//         } green;
+//     };
+//     
+//     struct pixel_RGB16f {
+//         union {
+//             struct {
+//                 uint16_t sign : 1;
+//                 uint16_t mantissa : 10;
+//                 uint16_t exponent : 5;
+//             };
+//             uint16_t chunk;
+//         } red;
+//         union {
+//             struct {
+//                 uint16_t sign : 1;
+//                 uint16_t mantissa : 10;
+//                 uint16_t exponent : 5;
+//             };
+//             uint16_t chunk;
+//         } green;
+//         union {
+//             struct {
+//                 uint16_t sign : 1;
+//                 uint16_t mantissa : 10;
+//                 uint16_t exponent : 5;
+//             };
+//             uint16_t chunk;
+//         } blue;
+//     };
+//     
+//     struct pixel_RGBA16f {
+//         union {
+//             struct {
+//                 uint16_t sign : 1;
+//                 uint16_t mantissa : 10;
+//                 uint16_t exponent : 5;
+//             };
+//             uint16_t chunk;
+//         } red;
+//         union {
+//             struct {
+//                 uint16_t sign : 1;
+//                 uint16_t mantissa : 10;
+//                 uint16_t exponent : 5;
+//             };
+//             uint16_t chunk;
+//         } green;
+//         union {
+//             struct {
+//                 uint16_t sign : 1;
+//                 uint16_t mantissa : 10;
+//                 uint16_t exponent : 5;
+//             };
+//             uint16_t chunk;
+//         } blue;
+//         union {
+//             struct {
+//                 uint16_t sign : 1;
+//                 uint16_t mantissa : 10;
+//                 uint16_t exponent : 5;
+//             };
+//             uint16_t chunk;
+//         } alpha;
+//     };
+    
+//     class pixel_array {
+//     public:
+//         virtual unsigned char*      data() = 0;
+//         virtual void                assign( size_t index,
+//                                             uint8_t red,
+//                                             uint8_t green = 0,
+//                                             uint8_t blue  = 0,
+//                                             uint8_t alpha = 0  ) = 0;
+//         virtual void                assign( size_t index,
+//                                             int8_t red,
+//                                             int8_t green = 0,
+//                                             int8_t blue  = 0,
+//                                             int8_t alpha = 0  ) = 0;
+//         virtual void                assign( size_t index,
+//                                             uint16_t red,
+//                                             uint16_t green = 0,
+//                                             uint16_t blue  = 0,
+//                                             uint16_t alpha = 0  ) = 0;
+//         virtual void                assign( size_t index,
+//                                             int16_t red,
+//                                             int16_t green = 0,
+//                                             int16_t blue  = 0,
+//                                             int16_t alpha = 0  ) = 0;
+//         virtual void                assign( size_t index,
+//                                             uint32_t red,
+//                                             uint32_t green = 0,
+//                                             uint32_t blue  = 0,
+//                                             uint32_t alpha = 0  ) = 0;
+//         virtual void                assign( size_t index,
+//                                             int32_t red,
+//                                             int32_t green = 0,
+//                                             int32_t blue  = 0,
+//                                             int32_t alpha = 0  ) = 0;
+//         virtual void                assign( size_t index,
+//                                             float red,
+//                                             float green = 0,
+//                                             float blue  = 0,
+//                                             float alpha = 0  ) = 0;                                    
+//     };
+//     
+//     class pixel_sheet {
+//     public:
+//         virtual unsigned char*      data() = 0;
+//         virtual void                assign( size_t index );
+//     };
+//     
+//     class pixel_volume {
+//     public:
+//         virtual unsigned char*      data() = 0;
+//         virtual void                assign( size_t index );
+//     };
+//     
+//     class RGBA8_array : public pixel_array {
+//     public:
+//         virtual unsigned char*  data();
+//         virtual void            assign( size_t index,
+//                                         uint8_t red,
+//                                         uint8_t green,
+//                                         uint8_t blue,
+//                                         uint8_t alpha );
+//     private:
+//         union pixel {
+//             struct {
+//                 uint8_t red;
+//                 uint8_t green;
+//                 uint8_t blue;
+//                 uint8_t alpha;
+//             } channel;
+//             uint32_t color;
+//         };
+//     }; 
+    texture_1D::texture_1D( settings const& set ) :
+                            tex_ID ( 0 ),
+                            target ( 0 ),
+                            width_v ( set.dw_v ),
+                            pixels_v ( set.pixels_v ),
+                            pixel_bits_v ( set.pixel_size_v ),
+                            image_format ( set.image_format_v ),
+                            path ( set.path_v ),
+                            data ( 0 )
+    {
+        gl::GenTextures( 1, &tex_ID );
+        if ( set.as_array_v ) {
+            target = gl::TEXTURE_1D_ARRAY;
+        } else {
+            target = gl::TEXTURE_1D;
+        }
+    }
+    
+    texture_1D::~texture_1D()
+    {
+        delete[] data;
+    }
+    
+    size_t  texture_1D::width() const
+    { return width_v; }
+    
+    size_t  texture_1D::pixels() const
+    { return pixels_v; }
+    
+    size_t  texture_1D::pixel_bits() const
+    { return pixel_bits_v; }
+    
+    void    texture_1D::file( std::string const& path )
+    { this->path = path; }
+    
+    void    texture_1D::decode_file()
+    {
+        FIBITMAP* src = FreeImage_Load( FIF_PNG, path.c_str(), PNG_DEFAULT );
+        
+        if ( src ) {
+            if ( FreeImage_GetHeight( src ) > 1 ) {
+                throw std::logic_error( "Source data for 1D texture is not one dimensional." );
+            }
+            width_v = FreeImage_GetWidth( src );
+            pixels_v = width_v;
+            pixel_bits_v = FreeImage_GetBPP( src );
+            size_t pixel_bytes = pixel_bits_v / 8;
+            
+            BYTE* bits = FreeImage_GetBits( src );
+
+            size_t bytes = pixel_bytes * pixels_v;
+            
+            data = new unsigned char[bytes];
+            
+            while( bytes ) {
+                --bytes;
+                data[bytes] = bits[bytes];
+                if ( bytes == 0 ) {
+                    unsigned int first_red = bits[bytes];
+                    unsigned int first_green = bits[bytes+1];
+                    unsigned int first_blue = bits[bytes+2];
+                    std::cout << first_red << " " << first_green << " " << first_blue << std::endl;
+                }
+            }
+            
+            FreeImage_Unload( src );
+        }
+        
+    }
+    
+    void    texture_1D::load_data()
+    {
+        if ( not video_system::get().context_present() ) {
+            throw std::logic_error( "No OpenGL context available to load texture to." );
+        }
+        if ( data == 0 ) {
+            throw std::logic_error( "Texture data not initialized." );
+        }
+        gl::ActiveTexture( gl::TEXTURE0 );
+        gl::BindTexture( target, tex_ID );
+        gl::TexImage1D( target,
+                        0,
+                        image_format,
+                        width_v,
+                        0,
+                        gl::RGB,
+                        gl::UNSIGNED_BYTE,
+                        data              );
+        GLint error = gl::GetError();
+        switch ( error ) {
+            case gl::INVALID_ENUM:
+                std::cout << "Invalid enum." << std::endl;
+                break;
+            case gl::INVALID_VALUE:
+                std::cout << "Invalid value." << std::endl;
+                break;
+            case gl::INVALID_OPERATION:
+                std::cout << "Invalid operation." << std::endl;
+                break;
+            case gl::INVALID_FRAMEBUFFER_OPERATION:
+                std::cout << "Invalid framebuffer operation." << std::endl;
+                break;
+            case gl::OUT_OF_MEMORY:
+                std::cout << "Out of memory." << std::endl;
+                break;
+            default:
+                std::cout << "No error on load." << std::endl;
+                break;
+            }
+    }
+    
+    void    texture_1D::use()
+    {
+        if ( not video_system::get().context_present() ) {
+            throw std::logic_error( "No OpenGL context available to bind texture to." );
+        }
+        gl::ActiveTexture( gl::TEXTURE0 );
+        gl::BindTexture( target, tex_ID );
+    }
+    
+    size_t  texture_1D::bytes()
+    { return pixel_bits_v * pixels_v; }
+    
+    
+}
