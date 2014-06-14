@@ -303,11 +303,9 @@ SUITE( GLSLShadingTests )
         
         texture_1D test_txtr ( texture_1D::settings()
                                .file( "./tex/test_1D.png" )
-                               .unsigned_norm_3( eight_bit ) );
+                               .unsigned_norm_3( eight_bit, b, g, r ) );
         test_txtr.decode_file();
         test_txtr.load_data();
-        gl::TexParameteri( gl::TEXTURE_1D, gl::TEXTURE_MAX_LEVEL, 0 );
-        //test_txtr.use();
         
         test_prgm.link();
         

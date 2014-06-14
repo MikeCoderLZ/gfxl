@@ -77,6 +77,7 @@ $(BIN)/program_shader_test: $(OBJ)/program_shader_test.o \
     
 $(OBJ)/program_shader_test.o: $(GVID)/program_shader_test.cpp \
                               $(GVID)/video.hpp \
+                              $(GSCN)/texture.hpp \
                               $(GVID)/gl_core_3_3.hpp \
                               $(GMATH)/datatype.hpp
 	g++ -c $(COM) \

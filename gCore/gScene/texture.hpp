@@ -97,6 +97,146 @@ namespace gfx {
     };
     thirty_two_bit_t const thrity_two_bit;
     
+    class filter_t {
+        protected: virtual GLint   val() const = 0;
+        friend                      class texture_1D;
+    };
+    
+    class min_filter_t : public virtual filter_t {
+        protected: virtual GLint   val() const = 0;
+        friend                      class texture_1D;
+    };
+    
+    class mag_filter_t : public virtual filter_t {
+        protected: virtual GLint   val() const = 0;
+        friend                      class texture_1D;
+    };
+    
+    class nearest_t : public min_filter_t, public mag_filter_t {
+        protected: virtual GLint   val() const { return gl::NEAREST; };
+        friend                      class texture_1D;
+    };
+    
+    nearest_t const nearest;
+    
+    class linear_t : public min_filter_t, public mag_filter_t {
+        protected: virtual GLint   val() const { return gl::LINEAR; };
+        friend                      class texture_1D;
+    };
+    linear_t const linear;
+    
+    class nearest_mipmap_t : public min_filter_t {
+        protected: virtual GLint   val() const { return gl::NEAREST_MIPMAP_NEAREST; };
+        friend                      class texture_1D;
+    };
+    nearest_mipmap_t const nearest_mipmap;
+    
+    class linear_mipmap_t : public min_filter_t {
+        protected: virtual GLint   val() const { return gl::LINEAR_MIPMAP_LINEAR; };
+        friend                      class texture_1D;
+    };
+    linear_mipmap_t const linear_mipmap;
+    
+    class linear_mipmap_nearest_t : public min_filter_t {
+        protected: virtual GLint   val() const { return gl::LINEAR_MIPMAP_NEAREST; };
+        friend                      class texture_1D;
+    };
+    linear_mipmap_nearest_t const linear_mipmap_nearest;
+    
+    class nearest_mipmap_linear_t : public min_filter_t {
+        protected: virtual GLint   val() const { return gl::NEAREST_MIPMAP_LINEAR; };
+        friend                      class texture_1D;
+    };
+    nearest_mipmap_linear_t const nearest_mipmap_linear;
+    
+    class wrap_mode_t {
+        protected: virtual GLint   val() const = 0;
+        friend                      class texture_1D;
+    };
+    
+    class clamp_to_border_t : public wrap_mode_t {
+        protected: virtual GLint   val() const { return gl::CLAMP_TO_BORDER; };
+        friend                      class texture_1D;
+    };
+    clamp_to_border_t const clamp_to_border;
+    
+    class clamp_to_edge_t : public wrap_mode_t {
+        protected: virtual GLint   val() const { return gl::CLAMP_TO_EDGE; };
+        friend                      class texture_1D;
+    };
+    clamp_to_edge_t const clamp_to_edge;
+    
+//     class mirror_clamp_to_edge_t : public wrap_mode_t {
+//         protected: virtual GLint   val() { return gl::MIRROR_CLAMP_TO_EDGE; };
+//         friend                      class texture_1D;
+//     };
+//     mirror_clamp_to_edge_t const mirror_clamp_to_edge;
+    
+    class mirrored_repeat_t : public wrap_mode_t {
+        protected: virtual GLint   val() const { return gl::MIRRORED_REPEAT; };
+        friend                      class texture_1D;
+    };
+    mirrored_repeat_t const mirrored_repeat;
+    
+    class repeat_t : public wrap_mode_t {
+        protected: virtual GLint   val() const { return gl::REPEAT; };
+        friend                      class texture_1D;
+    };
+    repeat_t const repeat;
+    
+    class comparison_function_t {
+        protected: virtual GLint   val() const = 0;
+        friend                      class texture_1D;
+    };
+    
+    class less_or_equal_t : public comparison_function_t {
+        protected: virtual GLint   val() const { return gl::LEQUAL; };
+        friend                      class texture_1D;
+    };
+    less_or_equal_t const less_or_equal;
+    
+    class greater_or_equal_t : public comparison_function_t {
+        protected: virtual GLint   val() const { return gl::GEQUAL; };
+        friend                      class texture_1D;
+    };
+    greater_or_equal_t const greater_or_equal;
+    
+    class less_t : public comparison_function_t {
+        protected: virtual GLint   val() const { return gl::LESS; };
+        friend                      class texture_1D;
+    };
+    less_t const less;
+    
+    class greater_t : public comparison_function_t {
+        protected: virtual GLint   val() const { return gl::GREATER; };
+        friend                      class texture_1D;
+    };
+    greater_t const greater;
+    
+    class equal_t : public comparison_function_t {
+        protected: virtual GLint   val() const { return gl::EQUAL; };
+        friend                      class texture_1D;
+    };
+    equal_t const equal;
+    
+    class not_equal_t : public comparison_function_t {
+        protected: virtual GLint   val() const { return gl::NOTEQUAL; };
+        friend                      class texture_1D;
+    };
+    not_equal_t const not_equal;
+    
+    class always_t : public comparison_function_t {
+        protected: virtual GLint   val() const { return gl::ALWAYS; };
+        friend                      class texture_1D;
+    };
+    always_t const always;
+    
+    class never_t : public comparison_function_t {
+        protected: virtual GLint   val() const { return gl::NEVER; };
+        friend                      class texture_1D;
+    };
+    never_t const never;
+    
 //     class texture;
 //     class pixel_array;
 //     class pixel_sheet;
@@ -128,25 +268,70 @@ namespace gfx {
             settings&       from_buffer();
             settings&       array( size_t const layers );
             settings&       unsigned_norm_1( R const& depth );
-            settings&       unsigned_norm_2( RG const& depth );
-            settings&       unsigned_norm_3( RGB const& depth );
-            settings&       unsigned_norm_4( RGBA const& depth );
+            settings&       unsigned_norm_2( RG const& depth,
+                                             swizz2 const& r_src = r,
+                                             swizz2 const& g_src = g );
+            settings&       unsigned_norm_3( RGB const& depth,
+                                             swizz3 const& r_src = r,
+                                             swizz3 const& g_src = g,
+                                             swizz3 const& b_src = b  );
+            settings&       unsigned_norm_4( RGBA const& depth,
+                                             swizz4 const& r_src = r,
+                                             swizz4 const& g_src = g,
+                                             swizz4 const& b_src = b,
+                                             swizz4 const& a_src = a );
             settings&       signed_norm_1( Rsn const& depth );
-            settings&       signed_norm_2( RGsn const& depth );
-            settings&       signed_norm_3( RGBsn const& depth );
-            settings&       signed_norm_4( RGBAsn const& depth );
+            settings&       signed_norm_2( RGsn const& depth,
+                                             swizz2 const& r_src = r,
+                                             swizz2 const& g_src = g  );
+            settings&       signed_norm_3( RGBsn const& depth,
+                                             swizz3 const& r_src = r,
+                                             swizz3 const& g_src = g,
+                                             swizz3 const& b_src = b );
+            settings&       signed_norm_4( RGBAsn const& depth,
+                                             swizz4 const& r_src = r,
+                                             swizz4 const& g_src = g,
+                                             swizz4 const& b_src = b,
+                                             swizz4 const& a_src = a );
             settings&       unsigned_int_1( Rui const& depth );
-            settings&       unsigned_int_2( RGui const& depth );
-            settings&       unsigned_int_3( RGBui const& depth );
-            settings&       unsigned_int_4( RGBAui const& depth );
+            settings&       unsigned_int_2( RGui const& depth,
+                                             swizz2 const& r_src = r,
+                                             swizz2 const& g_src = g  );
+            settings&       unsigned_int_3( RGBui const& depth,
+                                             swizz3 const& r_src = r,
+                                             swizz3 const& g_src = g,
+                                             swizz3 const& b_src = b );
+            settings&       unsigned_int_4( RGBAui const& depth,
+                                             swizz4 const& r_src = r,
+                                             swizz4 const& g_src = g,
+                                             swizz4 const& b_src = b,
+                                             swizz4 const& a_src = a );
             settings&       signed_int_1( Ri const& depth );
-            settings&       signed_int_2( RGi const& depth );
-            settings&       signed_int_3( RGBi const& depth );
-            settings&       signed_int_4( RGBAi const& depth );
+            settings&       signed_int_2( RGi const& depth,
+                                             swizz2 const& r_src = r,
+                                             swizz2 const& g_src = g  );
+            settings&       signed_int_3( RGBi const& depth,
+                                             swizz3 const& r_src = r,
+                                             swizz3 const& g_src = g,
+                                             swizz3 const& b_src = b );
+            settings&       signed_int_4( RGBAi const& depth,
+                                             swizz4 const& r_src = r,
+                                             swizz4 const& g_src = g,
+                                             swizz4 const& b_src = b,
+                                             swizz4 const& a_src = a );
             settings&       floating_point_1( Rf const& depth );
-            settings&       floating_point_2( RGf const& depth );
-            settings&       floating_point_3( RGBf const& depth );
-            settings&       floating_point_4( RGBAf const& depth );
+            settings&       floating_point_2( RGf const& depth,
+                                             swizz2 const& r_src = r,
+                                             swizz2 const& g_src = g  );
+            settings&       floating_point_3( RGBf const& depth,
+                                             swizz3 const& r_src = r,
+                                             swizz3 const& g_src = g,
+                                             swizz3 const& b_src = b );
+            settings&       floating_point_4( RGBAf const& depth,
+                                             swizz4 const& r_src = r,
+                                             swizz4 const& g_src = g,
+                                             swizz4 const& b_src = b,
+                                             swizz4 const& a_src = a );
             settings&       packed_3channel_8bit();
             settings&       packed_4channel_16bit();
             settings&       packed_4channel_32bit();
@@ -155,6 +340,16 @@ namespace gfx {
             settings&       if_you_find_a_use_for_this_image_format_you_get_a_cookie(); //No, seriously
             settings&       sRGB_8bit();
             settings&       sRGBA_8bit();
+            settings&       mipmap_range( size_t const base,
+                                          size_t const max );
+            settings&       sample_range( float const base,
+                                          float const max );
+            settings&       sample_bias( float const bias );
+            settings&       sample_minification( min_filter_t const& min );
+            settings&       sample_magnification( mag_filter_t const& mag );
+            settings&       wrap_s( wrap_mode_t const& mode );
+            settings&       wrap_t( wrap_mode_t const& mode );
+            settings&       comparison_function( comparison_function_t const& func );
             settings&       file( std::string const& path );
         private:
             size_t          dw_v;
@@ -165,6 +360,21 @@ namespace gfx {
             GLuint          image_format_v;
             size_t          pixels_v;
             size_t          pixel_size_v;
+            size_t          channels_v;
+            size_t          base_level_v;
+            size_t          max_level_v;
+            float           base_lod_v;
+            float           max_lod_v;
+            float           lod_bias_v;
+            GLint           min_filter_v;
+            GLint           mag_filter_v;
+            GLint           wrap_s_v;
+            GLint           wrap_t_v;
+            GLint           compare_func_v;
+            GLint           r_src_v;
+            GLint           g_src_v;
+            GLint           b_src_v;
+            GLint           a_src_v;
             std::string     path_v;
             friend          class texture_1D;
         };
@@ -203,6 +413,21 @@ namespace gfx {
                                     image_format_v ( 0 ),
                                     pixels_v ( 0 ),
                                     pixel_size_v ( 0 ),
+                                    channels_v ( 1 ),
+                                    base_level_v ( 0 ),
+                                    max_level_v ( 0 ),
+                                    base_lod_v ( 0.0f ),
+                                    max_lod_v ( 0.0f ),
+                                    lod_bias_v ( 0.0f ),
+                                    min_filter_v ( gl::NEAREST ),
+                                    mag_filter_v ( gl::NEAREST ),
+                                    wrap_s_v ( gl::CLAMP_TO_EDGE ),
+                                    wrap_t_v ( gl::CLAMP_TO_EDGE ),
+                                    compare_func_v ( 0 ),
+                                    r_src_v ( gl::RED ),
+                                    g_src_v ( gl::GREEN ),
+                                    b_src_v ( gl::BLUE ),
+                                    a_src_v ( gl::ALPHA ),
                                     path_v ( "" ) {}
     
     inline  texture_1D::settings&  texture_1D::settings::dimension( size_t const dw )
@@ -218,7 +443,8 @@ namespace gfx {
         return *this;
     }
     
-    inline  texture_1D::settings&       texture_1D::settings::unsigned_norm_1( R const& depth )
+    inline  texture_1D::settings&
+    texture_1D::settings::unsigned_norm_1( R const& depth )
     {
         switch ( depth.n() ) {
             case 8:
@@ -235,12 +461,16 @@ namespace gfx {
                 msg += " is illegal for single channel normalized unsigned integer image formats.";
                 throw std::invalid_argument( msg );
         }
+        channels_v = 1;
         
         return *this;
     }
 
 
-    inline  texture_1D::settings&       texture_1D::settings::unsigned_norm_2( RG const& depth )
+    inline  texture_1D::settings&
+    texture_1D::settings::unsigned_norm_2( RG const& depth,
+                                           swizz2 const& r_src,
+                                           swizz2 const& g_src )
     {
         switch ( depth.n() ) {
             case 8:
@@ -257,10 +487,38 @@ namespace gfx {
                 msg += " is illegal for dual channel normalized unsigned integer image formats.";
                 throw std::invalid_argument( msg );
         }
+        uvec2 mask ( 0, 1 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+        }
+        channels_v = 2;
+        
         return *this;
     }
-
-    inline  texture_1D::settings&       texture_1D::settings::unsigned_norm_3( RGB const& depth )
+        if ( set.r_src_v == gl::BLUE ) {
+            std::cout << "Red swizzle reading from blue channel" << std::endl;
+        } else {
+            std::cout << "Red swizzle not reading from blue channel" << std::endl;
+        }
+    inline  texture_1D::settings&
+    texture_1D::settings::unsigned_norm_3( RGB const& depth,
+                                           swizz3 const& r_src,
+                                           swizz3 const& g_src,
+                                           swizz3 const& b_src )
     {
         switch ( depth.n() ) {
             case 4:
@@ -293,10 +551,53 @@ namespace gfx {
                 msg += " is illegal for triple channel normalized unsigned integer image formats.";
                 throw std::invalid_argument( msg );
         }
+        
+        uvec3 mask ( 0, 1, 2 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+            case 2:
+                r_src_v = gl::BLUE;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+            case 2:
+                g_src_v = gl::BLUE;
+                break;
+        }
+        
+        switch ( mask( b_src ) ) {
+            case 0:
+                b_src_v = gl::RED;
+                break;
+            case 1:
+                b_src_v = gl::GREEN;
+                break;
+            case 2:
+                b_src_v = gl::BLUE;
+                break;
+        }
+        channels_v = 3;
         return *this;
     }
 
-    inline  texture_1D::settings&       texture_1D::settings::unsigned_norm_4( RGBA const& depth )
+    inline  texture_1D::settings&
+    texture_1D::settings::unsigned_norm_4( RGBA const& depth,
+                                           swizz4 const& r_src,
+                                           swizz4 const& g_src,
+                                           swizz4 const& b_src,
+                                           swizz4 const& a_src )
     {
         switch ( depth.n() ) {
             case 2:
@@ -328,6 +629,66 @@ namespace gfx {
                 msg += " is illegal for quad channel normalized unsigned integer image formats.";
                 throw std::invalid_argument( msg );
         }
+        uvec4 mask ( 0, 1, 2, 3 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+            case 2:
+                r_src_v = gl::BLUE;
+                break;
+            case 3:
+                r_src_v = gl::ALPHA;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+            case 2:
+                g_src_v = gl::BLUE;
+                break;
+            case 3:
+                g_src_v = gl::ALPHA;
+                break;
+        }
+        
+        switch ( mask( b_src ) ) {
+            case 0:
+                b_src_v = gl::RED;
+                break;
+            case 1:
+                b_src_v = gl::GREEN;
+                break;
+            case 2:
+                b_src_v = gl::BLUE;
+                break;
+            case 3:
+                b_src_v = gl::ALPHA;
+                break;
+        }
+        switch ( mask( a_src ) ) {
+            case 0:
+                a_src_v = gl::RED;
+                break;
+            case 1:
+                a_src_v = gl::GREEN;
+                break;
+            case 2:
+                a_src_v = gl::BLUE;
+                break;
+            case 3:
+                a_src_v = gl::ALPHA;
+                break;
+        }
+        channels_v = 4;
         return *this;
     }
 
@@ -348,10 +709,14 @@ namespace gfx {
                     msg += " is illegal for single channel normalized signed integer image formats.";
                     throw std::invalid_argument( msg );
             }
+            channels_v = 1;
             return *this;
         }
 
-    inline  texture_1D::settings&       texture_1D::settings::signed_norm_2( RGsn const& depth )
+    inline  texture_1D::settings&
+    texture_1D::settings::signed_norm_2( RGsn const& depth,
+                                           swizz2 const& r_src,
+                                           swizz2 const& g_src  )
     {
         switch ( depth.n() ) {
             case 8:
@@ -368,10 +733,34 @@ namespace gfx {
                 msg += " is illegal for dual channel normalized signed integer image formats.";
                 throw std::invalid_argument( msg );
         }
+        
+        uvec2 mask ( 0, 1 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+        }
+        channels_v = 2;
         return *this;
     }
 
-    inline  texture_1D::settings&       texture_1D::settings::signed_norm_3( RGBsn const& depth )
+    inline  texture_1D::settings&
+    texture_1D::settings::signed_norm_3( RGBsn const& depth,
+                                         swizz3 const& r_src,
+                                         swizz3 const& g_src,
+                                         swizz3 const& b_src )
     {
         switch ( depth.n() ) {
             case 8:
@@ -388,10 +777,53 @@ namespace gfx {
                 msg += " is illegal for triple channel normalized signed integer image formats.";
                 throw std::invalid_argument( msg );
         }
+        
+        uvec3 mask ( 0, 1, 2 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+            case 2:
+                r_src_v = gl::BLUE;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+            case 2:
+                g_src_v = gl::BLUE;
+                break;
+        }
+        
+        switch ( mask( b_src ) ) {
+            case 0:
+                b_src_v = gl::RED;
+                break;
+            case 1:
+                b_src_v = gl::GREEN;
+                break;
+            case 2:
+                b_src_v = gl::BLUE;
+                break;
+        }
+        channels_v = 3;
         return *this;
     }
 
-    inline  texture_1D::settings&       texture_1D::settings::signed_norm_4( RGBAsn const& depth )
+    inline  texture_1D::settings&
+    texture_1D::settings::signed_norm_4( RGBAsn const& depth,
+                                         swizz4 const& r_src,
+                                         swizz4 const& g_src,
+                                         swizz4 const& b_src,
+                                         swizz4 const& a_src )
     {
         switch ( depth.n() ) {
             case 8:
@@ -408,6 +840,66 @@ namespace gfx {
                 msg += " is illegal for quad channel normalized signed integer image formats.";
                 throw std::invalid_argument( msg );
         }
+        uvec4 mask ( 0, 1, 2, 3 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+            case 2:
+                r_src_v = gl::BLUE;
+                break;
+            case 3:
+                r_src_v = gl::ALPHA;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+            case 2:
+                g_src_v = gl::BLUE;
+                break;
+            case 3:
+                g_src_v = gl::ALPHA;
+                break;
+        }
+        
+        switch ( mask( b_src ) ) {
+            case 0:
+                b_src_v = gl::RED;
+                break;
+            case 1:
+                b_src_v = gl::GREEN;
+                break;
+            case 2:
+                b_src_v = gl::BLUE;
+                break;
+            case 3:
+                b_src_v = gl::ALPHA;
+                break;
+        }
+        switch ( mask( a_src ) ) {
+            case 0:
+                a_src_v = gl::RED;
+                break;
+            case 1:
+                a_src_v = gl::GREEN;
+                break;
+            case 2:
+                a_src_v = gl::BLUE;
+                break;
+            case 3:
+                a_src_v = gl::ALPHA;
+                break;
+        }
+        channels_v = 4;
         return *this;
     }
 
@@ -432,10 +924,14 @@ namespace gfx {
                     msg += " is illegal for single channel unsigned integer image formats.";
                     throw std::invalid_argument( msg );
             }
+            channels_v = 1;
             return *this;
         }
 
-    inline  texture_1D::settings&       texture_1D::settings::unsigned_int_2( RGui const& depth )
+    inline  texture_1D::settings&
+    texture_1D::settings::unsigned_int_2( RGui const& depth,
+                                           swizz2 const& r_src,
+                                           swizz2 const& g_src  )
     {
         switch ( depth.n() ) {
             case 8:
@@ -456,10 +952,33 @@ namespace gfx {
                 msg += " is illegal for dual channel unsigned integer image formats.";
                 throw std::invalid_argument( msg );
         }
+        uvec2 mask ( 0, 1 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+        }
+        channels_v = 2;
         return *this;
     }
 
-    inline  texture_1D::settings&       texture_1D::settings::unsigned_int_3( RGBui const& depth )
+    inline  texture_1D::settings&
+    texture_1D::settings::unsigned_int_3( RGBui const& depth,
+                                          swizz3 const& r_src,
+                                          swizz3 const& g_src,
+                                          swizz3 const& b_src )
     {
         switch ( depth.n() ) {
             case 8:
@@ -480,10 +999,52 @@ namespace gfx {
                 msg += " is illegal for triple channel unsigned integer image formats.";
                 throw std::invalid_argument( msg );
         }
+        uvec3 mask ( 0, 1, 2 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+            case 2:
+                r_src_v = gl::BLUE;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+            case 2:
+                g_src_v = gl::BLUE;
+                break;
+        }
+        
+        switch ( mask( b_src ) ) {
+            case 0:
+                b_src_v = gl::RED;
+                break;
+            case 1:
+                b_src_v = gl::GREEN;
+                break;
+            case 2:
+                b_src_v = gl::BLUE;
+                break;
+        }
+        channels_v = 3;
         return *this;
     }
 
-    inline  texture_1D::settings&       texture_1D::settings::unsigned_int_4( RGBAui const& depth )
+    inline  texture_1D::settings&
+    texture_1D::settings::unsigned_int_4( RGBAui const& depth,
+                                          swizz4 const& r_src,
+                                          swizz4 const& g_src,
+                                          swizz4 const& b_src,
+                                          swizz4 const& a_src )
     {
         switch ( depth.n() ) {
             case 8:
@@ -504,6 +1065,66 @@ namespace gfx {
                 msg += " is illegal for quad channel unsigned integer image formats.";
                 throw std::invalid_argument( msg );
         }
+        uvec4 mask ( 0, 1, 2, 3 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+            case 2:
+                r_src_v = gl::BLUE;
+                break;
+            case 3:
+                r_src_v = gl::ALPHA;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+            case 2:
+                g_src_v = gl::BLUE;
+                break;
+            case 3:
+                g_src_v = gl::ALPHA;
+                break;
+        }
+        
+        switch ( mask( b_src ) ) {
+            case 0:
+                b_src_v = gl::RED;
+                break;
+            case 1:
+                b_src_v = gl::GREEN;
+                break;
+            case 2:
+                b_src_v = gl::BLUE;
+                break;
+            case 3:
+                b_src_v = gl::ALPHA;
+                break;
+        }
+        switch ( mask( a_src ) ) {
+            case 0:
+                a_src_v = gl::RED;
+                break;
+            case 1:
+                a_src_v = gl::GREEN;
+                break;
+            case 2:
+                a_src_v = gl::BLUE;
+                break;
+            case 3:
+                a_src_v = gl::ALPHA;
+                break;
+        }
+        channels_v = 4;
         return *this;
     }
 
@@ -528,10 +1149,14 @@ namespace gfx {
                     msg += " is illegal for single channel signed integer image formats.";
                     throw std::invalid_argument( msg );
             }
+            channels_v = 1;
             return *this;
         }
 
-    inline  texture_1D::settings&       texture_1D::settings::signed_int_2( RGi const& depth )
+    inline  texture_1D::settings&
+    texture_1D::settings::signed_int_2( RGi const& depth,
+                                           swizz2 const& r_src,
+                                           swizz2 const& g_src  )
     {
         switch ( depth.n() ) {
             case 8:
@@ -552,10 +1177,33 @@ namespace gfx {
                 msg += " is illegal for dual channel signed integer image formats.";
                 throw std::invalid_argument( msg );
         }
+        uvec2 mask ( 0, 1 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+        }
+        channels_v = 2;
         return *this;
     }
 
-    inline  texture_1D::settings&       texture_1D::settings::signed_int_3( RGBi const& depth )
+    inline  texture_1D::settings&
+    texture_1D::settings::signed_int_3( RGBi const& depth,
+                                        swizz3 const& r_src,
+                                        swizz3 const& g_src,
+                                        swizz3 const& b_src )
     {
         switch ( depth.n() ) {
             case 8:
@@ -576,10 +1224,52 @@ namespace gfx {
                 msg += " is illegal for triple channel signed integer image formats.";
                 throw std::invalid_argument( msg );
         }
+        uvec3 mask ( 0, 1, 2 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+            case 2:
+                r_src_v = gl::BLUE;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+            case 2:
+                g_src_v = gl::BLUE;
+                break;
+        }
+        
+        switch ( mask( b_src ) ) {
+            case 0:
+                b_src_v = gl::RED;
+                break;
+            case 1:
+                b_src_v = gl::GREEN;
+                break;
+            case 2:
+                b_src_v = gl::BLUE;
+                break;
+        }
+        channels_v = 3;
         return *this;
     }
 
-    inline  texture_1D::settings&       texture_1D::settings::signed_int_4( RGBAi const& depth )
+    inline  texture_1D::settings&
+    texture_1D::settings::signed_int_4( RGBAi const& depth,
+                                        swizz4 const& r_src,
+                                        swizz4 const& g_src,
+                                        swizz4 const& b_src,
+                                        swizz4 const& a_src )
     {
         switch ( depth.n() ) {
             case 8:
@@ -600,6 +1290,66 @@ namespace gfx {
                 msg += " is illegal for quad channel signed integer image formats.";
                 throw std::invalid_argument( msg );
         }
+        uvec4 mask ( 0, 1, 2, 3 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+            case 2:
+                r_src_v = gl::BLUE;
+                break;
+            case 3:
+                r_src_v = gl::ALPHA;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+            case 2:
+                g_src_v = gl::BLUE;
+                break;
+            case 3:
+                g_src_v = gl::ALPHA;
+                break;
+        }
+        
+        switch ( mask( b_src ) ) {
+            case 0:
+                b_src_v = gl::RED;
+                break;
+            case 1:
+                b_src_v = gl::GREEN;
+                break;
+            case 2:
+                b_src_v = gl::BLUE;
+                break;
+            case 3:
+                b_src_v = gl::ALPHA;
+                break;
+        }
+        switch ( mask( a_src ) ) {
+            case 0:
+                a_src_v = gl::RED;
+                break;
+            case 1:
+                a_src_v = gl::GREEN;
+                break;
+            case 2:
+                a_src_v = gl::BLUE;
+                break;
+            case 3:
+                a_src_v = gl::ALPHA;
+                break;
+        }
+        channels_v = 4;
         return *this;
     }
 
@@ -620,10 +1370,14 @@ namespace gfx {
                     msg += " is illegal for single channel floating point image formats.";
                     throw std::invalid_argument( msg );
             }
+            channels_v = 1;
             return *this;
         }
 
-    inline  texture_1D::settings&       texture_1D::settings::floating_point_2( RGf const& depth )
+    inline  texture_1D::settings&
+    texture_1D::settings::floating_point_2( RGf const& depth,
+                                           swizz2 const& r_src,
+                                           swizz2 const& g_src  )
     {
         switch ( depth.n() ) {
             case 16:
@@ -640,10 +1394,33 @@ namespace gfx {
                 msg += " is illegal for dual channel floating point image formats.";
                 throw std::invalid_argument( msg );
         }
+        uvec2 mask ( 0, 1 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+        }
+        channels_v = 2;
         return *this;
     }
 
-    inline  texture_1D::settings&       texture_1D::settings::floating_point_3( RGBf const& depth )
+    inline  texture_1D::settings&
+    texture_1D::settings::floating_point_3( RGBf const& depth,
+                                            swizz3 const& r_src,
+                                            swizz3 const& g_src,
+                                            swizz3 const& b_src  )
     {
         switch ( depth.n() ) {
             case 16:
@@ -660,10 +1437,52 @@ namespace gfx {
                 msg += " is illegal for triple channel floating point image formats.";
                 throw std::invalid_argument( msg );
         }
+        uvec3 mask ( 0, 1, 2 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+            case 2:
+                r_src_v = gl::BLUE;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+            case 2:
+                g_src_v = gl::BLUE;
+                break;
+        }
+        
+        switch ( mask( b_src ) ) {
+            case 0:
+                b_src_v = gl::RED;
+                break;
+            case 1:
+                b_src_v = gl::GREEN;
+                break;
+            case 2:
+                b_src_v = gl::BLUE;
+                break;
+        }
+        channels_v = 3;
         return *this;
     }
 
-    inline  texture_1D::settings&       texture_1D::settings::floating_point_4( RGBAf const& depth )
+    inline  texture_1D::settings&
+    texture_1D::settings::floating_point_4( RGBAf const& depth,
+                                            swizz4 const& r_src,
+                                            swizz4 const& g_src,
+                                            swizz4 const& b_src,
+                                            swizz4 const& a_src )
     {
         switch ( depth.n() ) {
             case 16:
@@ -680,6 +1499,66 @@ namespace gfx {
                 msg += " is illegal for quad channel floating point image formats.";
                 throw std::invalid_argument( msg );
         }
+        uvec4 mask ( 0, 1, 2, 3 );
+        switch ( mask( r_src ) ) {
+            case 0:
+                r_src_v = gl::RED;
+                break;
+            case 1:
+                r_src_v = gl::GREEN;
+                break;
+            case 2:
+                r_src_v = gl::BLUE;
+                break;
+            case 3:
+                r_src_v = gl::ALPHA;
+                break;
+        }
+        
+        switch ( mask( g_src ) ) {
+            case 0:
+                g_src_v = gl::RED;
+                break;
+            case 1:
+                g_src_v = gl::GREEN;
+                break;
+            case 2:
+                g_src_v = gl::BLUE;
+                break;
+            case 3:
+                g_src_v = gl::ALPHA;
+                break;
+        }
+        
+        switch ( mask( b_src ) ) {
+            case 0:
+                b_src_v = gl::RED;
+                break;
+            case 1:
+                b_src_v = gl::GREEN;
+                break;
+            case 2:
+                b_src_v = gl::BLUE;
+                break;
+            case 3:
+                b_src_v = gl::ALPHA;
+                break;
+        }
+        switch ( mask( a_src ) ) {
+            case 0:
+                a_src_v = gl::RED;
+                break;
+            case 1:
+                a_src_v = gl::GREEN;
+                break;
+            case 2:
+                a_src_v = gl::BLUE;
+                break;
+            case 3:
+                a_src_v = gl::ALPHA;
+                break;
+        }
+        channels_v = 4;
         return *this;
     }
 
@@ -707,6 +1586,51 @@ namespace gfx {
 
     inline  texture_1D::settings&  texture_1D::settings::sRGBA_8bit()
     { image_format_v = gl::SRGB8_ALPHA8; pixel_size_v = 32u; return *this; }
+    
+    inline  texture_1D::settings&
+    texture_1D::settings::mipmap_range( size_t const base,
+                                        size_t const max )
+    {
+        base_level_v = base;
+        max_level_v = max;
+        return *this;
+    }
+    
+    inline  texture_1D::settings&
+    texture_1D::settings::sample_range( float const base,
+                                        float const max )
+    {
+        base_lod_v = base;
+        max_lod_v = max;
+        return *this;
+    }
+    
+    inline  texture_1D::settings&
+    texture_1D::settings::sample_bias( float const bias )
+    {
+        lod_bias_v = bias;
+        return *this;
+    }
+    
+    inline  texture_1D::settings&
+    texture_1D::settings::sample_minification( min_filter_t const& min )
+    { min_filter_v = min.val(); return *this; }
+    
+    inline  texture_1D::settings&
+    texture_1D::settings::sample_magnification( mag_filter_t const& mag )
+    { mag_filter_v = mag.val(); return *this; }
+    
+    inline  texture_1D::settings&
+    texture_1D::settings::wrap_s( wrap_mode_t const& mode )
+    { wrap_s_v = mode.val(); return *this; }
+    
+    inline  texture_1D::settings&
+    texture_1D::settings::wrap_t( wrap_mode_t const& mode )
+    { wrap_t_v = mode.val(); return *this; }
+    
+    inline  texture_1D::settings&
+    texture_1D::settings::comparison_function( comparison_function_t const& func )
+    { compare_func_v = func.val(); return *this; }
     
     inline texture_1D::settings&    texture_1D::settings::file( std::string const& path )
     { path_v = path; return *this; }

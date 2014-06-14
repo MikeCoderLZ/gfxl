@@ -389,6 +389,42 @@ namespace gfx {
         } else {
             target = gl::TEXTURE_1D;
         }
+        gl::ActiveTexture( gl::TEXTURE0 );
+        gl::BindTexture( target, tex_ID );
+        
+        gl::TexParameteri( target, gl::TEXTURE_BASE_LEVEL, set.base_level_v );
+        gl::TexParameteri( target, gl::TEXTURE_MAX_LEVEL, set.max_level_v );
+        gl::TexParameteri( target, gl::TEXTURE_SWIZZLE_R, set.r_src_v );
+        if ( set.channels_v > 1 ) {
+            gl::TexParameteri( target, gl::TEXTURE_SWIZZLE_G, set.g_src_v );
+            if ( set.channels_v > 2 ) {
+                gl::TexParameteri( target, gl::TEXTURE_SWIZZLE_B, set.b_src_v );
+                if ( set.channels_v > 3 ) {
+                    gl::TexParameteri( target, gl::TEXTURE_SWIZZLE_A, set.a_src_v );
+                }
+            }
+        }
+        gl::TexParameterf( target, gl::TEXTURE_MIN_LOD, set.base_lod_v );
+        gl::TexParameterf( target, gl::TEXTURE_MAX_LOD, set.max_lod_v );
+        gl::TexParameterf( target, gl::TEXTURE_LOD_BIAS, set.lod_bias_v );
+        
+        gl::TexParameteri( target, gl::TEXTURE_MIN_FILTER, set.min_filter_v );
+        gl::TexParameteri( target, gl::TEXTURE_MAG_FILTER, set.mag_filter_v );
+        
+        gl::TexParameteri( target, gl::TEXTURE_WRAP_S, set.wrap_s_v );
+        gl::TexParameteri( target, gl::TEXTURE_WRAP_T, set.wrap_t_v );
+        
+        if ( set.compare_func_v == 0 ) {
+            gl::TexParameteri( target, gl::TEXTURE_COMPARE_MODE, gl::NONE );
+        } else {
+            gl::TexParameteri( target,
+                               gl::TEXTURE_COMPARE_MODE,
+                               gl::COMPARE_REF_TO_TEXTURE );
+            gl::TexParameteri( target,
+                               gl::TEXTURE_COMPARE_FUNC,
+                               set.compare_func_v );
+        }
+        gl::BindTexture( target, 0 );
     }
     
     texture_1D::~texture_1D()
