@@ -3,9 +3,9 @@
 in vec4 color;
 layout( location = 0 ) out vec4 color_out;
 
-mat3 Crx = mat3( vec3( 3.2410, -0.9692, 0.0556 ),
-                 vec3( -1.5374, 1.8760, -0.2040 ),
-                 vec3( -0.4986, 0.0416, 1.0570 ) );
+mat3 Crx = mat3(  3.240479, -0.9692556, 0.055648,
+                 -1.537150,  1.875992, -0.204043,
+                 -0.498535,  0.041556,  1.057311);
 
 mat3 B_1 = mat3( vec3( 0.9555, -0.0284, 0.0123 ),
                  vec3( -0.0231, 1.0100, -0.0205 ),
@@ -13,45 +13,36 @@ mat3 B_1 = mat3( vec3( 0.9555, -0.0284, 0.0123 ),
 
 void main()
 {
-    vec3 color_XYZ;
-    color_XYZ.y = (color.x + 16.0) / 116.0;
-    color_XYZ.x = color.y / 500.0 + color_XYZ.y;
-    color_XYZ.z = color_XYZ.y - color.z / 200.0;
+    vec3 RGB_color;
+    RGB_color.y = (color.x + 16.0) * 0.008620689;
+    RGB_color.x =  color.y * 0.002 + RGB_color.y;
+    RGB_color.z = -color.z * 0.005 + RGB_color.y;
     
-    float X1 = pow( color_XYZ.x, 3.0 );
-    if ( color_XYZ.x <= 0.206893 ) {
-        X1 = (X1 - 16.0/116.0)/7.787;
+    if ( RGB_color.x > 0.20689655 ) {
+        RGB_color.x = pow( RGB_color.x, 3.0 );
+    } else {
+        RGB_color.x = 0.12841854 * ( RGB_color.x - 0.137931034);
     }
-    float Y1 = pow( color_XYZ.y, 3.0 );
-    if ( color_XYZ.y <= 0.206893 ) {
-        Y1 = (Y1 - 16.0/116.0)/7.787;
-    }
-    float Z1 = pow( color_XYZ.z, 3.0 );
-    if ( color_XYZ.z <= 0.206893 ) {
-        Z1 = (Z1 - 16.0/116.0)/7.787;
+
+    if ( RGB_color.y > 0.20689655 ) {
+        RGB_color.y = pow( RGB_color.y, 3.0 );
+    } else {
+        RGB_color.y = 0.12841854 * ( RGB_color.y - 0.137931034);
     }
     
-    vec3 color_RGB = Crx * ( vec3( X1, Y1, Z1 ) * vec3( 0.9643, 1.0000, 0.8251 ) );
-    float R = 1.055 * pow(color_RGB.r, 1.0/2.4) - 0.055;
-    if ( color_RGB.r <= 0.00304 )
-    {
-        R = 12.92 * color_RGB.r;
+    if ( RGB_color.z > 0.20689655 ) {
+        RGB_color.z = pow( RGB_color.z, 3.0 );
+    } else {
+        RGB_color.z = 0.12841854 * ( RGB_color.xz - 0.137931034);
     }
-    float G = 1.055 * pow(color_RGB.g, 1.0/2.4) - 0.055;
-    if ( color_RGB.g <= 0.00304 )
-    {
-        G = 12.92 * color_RGB.g;
-    }
-    float B = 1.055 * pow(color_RGB.b, 1.0/2.4) - 0.055;
-    if ( color_RGB.b <= 0.00304 )
-    {
-        B = 12.92 * color_RGB.b;
-    }
-//     float R = pow( color_RGB.r, 1.0/2.2 );
-//     float G = pow( color_RGB.g, 1.0/2.2 );
-//     float B = pow( color_RGB.b, 1.0/2.2 );
     
-    color_out = vec4( R, G, B,
+    RGB_color = RGB_color * vec3( 0.9643, 1.0, 0.8251 );
+    
+    RGB_color = Crx * B_1 * RGB_color;
+    
+    color_out = vec4( min( pow( max( 0.0, RGB_color.r ), 0.45454545 ), 1.0 ),
+                      min( pow( max( 0.0, RGB_color.g ), 0.45454545 ), 1.0 ),
+                      min( pow( max( 0.0, RGB_color.b ), 0.45454545 ), 1.0 ),
                       color.a );
-//        color_out = vec4( color.r * 0.01, 0.0, 0.0, 1.0);
+
 }

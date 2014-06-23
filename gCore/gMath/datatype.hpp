@@ -6,6 +6,7 @@
 #include <iostream>
 #include <cmath>
 #include <climits>
+#include <cstdint>
 #include "../gUtility/datatypeinfo.hpp"
 #include "../gVideo/gl_core_3_3.hpp"
 #include "constant.hpp"
@@ -37,6 +38,10 @@ class swizz3;
 class swizz2;
 class swizz1;
 
+#ifndef PROGRAM_HPP
+class program;
+#endif
+
 // An ABC that graphics primitives use to dela with mapping
 // to OpenGL or any other memory.
 class raw_mappable;
@@ -52,6 +57,7 @@ public:
     unsigned char           operator[]( int const index ) const;
 protected:
     friend class            raw_mappable;
+    friend class            program;
     unsigned char* bytes;
 };
 
@@ -238,6 +244,7 @@ public:
                                         swizz3 const& x3 ) const;
     vec3_t<T>               operator+( vec3_t<T> const& rhs ) const;
     vec3_t<T>               operator-( vec3_t<T> const& rhs ) const;
+    vec3_t<T>               operator-() const;
     vec3_t<T>               operator*( vec3_t<T> const& rhs ) const;
     vec3_t<T>               operator*( comp_t rhs ) const;
     vec3_t<T>               operator/( vec3_t<T> const& rhs ) const;
@@ -356,6 +363,7 @@ public:
     comp_t                  operator()( swizz4 const& e0 ) const;
     
     qutn_t<T>&              norm();
+    vec3_t<T>               rotate( vec3_t<T> const& avec ) const;
     
     template< typename U >
     friend std::ostream&    operator<<( std::ostream& out, qutn_t<U> const& src );
@@ -373,47 +381,47 @@ G_TYPE( qutn_t<T>, 4 * type<T>().n_components(), type<T>().component_size(), typ
 // Here we instantiate all the datatypes that GLSL supports
 // and provide typedef names.
 
-typedef     vec4_t<float>           vec4;
-typedef     vec3_t<float>           vec3;
-typedef     vec2_t<float>           vec2;
-typedef     scalar<float>           float32;
-typedef     qutn_t<float>           qutn;
+typedef     vec4_t<float>       vec4;
+typedef     vec3_t<float>       vec3;
+typedef     vec2_t<float>       vec2;
+typedef     scalar<float>       float32;
+typedef     qutn_t<float>       qutn;
 
-typedef     vec4_t<double>          dvec4;
-typedef     vec3_t<double>          dvec3;
-typedef     vec2_t<double>          dvec2;
-typedef     scalar<double>          double64;
-typedef     qutn_t<double>          dqutn;
+typedef     vec4_t<double>      dvec4;
+typedef     vec3_t<double>      dvec3;
+typedef     vec2_t<double>      dvec2;
+typedef     scalar<double>      double64;
+typedef     qutn_t<double>      dqutn;
 
-typedef     vec4_t<int>             ivec4;
-typedef     vec3_t<int>             ivec3;
-typedef     vec2_t<int>             ivec2;
-typedef     scalar<int>             int32;
+typedef     vec4_t<int32_t>     ivec4;
+typedef     vec3_t<int32_t>     ivec3;
+typedef     vec2_t<int32_t>     ivec2;
+typedef     scalar<int32_t>     int32;
 
-typedef     vec4_t<short>           svec4;
-typedef     vec3_t<short>           svec3;
-typedef     vec2_t<short>           svec2;
-typedef     scalar<short>           short16;
+typedef     vec4_t<int16_t>     svec4;
+typedef     vec3_t<int16_t>     svec3;
+typedef     vec2_t<int16_t>     svec2;
+typedef     scalar<int16_t>     short16;
 
-typedef     vec4_t<char>            cvec4;
-typedef     vec3_t<char>            cvec3;
-typedef     vec2_t<char>            cvec2;
-typedef     scalar<char>            char8;
+typedef     vec4_t<int8_t>      cvec4;
+typedef     vec3_t<int8_t>      cvec3;
+typedef     vec2_t<int8_t>      cvec2;
+typedef     scalar<int8_t>      char8;
 
-typedef     vec4_t<unsigned int>    uvec4;
-typedef     vec3_t<unsigned int>    uvec3;
-typedef     vec2_t<unsigned int>    uvec2;
-typedef     scalar<unsigned int>    uint32;
+typedef     vec4_t<uint32_t>    uvec4;
+typedef     vec3_t<uint32_t>    uvec3;
+typedef     vec2_t<uint32_t>    uvec2;
+typedef     scalar<uint32_t>    uint32;
 
-typedef     vec4_t<unsigned short>  usvec4;
-typedef     vec3_t<unsigned short>  usvec3;
-typedef     vec2_t<unsigned short>  usvec2;
-typedef     scalar<unsigned short>  ushort16;
+typedef     vec4_t<uint16_t>    usvec4;
+typedef     vec3_t<uint16_t>    usvec3;
+typedef     vec2_t<uint16_t>    usvec2;
+typedef     scalar<uint16_t>    ushort16;
 
-typedef     vec4_t<unsigned char>   ucvec4;
-typedef     vec3_t<unsigned char>   ucvec3;
-typedef     vec2_t<unsigned char>   ucvec2;
-typedef     scalar<unsigned char>   uchar8;
+typedef     vec4_t<uint8_t>     ucvec4;
+typedef     vec3_t<uint8_t>     ucvec3;
+typedef     vec2_t<uint8_t>     ucvec2;
+typedef     scalar<uint8_t>     uchar8;
 
 template< typename T >
 class col2 {
@@ -1903,6 +1911,14 @@ inline vec3_t<T> vec3_t<T>::operator-( vec3_t<T> const& rhs ) const
                     (*this)(y) - rhs(y),
                     (*this)(z) - rhs(z) );
 }
+
+template< typename T >
+inline vec3_t<T> vec3_t<T>::operator-() const
+{
+    return vec3_t<T>( -data.c[0],
+                      -data.c[1],
+                      -data.c[2] );
+}
 template< typename T >
 inline vec3_t<T> vec3_t<T>::operator*( vec3_t<T> const& rhs ) const
 {
@@ -2476,6 +2492,14 @@ qutn_t<T>& qutn_t<T>::norm()
     this->data.c[3] *= inv_mag;
     
     return *this;
+}
+
+template< typename T > inline
+vec3_t<T>   qutn_t<T>::rotate( vec3_t<T> const& avec ) const
+{
+    qutn_t<T> pure_q = qutn_t<T>::pure( avec );
+    pure_q = (*this) * pure_q * -(*this);
+    return vec3_t<T>( pure_q(i), pure_q(j), pure_q(k) );
 }
 
 template< typename U > inline

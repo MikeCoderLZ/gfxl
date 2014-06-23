@@ -25,7 +25,7 @@ include ./gVideo/makefile
 include ./gScene/makefile
 
 
-all: mathTests systemTests videoTests texture_tests utilities
+all: mathTests systemTests videoTests scene_tests utilities
 
 gEngine.exe: $(OBJ)/gEngine.o $(MATHOBJ) makefile
 	g++ $(OBJ)/gEngine.o $(MATHOBJ) $(SDLLIBS) -o $(BIN)/gEngine.exe

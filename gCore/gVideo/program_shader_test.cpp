@@ -277,6 +277,7 @@ SUITE( GLSLShadingTests )
         program test_prgm ( program::settings()
                             .use_vert( "./shader/testVert_1Dtextured.glsl" )
                             .use_frag( "./shader/testFrag_1Dtextured.glsl" ) );
+        test_prgm.uniform( "line" );
         test_prgm.compile();
         
         buffer test_buff ( buffer::settings().blocks(4) );
@@ -308,14 +309,8 @@ SUITE( GLSLShadingTests )
         test_txtr.load_data();
         
         test_prgm.link();
-        
-        GLint txtr_loc = gl::GetUniformLocation( test_prgm.get_prog_ID(), "line" );
-        
-        
-        
         test_prgm.use();
-        
-        gl::Uniform1i( txtr_loc, 0 );
+        test_prgm.load_uniform( "line", 0 );
         
         GLuint elements[] = { 0, 1, 2, 0, 2, 3 };
         
@@ -353,6 +348,7 @@ SUITE( GLSLShadingTests )
                             .use_vert( "./shader/testVert_2Dtextured.glsl" )
                             .use_frag( "./shader/testFrag_2Dtextured.glsl" ) );
         test_prgm.compile();
+        test_prgm.uniform( "smilie" );
         
         buffer test_buff ( buffer::settings().blocks(4) );
         test_buff.block_format( block_spec()
@@ -384,14 +380,9 @@ SUITE( GLSLShadingTests )
         test_txtr.load_data();
         
         test_prgm.link();
-        
-        GLint txtr_loc = gl::GetUniformLocation( test_prgm.get_prog_ID(), "smilie" );
-        
-        
-        
         test_prgm.use();
         
-        gl::Uniform1i( txtr_loc, 0 );
+        test_prgm.load_uniform( "smilie", 0 );
         
         GLuint elements[] = { 0, 1, 2, 0, 2, 3 };
         
@@ -474,9 +465,7 @@ SUITE( GLSLShadingTests )
         test_cntx.draw_triangles( 2, idx );
         
         test_wndw.swap();
-        
-        
-        
+  
         std::cin >> input;        
         CHECK_EQUAL( "y", input );
     }
@@ -506,7 +495,7 @@ SUITE( GLSLShadingTests )
         color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
         color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
         color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
-        color.push_back( vec3( 0.5f, 0.5f, 0.5f ) );
+        color.push_back( vec3( 0.5f, 1.0f, 1.0f ) );
         
         test_buff.fill_attribute( 0, position );
         test_buff.fill_attribute( 1, color );

@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <cmath>
 //#include "type_op.hpp"
 #include "../../UnitTest++_src/UnitTest++.h"
 #include "datatype.hpp"
@@ -5886,6 +5886,171 @@ SUITE( Matrix4x3 )
                         0.0f,  1.0f, -3.0f, 5.0f,
                        -5.3f, 18.0f,  0.0f, 8.5f );
         CHECK_EQUAL( bmat4x3, amat4x3 );
+    }
+}
+
+gfx::mat3 Cxr ( 0.412453f, 0.357580f, 0.180423f,
+                0.212671f, 0.715160f, 0.072169f,
+                0.019334f, 0.119193f, 0.950227f );
+gfx::mat3 B ( 1.0479f, 0.0229f, -0.0502f,
+              0.0296f, 0.9904f, -0.0171f,
+             -0.0092f, 0.0151f,  0.7519f );
+
+gfx::mat3 Crx ( 3.240479f, -1.537150f, -0.498535f,
+               -0.969256f,  1.875992f,  0.041556f,
+                0.055648f, -0.204043f,  1.057311f  );
+
+gfx::mat3 B_1 ( 0.9555f, -0.0231f, 0.0633f,
+                -0.0284f, 1.0100f, 0.0210f,
+                0.0123f, -0.0205f, 1.3304f );
+
+gfx::vec3    to_Lab( gfx::vec3 const& color )
+{
+    using namespace gfx;
+    
+//     vec3 XYZ_color ( ( color(r) <= 0.03928f ?
+//                            color(r)/12.92f :
+//                            pow( color(r) * 0.94786729 + 0.0521327, 2.4) ),
+//                      ( color(g) <= 0.03928f ?
+//                            color(g)/12.92f :
+//                            pow( color(g) * 0.94786729 + 0.0521327, 2.4) ),
+//                      ( color(b) <= 0.03928f ?
+//                            color(b)/12.92f :
+//                            pow( color(b) * 0.94786729 + 0.0521327, 2.4) ) );
+
+    vec3 XYZ_color ( pow( color(r), 2.2 ),
+                     pow( color(g), 2.2 ),
+                     pow( color(b), 2.2 ) );
+    
+    XYZ_color = B * Cxr * XYZ_color;
+    
+    XYZ_color = XYZ_color * vec3( 1.037021f, 1.0f, 1.211974f );
+    
+    float X_1;
+    if ( XYZ_color(x) > 0.008856f ) {
+        X_1 = cbrt( XYZ_color(x) );
+    } else {
+        X_1 = 7.787037f * XYZ_color(x) + 0.137931034f;
+    }
+    
+    float Y_1;
+    if ( XYZ_color(y) > 0.008856f ) {
+        Y_1 = cbrt( XYZ_color(y) );
+    } else {
+        Y_1 = 7.787037f * XYZ_color(y) + 0.137931034f;
+    }
+    
+    float Z_1;
+    if ( XYZ_color(z) > 0.008856f ) {
+        Z_1 = cbrt( XYZ_color(z) );
+    } else {
+        Z_1 = 7.787037f * XYZ_color(z) + 0.137931034f;
+    }
+    
+    return vec3( fmin( fmax(    0.0f, 116.0f *   Y_1 - 16.0f ), 100.0f ),
+                 fmin( fmax( -128.0f, 500.0f * ( X_1 - Y_1 ) ), 128.0f ),
+                 fmin( fmax( -128.0f, 200.0f * ( Y_1 - Z_1 ) ), 128.0f ) );
+}
+
+gfx::vec3    to_RGB( gfx::vec3 const& lab )
+{
+    using namespace gfx;
+    float Y_1 = (lab(x) + 16.0f) * 0.008620689f;
+    float X_1 = lab(y) * 0.002f + Y_1;
+    float Z_1 = -lab(z) * 0.005f + Y_1;
+    
+    if ( X_1 > 0.20689655f ) {
+        X_1 = pow( X_1, 3.0 );
+    } else {
+        X_1 = 0.12841854f * ( X_1 - 0.137931034f);
+    }
+    
+    if ( Y_1 > 0.20689655f ) {
+        Y_1 = pow( Y_1, 3.0 );
+    } else {
+        Y_1 = 0.12841854f * ( Y_1 - 0.137931034f);
+    }
+    
+    if ( Z_1 > 0.20689655f ) {
+        Z_1 = pow( Z_1, 3.0 );
+    } else {
+        Z_1 = 0.12841854f * ( Z_1 - 0.137931034f);
+    }
+    
+    vec3 RGB_color =  Crx * B_1 * vec3( X_1 * 0.9643f,
+                                        Y_1 * 1.0f,
+                                        Z_1 * 0.8251f );
+//     if ( RGB_color(r) <= 0.00304f ) {
+//         RGB_color(r) *= 12.92f;
+//     } else {
+//         RGB_color(r) =  1.055f * pow( RGB_color(r), 1.0/2.4 ) - 0.055f;
+//     }
+//     
+//     if ( RGB_color(g) <= 0.00304f ) {
+//         RGB_color(g) *= 12.92f; 
+//     } else {
+//         RGB_color(g) = 1.055f * pow( RGB_color(g), 1.0/2.4 ) - 0.055f;
+//     }
+//     
+//     if ( RGB_color(b) <= 0.00304f ) {
+//         RGB_color(b) *= 12.92f; 
+//     } else {
+//         RGB_color(b) = 1.055f * pow( RGB_color(b), 1.0/2.4 ) - 0.055f;
+//     }
+    RGB_color(r) = fmin( pow( fmax( 0.0f, RGB_color(r) ), 0.45454545 ), 1.0f );
+    RGB_color(g) = fmin( pow( fmax( 0.0f, RGB_color(g) ), 0.45454545 ), 1.0f );
+    RGB_color(b) = fmin( pow( fmax( 0.0f, RGB_color(b) ), 0.45454545 ), 1.0f );
+    
+    return RGB_color;
+}
+
+SUITE( IntegratedTests )
+{
+    TEST( CIELabConversion )
+    {
+        using namespace gfx;
+        vec3 white ( 1.0f, 1.0f, 1.0f );
+        vec3 yellow ( 1.0f, 1.0f, 0.0f );
+        vec3 blue ( 0.0f, 0.0f, 1.0f );
+        vec3 green ( 0.0f, 1.0f, 0.0f );
+        vec3 red ( 1.0f, 0.0f, 0.0f );
+        vec3 magenta ( 1.0f, 0.0f, 1.0f );
+        vec3 black ( 0.0f, 0.0f, 0.0f );
+        
+        
+        
+//         float Xm = pow((0.055f + magenta(r)/1.055f, 2.4f);
+//         if( magenta(r) <= 0.03928f ) {
+//             Xm = magenta(r) / 12.92f;
+//         }
+//         float Ym = pow((0.055f + magenta(g)/1.055f, 2.4f);
+//         if( magenta(g) <= 0.03928f ) {
+//             Ym = magenta(g) / 12.92f;
+//         }
+//         float Zm = pow((0.055f + magenta(b)/1.055f, 2.4f);
+//         if( magenta(b) <= 0.03928f ) {
+//             Zm = magenta(b) / 12.92f;
+//         }
+        
+        vec3 magenta_processed = to_RGB( to_Lab(magenta) );
+        vec3 black_processed = to_RGB( to_Lab(black) );
+        
+        
+        std::cout << "Lab black: " << to_Lab(black) << std::endl;
+        std::cout << "Lab white: " << to_Lab(white) << std::endl;
+        std::cout << "Lab yellow: " << to_Lab(yellow) << std::endl;
+        std::cout << "Lab blue: " << to_Lab(blue) << std::endl;
+        std::cout << "Lab green: " << to_Lab(green) << std::endl;
+        std::cout << "Lab red: " << to_Lab(red) << std::endl;
+        std::cout << "Lab magenta: " << to_Lab(magenta) << std::endl;
+        
+        CHECK_EQUAL( black, black_processed );
+        CHECK_EQUAL( red, to_RGB( to_Lab( red ) ) );
+        CHECK_EQUAL( green, to_RGB( to_Lab( green ) ) );
+        CHECK_EQUAL( yellow, to_RGB( to_Lab( yellow ) ) );
+        CHECK_EQUAL( blue, to_RGB( to_Lab( blue ) ) );
+        CHECK_EQUAL( white, to_RGB( to_Lab( white ) ) );
+        CHECK_EQUAL( magenta, magenta_processed );
     }
 }
 

@@ -1,6 +1,7 @@
 namespace gfx {
 
     program::program( settings const& set ) :
+                      uniform_map ( new key_map() ),
                       vert_path ( "" ),
                       frag_path ( "" ),
                       geom_path ( "" ),
@@ -73,6 +74,8 @@ namespace gfx {
             gl::DeleteShader( tess_ID );
         }
         
+        uniform_map->clear();
+        
         // I do not know if this code is needed.
 //         GLint n_shdr;
 //         if (     gl::IsProgram( prog_ID )
@@ -98,6 +101,9 @@ namespace gfx {
 //         gl::DeleteShader( geom_ID );
 //         gl::DeleteShader( tess_ID );
     }
+    
+    void    program::uniform( std::string const& name )
+    { (*uniform_map)[ name ] = -1; }
     
     void    program::compile()
     {
@@ -147,6 +153,16 @@ namespace gfx {
             delete[] info_log;
             throw compilation_error( msg );
         }
+        
+        key_map::iterator unfm;
+        
+        for ( unfm = uniform_map->begin();
+              unfm != uniform_map->end();
+              ++unfm                       ) {
+            (*uniform_map)[unfm->first] = gl::GetUniformLocation( prog_ID,
+                                                                  unfm->first.c_str() );
+        }
+        
     }
     
     void program::use()
