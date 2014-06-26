@@ -21,8 +21,6 @@ namespace gfx {
 }
 #include "window.hpp"
 #include "context.hpp"
-#include "program.hpp"
-#include "buffer.hpp"
 
 #include "video_system.hpp"
 

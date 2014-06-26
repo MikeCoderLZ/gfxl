@@ -1,4 +1,4 @@
-scene_tests: texture_tests camera_tests
+scene_tests: texture_tests camera_tests program_tests
 
 texture_tests: $(BIN)/texture_test
 
@@ -22,8 +22,6 @@ $(OBJ)/texture_test.o: $(GSCN)/texture_test.cpp \
                        $(GVID)/version.hpp \
                        $(GVID)/window.hpp \
                        $(GVID)/context.hpp \
-                       $(GVID)/buffer.hpp \
-                       $(GVID)/program.hpp 
 	g++ -c $(COM) -Wno-sign-compare \
 	    $(GSCN)/texture_test.cpp \
 	    $(SDLFLAGS) -o $(OBJ)/texture_test.o
@@ -35,11 +33,81 @@ $(OBJ)/texture.o: $(GSCN)/texture.cpp \
                   $(GVID)/version.hpp \
                   $(GVID)/window.hpp \
                   $(GVID)/context.hpp \
-                  $(GVID)/buffer.hpp \
-                  $(GVID)/program.hpp
 	g++ -c $(COM) -Wno-sign-compare \
 	    $(GSCN)/texture.cpp \
 	    $(SDLFLAGS) -o $(OBJ)/texture.o
+
+	    
+$(OBJ)/buffer.o: $(GSCN)/buffer.cpp \
+                 $(GSCN)/buffer.hpp \
+                 $(GVID)/gfx_exception.hpp \
+                 $(GVID)/version.hpp
+	g++ -c $(COM) -Wno-sign-compare \
+	    $(GSCN)/buffer.cpp \
+	    $(SDLFLAGS) -o $(OBJ)/buffer.o
+	    
+program_tests: $(BIN)/program_shader_test $(BIN)/program_laboratory
+
+$(OBJ)/program.o: $(GSCN)/program.cpp \
+                  $(GSCN)/program.hpp \
+                  $(GVID)/gfx_exception.hpp \
+                  $(GVID)/version.hpp
+	g++ -c $(COM) -Wno-sign-compare \
+	    $(GSCN)/program.cpp \
+	    $(SDLFLAGS) -o $(OBJ)/program.o
+	    
+$(BIN)/program_laboratory: $(OBJ)/program_laboratory.o \
+                            $(OBJ)/video.o \
+                            $(OBJ)/buffer.o \
+                            $(OBJ)/program.o \
+                            $(OBJ)/gl_core_3_3.o
+	g++ $(OBJ)/program_laboratory.o \
+	    $(OBJ)/video.o \
+	    $(OBJ)/buffer.o \
+	    $(OBJ)/program.o \
+	    $(OBJ)/gl_core_3_3.o \
+	    -L ../../dev_lib -lUnitTest++ \
+	    $(SDLLIBS) -o $(BIN)/program_laboratory
+    
+$(OBJ)/program_laboratory.o: $(GSCN)/program_laboratory.cpp \
+                              $(GVID)/video.hpp \
+                              $(GSCN)/buffer.hpp \
+                              $(GSCN)/program.hpp \
+                              $(GVID)/gl_core_3_3.hpp \
+                              $(GMATH)/datatype.hpp
+	g++ -c $(COM) \
+	    -Wno-sign-compare -Wno-unused-but-set-variable \
+	    $(GSCN)/program_laboratory.cpp \
+	    $(SDLFLAGS) -o $(OBJ)/program_laboratory.o
+	    
+$(BIN)/program_shader_test: $(OBJ)/program_shader_test.o \
+                            $(OBJ)/video.o \
+                            $(OBJ)/buffer.o \
+                            $(OBJ)/program.o \
+                            $(OBJ)/texture.o \
+                            $(OBJ)/gl_core_3_3.o
+	g++ $(OBJ)/program_shader_test.o \
+	    $(OBJ)/video.o \
+	    $(OBJ)/buffer.o \
+	    $(OBJ)/program.o \
+	    $(OBJ)/texture.o \
+	    $(OBJ)/gl_core_3_3.o \
+	    -L ../../dev_lib -lUnitTest++ \
+	    -lfreeimage \
+	    $(SDLLIBS) -o $(BIN)/program_shader_test
+    
+$(OBJ)/program_shader_test.o: $(GSCN)/program_shader_test.cpp \
+                              $(GVID)/video.hpp \
+                              $(GSCN)/buffer.hpp \
+                              $(GSCN)/program.hpp \
+                              $(GSCN)/texture.hpp \
+                              $(GVID)/gl_core_3_3.hpp \
+                              $(GMATH)/datatype.hpp
+	g++ -c $(COM) \
+	    -Wno-sign-compare -Wno-unused-but-set-variable \
+	    $(GSCN)/program_shader_test.cpp \
+	    $(SDLFLAGS) -o $(OBJ)/program_shader_test.o          
+	    
 	    
 camera_tests: $(BIN)/camera_test
 	    
@@ -63,8 +131,8 @@ $(OBJ)/camera_test.o: $(GSCN)/camera_test.cpp \
                       $(GVID)/version.hpp \
                       $(GVID)/window.hpp \
                       $(GVID)/context.hpp \
-                      $(GVID)/buffer.hpp \
-                      $(GVID)/program.hpp
+                      $(GSCN)/buffer.hpp \
+                      $(GSCN)/program.hpp
 	g++ -c $(COM) \
 	$(GSCN)/camera_test.cpp \
 	 $(SDLFLAGS) -o $(OBJ)/camera_test.o
@@ -78,8 +146,8 @@ $(OBJ)/camera.o: $(GSCN)/camera.cpp \
                  $(GVID)/version.hpp \
                  $(GVID)/window.hpp \
                  $(GVID)/context.hpp \
-                 $(GVID)/buffer.hpp \
-                 $(GVID)/program.hpp
+                 $(GSCN)/buffer.hpp \
+                 $(GSCN)/program.hpp
 	g++ -c $(COM) \
 	$(GSCN)/camera.cpp \
 	$(SDLFLAGS) -o $(OBJ)/camera.o

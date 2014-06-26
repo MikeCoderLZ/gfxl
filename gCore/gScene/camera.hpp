@@ -13,16 +13,16 @@ namespace gfx {
         class settings {
         public:
                         settings();
-            settings&   location( vec3 const& loc );
-            settings&   focus( vec3 const& foc );
+            settings&   position( vec3 const& pos );
+            settings&   look_at( vec3 const& point );
             settings&   up( vec3 const& up );
             settings&   field_of_view( d_angle const& fov_vert );
             settings&   aspect_ratio( double aspect );
             settings&   near_plane( double near );
             settings&   far_plane( double far );
         private:
-            vec3        loc_v;
-            vec3        foc_v;
+            vec3        pos_v;
+            vec3        look_v;
             vec3        up_v;
             d_angle     fov_vert_v;
             double      aspect_v;
@@ -33,9 +33,10 @@ namespace gfx {
         
                         camera( settings const& set = settings() );
         mat4 const&     view_matrix() const;
+        camera&         look_at( vec3 const& point);
     protected:
-        vec3            loc;
-        vec3            focus;
+        vec3            pos;
+        vec3            look;
         vec3            up;
         qutn            orient;
         d_angle         fov_vert;
@@ -44,22 +45,23 @@ namespace gfx {
         double          far;
         mat4            perspect;
         mat4            view;
+        void            update_view();
     };
     
     inline camera::settings::settings() :
-                                loc_v ( 0.0f, 0.0f,  0.0f ),
-                                foc_v ( 0.0f, 0.0f, -1.0f ),
+                                pos_v ( 0.0f, 0.0f,  0.0f ),
+                                look_v ( 0.0f, 0.0f, -1.0f ),
                                 up_v ( 0.0f, 1.0f, 0.0f ),
                                 fov_vert_v ( d_angle::in_degs( 135.0 ) ),
                                 aspect_v ( 1.33 ),
                                 near_v ( 0.0 ),
                                 far_v ( 100.0 ) {}
                                 
-    inline camera::settings&    camera::settings::location( vec3 const& loc )
-    { loc_v = loc; return *this; }
+    inline camera::settings&    camera::settings::position( vec3 const& pos )
+    { pos_v = pos; return *this; }
     
-    inline camera::settings&    camera::settings::focus( vec3 const& foc )
-    { foc_v = foc; return *this; }
+    inline camera::settings&    camera::settings::look_at( vec3 const& point )
+    { look_v = point; return *this; }
     
     inline camera::settings&    camera::settings::up( vec3 const& up )
     { up_v = up; return *this; }

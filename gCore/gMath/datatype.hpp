@@ -883,7 +883,7 @@ public:
                                           comp_t tz );          
     static mat4_t<T>           translate( vec3_t<comp_t> const& tvec ); 
     static mat4_t<T>           cross_product( vec3_t<comp_t> const& vec );
-    static mat4_t<T>           perspective( double fovY,
+    static mat4_t<T>           perspective( d_angle const& fovY,
                                             double aspect,
                                             double near,
                                             double far );
@@ -935,6 +935,7 @@ public:
                                         vec4_t<comp_t> const& col1,
                                         vec4_t<comp_t> const& col2,
                                         vec4_t<comp_t> const& col3 );
+    mat4_t<T>&                 norm();
     virtual raw_map const   to_map() const;
     
     template< typename U > friend class mat4x3_t;
@@ -1962,9 +1963,9 @@ bool    vec3_t<T>::operator==( vec3_t<T> const& rhs ) const
 template<typename T> inline
 bool    vec3_t<T>::operator!=( vec3_t<T> const& rhs ) const
 {
-    return    data.c[0] != rhs.data.c[0]
-           or data.c[1] != rhs.data.c[1]
-           or data.c[2] != rhs.data.c[2];
+    return     std::abs(data.c[0] - rhs.data.c[0]) >= lit<T>::delta
+           or  std::abs(data.c[1] - rhs.data.c[1]) >= lit<T>::delta
+           or  std::abs(data.c[2] - rhs.data.c[2]) >= lit<T>::delta;
 }
 
 template< typename U > inline
@@ -2349,10 +2350,10 @@ bool    qutn_t<T>::operator==( qutn_t<T> const& rhs ) const
 template< typename T > inline
 bool    qutn_t<T>::operator!=( qutn_t<T> const& rhs ) const
 {
-    return    data.c[0] != rhs.data.c[0]
-           or data.c[1] != rhs.data.c[1]
-           or data.c[2] != rhs.data.c[2]
-           or data.c[3] != rhs.data.c[3];
+    return    std::abs(data.c[0] - rhs.data.c[0]) >= lit<T>::delta
+           or std::abs(data.c[1] - rhs.data.c[1]) >= lit<T>::delta
+           or std::abs(data.c[2] - rhs.data.c[2]) >= lit<T>::delta
+           or std::abs(data.c[3] - rhs.data.c[3]) >= lit<T>::delta;
 }
 
 template< typename T > inline
@@ -4916,12 +4917,12 @@ mat4_t<T>     mat4_t<T>::cross_product( vec3_t<T> const& vec )
                lit<T>::zero, lit<T>::zero, lit<T>::zero, lit<T>::one   ); }
                
 template< typename T > inline
-mat4_t<T>     mat4_t<T>::perspective( double fovY,
-                                  double aspect,
-                                  double near,
-                                  double far     )
+mat4_t<T>     mat4_t<T>::perspective( d_angle const& fovY,
+                                      double aspect,
+                                      double near,
+                                      double far     )
 {
-    double invTopTan = 1.0 / tan( fovY * 0.5);
+    double invTopTan = 1.0 / tan( fovY.to_rads() * 0.5);
     double invRightTan = invTopTan / aspect;
     double invFLessN = 1.0 / ( far - near );
     
@@ -5616,6 +5617,15 @@ mat4_t<T>&    mat4_t<T>::columns( vec4_t<T> const& col0,
     c[14] = col3(z);
     c[15] = col3(w);
     
+    return *this;
+}
+
+template< typename T > inline
+mat4_t<T>&  mat4_t<T>::norm()
+{
+    this->column( 0, this->column(0).norm() );
+    this->column( 1, this->column(1).norm() );
+    this->column( 2, this->column(2).norm() );
     return *this;
 }
 

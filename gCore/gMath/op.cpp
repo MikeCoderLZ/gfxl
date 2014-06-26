@@ -263,6 +263,16 @@ vec2 __normalize__::eval( vec2 const& vec ) const
     return out*invMag;
 }
 
+mat4 __normalize__::eval( mat4 const& amat ) const
+{
+    mat4 out;
+    out[0] = amat.column(0).norm();
+    out[1] = amat.column(1).norm();
+    out[2] = amat.column(2).norm();
+    out[3] = amat.column(3);
+    return out;
+}
+
 mat __normalize__::eval( mat const& amat ) const
 {
     size_t row = 0;
@@ -316,6 +326,10 @@ vec3 __orthogonalize__::eval( vec3 const& vecA, vec3 const& vecB ) const
     return cross( vecA, cross( vecB, vecA ));
 }
 
+// mat4 __orthogonalize__::eval( mat4 const& amat ) const
+// {
+//     
+// }
 
 // vec2 __orthogonalize__::eval( vec2 const& vecA, vec2 const& vecB ) const
 // {
