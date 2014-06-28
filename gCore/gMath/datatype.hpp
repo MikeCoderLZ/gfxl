@@ -284,6 +284,8 @@ public:
                                     comp_t x3 );
                             vec4_t( comp_t fill );
                             vec4_t( vec4_t<T> const& src );
+                            vec4_t( vec3_t<T> const& xyz,
+                                    T cw                  );
                             ~vec4_t();
     bool                    operator==( vec4_t<T> const& rhs ) const;
     bool                    operator!=( vec4_t<T> const& rhs ) const;
@@ -826,7 +828,7 @@ public:
                                         vec3_t<comp_t> const& col1,
                                         vec3_t<comp_t> const& col2 );
     mat3_t<T>&                 fill( comp_t val );
-    mat3_t<T>&                 normalize();
+    mat3_t<T>&                 norm();
     mat3_t<T>&                 row( size_t row,
                                     vec3_t<comp_t> const& val );
     vec3_t<T>                  row( size_t row ) const;
@@ -834,6 +836,7 @@ public:
                                      vec3_t<comp_t> const& row1,
                                      vec3_t<comp_t> const& row2 );
     mat3_t<T>&                 transpose();
+    mat3_t<T>&                 invert();
     // Utility
     virtual raw_map const   to_map() const;
     
@@ -920,7 +923,6 @@ public:
     mat4_t<D>                  operator*( D lhs, mat4_t<D> const& rhs );
     mat4_t<T>                  operator/( comp_t rhs );
     mat4_t<T>&                 fill( comp_t val );
-    mat4_t<T>&                 transpose();
     mat4_t<T>&                 row( size_t row,
                                     vec4_t<comp_t> const& val );
     vec4_t<T>                  row( size_t row ) const;
@@ -935,7 +937,9 @@ public:
                                         vec4_t<comp_t> const& col1,
                                         vec4_t<comp_t> const& col2,
                                         vec4_t<comp_t> const& col3 );
+    mat4_t<T>&                 transpose();
     mat4_t<T>&                 norm();
+    mat4_t<T>&                 ortho();
     virtual raw_map const   to_map() const;
     
     template< typename U > friend class mat4x3_t;
@@ -2029,6 +2033,14 @@ vec4_t<T>::vec4_t( vec4_t<T> const& src ) :
                     src.data.c[1],
                     src.data.c[2],
                     src.data.c[3] }} ) {}
+                    
+template< typename T > inline
+vec4_t<T>::vec4_t( vec3_t<T> const& xyz,
+                   T cw                 ) :
+            data( {{ xyz(x),
+                     xyz(y),
+                     xyz(z),
+                     cw }} ) {}
 
 template< typename T > inline vec4_t<T>::~vec4_t() {}
 
@@ -4681,7 +4693,7 @@ mat3_t<T>& mat3_t<T>::fill( T val )
 }
 
 template< typename T >
-mat3_t<T>& mat3_t<T>::normalize()
+mat3_t<T>& mat3_t<T>::norm()
 {
     T* c = this->data.c;
     double inv_mag = 1.0 / sqrt(c[0] * c[0] + c[1] * c[1] + c[2] * c[2]);
@@ -4790,6 +4802,31 @@ mat3_t<T>& mat3_t<T>::transpose()
     swap = c[7];
     c[7] = c[5];
     c[5] = swap;
+    return *this;
+}
+
+template< typename T >
+mat3_t<T>& mat3_t<T>::invert()
+{
+    T* cm = data.c;
+    T det =   cm[0] * (cm[4]*cm[8] - cm[7]*cm[5])
+            - cm[3] * (cm[8]*cm[1] - cm[7]*cm[2])
+            + cm[6] * (cm[1]*cm[5] - cm[4]*cm[2]);
+    det = 1.0f / det;
+    this->transpose();
+    
+    cm[0] = cm[0] * det;
+    cm[1] = cm[1] * det;
+    cm[2] = cm[2] * det;
+    
+    cm[3] = cm[3] * det;
+    cm[4] = cm[4] * det;
+    cm[5] = cm[5] * det;
+    
+    cm[6] = cm[6] * det;
+    cm[7] = cm[7] * det;
+    cm[8] = cm[8] * det;
+    
     return *this;
 }
 
@@ -4927,9 +4964,9 @@ mat4_t<T>     mat4_t<T>::perspective( d_angle const& fovY,
     double invFLessN = 1.0 / ( far - near );
     
     return mat4_t( (T) invRightTan, lit<T>::zero,  lit<T>::zero,                  lit<T>::zero,
-                 lit<T>::zero,    (T) invTopTan, lit<T>::zero,                  lit<T>::zero,
-                 lit<T>::zero,    lit<T>::zero,  (T) -(far + near) * invFLessN, (T) -(2.0*far*near) * invFLessN,
-                 lit<T>::zero,    lit<T>::zero,  lit<T>::neg_one,               lit<T>::zero                    );
+                   lit<T>::zero,    (T) invTopTan, lit<T>::zero,                  lit<T>::zero,
+                   lit<T>::zero,    lit<T>::zero,  (T) -(far + near) * invFLessN, (T) -(2.0*far*near) * invFLessN,
+                   lit<T>::zero,    lit<T>::zero,  lit<T>::neg_one,               lit<T>::zero                    );
 }
 
 template< typename T > inline
@@ -5183,10 +5220,10 @@ col4<T>     mat4_t<T>::operator[]( size_t i ) const
     
     T* col_cpy = new T[4];
     
-    col_cpy[0] = this-data->c[ 4 * i ];
-    col_cpy[1] = this-data->c[ 4 * i + 1 ];
-    col_cpy[2] = this-data->c[ 4 * i + 2 ];
-    col_cpy[3] = this-data->c[ 4 * i + 3 ];
+    col_cpy[0] = this->data.c[ 4 * i ];
+    col_cpy[1] = this->data.c[ 4 * i + 1 ];
+    col_cpy[2] = this->data.c[ 4 * i + 2 ];
+    col_cpy[3] = this->data.c[ 4 * i + 3 ];
     
     return col4<T>( col_cpy, false );
 }
@@ -5410,31 +5447,6 @@ mat4_t<T>& mat4_t<T>::fill( T val )
     return *this;
 }
 
-template< typename T >
-mat4_t<T>& mat4_t<T>::transpose()
-{
-    T* c = this->data.c;
-    T swap = c[4];
-    c[4] = c[1];
-    c[1] = swap;
-    swap = c[8];
-    c[8] = c[2];
-    c[2] = swap;
-    swap = c[9];
-    c[9] = c[6];
-    c[6] = swap;
-    swap = c[12];
-    c[12] = c[3];
-    c[3] = swap;
-    swap = c[13];
-    c[13] = c[7];
-    c[7] = swap;
-    swap = c[14];
-    c[14] = c[11];
-    c[11] = swap;
-    return *this;
-}
-
 template< typename T > inline
 mat4_t<T>&    mat4_t<T>::row( size_t row,
                           vec4_t<T> const& val )
@@ -5620,12 +5632,71 @@ mat4_t<T>&    mat4_t<T>::columns( vec4_t<T> const& col0,
     return *this;
 }
 
+
+template< typename T >
+mat4_t<T>& mat4_t<T>::transpose()
+{
+    T* c = this->data.c;
+    T swap = c[4];
+    c[4] = c[1];
+    c[1] = swap;
+    swap = c[8];
+    c[8] = c[2];
+    c[2] = swap;
+    swap = c[9];
+    c[9] = c[6];
+    c[6] = swap;
+    swap = c[12];
+    c[12] = c[3];
+    c[3] = swap;
+    swap = c[13];
+    c[13] = c[7];
+    c[7] = swap;
+    swap = c[14];
+    c[14] = c[11];
+    c[11] = swap;
+    return *this;
+}
+
 template< typename T > inline
 mat4_t<T>&  mat4_t<T>::norm()
 {
-    this->column( 0, this->column(0).norm() );
-    this->column( 1, this->column(1).norm() );
-    this->column( 2, this->column(2).norm() );
+    this->column( 0,
+                  vec4( this->column(0)(x,y,z).norm(),
+                        (*this)[0][3]                 ) );
+    this->column( 1,
+                  vec4( this->column(1)(x,y,z).norm(),
+                        (*this)[1][3]                 ) );
+    this->column( 2,
+                  vec4( this->column(2)(x,y,z).norm(),
+                        (*this)[2][3]                 ) );
+    return *this;
+}
+
+template< typename T > inline
+mat4_t<T>&  mat4_t<T>::ortho()
+{
+    T* cm = data.c;
+    T x_xs = cm[0]*cm[0];
+    T x_ys = cm[1]*cm[1];
+    T x_zs = cm[2]*cm[2];
+    
+    T xy_xx = cm[0]*cm[4];
+    T xy_yy = cm[1]*cm[5];
+    T xy_zz = cm[2]*cm[6];
+    
+    T xz_xx = cm[0]*cm[8];
+    T xz_yy = cm[1]*cm[9];
+    T xz_zz = cm[2]*cm[10];
+    
+    cm[4] = cm[4]*(x_ys + x_zs) - cm[0]*(xy_yy + xy_zz);
+    cm[5] = cm[5]*(x_zs + x_xs) - cm[1]*(xy_zz + xy_xx);
+    cm[6] = cm[6]*(x_xs + x_ys) - cm[2]*(xy_xx + xy_yy);
+    
+    cm[8]  = cm[8] *(x_ys + x_zs) - cm[0]*(xz_yy + xz_zz);
+    cm[9]  = cm[9] *(x_zs + x_xs) - cm[1]*(xz_zz + xz_xx);
+    cm[10] = cm[10]*(x_xs + x_ys) - cm[2]*(xz_xx + xz_yy);
+    
     return *this;
 }
 

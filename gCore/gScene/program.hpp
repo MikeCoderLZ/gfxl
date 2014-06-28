@@ -216,63 +216,63 @@ namespace gfx {
     void    program::load_uniform( std::string const& name,
                                    mat2 const& val         )
     { gl::UniformMatrix2fv( (*uniform_map)[name],
-                            4, gl::FALSE_,
+                            1, gl::FALSE_,
                             (GLfloat*) val.to_map().bytes ); }
 
     template<> inline
     void    program::load_uniform( std::string const& name,
                                    mat3 const& val         )
     { gl::UniformMatrix3fv( (*uniform_map)[name],
-                            9, gl::FALSE_,
+                            1, gl::FALSE_,
                             (GLfloat*) val.to_map().bytes ); }
                             
     template<> inline
     void    program::load_uniform( std::string const& name,
                                    mat4 const& val         )
     { gl::UniformMatrix4fv( (*uniform_map)[name],
-                            16, gl::FALSE_,
+                            1, gl::FALSE_,
                             (GLfloat*) val.to_map().bytes ); }
                             
     template<> inline
     void    program::load_uniform( std::string const& name,
                                    mat2x3 const& val         )
     { gl::UniformMatrix2x3fv( (*uniform_map)[name],
-                              6, gl::FALSE_,
+                              1, gl::FALSE_,
                               (GLfloat*) val.to_map().bytes ); }
                             
     template<> inline
     void    program::load_uniform( std::string const& name,
                                    mat3x2 const& val         )
     { gl::UniformMatrix3x2fv( (*uniform_map)[name],
-                              6, gl::FALSE_,
+                              1, gl::FALSE_,
                               (GLfloat*) val.to_map().bytes ); }
                               
     template<> inline
     void    program::load_uniform( std::string const& name,
                                    mat2x4 const& val         )
     { gl::UniformMatrix2x4fv( (*uniform_map)[name],
-                              8, gl::FALSE_,
+                              1, gl::FALSE_,
                               (GLfloat*) val.to_map().bytes ); }
                             
     template<> inline
     void    program::load_uniform( std::string const& name,
                                    mat4x2 const& val         )
     { gl::UniformMatrix4x2fv( (*uniform_map)[name],
-                              8, gl::FALSE_,
+                              1, gl::FALSE_,
                               (GLfloat*) val.to_map().bytes ); }
                               
     template<> inline
     void    program::load_uniform( std::string const& name,
                                    mat3x4 const& val         )
     { gl::UniformMatrix3x4fv( (*uniform_map)[name],
-                              12, gl::FALSE_,
+                              1, gl::FALSE_,
                               (GLfloat*) val.to_map().bytes ); }
                             
     template<> inline
     void    program::load_uniform( std::string const& name,
                                    mat4x3 const& val         )
     { gl::UniformMatrix4x3fv( (*uniform_map)[name],
-                              12, gl::FALSE_,
+                              1, gl::FALSE_,
                               (GLfloat*) val.to_map().bytes ); }
     
     

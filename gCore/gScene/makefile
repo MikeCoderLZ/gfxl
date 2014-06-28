@@ -21,7 +21,7 @@ $(OBJ)/texture_test.o: $(GSCN)/texture_test.cpp \
                        $(GVID)/video.hpp \
                        $(GVID)/version.hpp \
                        $(GVID)/window.hpp \
-                       $(GVID)/context.hpp \
+                       $(GVID)/context.hpp
 	g++ -c $(COM) -Wno-sign-compare \
 	    $(GSCN)/texture_test.cpp \
 	    $(SDLFLAGS) -o $(OBJ)/texture_test.o
@@ -32,7 +32,7 @@ $(OBJ)/texture.o: $(GSCN)/texture.cpp \
                   $(GVID)/video.hpp \
                   $(GVID)/version.hpp \
                   $(GVID)/window.hpp \
-                  $(GVID)/context.hpp \
+                  $(GVID)/context.hpp
 	g++ -c $(COM) -Wno-sign-compare \
 	    $(GSCN)/texture.cpp \
 	    $(SDLFLAGS) -o $(OBJ)/texture.o
@@ -85,12 +85,16 @@ $(BIN)/program_shader_test: $(OBJ)/program_shader_test.o \
                             $(OBJ)/buffer.o \
                             $(OBJ)/program.o \
                             $(OBJ)/texture.o \
+                            $(OBJ)/camera.o \
+                            $(OBJ)/op.o \
                             $(OBJ)/gl_core_3_3.o
 	g++ $(OBJ)/program_shader_test.o \
 	    $(OBJ)/video.o \
 	    $(OBJ)/buffer.o \
 	    $(OBJ)/program.o \
 	    $(OBJ)/texture.o \
+	    $(OBJ)/camera.o \
+	    $(OBJ)/op.o \
 	    $(OBJ)/gl_core_3_3.o \
 	    -L ../../dev_lib -lUnitTest++ \
 	    -lfreeimage \
@@ -101,6 +105,7 @@ $(OBJ)/program_shader_test.o: $(GSCN)/program_shader_test.cpp \
                               $(GSCN)/buffer.hpp \
                               $(GSCN)/program.hpp \
                               $(GSCN)/texture.hpp \
+                              $(GSCN)/camera.hpp \
                               $(GVID)/gl_core_3_3.hpp \
                               $(GMATH)/datatype.hpp
 	g++ -c $(COM) \

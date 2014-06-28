@@ -190,7 +190,7 @@ class __normalize__ : public unary_op<vec4>,
 extern __normalize__ const norm;
 
 class __orthogonalize__ : public binary_op<vec3>
-//                           ,public unary_op<mat4>
+                          ,public unary_op<mat4>
                           //public binary_op<vec2>
                           //,public unary_op<mat>
 {
@@ -198,7 +198,7 @@ class __orthogonalize__ : public binary_op<vec3>
         using binary_op<vec3>::operator();
         //using binary_op<vec2>::operator();
         //using unary_op<mat>::operator();
-//         using unary_op<mat4>::operator();
+        using unary_op<mat4>::operator();
         friend class operator_factory;
         ~__orthogonalize__() {}
     private:
@@ -206,7 +206,7 @@ class __orthogonalize__ : public binary_op<vec3>
         vec3 eval( vec3 const& vecA, vec3 const& vecB ) const;
         //vec2 eval( vec2 const& vecA, vec2 const& vecB ) const;
         //mat const eval( mat const& mat ) const;
-//         mat4 eval( mat4 const& amat ) const;
+        mat4 eval( mat4 const& amat ) const;
 };
 
 extern __orthogonalize__ const ortho;
@@ -355,14 +355,17 @@ class __transpose__ : public unary_op<mat> {
 
 extern __transpose__ const transpose;
 
-class __homogenize__ : public unary_op<mat> {
+class __homogenize__ : public unary_op<mat>
+                       ,public unary_op_exp<mat4, mat3>{
     public:
         using unary_op<mat>::operator();
+        using unary_op_exp<mat4, mat3>::operator();
         friend class operator_factory;
         ~__homogenize__() {}
     private:
         __homogenize__() {}
-        mat eval( mat const& mat ) const;
+        mat eval( mat const& amat ) const;
+        mat4 eval( mat3 const& amat ) const;
 };
 
 extern __homogenize__ const homogenize;

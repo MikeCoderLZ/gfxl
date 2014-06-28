@@ -15,7 +15,7 @@ namespace gfx {
                         settings();
             settings&   position( vec3 const& pos );
             settings&   look_at( vec3 const& point );
-            settings&   up( vec3 const& up );
+            settings&   upward( vec3 const& up );
             settings&   field_of_view( d_angle const& fov_vert );
             settings&   aspect_ratio( double aspect );
             settings&   near_plane( double near );
@@ -34,6 +34,7 @@ namespace gfx {
                         camera( settings const& set = settings() );
         mat4 const&     view_matrix() const;
         camera&         look_at( vec3 const& point);
+        camera&         upward( vec3 const& dir );
     protected:
         vec3            pos;
         vec3            look;
@@ -54,7 +55,7 @@ namespace gfx {
                                 up_v ( 0.0f, 1.0f, 0.0f ),
                                 fov_vert_v ( d_angle::in_degs( 135.0 ) ),
                                 aspect_v ( 1.33 ),
-                                near_v ( 0.0 ),
+                                near_v ( 0.01 ),
                                 far_v ( 100.0 ) {}
                                 
     inline camera::settings&    camera::settings::position( vec3 const& pos )
@@ -63,7 +64,7 @@ namespace gfx {
     inline camera::settings&    camera::settings::look_at( vec3 const& point )
     { look_v = point; return *this; }
     
-    inline camera::settings&    camera::settings::up( vec3 const& up )
+    inline camera::settings&    camera::settings::upward( vec3 const& up )
     { up_v = up; return *this; }
     
     inline camera::settings&    camera::settings::field_of_view( d_angle const& fov_vert )

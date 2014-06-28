@@ -266,9 +266,9 @@ vec2 __normalize__::eval( vec2 const& vec ) const
 mat4 __normalize__::eval( mat4 const& amat ) const
 {
     mat4 out;
-    out[0] = amat.column(0).norm();
-    out[1] = amat.column(1).norm();
-    out[2] = amat.column(2).norm();
+    out[0] = vec4( amat.column(0)(x,y,z).norm(), amat.column(0)(w) );
+    out[1] = vec4( amat.column(1)(x,y,z).norm(), amat.column(1)(w) );
+    out[2] = vec4( amat.column(2)(x,y,z).norm(), amat.column(2)(w) );
     out[3] = amat.column(3);
     return out;
 }
@@ -321,15 +321,24 @@ qutn __normalize__::eval( qutn const& quat ) const
 __normalize__ const norm = operator_factory::make__normalize__();
 
 
-vec3 __orthogonalize__::eval( vec3 const& vecA, vec3 const& vecB ) const
+vec3 __orthogonalize__::eval( vec3 const& A, vec3 const& B ) const
 {
-    return cross( vecA, cross( vecB, vecA ));
+    return vec3( A[0]*( B[1]*B[1]+B[2]*B[2] ) - B[0]*(A[1]*B[1] + A[2]*B[2]),
+                 A[1]*( B[2]*B[2]+B[0]*B[0] ) - B[1]*(A[2]*B[2] + A[0]*B[0]),
+                 A[2]*( B[0]*B[0]+B[1]*B[1] ) - B[2]*(A[0]*B[0] + A[1]*B[1]) );
+    
+//     return cross( B, cross( A, B ) );
 }
 
-// mat4 __orthogonalize__::eval( mat4 const& amat ) const
-// {
-//     
-// }
+mat4 __orthogonalize__::eval( mat4 const& amat ) const
+{
+    mat4 out;
+    out[0] = amat[0];
+    out[1] = vec4( ortho( amat.column(1)(x,y,z), amat.column(0)(x,y,z) ), amat.column(1)(w) );
+    out[2] = vec4( ortho( amat.column(2)(x,y,z), amat.column(0)(x,y,z) ), amat.column(2)(w) );
+    out[3] = amat[3];
+    return out;
+}
 
 // vec2 __orthogonalize__::eval( vec2 const& vecA, vec2 const& vecB ) const
 // {
@@ -415,8 +424,8 @@ __cubic__ const mix_cb = operator_factory::make__cubic__();
 vec3 __outer_product__::eval( vec3 const& vecA, vec3 const& vecB ) const
 {
     return vec3( vecA[1]*vecB[2] - vecA[2]*vecB[1],
-                  vecA[2]*vecB[0] - vecA[0]*vecB[2],
-                  vecA[0]*vecB[1] - vecA[1]*vecB[0] );
+                 vecA[2]*vecB[0] - vecA[0]*vecB[2],
+                 vecA[0]*vecB[1] - vecA[1]*vecB[0] );
 }
 
 __outer_product__ const cross = operator_factory::make__outer_product__();
@@ -554,6 +563,14 @@ mat __homogenize__::eval( mat const& amat ) const
     }
 
     return out;
+}
+
+mat4 __homogenize__::eval( mat3 const& amat ) const
+{
+    return mat4( amat(0,0), amat(1,0), amat(2,0), 0.0f,
+                 amat(0,1), amat(1,1), amat(2,1), 0.0f,
+                 amat(0,2), amat(1,2), amat(2,2), 0.0f,
+                 0.0f,      0.0f,      0.0f,      1.0f );
 }
 
 __homogenize__ const homogenize = operator_factory::make__homogenize__();

@@ -5,11 +5,12 @@
 
 #include "../gVideo/video.hpp"
 #include "../gMath/datatype.hpp"
-#include "../gScene/texture.hpp"
+#include "texture.hpp"
 #include "../../UnitTest++_src/UnitTest++.h"
 #include "../gVideo/gl_core_3_3.hpp"
 #include "program.hpp"
 #include "buffer.hpp"
+#include "camera.hpp"
 
 using namespace gfx;
 
@@ -270,49 +271,49 @@ SUITE( GLSLShadingTests )
         CHECK_EQUAL( "y", input );
     }
     
-    TEST( Texture1DProgramInteraction )
+    TEST( CameraProgramInteraction )
     {
         window test_wndw ( window::settings()
                            .has_3D()        );
         context test_cntx ( test_wndw );
         video_system::get().attach_context( test_wndw, test_cntx );
         program test_prgm ( program::settings()
-                            .use_vert( "./shader/testVert_1Dtextured.glsl" )
-                            .use_frag( "./shader/testFrag_1Dtextured.glsl" ) );
-        test_prgm.uniform( "line" );
+                            .use_vert( "./shader/testVertCam.glsl" )
+                            .use_frag( "./shader/testFragCam.glsl" ) );
+        
         test_prgm.compile();
+        test_prgm.uniform( "view" );
         
         buffer test_buff ( buffer::settings().blocks(4) );
         test_buff.block_format( block_spec()
-                                .attribute( type<vec2>() )
-                                .attribute( type<float32>() ) );
-        std::vector< vec2 > position;
-        position.push_back( vec2( 0.5f ));
-        position.push_back( vec2( 0.5f, -0.5f ));
-        position.push_back( vec2( -0.5f ));
-        position.push_back( vec2( -0.5f, 0.5f ));
-        
-        std::vector< float32 > uv;
-        uv.push_back( float32( 1.0f ) );
-        uv.push_back( float32( 1.0f ) );
-        uv.push_back( float32( 0.0f ) );
-        uv.push_back( float32( 0.0f ) );
-        
+                                .attribute( type<vec3>() )
+                                .attribute( type<vec3>() ) );
+        std::vector< vec3 > position;
+        position.push_back( vec3(0.5f, 0.5f, 0.0f) );
+        position.push_back( vec3(0.5f, -0.5f, 0.0f) );
+        position.push_back( vec3(-0.5f, -0.5f, 0.0f) );
+        position.push_back( vec3(-0.5f, 0.5f, 0.0f) );
         test_buff.fill_attribute( 0, position );
-        test_buff.fill_attribute( 1, uv );
+        
+        std::vector< vec3 > color;
+        color.push_back( vec3(1.0f, 0.0f, 0.0f) );
+        color.push_back( vec3(1.0f, 1.0f, 0.0f) );
+        color.push_back( vec3(0.0f, 1.0f, 0.0f) );
+        color.push_back( vec3(0.0f, 0.0f, 1.0f) );
+        test_buff.fill_attribute( 1, color );
+        
+        camera test_cam ( camera::settings()
+                          .position( vec3(0.5f, -0.5f, 1.0f) )
+                          .look_at( vec3(0.0f, 0.0f, 0.0f) )
+                          .upward( vec3(0.0f, 0.0f, 1.0f) )   );
         
         test_buff.load_data();
         test_buff.align_vertices();
         
-        texture_1D test_txtr ( texture_1D::settings()
-                               .file( "./tex/test_1D.png" )
-                               .unsigned_norm_3( eight_bit, b, g, r ) );
-        test_txtr.decode_file();
-        test_txtr.load_data();
-        
         test_prgm.link();
         test_prgm.use();
-        test_prgm.load_uniform( "line", 0 );
+        test_prgm.load_uniform( "view", test_cam.view_matrix() );
+        video_system::get().check_acceleration_error( "View matrix uniform" );
         
         GLuint elements[] = { 0, 1, 2, 0, 2, 3 };
         
@@ -324,9 +325,10 @@ SUITE( GLSLShadingTests )
         std::string input;
         std::cin >> input;
         
-        std::cout << "A white rectangle with a red edge will appear on a yellow background.\nConfirm [y/n]: ";
+        std::cout << "A rainbow square will appear on a yellow background in persepctive.\nConfirm [y/n]: ";
         
         test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
+        std::cout << test_cam.view_matrix() << std::endl;
         
         gl::DrawElements( gl::TRIANGLES,
                           6,
@@ -340,199 +342,269 @@ SUITE( GLSLShadingTests )
         CHECK_EQUAL( "y", input );
     }
     
-    TEST( Texture2DProgramInteraction )
-    {
-        window test_wndw ( window::settings()
-                           .has_3D()        );
-        context test_cntx ( test_wndw );
-        video_system::get().attach_context( test_wndw, test_cntx );
-        program test_prgm ( program::settings()
-                            .use_vert( "./shader/testVert_2Dtextured.glsl" )
-                            .use_frag( "./shader/testFrag_2Dtextured.glsl" ) );
-        test_prgm.compile();
-        test_prgm.uniform( "smilie" );
-        
-        buffer test_buff ( buffer::settings().blocks(4) );
-        test_buff.block_format( block_spec()
-                                .attribute( type<vec2>() )
-                                .attribute( type<vec2>() ) );
-        std::vector< vec2 > position;
-        position.push_back( vec2( 0.5f ));
-        position.push_back( vec2( 0.5f, -0.5f ));
-        position.push_back( vec2( -0.5f ));
-        position.push_back( vec2( -0.5f, 0.5f ));
-        
-        std::vector< vec2 > uv;
-        uv.push_back( vec2( 1.0f ) );
-        uv.push_back( vec2( 1.0f, 0.0f ) );
-        uv.push_back( vec2( 0.0f ) );
-        uv.push_back( vec2( 0.0f, 1.0f ) );
-        
-        test_buff.fill_attribute( 0, position );
-        test_buff.fill_attribute( 1, uv );
-        
-        test_buff.load_data();
-        test_buff.align_vertices();
-        
-        texture_2D test_txtr ( texture_2D::settings()
-                               .file( "./tex/test_2D.png" )
-                               .unsigned_norm_3( eight_bit, b, g, r )
-                               .sample_magnification( linear ) );
-        test_txtr.decode_file();
-        test_txtr.load_data();
-        
-        test_prgm.link();
-        test_prgm.use();
-        
-        test_prgm.load_uniform( "smilie", 0 );
-        
-        GLuint elements[] = { 0, 1, 2, 0, 2, 3 };
-        
-        test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
-        test_wndw.swap();
-        
-        std::cout << "Interactive test; press any key to continue. ";
-        
-        std::string input;
-        std::cin >> input;
-        
-        std::cout << "A white rectangle with a black and red smilie will appear on a yellow background.\nConfirm [y/n]: ";
-        
-        test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
-        
-        gl::DrawElements( gl::TRIANGLES,
-                          6,
-                          gl::UNSIGNED_INT,
-                          elements );
-        test_wndw.swap();
-        
-        
-        
-        std::cin >> input;        
-        CHECK_EQUAL( "y", input );
-    }
-    
-    TEST( MultipleBufferProgramInteraction )
-    {
-        window test_wndw ( window::settings()
-                           .has_3D()        );
-        context test_cntx ( test_wndw );
-        video_system::get().attach_context( test_wndw, test_cntx );
-        program test_prgm ( program::settings()
-                            .use_vert( "./shader/testVert_colored.glsl" )
-                            .use_frag( "./shader/testFrag_colored.glsl" ) );
-        test_prgm.compile();
-        
-        buffer test_buff ( buffer::settings().blocks(4) );
-        test_buff.block_format( block_spec()
-                                .attribute( type<vec2>() )
-                                .attribute( type<vec3>() ) );
-        std::vector< vec2 > position;
-        position.push_back( vec2( 0.5f ));
-        position.push_back( vec2( 0.5f, -0.5f ));
-        position.push_back( vec2( -0.5f ));
-        position.push_back( vec2( -0.5f, 0.5f ));
-        
-        std::vector< vec3 > color;
-        color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
-        color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
-        color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
-        color.push_back( vec3( 0.0f, 1.0f, 1.0f ) );
-        
-        test_buff.fill_attribute( 0, position );
-        test_buff.fill_attribute( 1, color );
-        
-        test_buff.load_data();
-        test_buff.align_vertices();
-        
-        test_prgm.link();
-        test_prgm.use();
-        
-        GLuint elements[] = { 0u, 1u, 2u, 0u, 2u, 3u };
-        
-        context::ui_indexer idx ( elements, elements + 6 );
-        
-        test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
-        test_wndw.swap();
-        
-        std::cout << "Interactive test; press any key to continue. ";
-        
-        std::string input;
-        std::cin >> input;
-        
-        std::cout << "A rainbow square will appear on a yellow background.\nConfirm [y/n]: ";
-        
-        test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
-        
-        test_cntx.draw_triangles( 2, idx );
-        
-        test_wndw.swap();
-  
-        std::cin >> input;        
-        CHECK_EQUAL( "y", input );
-    }
-    
-    TEST( CIELabProgram )
-    {
-        window test_wndw ( window::settings()
-                           .has_3D()        );
-        context test_cntx ( test_wndw );
-        video_system::get().attach_context( test_wndw, test_cntx );
-        program test_prgm ( program::settings()
-                            .use_vert( "./shader/testVert_LAB.glsl" )
-                            .use_frag( "./shader/testFrag_LAB.glsl" ) );
-        test_prgm.compile();
-        
-        buffer test_buff ( buffer::settings().blocks(4) );
-        test_buff.block_format( block_spec()
-                                .attribute( type<vec2>() )
-                                .attribute( type<vec3>() ) );
-        std::vector< vec2 > position;
-        position.push_back( vec2( 0.5f ));
-        position.push_back( vec2( 0.5f, -0.5f ));
-        position.push_back( vec2( -0.5f ));
-        position.push_back( vec2( -0.5f, 0.5f ));
-        
-        std::vector< vec3 > color;
-        color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
-        color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
-        color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
-        color.push_back( vec3( 0.5f, 1.0f, 1.0f ) );
-        
-        test_buff.fill_attribute( 0, position );
-        test_buff.fill_attribute( 1, color );
-        
-        test_buff.load_data();
-        test_buff.align_vertices();
-        
-        test_prgm.link();
-        test_prgm.use();
-        
-        GLuint elements[] = { 0u, 1u, 2u, 0u, 2u, 3u };
-        
-        context::ui_indexer idx ( elements, elements + 6 );
-        
-        test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
-        test_wndw.swap();
-        
-        std::cout << "Interactive test; press any key to continue. ";
-        
-        std::string input;
-        std::cin >> input;
-        
-        std::cout << "A rainbow square will appear on a yellow background.\nConfirm [y/n]: ";
-        
-        test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
-        
-        test_cntx.draw_triangles( 2, idx );
-        
-        test_wndw.swap();
-        
-        
-        
-        std::cin >> input;        
-        CHECK_EQUAL( "y", input );
-    }
+//     TEST( Texture1DProgramInteraction )
+//     {
+//         window test_wndw ( window::settings()
+//                            .has_3D()        );
+//         context test_cntx ( test_wndw );
+//         video_system::get().attach_context( test_wndw, test_cntx );
+//         program test_prgm ( program::settings()
+//                             .use_vert( "./shader/testVert_1Dtextured.glsl" )
+//                             .use_frag( "./shader/testFrag_1Dtextured.glsl" ) );
+//         test_prgm.uniform( "line" );
+//         test_prgm.compile();
+//         
+//         buffer test_buff ( buffer::settings().blocks(4) );
+//         test_buff.block_format( block_spec()
+//                                 .attribute( type<vec2>() )
+//                                 .attribute( type<float32>() ) );
+//         std::vector< vec2 > position;
+//         position.push_back( vec2( 0.5f ));
+//         position.push_back( vec2( 0.5f, -0.5f ));
+//         position.push_back( vec2( -0.5f ));
+//         position.push_back( vec2( -0.5f, 0.5f ));
+//         
+//         std::vector< float32 > uv;
+//         uv.push_back( float32( 1.0f ) );
+//         uv.push_back( float32( 1.0f ) );
+//         uv.push_back( float32( 0.0f ) );
+//         uv.push_back( float32( 0.0f ) );
+//         
+//         test_buff.fill_attribute( 0, position );
+//         test_buff.fill_attribute( 1, uv );
+//         
+//         test_buff.load_data();
+//         test_buff.align_vertices();
+//         
+//         texture_1D test_txtr ( texture_1D::settings()
+//                                .file( "./tex/test_1D.png" )
+//                                .unsigned_norm_3( eight_bit, b, g, r ) );
+//         test_txtr.decode_file();
+//         test_txtr.load_data();
+//         
+//         test_prgm.link();
+//         test_prgm.use();
+//         test_prgm.load_uniform( "line", 0 );
+//         
+//         GLuint elements[] = { 0, 1, 2, 0, 2, 3 };
+//         
+//         test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
+//         test_wndw.swap();
+//         
+//         std::cout << "Interactive test; press any key to continue. ";
+//         
+//         std::string input;
+//         std::cin >> input;
+//         
+//         std::cout << "A white rectangle with a red edge will appear on a yellow background.\nConfirm [y/n]: ";
+//         
+//         test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
+//         
+//         gl::DrawElements( gl::TRIANGLES,
+//                           6,
+//                           gl::UNSIGNED_INT,
+//                           elements );
+//         test_wndw.swap();
+//         
+//         
+//         
+//         std::cin >> input;        
+//         CHECK_EQUAL( "y", input );
+//     }
+//     
+//     TEST( Texture2DProgramInteraction )
+//     {
+//         window test_wndw ( window::settings()
+//                            .has_3D()        );
+//         context test_cntx ( test_wndw );
+//         video_system::get().attach_context( test_wndw, test_cntx );
+//         program test_prgm ( program::settings()
+//                             .use_vert( "./shader/testVert_2Dtextured.glsl" )
+//                             .use_frag( "./shader/testFrag_2Dtextured.glsl" ) );
+//         test_prgm.compile();
+//         test_prgm.uniform( "smilie" );
+//         
+//         buffer test_buff ( buffer::settings().blocks(4) );
+//         test_buff.block_format( block_spec()
+//                                 .attribute( type<vec2>() )
+//                                 .attribute( type<vec2>() ) );
+//         std::vector< vec2 > position;
+//         position.push_back( vec2( 0.5f ));
+//         position.push_back( vec2( 0.5f, -0.5f ));
+//         position.push_back( vec2( -0.5f ));
+//         position.push_back( vec2( -0.5f, 0.5f ));
+//         
+//         std::vector< vec2 > uv;
+//         uv.push_back( vec2( 1.0f ) );
+//         uv.push_back( vec2( 1.0f, 0.0f ) );
+//         uv.push_back( vec2( 0.0f ) );
+//         uv.push_back( vec2( 0.0f, 1.0f ) );
+//         
+//         test_buff.fill_attribute( 0, position );
+//         test_buff.fill_attribute( 1, uv );
+//         
+//         test_buff.load_data();
+//         test_buff.align_vertices();
+//         
+//         texture_2D test_txtr ( texture_2D::settings()
+//                                .file( "./tex/test_2D.png" )
+//                                .unsigned_norm_3( eight_bit, b, g, r )
+//                                .sample_magnification( linear ) );
+//         test_txtr.decode_file();
+//         test_txtr.load_data();
+//         
+//         test_prgm.link();
+//         test_prgm.use();
+//         
+//         test_prgm.load_uniform( "smilie", 0 );
+//         
+//         GLuint elements[] = { 0, 1, 2, 0, 2, 3 };
+//         
+//         test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
+//         test_wndw.swap();
+//         
+//         std::cout << "Interactive test; press any key to continue. ";
+//         
+//         std::string input;
+//         std::cin >> input;
+//         
+//         std::cout << "A white rectangle with a black and red smilie will appear on a yellow background.\nConfirm [y/n]: ";
+//         
+//         test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
+//         
+//         gl::DrawElements( gl::TRIANGLES,
+//                           6,
+//                           gl::UNSIGNED_INT,
+//                           elements );
+//         test_wndw.swap();
+//         
+//         
+//         
+//         std::cin >> input;        
+//         CHECK_EQUAL( "y", input );
+//     }
+//     
+//     TEST( MultipleBufferProgramInteraction )
+//     {
+//         window test_wndw ( window::settings()
+//                            .has_3D()        );
+//         context test_cntx ( test_wndw );
+//         video_system::get().attach_context( test_wndw, test_cntx );
+//         program test_prgm ( program::settings()
+//                             .use_vert( "./shader/testVert_colored.glsl" )
+//                             .use_frag( "./shader/testFrag_colored.glsl" ) );
+//         test_prgm.compile();
+//         
+//         buffer test_buff ( buffer::settings().blocks(4) );
+//         test_buff.block_format( block_spec()
+//                                 .attribute( type<vec2>() )
+//                                 .attribute( type<vec3>() ) );
+//         std::vector< vec2 > position;
+//         position.push_back( vec2( 0.5f ));
+//         position.push_back( vec2( 0.5f, -0.5f ));
+//         position.push_back( vec2( -0.5f ));
+//         position.push_back( vec2( -0.5f, 0.5f ));
+//         
+//         std::vector< vec3 > color;
+//         color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
+//         color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
+//         color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
+//         color.push_back( vec3( 0.0f, 1.0f, 1.0f ) );
+//         
+//         test_buff.fill_attribute( 0, position );
+//         test_buff.fill_attribute( 1, color );
+//         
+//         test_buff.load_data();
+//         test_buff.align_vertices();
+//         
+//         test_prgm.link();
+//         test_prgm.use();
+//         
+//         GLuint elements[] = { 0u, 1u, 2u, 0u, 2u, 3u };
+//         
+//         context::ui_indexer idx ( elements, elements + 6 );
+//         
+//         test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
+//         test_wndw.swap();
+//         
+//         std::cout << "Interactive test; press any key to continue. ";
+//         
+//         std::string input;
+//         std::cin >> input;
+//         
+//         std::cout << "A rainbow square will appear on a yellow background.\nConfirm [y/n]: ";
+//         
+//         test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
+//         
+//         test_cntx.draw_triangles( 2, idx );
+//         
+//         test_wndw.swap();
+//   
+//         std::cin >> input;        
+//         CHECK_EQUAL( "y", input );
+//     }
+//     
+//     TEST( CIELabProgram )
+//     {
+//         window test_wndw ( window::settings()
+//                            .has_3D()        );
+//         context test_cntx ( test_wndw );
+//         video_system::get().attach_context( test_wndw, test_cntx );
+//         program test_prgm ( program::settings()
+//                             .use_vert( "./shader/testVert_LAB.glsl" )
+//                             .use_frag( "./shader/testFrag_LAB.glsl" ) );
+//         test_prgm.compile();
+//         
+//         buffer test_buff ( buffer::settings().blocks(4) );
+//         test_buff.block_format( block_spec()
+//                                 .attribute( type<vec2>() )
+//                                 .attribute( type<vec3>() ) );
+//         std::vector< vec2 > position;
+//         position.push_back( vec2( 0.5f ));
+//         position.push_back( vec2( 0.5f, -0.5f ));
+//         position.push_back( vec2( -0.5f ));
+//         position.push_back( vec2( -0.5f, 0.5f ));
+//         
+//         std::vector< vec3 > color;
+//         color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
+//         color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
+//         color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
+//         color.push_back( vec3( 0.5f, 1.0f, 1.0f ) );
+//         
+//         test_buff.fill_attribute( 0, position );
+//         test_buff.fill_attribute( 1, color );
+//         
+//         test_buff.load_data();
+//         test_buff.align_vertices();
+//         
+//         test_prgm.link();
+//         test_prgm.use();
+//         
+//         GLuint elements[] = { 0u, 1u, 2u, 0u, 2u, 3u };
+//         
+//         context::ui_indexer idx ( elements, elements + 6 );
+//         
+//         test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
+//         test_wndw.swap();
+//         
+//         std::cout << "Interactive test; press any key to continue. ";
+//         
+//         std::string input;
+//         std::cin >> input;
+//         
+//         std::cout << "A rainbow square will appear on a yellow background.\nConfirm [y/n]: ";
+//         
+//         test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
+//         
+//         test_cntx.draw_triangles( 2, idx );
+//         
+//         test_wndw.swap();
+//         
+//         
+//         
+//         std::cin >> input;        
+//         CHECK_EQUAL( "y", input );
+//     }
 }
 
 int main( int argc, char* argv[] )
