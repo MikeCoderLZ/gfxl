@@ -11,7 +11,7 @@ SUITE( CameraTests )
 {
     TEST( CameraCreation )
     {
-        camera test_cam;
+        proj_cam test_cam;
         mat4 ref_view = mat4::perspective( d_angle::in_degs(135.0),
                                            1.33, 0.0, 100.0);
         CHECK_EQUAL( ref_view,
@@ -20,7 +20,7 @@ SUITE( CameraTests )
     
     TEST( CameraChangeLook )
     {
-        camera test_cam ( camera::settings()
+        proj_cam test_cam ( proj_cam::settings()
                           .look_at( vec3(-1.0f, 0.0f, 0.0f) ) );
         mat4 ref_perspective = mat4::perspective( d_angle::in_degs(135.0),
                                                   1.33, 0.0, 100.0);

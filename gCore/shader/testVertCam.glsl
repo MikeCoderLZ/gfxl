@@ -1,5 +1,13 @@
 #version 330
 
+uniform mat3 Cxr = mat3( 0.412453, 0.212671, 0.019334,
+                         0.357580, 0.715160, 0.119193,
+                         0.180423, 0.072169, 0.950227 );
+
+uniform mat3 B = mat3( vec3( 1.0479, 0.0296, -0.0092 ),
+                       vec3( 0.0229, 0.9904, 0.0151 ),
+                       vec3( -0.0502, -0.0171, 0.7519 ) );
+
 uniform mat4 view;
 
 layout( location = 0 ) in vec3 pos;
@@ -10,5 +18,40 @@ out vec3 f_col;
 void main()
 {
     gl_Position = view * vec4( pos, 1.0 );
-    f_col = col;
+    
+    vec3 XYZ_color = vec3 ( pow( col.r, 2.2 ),
+                            pow( col.g, 2.2 ),
+                            pow( col.b, 2.2 ) );
+                     
+    XYZ_color = B * Cxr * XYZ_color;
+    XYZ_color = XYZ_color * vec3( 1.037021, 1.0, 1.211974 );
+    
+    float X_1;
+    if ( XYZ_color.x > 0.008856 ) {
+        X_1 = pow( XYZ_color.x, 0.33333333 );
+    } else {
+        X_1 = 7.787037 * XYZ_color.x + 0.137931034;
+    }
+    
+    float Y_1;
+    if ( XYZ_color.y > 0.008856 ) {
+        Y_1 = pow( XYZ_color.y, 0.33333333 );
+    } else {
+        Y_1 = 7.787037 * XYZ_color.y + 0.137931034;
+    }
+    
+    float Z_1;
+    if ( XYZ_color.z > 0.008856 ) {
+        Z_1 = pow( XYZ_color.z, 0.33333333 );
+    } else {
+        Z_1 = 7.787037 * XYZ_color.z + 0.137931034;
+    }
+    
+    
+    f_col = vec3( min( max( 0.0,    116.0 * Y_1 - 16.0  ), 100.0 ),
+                  min( max( -128.0, 500.0 * (X_1 - Y_1) ), 128.0 ),
+                  min( max( -128.0, 200.0 * (Y_1 - Z_1) ), 128.0 ) );
+    
+    
+    //f_col = col;
 }

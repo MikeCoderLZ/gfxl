@@ -937,6 +937,10 @@ public:
                                         vec4_t<comp_t> const& col1,
                                         vec4_t<comp_t> const& col2,
                                         vec4_t<comp_t> const& col3 );
+    mat4_t<T>&                 components( comp_t e00, comp_t e10, comp_t e20, comp_t e30,
+                                           comp_t e01, comp_t e11, comp_t e21, comp_t e31,
+                                           comp_t e02, comp_t e12, comp_t e22, comp_t e32,
+                                           comp_t e03, comp_t e13, comp_t e23, comp_t e33 );
     mat4_t<T>&                 transpose();
     mat4_t<T>&                 norm();
     mat4_t<T>&                 ortho();
@@ -5578,9 +5582,9 @@ vec4_t<T>     mat4_t<T>::column( size_t col ) const
 
 template< typename T >
 inline mat4_t<T>& mat4_t<T>::rows( vec4_t<T> const& row0,
-                               vec4_t<T> const& row1,
-                               vec4_t<T> const& row2,
-                               vec4_t<T> const& row3 )
+                                   vec4_t<T> const& row1,
+                                   vec4_t<T> const& row2,
+                                   vec4_t<T> const& row3 )
 {
     T* c = this->data.c;
     
@@ -5606,9 +5610,9 @@ inline mat4_t<T>& mat4_t<T>::rows( vec4_t<T> const& row0,
 
 template< typename T > inline
 mat4_t<T>&    mat4_t<T>::columns( vec4_t<T> const& col0,
-                              vec4_t<T> const& col1,
-                              vec4_t<T> const& col2,
-                              vec4_t<T> const& col3 )
+                                  vec4_t<T> const& col1,
+                                  vec4_t<T> const& col2,
+                                  vec4_t<T> const& col3 )
 {
     T* c = this->data.c;
     
@@ -5632,6 +5636,20 @@ mat4_t<T>&    mat4_t<T>::columns( vec4_t<T> const& col0,
     return *this;
 }
 
+
+template< typename T >
+mat4_t<T>&  mat4_t<T>::components( T e00, T e10, T e20, T e30,
+                                   T e01, T e11, T e21, T e31,
+                                   T e02, T e12, T e22, T e32,
+                                   T e03, T e13, T e23, T e33 )
+{
+    T* c = this->data.c;
+    c[0] = e00;   c[4] = e10;   c[8] = e20;   c[12] = e30;
+    c[1] = e01;   c[5] = e11;   c[9] = e21;   c[13] = e31;
+    c[2] = e02;   c[6] = e12;   c[10] = e22;  c[14] = e32;
+    c[3] = e03;   c[7] = e13;   c[11] = e23;  c[15] = e33;
+    return *this;
+}
 
 template< typename T >
 mat4_t<T>& mat4_t<T>::transpose()

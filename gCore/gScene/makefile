@@ -1,4 +1,4 @@
-scene_tests: texture_tests camera_tests program_tests
+scene_tests: texture_tests camera_tests program_tests light_tests
 
 texture_tests: $(BIN)/texture_test
 
@@ -60,13 +60,16 @@ $(BIN)/program_laboratory: $(OBJ)/program_laboratory.o \
                             $(OBJ)/video.o \
                             $(OBJ)/buffer.o \
                             $(OBJ)/program.o \
+                            $(OBJ)/texture.o \
                             $(OBJ)/gl_core_3_3.o
 	g++ $(OBJ)/program_laboratory.o \
 	    $(OBJ)/video.o \
 	    $(OBJ)/buffer.o \
 	    $(OBJ)/program.o \
+	    $(OBJ)/texture.o \
 	    $(OBJ)/gl_core_3_3.o \
 	    -L ../../dev_lib -lUnitTest++ \
+	    -lfreeimage \
 	    $(SDLLIBS) -o $(BIN)/program_laboratory
     
 $(OBJ)/program_laboratory.o: $(GSCN)/program_laboratory.cpp \
@@ -156,3 +159,46 @@ $(OBJ)/camera.o: $(GSCN)/camera.cpp \
 	g++ -c $(COM) \
 	$(GSCN)/camera.cpp \
 	$(SDLFLAGS) -o $(OBJ)/camera.o
+	
+light_tests: $(BIN)/light_test
+
+$(BIN)/light_test: $(OBJ)/light_test.o \
+                   $(OBJ)/light.o \
+#                    $(OBJ)/op.o \
+#                    $(OBJ)/video.o \
+#                    $(OBJ)/gl_core_3_3.o
+	g++ $(OBJ)/light_test.o \
+	$(OBJ)/light.o \
+# 	$(OBJ)/video.o \
+	$(OBJ)/op.o \
+	$(OBJ)/gl_core_3_3.o \
+	-L ../../dev_lib -lUnitTest++ \
+	$(SDLLIBS) -o $(BIN)/light_test
+	    
+$(OBJ)/light_test.o: $(GSCN)/light_test.cpp \
+                      $(GSCN)/light.hpp \
+#                       $(GVID)/gfx_exception.hpp \
+#                       $(GVID)/video.hpp \
+#                       $(GVID)/version.hpp \
+#                       $(GVID)/window.hpp \
+#                       $(GVID)/context.hpp \
+#                       $(GSCN)/buffer.hpp \
+#                       $(GSCN)/program.hpp
+	g++ -c $(COM) \
+	$(GSCN)/light_test.cpp \
+	 $(SDLFLAGS) -o $(OBJ)/light_test.o
+    
+$(OBJ)/light.o: $(GSCN)/light.cpp \
+                 $(GSCN)/light.hpp \
+                 $(GMATH)/datatype.hpp \
+                 $(GMATH)/op.hpp \
+#                  $(GVID)/gfx_exception.hpp \
+#                  $(GVID)/video.hpp \
+#                  $(GVID)/version.hpp \
+#                  $(GVID)/window.hpp \
+#                  $(GVID)/context.hpp \
+#                  $(GSCN)/buffer.hpp \
+#                  $(GSCN)/program.hpp
+	g++ -c $(COM) \
+	$(GSCN)/light.cpp \
+	$(SDLFLAGS) -o $(OBJ)/light.o
