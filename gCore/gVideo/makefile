@@ -1,6 +1,6 @@
 
 
-videoTests: $(BIN)/videoManagerTest.exe \
+video_tests: $(BIN)/videoManagerTest.exe \
             $(BIN)/shadingTest.exe \
             $(BIN)/video_system_test
 

@@ -2246,7 +2246,7 @@ SUITE( Matrix4Tests )
     TEST( Matrix4Perspective )
     {
         using namespace gfx;
-        double fovY (1.0);
+        d_angle fovY = d_angle::in_rads(1.0);
         double aspect (0.75);
         double near (0.01);
         double far (100);

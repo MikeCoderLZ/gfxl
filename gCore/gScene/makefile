@@ -169,9 +169,7 @@ $(BIN)/light_test: $(OBJ)/light_test.o \
 #                    $(OBJ)/gl_core_3_3.o
 	g++ $(OBJ)/light_test.o \
 	$(OBJ)/light.o \
-# 	$(OBJ)/video.o \
 	$(OBJ)/op.o \
-	$(OBJ)/gl_core_3_3.o \
 	-L ../../dev_lib -lUnitTest++ \
 	$(SDLLIBS) -o $(BIN)/light_test
 	    

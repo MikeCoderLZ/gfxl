@@ -1,9 +1,9 @@
 
 # The testing framework will be altered to use unittest instead of simple text output
 
-newTypes: $(BIN)/datatypeTest.exe \
-          $(BIN)/operatorTest \
-          $(BIN)/constant_test
+new_types: $(BIN)/datatypeTest.exe \
+           $(BIN)/operatorTest \
+           $(BIN)/constant_test
 
 $(BIN)/datatypeTest.exe: $(OBJ)/datatypeTest.o 
 

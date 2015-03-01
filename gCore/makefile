@@ -16,6 +16,7 @@ GSYS := ./gSys
 GVID := ./gVideo
 GSCN := ./gScene
 GUTIL := ./gUtility
+GGAME := ./gGame
 
 
 include ./gMath/makefile
@@ -23,9 +24,10 @@ include ./gUtility/makefile
 include ./gSys/makefile
 include ./gVideo/makefile
 include ./gScene/makefile
+include ./gGame/makefile
 
 
-all: mathTests systemTests videoTests scene_tests utilities
+all: systemTests video_tests scene_tests new_types
 
 gEngine.exe: $(OBJ)/gEngine.o $(MATHOBJ) makefile
 	g++ $(OBJ)/gEngine.o $(MATHOBJ) $(SDLLIBS) -o $(BIN)/gEngine.exe
