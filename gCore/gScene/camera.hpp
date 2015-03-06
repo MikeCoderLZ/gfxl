@@ -181,9 +181,9 @@ namespace gfx {
         public:
                             settings();
             settings&       mask_region( vec2 const& ul_corner,
-                                     vec2 const& lr_corner );
+                                         vec2 const& lr_corner );
             settings&       screen_region( vec2 const& ul_corner,
-                                       vec2 const& lr_corner );
+                                           vec2 const& lr_corner );
         private:
             vec4            mask_v;
             vec4            screen_v;

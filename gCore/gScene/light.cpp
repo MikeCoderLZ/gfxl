@@ -22,7 +22,7 @@ namespace gfx {
     { this->pos = pos; return *this; }
     
     vec3 const&     sphere_light::position() const
-    { return col; }
+    { return pos; }
     
     sphere_light&   sphere_light::color( vec3 const& col )
     { this->col = col; return *this; }

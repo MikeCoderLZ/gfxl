@@ -1,37 +1,38 @@
 #ifndef CONSTANT_HPP
 #define CONSTANT_HPP
 
+#include <iostream>
+
 namespace gfx {
 
-// This little gizmo is a metaprogramming thing to make sure
-// templates use the correctly typed values for common
-// literals. I'm a paranoid programmer, and since the default
-// type for floating point is double and the compiler is supposed
-// to enforce that, we can lose some time to type promotion.
-//
-// Besides, you can never be too sure with matrices and graphics.
+// This is a method to ensure the correctly typed values for
+// common literals are used. Since the default type for floating
+// point is double and the compiler is supposed to enforce that,
+// some time can be lost to type promotion. A good programmer
+// naturallywould avoid this, but in templated contexts it saves
+// some dev time and precious lines of code.
 
 template< typename T >
 class lit {
 public:
-    constexpr static T const    thousandth     = 1 / 1000;
-    constexpr static T const    hundredth      = 1 / 100;
-    constexpr static T const    tenth          = 1 / 10;
-    constexpr static T const    quarter        = 1 / 4;
-    constexpr static T const    half           = 1 / 2;
-    constexpr static T const    zero           = 0;
-    constexpr static T const    one            = 1;
-    constexpr static T const    two            = 2;
-    constexpr static T const    three          = 3;
-    constexpr static T const    four           = 4;
-    constexpr static T const    five           = 5;
-    constexpr static T const    ten            = 10;
-    constexpr static T const    hundred        = 100;
-    constexpr static T const    neg_one        = -1;
+    constexpr static T const    thousandth     = 0.001;
+    constexpr static T const    hundredth      = 0.01;
+    constexpr static T const    tenth          = 0.1;
+    constexpr static T const    quarter        = 0.25;
+    constexpr static T const    half           = 0.5;
+    constexpr static T const    zero           = 0.0;
+    constexpr static T const    one            = 1.0;
+    constexpr static T const    two            = 2.0;
+    constexpr static T const    three          = 3.0;
+    constexpr static T const    four           = 4.0;
+    constexpr static T const    five           = 5.0;
+    constexpr static T const    ten            = 10.0;
+    constexpr static T const    hundred        = 100.0;
+    constexpr static T const    neg_one        = -1.0;
     constexpr static T const    pi             = 3.1415926535897932384626433;
     constexpr static T const    tau            = 6.2831853071795864769252867;
-    constexpr static T const    n360           = 360;
-    constexpr static T const    inv_360        = 1 / 360;
+    constexpr static T const    n360           = 360.0;
+    constexpr static T const    inv_360        = 1.0 / 360.0;
     constexpr static T const    inv_pi         = 0.31830988618379067153776752;
     constexpr static T const    inv_tau        = 0.15915494309189533586888376;
     constexpr static T const    e              = 2.7182818284590452353602874;
@@ -40,7 +41,7 @@ public:
     constexpr static T const    sqrt_three     = 1.7320508075688772935274463;
     constexpr static T const    inv_sqrt_three = 0.57735026919;
     constexpr static T const    phi            = 1.6180339887498948482045868;
-    constexpr static T const    delta          = 1;
+    constexpr static T const    delta          = 1.0;
 };
 
 template<>
@@ -111,6 +112,16 @@ public:
 
 typedef lit<double>  d_lit;
 
+// The angle_t template is a method to disambiguate angular units.
+// Instead of using POD numbers which inevitably lead to bugs
+// and confusion, the angle_t class forces a coder to specify
+// the angular system they are using to describe the rotation.
+// Furthermore, code from one area can 'think' in one system
+// but recieve information that was specified in another system.
+
+// TODO angle_t might need to be expanded in the future to act more
+// like the types over in datatype.hpp.
+
 template< typename T >
 class angle_t {
     public:
@@ -121,9 +132,13 @@ class angle_t {
         T to_rads() const;
         T to_grads() const;
         T to_degs() const;
+        
+        template< typename U >
+        friend std::ostream&   operator<<( std::ostream& out, angle_t<U> const& src );
     private:
         angle_t( T new_unians ) : unians (new_unians) {};
         T unians;
+        // One unian = tau radians = 2*pi radians = 200 gradians = 360 degrees
 };
 
 typedef angle_t<float> angle;
@@ -158,6 +173,13 @@ template < typename T > inline
 T angle_t< T >::to_degs() const
 {
     return unians * lit<T>::n360;
+}
+
+template< typename T >
+std::ostream& operator<<( std::ostream& out, angle_t<T> const& src )
+{
+    out << src.to_degs() << '°';
+    return out;
 }
 
 }

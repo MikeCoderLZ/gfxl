@@ -13,14 +13,14 @@
 
 namespace gfx {
   
-// Five basic graphics primitives
+// Five vector primitives
 template< typename T > class scalar;
 template< typename T > class vec2_t;
 template< typename T > class vec3_t;
 template< typename T > class vec4_t;
 template< typename T > class qutn_t;
 
-// Basic matrix primitive
+// Ten matrix primitives
 template< typename T > class mat_t;
 template< typename T > class mat2_t;
 template< typename T > class mat3_t;
@@ -42,7 +42,7 @@ class swizz1;
 class program;
 #endif
 
-// An ABC that graphics primitives use to dela with mapping
+// An ABC that graphics primitives use to deal with mapping
 // to OpenGL or any other memory.
 class raw_mappable;
 
@@ -108,9 +108,7 @@ public:
     virtual         ~raw_mappable()                 {}
     virtual         raw_map const to_map() const    = 0;
 protected:
-    // Implementers have a public version of raw_map().
-    // This is intentional: this raw_map() is an internal
-    // utility function used for cloning bytes.
+    //map_bytes() is an internal utility used for cloning bytes.
     raw_map const   map_bytes( size_t n_bytes, unsigned char const* bytes ) const;
 };
 
@@ -149,6 +147,10 @@ public:
     virtual raw_map const   to_map() const;
 protected:
   // A union is used to access the value in full or the bytes individually.
+  // WARNING DANGER Because these types are using an array and invoke the
+  // sizeof() operator, it is ESPECIALLY DANGEROUS if you put a base class in
+  // the template parameter. Doing that will inevitably cause object slicing
+  // and BOOM, it will explode.
     union {
         comp_t          value;
         unsigned char   bytes[sizeof(comp_t)];
@@ -157,8 +159,18 @@ protected:
 
 // This macro is defined in datatypeinfo.hpp; it expands to a template
 // specialization of the typeinfo class with a further template param.
-// Type information for library classes is only generated when code uses
-// the functionality.
+// Type information for library classes is only generated when code
+// actually uses it. Because this partiuclar file uses this system
+// for standard GLSL types, the type information is in fact generated,
+// but that is okay since it is necessary for sending information over
+// to OpenGL.
+//
+// For user created linear algebra types using these templates, it will
+// NOT be generated unless it is in fact used.
+//
+// WARNING This is dangerous dark magics. DO NOT touch anything to do with
+// this typeinfo system unless you know PRECISELY what you are doing.
+// Mixing macros and templates is extremely spooky stuff.
 template< typename T >
 G_TYPE( scalar<T>, type<T>().n_components(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
@@ -212,6 +224,9 @@ protected:
     } data;
 };
 
+// WARNING This is dangerous dark magics. DO NOT touch anything to do with
+// this typeinfo system unless you know PRECISELY what you are doing.
+// Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( vec2_t<T>, 2 * type<T>().n_components(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
@@ -270,6 +285,9 @@ protected:
 
 };
 
+// WARNING This is dangerous dark magics. DO NOT touch anything to do with
+// this typeinfo system unless you know PRECISELY what you are doing.
+// Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( vec3_t<T>, 3 * type<T>().n_components(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
@@ -327,6 +345,9 @@ protected:
     } data;
 };
 
+// WARNING This is dangerous dark magics. DO NOT touch anything to do with
+// this typeinfo system unless you know PRECISELY what you are doing.
+// Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( vec4_t<T>, 4 * type<T>().n_components(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
@@ -377,6 +398,9 @@ protected:
     } data;
 };
 
+// WARNING This is dangerous dark magics. DO NOT touch anything to do with
+// this typeinfo system unless you know PRECISELY what you are doing.
+// Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( qutn_t<T>, 4 * type<T>().n_components(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
@@ -750,6 +774,9 @@ protected:
     } data;
 };
 
+// WARNING This is dangerous dark magics. DO NOT touch anything to do with
+// this typeinfo system unless you know PRECISELY what you are doing.
+// Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( mat2_t<T>, 4 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
@@ -849,6 +876,9 @@ protected:
     } data;
 };
 
+// WARNING This is dangerous dark magics. DO NOT touch anything to do with
+// this typeinfo system unless you know PRECISELY what you are doing.
+// Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( mat3_t<T>, 9 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
@@ -955,6 +985,9 @@ protected:
     } data;
 };
 
+// WARNING This is dangerous dark magics. DO NOT touch anything to do with
+// this typeinfo system unless you know PRECISELY what you are doing.
+// Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( mat4_t<T>, 16 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
@@ -1036,6 +1069,9 @@ protected:
     } data;
 };
 
+// WARNING This is dangerous dark magics. DO NOT touch anything to do with
+// this typeinfo system unless you know PRECISELY what you are doing.
+// Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( mat2x3_t<T>, 6 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
@@ -1116,6 +1152,9 @@ protected:
     } data;
 };
 
+// WARNING This is dangerous dark magics. DO NOT touch anything to do with
+// this typeinfo system unless you know PRECISELY what you are doing.
+// Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( mat3x2_t<T>, 6 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
@@ -1200,6 +1239,9 @@ protected:
     } data;
 };
 
+// WARNING This is dangerous dark magics. DO NOT touch anything to do with
+// this typeinfo system unless you know PRECISELY what you are doing.
+// Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( mat2x4_t<T>, 8 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
@@ -1282,6 +1324,9 @@ protected:
     } data;
 };
 
+// WARNING This is dangerous dark magics. DO NOT touch anything to do with
+// this typeinfo system unless you know PRECISELY what you are doing.
+// Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( mat4x2_t<T>, 8 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
@@ -1368,6 +1413,9 @@ protected:
     } data;
 };
 
+// WARNING This is dangerous dark magics. DO NOT touch anything to do with
+// this typeinfo system unless you know PRECISELY what you are doing.
+// Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( mat3x4_t<T>, 12 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
@@ -1452,6 +1500,9 @@ protected:
     } data;
 };
 
+// WARNING This is dangerous dark magics. DO NOT touch anything to do with
+// this typeinfo system unless you know PRECISELY what you are doing.
+// Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( mat4x3_t<T>, 12 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 

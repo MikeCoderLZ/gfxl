@@ -2,6 +2,12 @@
 
 namespace gfx {
 
+// Isolating the instantiation of the actual swizzle objects
+// to its own compilation unit like this makes it extremely
+// unlikely someone will circumvent the system and flub it up.
+//
+// They would literally have to try to flub it up on purpose.
+    
 class swizz_factory {
 public:
     inline static swizz4 make_swizz4( int index )

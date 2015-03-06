@@ -8,6 +8,9 @@
 
 namespace gfx {
 
+// This whole region is deprecated and superceded by code in datatype.hpp
+// and datatype.cpp
+    
 class Vec4;
 class Vec3;
 class Vec2;
