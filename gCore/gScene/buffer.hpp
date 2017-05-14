@@ -5,6 +5,7 @@
 
 namespace gfx {
 
+//  TODO block_spec should be a member of buffer for self-documentation purposes
     class block_spec {
     public:
                                         block_spec();
