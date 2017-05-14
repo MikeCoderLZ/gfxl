@@ -265,7 +265,7 @@ public:
     ProgramSettings&    no_frag();
     ProgramSettings&    no_geom();
     //ProgramSettings& no_tess();/** Needs ARB extension */
-private:
+private:    
     friend              class VideoManager;
     std::string         vert_path;
     std::string         frag_path;
@@ -685,6 +685,7 @@ public:
 	Buffer&                         create_buffer( BufferSettings const& settings );
 	friend std::ostream&            operator <<( std::ostream& out, VideoManager const& rhs);
 private:
+    friend                          class Buffer;
 	bool                            owned( Context const& context );
 	bool                            owned( Window const& window );
 	bool                            owned( Program const& program );
@@ -692,6 +693,7 @@ private:
 	typedef std::vector<Context*>   context_vector;
 	typedef std::vector<Program*>   program_vector;
 	typedef std::vector<Buffer*>    buffer_vector;
+    void                            remove_buffer( Buffer const* buffer );
 	window_vector*                  windows;
 	context_vector*                 contexts;
 	program_vector*                 programs;
@@ -712,6 +714,22 @@ inline  bool    VideoManager::owned( Window const& window )
 
 inline  bool    VideoManager::owned( Program const& program )
 { return this == program.manager; }
+
+inline void     VideoManager::remove_buffer( Buffer const* buffer )
+{ 
+    buffer_vector::iterator u;
+    size_t i_u = 0;
+    // Find the Buffer in the vector...
+    for( u = buffers->begin(); u != buffers->end(); ++u)
+        { 
+            ++i_u;
+            if ( buffer == *u ) {
+                break;
+            }
+        }
+    // ...and kill it!
+    buffers->erase(i_u);
+}
 
 }
 
