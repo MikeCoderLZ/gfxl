@@ -270,10 +270,12 @@ Buffer::~Buffer()
 {
     gl::DeleteBuffers( 1, &buff_ID );
     attrib_vector::iterator i;
+    std::cout << "Mark 1" << std::endl;
     for( i = attributes->begin(); i != attributes->end(); ++i )
         { delete *i; }
     delete attributes;
     delete[] data;
+    std::cout << "Mark 2" << std::endl;
 }
 
 VideoManager::VideoManager()
@@ -317,9 +319,12 @@ VideoManager::~VideoManager()
 	    { delete *k; }
 	delete programs;
 
+    std::cout << "Deleting Buffers; num buffers: " << buffers->size() << std::endl;
+    
     buffer_vector::iterator u;
     for( u = buffers->begin(); u != buffers->end(); ++u)
-        { delete *u; }
+        { std::cout << "deleting buffer" << std::endl;
+            delete *u; }
     delete buffers;
 }
 
@@ -511,6 +516,7 @@ Program& VideoManager::create_program( ProgramSettings const& settings )
 
 Buffer& VideoManager::create_buffer( BufferSettings const& settings )
 {
+    std::cout << "Created Buffer; num buffers: " << buffers->size() << std::endl;
     GLuint new_buff_ID;
     gl::GenBuffers( 1, &new_buff_ID );
     GLuint new_vao_ID;

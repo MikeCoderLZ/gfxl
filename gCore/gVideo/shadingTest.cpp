@@ -142,7 +142,7 @@ int main( int argc, char** argv ) {
     checkGLError( "drew triangles" );
     testWindow.swap();
     SDL_Delay( 4000 );
-
+    
     return 0;
 
 }

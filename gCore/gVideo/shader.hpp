@@ -37,6 +37,9 @@ namespace gfx {
  * source code.  The block comprises all the text between the line after the
  * directive and the line before the next blocking directive or EOF.
  *
+ * -- 2017 me: I neglected to plan for nesting; the 'end' directive should
+ *  terminate blocks, not the next blocking directive.
+ * 
  * "block" gives a name to the source, but does not flag that source as a
  * compilable shader stage.  Anything can appear in a block. "vert", "frag", and
  * "geo" define a handle and flag a source block as a compilable shader stage.
@@ -70,6 +73,12 @@ namespace gfx {
  * So, either only use "#version" and do not use the dynamic code generation
  * of gEngine or only use "@using".  Combining them WILL, I repeat, WILL lead
  * to strange bugs, mostly in the form of compiler errors.
+ * 
+ * -- 2017 me: I suspect that the thing to do would be to make the @using
+ *  directive define a variant of a block specialized for a particular version
+ *  of GLSL, letting gEngine decide what the appropriate version to use is
+ *  based ont he available hardware/driver support. This also means it requires
+ *  it's own terminating directive.
  *
  * -- Handle Matching --
  *
@@ -79,6 +88,7 @@ namespace gfx {
  * the match.  For instance, the string "HandleA" matches both the handles
  * "HandleA.foo" and "HandleA.bar", but "HandleA.f" does not match "HandleA.foo".
  *
+ * 
  * A block ends at an end directive or an EOF. The current block can be extended
  * with a new token by using "..." before it.  For example:
  *
@@ -116,22 +126,23 @@ namespace gfx {
  *
  * @vert "Vertex"
  *
- * @block "...v25"
- * @using "250"
+ *     @block "...v25"
+ *         @using "250"
  *
- * @insert "ExtHeader.v25"
- * @insert "SphHarmonics"
+ *         @insert "ExtHeader.v25"
+ *         @insert "SphHarmonics"
  *
- * // ...
- * @end
- * @block "...v31"
- * @using "310"
+ *         // ...
+ *     @end
+ * 
+ *     @block "...v31"
+ *         @using "310"
  *
- * @insert "ExtHeader.v31"
- * @insert "SphHarmonics"
+ *         @insert "ExtHeader.v31"
+ *         @insert "SphHarmonics"
  *
- * // ...
- * @end
+ *         // ...
+ *     @end
  *
  * @end
  *
