@@ -268,21 +268,13 @@ GLsizeiptr Buffer::attribute_offset( GLuint index ) const
 
 Buffer::~Buffer()
 {
-    std::cout << "Removing this buffer from the manager" << std::endl;
-    size_t size_before = manager->buffers->size();
     manager->remove_buffer( this );
-    std::cout << "Removed" << std::endl;
-    size_t size_after = manager->buffers->size();
-    std::cout << "Num buffers removed: " << size_before-size_after << std::endl;
     gl::DeleteBuffers( 1, &buff_ID );
     attrib_vector::iterator i;
-    std::cout << "Mark 1" << std::endl;
     for( i = attributes->begin(); i != attributes->end(); ++i )
         { delete *i; }
-    std::cout << "Mark 2" << std::endl;
     delete attributes;
     delete[] data;
-    
 }
 
 VideoManager::VideoManager()
@@ -325,13 +317,10 @@ VideoManager::~VideoManager()
 	for( k = programs->begin(); k != programs->end(); ++k)
 	    { delete *k; }
 	delete programs;
-
-    std::cout << "Deleting Buffers; num buffers: " << buffers->size() << std::endl;
     
     buffer_list::iterator u;
     for( u = buffers->begin(); u != buffers->end(); ++u)
-        { std::cout << "deleting buffer" << std::endl;
-            delete *u; }
+        { delete *u; }
     delete buffers;
 }
 
@@ -523,7 +512,7 @@ Program& VideoManager::create_program( ProgramSettings const& settings )
 
 Buffer& VideoManager::create_buffer( BufferSettings const& settings )
 {
-    std::cout << "Created Buffer; num buffers: " << buffers->size() << std::endl;
+    // std::cout << "Created Buffer; num buffers: " << buffers->size() << std::endl;
     GLuint new_buff_ID;
     gl::GenBuffers( 1, &new_buff_ID );
     GLuint new_vao_ID;
@@ -538,9 +527,17 @@ Buffer& VideoManager::create_buffer( BufferSettings const& settings )
 
 void     VideoManager::remove_buffer( Buffer* buffer )
 {
-    std::cout << "Removing a buffer" << std::endl;
-    buffers->remove(buffer);
-    std::cout << "Removed" << std::endl;
+    
+    buffer_list::iterator i;
+    Buffer* dying_buffer;
+    
+    for ( i = buffers->begin(); i != buffers->end(); ++i ) {
+        if ( (*i)->buff_ID == buffer->buff_ID ) {
+            dying_buffer = *i;
+            break;
+        }
+    }
+    buffers->remove(dying_buffer);
 }
 
 std::ostream& operator <<( std::ostream& out, VideoManager const& rhs )

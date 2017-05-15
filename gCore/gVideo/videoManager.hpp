@@ -569,7 +569,7 @@ inline  void    Buffer::load_data()
 inline  void    Buffer::align_vertices()
 {
     if ( not data_loaded ) {
-        std::string msg = "Buffer data has not be uploaded to OpenGL; ";
+        std::string msg = "Buffer data has not been uploaded to OpenGL; ";
         msg += "either the buffer is new or the data has changed since ";
         msg += "the last time it was loaded.";
         throw std::logic_error( msg );
