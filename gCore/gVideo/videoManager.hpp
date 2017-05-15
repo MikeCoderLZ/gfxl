@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <list>
 #include <string>
 #include <stdexcept>
 #include "checkError.hpp"
@@ -692,12 +693,12 @@ private:
 	typedef std::vector<Window*>    window_vector;
 	typedef std::vector<Context*>   context_vector;
 	typedef std::vector<Program*>   program_vector;
-	typedef std::vector<Buffer*>    buffer_vector;
-    void                            remove_buffer( Buffer const* buffer );
+	typedef std::list<Buffer*>      buffer_list;
+    void                            remove_buffer( Buffer* buffer );
 	window_vector*                  windows;
 	context_vector*                 contexts;
 	program_vector*                 programs;
-	buffer_vector*                  buffers;
+	buffer_list*                    buffers;
 	Context*                        active_context;
 };
 
@@ -714,22 +715,6 @@ inline  bool    VideoManager::owned( Window const& window )
 
 inline  bool    VideoManager::owned( Program const& program )
 { return this == program.manager; }
-
-inline void     VideoManager::remove_buffer( Buffer const* buffer )
-{ 
-    buffer_vector::iterator u;
-    size_t i_u = 0;
-    // Find the Buffer in the vector...
-    for( u = buffers->begin(); u != buffers->end(); ++u)
-        { 
-            ++i_u;
-            if ( buffer == *u ) {
-                break;
-            }
-        }
-    // ...and kill it!
-    buffers->erase(i_u);
-}
 
 }
 
