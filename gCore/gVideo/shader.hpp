@@ -15,17 +15,21 @@
 namespace gfx {
 
 /**
- * Okay, forget GLSW.  We'll come up with our own.
+ * Okay, forget GLSW.  We'll come up with our own, The High Level
+ * Shading Preprocessor, HLSPrep.
  *
  * Sections of a shader source file are cut up and labeled with the
- * syntax ' @<directive> "<name>(.<name>)*" '
+ * syntax " @<directive> '<name>(.<name>)*' ". This makes any file
+ * that uses this system uncompilable on its own, which is a GOOD
+ * thing. No one can screw it up, though it does mean you need
+ * this system.
  *
- * The directives so far are:
+ * The directives are:
  *
  * block  - a named block of source code
  * vert   - vertex shader source follows
  * frag   - fragment shader source follows
- * geo    - geometry shader source follows
+ * geo    - geometry shader source follows -- There are actually two kinds...
  *
  * end    - end the current block
  *
@@ -37,8 +41,6 @@ namespace gfx {
  * source code.  The block comprises all the text between the line after the
  * directive and the line before the next blocking directive or EOF.
  *
- * -- 2017 me: I neglected to plan for nesting; the 'end' directive should
- *  terminate blocks, not the next blocking directive.
  * 
  * "block" gives a name to the source, but does not flag that source as a
  * compilable shader stage.  Anything can appear in a block. "vert", "frag", and
@@ -94,10 +96,10 @@ namespace gfx {
  *
  * @vert "Vertex"
  *
- * @block "...LowDef"
+ * @begin "...LowDef"
  * @end
  *
- * @block "...HighDef"
+ * @begin "...HighDef"
  * @end
  *
  * @end
@@ -108,44 +110,59 @@ namespace gfx {
  * instead must use a name that starts at the root of the handles.
  *
  *
- * @block "ExtHeader"
+ * @begin 'ExtHeader'
  *
- * 	   @block "...v25"
+ * 	   @begin '...v25'
  * 	   // ...
  * 	   @end
  *
- * 	   @block "...v31"
+ * 	   @begin '...v31'
  * 	   // ...
  * 	   @end
  *
  * @end
  *
- * @block "SphHarmonics"
+ * @begin 'SphHarmonics'
  * // ...
  * @end
  *
- * @vert "Vertex"
+ * @vert 'Vertex'
  *
- *     @block "...v25"
- *         @using "250"
+ *     @begin '...v25'
+ *         @using '250'
  *
- *         @insert "ExtHeader.v25"
- *         @insert "SphHarmonics"
+ *         @insert 'ExtHeader.v25'
+ *         @insert 'SphHarmonics'
  *
  *         // ...
  *     @end
  * 
- *     @block "...v31"
- *         @using "310"
+ *     @begin '...v31'
+ *         @using '310'
  *
- *         @insert "ExtHeader.v31"
- *         @insert "SphHarmonics"
+ *         @insert 'ExtHeader.v31'
+ *         @insert 'SphHarmonics'
  *
  *         // ...
  *     @end
  *
  * @end
  *
+ * <code-block>           ::= 
+ * <directive>            ::= "@" <directive-expression>
+ * <directive-expression> ::= <block-expression> | <markup-expression>
+ * <block-expression>     ::= "begin" | "vert" | "frag" | "geo" "'" <name_tag> "'" <EOL>
+ * <name-tag>             ::= <name> | <name> "." <name>
+ * <name>                 ::= <name-expression>
+ * <name-expression>      ::= <name-character> | <name-character> <name-expression>
+ * <name-character>       ::= <letter> | <number> | "_"
+ * <markup-expression>    ::= <block-terminator> | <version-tag> | <insertion-expression>
+ * <block-terminator>     ::= "end"
+ * <version-tag>          ::= "using" <version-expression>
+ * <version-expression>   ::= <number> <number> <number>
+ * <insertion-expression> ::= "insert" "'" <name-tag> "'"
+ * 
+ * 
  * */
 
 /**
@@ -178,11 +195,12 @@ public:
     friend std::ostream& operator<<( std::ostream& out, Shader const& rhs );
 
 private:
-    std::string* vertex_file;
-    std::string* frag_file;
-    GLuint vert_ID;
-    GLuint frag_ID;
-    GLuint prog_ID;
+    // Really, since the HLSPrep is dealing with this information, it should be
+    // a single list of files. The directives therein will sort it out.
+    typedef std::vector<std::string>    file_vector;
+    typedef std::vector<GLuint>         GL_id_vector;
+    file_vector*                        files;
+    GL_id_vector*                       IDs;
 
 };
 

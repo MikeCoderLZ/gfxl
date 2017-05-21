@@ -527,7 +527,6 @@ Buffer& VideoManager::create_buffer( BufferSettings const& settings )
 
 void     VideoManager::remove_buffer( Buffer* buffer )
 {
-    
     buffer_list::iterator i;
     Buffer* dying_buffer;
     
