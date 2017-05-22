@@ -178,7 +178,7 @@ T angle_t< T >::to_degs() const
 template< typename T >
 std::ostream& operator<<( std::ostream& out, angle_t<T> const& src )
 {
-    out << src.to_degs() << '°';
+    out << src.to_degs() << "°";
     return out;
 }
 

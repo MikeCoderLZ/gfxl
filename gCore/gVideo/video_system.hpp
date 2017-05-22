@@ -1,5 +1,5 @@
-#ifndef VIDEO_MANAGER_HPP
-#define VIDEO_MANAGER_HPP
+#ifndef VIDEO_SYSTEM_HPP
+#define VIDEO_SYSTEM_HPP
 
 namespace gfx {
     
@@ -23,7 +23,7 @@ namespace gfx {
             unsigned int    min_ver_v;
             unsigned int    sub_ver_v;
             int             profile_v;
-            friend class video_system;
+            friend          class video_system;
         };
         video_system&                  initialize( video_system::settings const& set =
                                                         video_system::settings()        );
@@ -37,16 +37,20 @@ namespace gfx {
         void                            activate_context( context& context );
         context const&                  get_active_context() const;
         context&                        get_active_context();
+        shader const&                   get_active_shader() const;
+        shader&                         get_active_shader();
         friend std::ostream&            operator <<( std::ostream& out,
                                                     video_system const& rhs);
     private:
-        static video_system* const     instance;
+        static video_system* const      instance;
         version                         vid_ver;
         typedef std::set<context*>      context_set;
         context_set*                    contexts;
-        context*                        active_context;  
+        context*                        active_context;
+        typedef std::set<shader*>       shader_set;
+        shader_set*                     shaders;
+        shader*                         active_shader;
         bool                            zombie;
-        
                                         video_system();
         void                            register_context( context* cntx );
         void                            unregister_context( context* cntx );
@@ -109,6 +113,7 @@ namespace gfx {
                             vid_ver ( 0, 0 ),
                             contexts ( new context_set() ),
                             active_context( 0 ),
+                            shaders ( new shader_set() ),
                             zombie( false ) {}
                             
     inline void     video_system::register_context( context* cntx )

@@ -3,12 +3,14 @@
 
 #include <string>
 #include <iostream>
+#include <map>
+#include <vector>
 
 //#define GL3_PROTOTYPES
 //#include "gl3.h"
 
 #include "gl_core_3_3.hpp"
-#include "videoManager.hpp"
+//#include "videoManager.hpp"
 //PFNGLCREATESHADERPROC glCreateShader;
 //PFNGLCREATEPROGRAMPROC glCreateProgram;
 
@@ -191,108 +193,121 @@ namespace gfx {
  * 
  * */
 
-class ShaderManager {
-    
-public:
-                ShaderManager();
-                ~ShaderManager();
-    Shader&     create_shader( ShaderSettings const& settings = ShaderSettings() );
-    bool        add_shader_source( std::string const& src_path ):
-    
-private:
-    
-    class source_node {
+    class shader_source_tree;
+
+    class shader {
+
     public:
-        source_node();
-        ~source_node();
-        std::string*        handle;
-        std::string*        source;
-        typedef std::map<std::string, source_node*>   child_vector;
-        child_vector*       children; // null address means leaf node
+        
+        class settings {
+        public:
+                            settings();
+            settings&       vertex_stage( std::string const& new_v_handle );
+            settings&       fragment_stage( std::string const& new_f_handle );
+            settings&       geometry_stage( std::string const& new_g_handle );
+            settings&       tesselation_stage( std::string const& new_t_handle );
+        private:
+            std::string     v_handle;
+            std::string     f_handle;
+            std::string     g_handle;
+            std::string     t_handle;
+            friend          class shader;
+        };
+        
+                        shader( settings const& set );
+        
+        bool            compile();
+        bool            link();
+        bool            use();
+        bool            operator ==( shader const& rhs ) const;
+        friend          std::ostream& operator<<( std::ostream& out, shader const& rhs );
+
+    private:
+        std::string     v_handle;
+        std::string     f_handle;
+        std::string     g_handle;
+        std::string     t_handle;
+        GLuint          vert_ID;
+        GLuint          frag_ID;
+        GLuint          geom_ID;
+        GLuint          tess_ID;
+        GLuint          prog_ID;
+        friend          class video_system;
+        friend          class shader_source_tree;
     };
+
+    inline bool     shader::operator ==( shader const& rhs ) const
+    {   // This is a placeholder; there are cases where this MIGHT cause
+        // pronlems.
+        return this->prog_ID == rhs.prog_ID; }
     
-    // annotated source tree structure
-    bool                            owned( Shader const& shader );
-    source_node*                    source_tree;
-    typedef std::map<std::string, source_node*>     handle_map;
-    handle_map*                     handles;
-    typedef std::vector<Shader*>    shader_vector;
-    shader_vector*                  shaders;
-};
+    std::ostream& operator<<( std::ostream& out, shader const& rhs );
 
-class ShaderSettings {
-public:
-    friend              class ShaderManager;
-                        ShaderSettings();
-    ShaderSettings&     vertex_stage( std::string const& new_v_handle )
-    ShaderSettings&     fragment_stage( std::string const& new_f_handle )
-    ShaderSettings&     geometry_stage( std::string const& new_g_handle )
-    ShaderSettings&     tesselation_stage( std::string const& new_t_handle )
-private:
-    std::string         v_handle;
-    std::string         f_handle;
-    std::string         g_handle;
-    std::string         t_handle;
-};
+    inline shader::settings::settings() : v_handle( 0 ),
+                                        f_handle( 0 ),
+                                        g_handle( 0 ),
+                                        t_handle( 0 ) {}
 
-inline ShaderSettings::ShaderSettings() : v_handle( 0 ),
-                                          f_handle( 0 ),
-                                          g_handle( 0 ),
-                                          t_handle( 0 ) {}
+    inline shader::settings&  shader::settings::vertex_stage( std::string const& new_v_handle )
+    {
+        v_handle = new_v_handle;
+        return *this;
+    }
 
-inline ShaderSettings&  ShaderSettings::vertex_stage( std::string const& new_v_handle )
-{
-    v_handle* = new_v_handle;
-    return *this;
-}
+    inline shader::settings&  shader::settings::fragment_stage( std::string const& new_f_handle )
+    {
+        f_handle = new_f_handle;
+        return *this;
+    }
 
-inline ShaderSettings&  ShaderSettings::fragment_stage( std::string const& new_f_handle )
-{
-    f_handle* = new_f_handle;
-    return *this;
-}
+    inline shader::settings&  shader::settings::geometry_stage( std::string const& new_g_handle )
+    {
+        g_handle = new_g_handle;
+        return *this;
+    }
 
-inline ShaderSettings&  ShaderSettings::geometry_stage( std::string const& new_g_handle )
-{
-    g_handle* = new_g_handle;
-    return *this;
-}
+    inline shader::settings&  shader::settings::tesselation_stage( std::string const& new_t_handle )
+    {
+        t_handle = new_t_handle;
+        return *this;
+    }
+    
+    class shader_source_tree {
+        
+    public:
+                                    shader_source_tree();
+                                    ~shader_source_tree();
+        static shader_source_tree&  get();
+        shader&                     create_shader( shader::settings const& set = shader::settings() );
+        bool                        add_shader_source( std::string const& src_path );
+        
+    private:
+        
+        class source_node {
+        public:
+            typedef std::map<std::string, source_node*>   child_vector;
+            
+            source_node();
+            ~source_node();
+            std::string*        handle;
+            std::string*        source;
+            child_vector*       children; // null address means leaf node
+        };
+        
+        typedef std::map<std::string, shader_source_tree::source_node*>     handle_map;
+        typedef std::vector<shader*>                                        shader_vector;
+        
+        static shader_source_tree* const    instance;
+        bool                                owned( shader const& shd );
+        source_node*                        source_tree;
+        handle_map*                         handles;
+        shader_vector*                      shaders;
+    };
 
-inline ShaderSettings&  ShaderSettings::tesselation_stage( std::string const& new_t_handle )
-{
-    t_handle* = new_t_handle;
-    return *this;
-}
+    inline shader_source_tree&  shader_source_tree::get()
+    { return *shader_source_tree::instance; }
 
-class Shader {
 
-public:
-    bool            compile();
-    bool            link();
-    bool            use();
-    friend std::ostream& operator<<( std::ostream& out, Shader const& rhs );
-
-private:
-    friend          class ShaderManager;
-                    Shader( std::string const& new_v_handle,
-                            std::string const& new_f_handle,
-                            std::string const& new_g_handle,
-                            std::string const& new_t_handle );
-                    Shader( std::string const& new_v_handle,
-                            std::string const& new_f_handle );
-    std::string     v_handle;
-    std::string     f_handle;
-    std::string     g_handle;
-    std::string     t_handle;
-    GLuint          vert_ID;
-    GLuint          frag_ID;
-    GLuint          geom_ID;
-    GLuint          tess_ID;
-    GLuint          prog_ID;
-
-};
-
-std::ostream& operator<<( std::ostream& out, Shader const& rhs );
 
 
 

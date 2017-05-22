@@ -6,7 +6,7 @@ SDLLIBS := $(shell sdl2-config --libs)
 SDLLIBS += -lX11 -lGL
 
 SDLFLAGS := $(shell sdl2-config --cflags)
-SDLFLAGS += -IC:/MinGW/include/GL3
+# SDLFLAGS += -IC:/MinGW/include/GL3
 
 MATHOBJ = $(OBJ)/vec.o $(OBJ)/op.o $(OBJ)/matrix.o $(OBJ)/quaternion.o
 MATHDPND = vec.o op.o matrix.o quaternion.o

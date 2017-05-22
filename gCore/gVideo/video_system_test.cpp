@@ -266,6 +266,14 @@ SUITE( ContextTests )
     }
 }
 
+SUITE( ShaderTests )
+{
+    TEST( ShaderCreation )
+    {
+        
+    }
+    
+}
 
 int main( int argc, char* argv[] )
 {

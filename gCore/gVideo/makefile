@@ -1,8 +1,8 @@
 
 
 video_tests: $(BIN)/videoManagerTest.exe \
-            $(BIN)/shadingTest.exe \
-            $(BIN)/video_system_test
+             $(BIN)/shadingTest.exe \
+             $(BIN)/video_system_test
 
 $(BIN)/video_system_test: $(OBJ)/video_system_test.o \
                            $(OBJ)/video.o \
@@ -32,13 +32,15 @@ $(OBJ)/video.o: $(GVID)/video.cpp \
                 $(GVID)/window.hpp \
                 $(GVID)/context.cpp \
                 $(GVID)/context.hpp \
+                $(GVID)/shader.cpp \
+                $(GVID)/shader.hpp \
                 $(GVID)/gfx_exception.hpp \
                 $(GVID)/gl_core_3_3.hpp \
                 $(GMATH)/datatype.hpp
 	g++ -c $(COM) -Wno-sign-compare \
 	    $(GVID)/video.cpp \
-	    $(SDLFLAGS) -o $(OBJ)/video.o                 
-
+	    $(SDLFLAGS) -o $(OBJ)/video.o
+		
 $(BIN)/shadingTest.exe: $(OBJ)/shadingTest.o \
                         $(OBJ)/videoManager.o \
                         $(OBJ)/utility.o \

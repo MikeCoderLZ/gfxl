@@ -19,7 +19,21 @@ namespace gfx {
     
     context::~context()
     {
-        video_system::get().unregister_context( this );
+        // I suspect this implementation of the zombie flag isn't useful,
+        // since it would mean that the video_system has been deleted,
+        // which can't happen before literally anything else because its
+        // creation is hardcoded. A better zombie flag would exist outside
+        // the video_system in a pseudo-globally scoped flag because
+        // trying to access the video_system's zombie flag would be
+        // impossible if had been deleted; if such a situation were to
+        // arise then you'd probably get sporatic segmentation faults at
+        // the end of execution. I'd have to blame multithreading in that
+        // case.
+        // 
+        // But paranoia usually prevails.
+        if ( not video_system::get().zombie ) {
+            video_system::get().unregister_context( this );
+        }
         SDL_GL_DeleteContext( sys_context );
     }
     
