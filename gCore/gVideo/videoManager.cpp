@@ -102,7 +102,7 @@ void    Program::compile( GLuint stage_ID, std::string const& stage_path )
         shader_file += buffer;
     }
 
-    std::cout << shader_file << std::endl;
+    // std::cout << shader_file << std::endl;
 
     const char* stage_file_ptr = shader_file.c_str();
     gl::ShaderSource( stage_ID, 1, &stage_file_ptr, 0 );

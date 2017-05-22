@@ -128,39 +128,40 @@ namespace gfx {
  *
  * @vert 'Vertex'
  *
- *     @begin '...v25'
- *         @using '250'
+ *     // Code and stuff
+ *     @ifversion 250
  *
  *         @insert 'ExtHeader.v25'
  *         @insert 'SphHarmonics'
  *
  *         // ...
- *     @end
+ *     @endversion
  * 
- *     @begin '...v31'
- *         @using '310'
+ *     @ifversion 310    
  *
  *         @insert 'ExtHeader.v31'
  *         @insert 'SphHarmonics'
  *
  *         // ...
- *     @end
+ *     @endversion
  *
  * @end
  *
- * <code-block>           ::= 
- * <directive>            ::= "@" <directive-expression>
- * <directive-expression> ::= <block-expression> | <markup-expression>
- * <block-expression>     ::= "begin" | "vert" | "frag" | "geo" "'" <name_tag> "'" <EOL>
- * <name-tag>             ::= <name> | <name> "." <name>
- * <name>                 ::= <name-expression>
- * <name-expression>      ::= <name-character> | <name-character> <name-expression>
- * <name-character>       ::= <letter> | <number> | "_"
- * <markup-expression>    ::= <block-terminator> | <version-tag> | <insertion-expression>
- * <block-terminator>     ::= "end"
- * <version-tag>          ::= "using" <version-expression>
- * <version-expression>   ::= <number> <number> <number>
- * <insertion-expression> ::= "insert" "'" <name-tag> "'"
+ * <code-block>             ::= what's left over, basically
+ * <directive>              ::= "@" <directive-expression> <EOL>
+ * <directive-expression>   ::= <block-expression> | <markup-expression>
+ * <block-expression>       ::= <block-tag> "'" <handle-expression> "'"
+ * <block-tag>              ::= "begin" | "vert" | "frag" | "geo"
+ * <handle-expression>      ::= <handle> | "..." <handle>
+ * <handle>                 ::= <handle-tag> | <handle-tag> "." <handle>
+ * <handle-tag>             ::= <handle-character> | <handle-character> <handle-tag>
+ * <handle-character>       ::= <letter> | <number> | "_"
+ * <markup-expression>      ::= <terminator-expression> | <version-expresion> | <version-end-expression> | <insertion-expression>
+ * <terminator-espression>  ::= "end"
+ * <version-expression>     ::= "ifversion" <version-tag>
+ * <end_version-expression> ::= "endversion"
+ * <version-tag>            ::= <number> <number> <number>
+ * <insertion-expression>   ::= "insert" "'" <handle-tag> "'"
  * 
  * 
  * */
@@ -184,23 +185,110 @@ namespace gfx {
  * appropriate shader source is assembled from the pieces.
  * */
 
+/**
+ * The ShaderManager maintains a source tree of shader files and
+ * the associated Shader objects.
+ * 
+ * */
+
+class ShaderManager {
+    
+public:
+                ShaderManager();
+                ~ShaderManager();
+    Shader&     create_shader( ShaderSettings const& settings = ShaderSettings() );
+    bool        add_shader_source( std::string const& src_path ):
+    
+private:
+    
+    class source_node {
+    public:
+        source_node();
+        ~source_node();
+        std::string*        handle;
+        std::string*        source;
+        typedef std::map<std::string, source_node*>   child_vector;
+        child_vector*       children; // null address means leaf node
+    };
+    
+    // annotated source tree structure
+    bool                            owned( Shader const& shader );
+    source_node*                    source_tree;
+    typedef std::map<std::string, source_node*>     handle_map;
+    handle_map*                     handles;
+    typedef std::vector<Shader*>    shader_vector;
+    shader_vector*                  shaders;
+};
+
+class ShaderSettings {
+public:
+    friend              class ShaderManager;
+                        ShaderSettings();
+    ShaderSettings&     vertex_stage( std::string const& new_v_handle )
+    ShaderSettings&     fragment_stage( std::string const& new_f_handle )
+    ShaderSettings&     geometry_stage( std::string const& new_g_handle )
+    ShaderSettings&     tesselation_stage( std::string const& new_t_handle )
+private:
+    std::string         v_handle;
+    std::string         f_handle;
+    std::string         g_handle;
+    std::string         t_handle;
+};
+
+inline ShaderSettings::ShaderSettings() : v_handle( 0 ),
+                                          f_handle( 0 ),
+                                          g_handle( 0 ),
+                                          t_handle( 0 ) {}
+
+inline ShaderSettings&  ShaderSettings::vertex_stage( std::string const& new_v_handle )
+{
+    v_handle* = new_v_handle;
+    return *this;
+}
+
+inline ShaderSettings&  ShaderSettings::fragment_stage( std::string const& new_f_handle )
+{
+    f_handle* = new_f_handle;
+    return *this;
+}
+
+inline ShaderSettings&  ShaderSettings::geometry_stage( std::string const& new_g_handle )
+{
+    g_handle* = new_g_handle;
+    return *this;
+}
+
+inline ShaderSettings&  ShaderSettings::tesselation_stage( std::string const& new_t_handle )
+{
+    t_handle* = new_t_handle;
+    return *this;
+}
+
 class Shader {
 
 public:
-    Shader( std::string vertex_path, std::string frag_path );
-    ~Shader();
-    bool compile();
-    bool link();
-    bool use();
+    bool            compile();
+    bool            link();
+    bool            use();
     friend std::ostream& operator<<( std::ostream& out, Shader const& rhs );
 
 private:
-    // Really, since the HLSPrep is dealing with this information, it should be
-    // a single list of files. The directives therein will sort it out.
-    typedef std::vector<std::string>    file_vector;
-    typedef std::vector<GLuint>         GL_id_vector;
-    file_vector*                        files;
-    GL_id_vector*                       IDs;
+    friend          class ShaderManager;
+                    Shader( std::string const& new_v_handle,
+                            std::string const& new_f_handle,
+                            std::string const& new_g_handle,
+                            std::string const& new_t_handle );
+                    Shader( std::string const& new_v_handle,
+                            std::string const& new_f_handle );
+    std::string     v_handle;
+    std::string     f_handle;
+    std::string     g_handle;
+    std::string     t_handle;
+    GLuint          vert_ID;
+    GLuint          frag_ID;
+    GLuint          geom_ID;
+    GLuint          tess_ID;
+    GLuint          prog_ID;
 
 };
 

@@ -7,7 +7,95 @@
 
 namespace gfx {
 
-Shader::Shader( std::string vertex_path,
+ShaderManager::ShaderManager()
+{
+    source_tree = 0;
+    handles = 0;
+    shaders = 0;
+}
+
+ShaderManager::~ShaderManager()
+{
+    // HAHAHAHAHAHAHA
+    delete source_tree;
+    delete handles;
+    delete shaders;
+}
+
+Shader&     create_shader( ShaderSettings const& settings )
+{
+    return new Shader( new ShaderSettings() );
+}
+
+bool    add_shader_source( std::string const& src_path )
+{
+    return false;
+}
+
+ShaderManager::source_node::source_node()
+{
+    handle = 0;
+    source = 0;
+    children = 0;
+}
+
+ShaderManager::source_node::~source_node()
+{
+    delete handle;
+    delete source;
+    delete children;
+}
+
+bool    ShaderManager::owned( Shader const& shader )
+{
+    return false;
+}
+
+bool    Shader::compile()
+{
+    return false;
+}
+
+bool    Shader::link()
+{
+    return false;
+}
+
+bool    Shader::use()
+{
+    return false;
+}
+
+std::ostream& operator<<( std::ostream& out, Shader const& rhs )
+{
+    return out;
+}
+
+Shader::Shader( std::string const& new_v_handle,
+                std::string const& new_f_handle,
+                std::string const& new_g_handle,
+                std::string const& new_t_handle ) : v_handle( new_v_handle ),
+                                                    f_handle( new_f_handle ),
+                                                    g_handle( new_g_handle ),
+                                                    t_handle( new_t_handle ),
+                                                    vert_ID( 0 ),
+                                                    frag_ID( 0 ),
+                                                    geom_ID( 0 ),
+                                                    tess_ID( 0 ),
+                                                    prog_ID( 0 ) {}
+
+Shader::Shader( std::string const& new_v_handle,
+                std::string const& new_f_handle ) : v_handle( new_v_handle ),
+                                                    f_handle( new_f_handle ),
+                                                    g_handle( "" ),
+                                                    t_handle( "" ),
+                                                    vert_ID( 0 ),
+                                                    frag_ID( 0 ),
+                                                    geom_ID( 0 ),
+                                                    tess_ID( 0 ),
+                                                    prog_ID( 0 ) {}
+
+/* Shader::Shader( std::string vertex_path,
                 std::string frag_path )
 {
     vertex_file = new std::string();
@@ -65,7 +153,7 @@ Shader::~Shader()
  * and whatnot.
  * */
 
-bool Shader::compile()
+/* bool Shader::compile()
 {
     return false;
 }
@@ -90,6 +178,6 @@ std::ostream& operator<<( std::ostream& out, Shader const& rhs )
     out << "fragment shader:\n\n" << *(rhs.frag_file) << std::endl;
 
     return out;
-}
+} */
 
 }
