@@ -202,10 +202,10 @@ namespace gfx {
         class settings {
         public:
                             settings();
-            settings&       vertex_stage( std::string const& new_v_handle );
-            settings&       fragment_stage( std::string const& new_f_handle );
-            settings&       geometry_stage( std::string const& new_g_handle );
-            settings&       tesselation_stage( std::string const& new_t_handle );
+            settings&       vertex_handle( std::string const& new_v_handle );
+            settings&       fragment_handle( std::string const& new_f_handle );
+            settings&       geometry_handle( std::string const& new_g_handle );
+            settings&       tesselation_handle( std::string const& new_t_handle );
         private:
             std::string     v_handle;
             std::string     f_handle;
@@ -214,8 +214,23 @@ namespace gfx {
             friend          class shader;
         };
         
-                        shader( settings const& set );
+                        shader( settings const& set = settings() );
         
+        std::string     vertex_handle() const;
+        std::string     fragment_handle() const;
+        std::string     tesselation_handle() const;
+        std::string     geometry_handle() const;
+        
+#ifdef DEBUG
+        
+        GLuint          vertex_ID() const;
+        GLuint          fragment_ID() const;
+        GLuint          tesselation_ID() const;
+        GLuint          geometry_ID() const;
+        
+#endif
+        
+                        
         bool            compile();
         bool            link();
         bool            use();
@@ -243,34 +258,62 @@ namespace gfx {
     
     std::ostream& operator<<( std::ostream& out, shader const& rhs );
 
-    inline shader::settings::settings() : v_handle( 0 ),
-                                        f_handle( 0 ),
-                                        g_handle( 0 ),
-                                        t_handle( 0 ) {}
+    inline shader::settings::settings() : v_handle( "" ),
+                                          f_handle( "" ),
+                                          g_handle( "" ),
+                                          t_handle( "" ) {}
 
-    inline shader::settings&  shader::settings::vertex_stage( std::string const& new_v_handle )
+    inline shader::settings&  shader::settings::vertex_handle( std::string const& new_v_handle )
     {
         v_handle = new_v_handle;
         return *this;
     }
 
-    inline shader::settings&  shader::settings::fragment_stage( std::string const& new_f_handle )
+    inline shader::settings&  shader::settings::fragment_handle( std::string const& new_f_handle )
     {
         f_handle = new_f_handle;
         return *this;
     }
 
-    inline shader::settings&  shader::settings::geometry_stage( std::string const& new_g_handle )
-    {
-        g_handle = new_g_handle;
-        return *this;
-    }
-
-    inline shader::settings&  shader::settings::tesselation_stage( std::string const& new_t_handle )
+    inline shader::settings&  shader::settings::tesselation_handle( std::string const& new_t_handle )
     {
         t_handle = new_t_handle;
         return *this;
     }
+    
+    inline shader::settings&  shader::settings::geometry_handle( std::string const& new_g_handle )
+    {
+        g_handle = new_g_handle;
+        return *this;
+    }
+    
+    inline std::string shader::vertex_handle() const
+    { return v_handle; }
+    
+    inline std::string shader::fragment_handle() const
+    { return f_handle; }
+    
+    inline std::string shader::tesselation_handle() const
+    { return t_handle; }
+    
+    inline std::string shader::geometry_handle() const
+    { return g_handle; }
+    
+#ifdef DEBUG
+
+    inline GLuint shader::vertex_ID() const
+    { return vert_ID; }
+    
+    inline GLuint shader::fragment_ID() const
+    { return frag_ID; }
+    
+    inline GLuint shader::tesselation_ID() const
+    { return tess_ID; }
+    
+    inline GLuint shader::geometry_ID() const
+    { return geom_ID; }
+    
+#endif
     
     class shader_source_tree {
         
@@ -278,7 +321,7 @@ namespace gfx {
                                     shader_source_tree();
                                     ~shader_source_tree();
         static shader_source_tree&  get();
-        shader&                     create_shader( shader::settings const& set = shader::settings() );
+        //shader&                     create_shader( shader::settings const& set = shader::settings() );
         bool                        add_shader_source( std::string const& src_path );
         
     private:

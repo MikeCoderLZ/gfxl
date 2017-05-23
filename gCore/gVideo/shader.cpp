@@ -24,10 +24,10 @@ namespace gfx {
         delete shaders;
     }
 
-    shader&     shader_source_tree::create_shader( shader::settings const& set )
-    {
-        return *(new shader( set ) );
-    }
+//    shader&     shader_source_tree::create_shader( shader::settings const& set )
+//    {
+//        return *(new shader( set ) );
+//    }
 
     bool    shader_source_tree::add_shader_source( std::string const& src_path )
     {

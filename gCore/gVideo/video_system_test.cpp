@@ -5,6 +5,7 @@
 
 #include "../gMath/datatype.hpp"
 #include "../../UnitTest++_src/UnitTest++.h"
+
 #include "video.hpp"
 
 using namespace gfx;
@@ -268,9 +269,33 @@ SUITE( ContextTests )
 
 SUITE( ShaderTests )
 {
-    TEST( ShaderCreation )
+    TEST( ShaderCreationDefaults )
     {
+        shader test_shdr;
         
+        CHECK_EQUAL( 0, test_shdr.vertex_handle().compare( "" ) );
+        CHECK_EQUAL( 0, test_shdr.fragment_handle().compare( "" ) );
+        CHECK_EQUAL( 0, test_shdr.tesselation_handle().compare( "" ) );
+        CHECK_EQUAL( 0, test_shdr.geometry_handle().compare( "" ) );
+        
+        CHECK_EQUAL( 0, test_shdr.vertex_ID() );
+        CHECK_EQUAL( 0, test_shdr.fragment_ID() );
+        CHECK_EQUAL( 0, test_shdr.tesselation_ID() );
+        CHECK_EQUAL( 0, test_shdr.geometry_ID() );
+    }
+    
+    TEST( ShaderCreationHandles )
+    {
+        shader test_shdr ( shader::settings()
+                           .vertex_handle( "vertex" )
+                           .fragment_handle( "fragment" )
+                           .tesselation_handle( "tesselation" )
+                           .geometry_handle( "geometry" ) );
+        
+        CHECK_EQUAL( 0, test_shdr.vertex_handle().compare( "vertex" ) );
+        CHECK_EQUAL( 0, test_shdr.fragment_handle().compare( "fragment" ) );
+        CHECK_EQUAL( 0, test_shdr.tesselation_handle().compare( "tesselation" ) );
+        CHECK_EQUAL( 0, test_shdr.geometry_handle().compare( "geometry" ) );
     }
     
 }
