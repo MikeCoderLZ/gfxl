@@ -25,8 +25,8 @@ namespace gfx {
             int             profile_v;
             friend          class video_system;
         };
-        video_system&                  initialize( video_system::settings const& set =
-                                                        video_system::settings()        );
+        video_system&                   initialize( video_system::settings const& set =
+                                                    video_system::settings()        );
                                         ~video_system();
         static video_system&            get();
         version const&                  get_version() const;
@@ -54,7 +54,10 @@ namespace gfx {
                                         video_system();
         void                            register_context( context* cntx );
         void                            unregister_context( context* cntx );
+        void                            register_shader( shader* shdr );
+        void                            unregister_shader( shader* shdr );
         friend                          class context;
+        friend                          class shader;
     };
 
 
@@ -114,7 +117,8 @@ namespace gfx {
                             contexts ( new context_set() ),
                             active_context( 0 ),
                             shaders ( new shader_set() ),
-                            zombie( false ) {}
+                            active_shader ( 0 ),
+                            zombie ( false ) {}
                             
     inline void     video_system::register_context( context* cntx )
     { contexts->insert( cntx ); }
@@ -143,6 +147,36 @@ namespace gfx {
             }
             // Now we can erase the pointer from the set
             contexts->erase( e );
+        }
+    }
+    
+    inline void     video_system::register_shader( shader* shdr )
+    { shaders->insert( shdr ); }
+    inline void     video_system::unregister_shader( shader* shdr )
+    {
+        shader_set::iterator e = shaders->find( shdr );
+        if ( e != shaders->end() ) {
+            // The shader IS in this set
+            if ( shdr == active_shader ) {
+                // If it is also the active shader, we need to reseat
+                // the active shader
+                if ( shaders->size() == 1 ) {
+                    // If there is only one shader, then the pointer must
+                    // be assigned null
+                    active_shader = 0;
+                } else if ( e == --(shaders->end()) ) {
+                    // If the shader is the last in the set, then we need
+                    // need to back track
+                    active_shader = *(--e);
+                    ++e;
+                } else {
+                    // Otherwise, we can forward track
+                    active_shader = *(++e);
+                    --e;
+                }
+            }
+            // Now we can erase the pointer from the set
+            shaders->erase( e );
         }
     }
                             
@@ -177,6 +211,24 @@ namespace gfx {
         throw initialization_error( "Cannot provide active context: no context present" );
     }
 
+    
+    inline  shader const&    video_system::get_active_shader() const
+    {
+        if ( context_present() ) {
+            return *active_shader;
+        }
+        throw initialization_error( "Cannot provide active shader: no context present" );
+        
+    }
+
+    inline  shader&    video_system::get_active_shader()
+    {
+        if ( context_present() ) {
+            return *active_shader;
+        }
+        throw initialization_error( "Cannot provide active shader: no context present" );
+    }
+    
 }
 
 #endif

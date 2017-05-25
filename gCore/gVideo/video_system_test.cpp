@@ -271,7 +271,11 @@ SUITE( ShaderTests )
 {
     TEST( ShaderCreationDefaults )
     {
-        shader test_shdr;
+        window test_wndw ( window::settings()
+                           .has_3D()          );
+        context test_cntx ( test_wndw );
+        
+        shader test_shdr( test_cntx );
         
         CHECK_EQUAL( 0, test_shdr.vertex_handle().compare( "" ) );
         CHECK_EQUAL( 0, test_shdr.fragment_handle().compare( "" ) );
@@ -282,24 +286,52 @@ SUITE( ShaderTests )
         CHECK_EQUAL( 0, test_shdr.fragment_ID() );
         CHECK_EQUAL( 0, test_shdr.tesselation_ID() );
         CHECK_EQUAL( 0, test_shdr.geometry_ID() );
+        CHECK_EQUAL( 1, test_shdr.program_ID() );
     }
     
     TEST( ShaderCreationHandles )
     {
-        shader test_shdr ( shader::settings()
-                           .vertex_handle( "vertex" )
-                           .fragment_handle( "fragment" )
-                           .tesselation_handle( "tesselation" )
-                           .geometry_handle( "geometry" ) );
+        window test_wndw ( window::settings()
+                           .has_3D()          );
+        context test_cntx ( test_wndw );
         
-        CHECK_EQUAL( 0, test_shdr.vertex_handle().compare( "vertex" ) );
-        CHECK_EQUAL( 0, test_shdr.fragment_handle().compare( "fragment" ) );
-        CHECK_EQUAL( 0, test_shdr.tesselation_handle().compare( "tesselation" ) );
-        CHECK_EQUAL( 0, test_shdr.geometry_handle().compare( "geometry" ) );
+        shader* test_shdr = new shader( test_cntx,
+                                        shader::settings()
+                                        .vertex_handle( "vertex" )
+                                        .fragment_handle( "fragment" )
+                                        .tesselation_handle( "tesselation" )
+                                        .geometry_handle( "geometry" ) );
+        
+        CHECK_EQUAL( 0, test_shdr->vertex_handle().compare( "vertex" ) );
+        CHECK_EQUAL( 0, test_shdr->fragment_handle().compare( "fragment" ) );
+        CHECK_EQUAL( 0, test_shdr->tesselation_handle().compare( "tesselation" ) );
+        CHECK_EQUAL( 0, test_shdr->geometry_handle().compare( "geometry" ) );
+        
+        delete test_shdr;
+
     }
     
 }
 
+/* SUITE( ShaderSystemTests )
+{
+    TEST( ShaderSystemInitialization ) {
+        CHECK_EQUAL( 0, shader_system::get().shader_set_size() );
+    }
+    
+    TEST( ShaderSystemBasicInsertion ) {
+        window test_wndw ( window::settings()
+                           .has_3D()          );
+        context test_cntx ( test_wndw );
+        CHECK_EQUAL( 0, shader_system::get().shader_set_size() );
+        // The insertion happens in the background with magics.
+        shader* test_shdr = new shader( test_cntx );
+        CHECK_EQUAL( 1, shader_system::get().shader_set_size() );
+        delete test_shdr;
+    }
+    
+    
+}*/
 int main( int argc, char* argv[] )
 {
     video_system::get().initialize( video_system::settings() );
