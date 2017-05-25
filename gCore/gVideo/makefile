@@ -32,6 +32,8 @@ $(OBJ)/video_debug.o: $(GVID)/video.cpp \
                       $(GVID)/window.hpp \
                       $(GVID)/context.cpp \
                       $(GVID)/context.hpp \
+                      $(GVID)/buffer.cpp \
+                      $(GVID)/buffer.hpp \
                       $(GVID)/shader.cpp \
                       $(GVID)/shader.hpp \
                       $(GVID)/gfx_exception.hpp \
@@ -50,6 +52,8 @@ $(OBJ)/video.o: $(GVID)/video.cpp \
                 $(GVID)/window.hpp \
                 $(GVID)/context.cpp \
                 $(GVID)/context.hpp \
+                $(GVID)/buffer.cpp \
+                $(GVID)/buffer.hpp \
                 $(GVID)/shader.cpp \
                 $(GVID)/shader.hpp \
                 $(GVID)/gfx_exception.hpp \

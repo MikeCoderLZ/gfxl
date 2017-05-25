@@ -7,5 +7,6 @@
 
 #include "window.cpp"
 #include "context.cpp"
+#include "buffer.cpp"
 #include "shader.cpp"
 #include "video_system.cpp"

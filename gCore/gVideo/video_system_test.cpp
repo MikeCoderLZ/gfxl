@@ -277,10 +277,10 @@ SUITE( ShaderTests )
         
         shader test_shdr( test_cntx );
         
-        CHECK_EQUAL( 0, test_shdr.vertex_handle().compare( "" ) );
-        CHECK_EQUAL( 0, test_shdr.fragment_handle().compare( "" ) );
-        CHECK_EQUAL( 0, test_shdr.tesselation_handle().compare( "" ) );
-        CHECK_EQUAL( 0, test_shdr.geometry_handle().compare( "" ) );
+        CHECK_EQUAL( 0, test_shdr.vertex_path().compare( "" ) );
+        CHECK_EQUAL( 0, test_shdr.fragment_path().compare( "" ) );
+        CHECK_EQUAL( 0, test_shdr.tesselation_path().compare( "" ) );
+        CHECK_EQUAL( 0, test_shdr.geometry_path().compare( "" ) );
         
         CHECK_EQUAL( 0, test_shdr.vertex_ID() );
         CHECK_EQUAL( 0, test_shdr.fragment_ID() );
@@ -297,15 +297,15 @@ SUITE( ShaderTests )
         
         shader* test_shdr = new shader( test_cntx,
                                         shader::settings()
-                                        .vertex_handle( "vertex" )
-                                        .fragment_handle( "fragment" )
-                                        .tesselation_handle( "tesselation" )
-                                        .geometry_handle( "geometry" ) );
+                                        .vertex_path( "vertex" )
+                                        .fragment_path( "fragment" )
+                                        .tesselation_path( "tesselation" )
+                                        .geometry_path( "geometry" ) );
         
-        CHECK_EQUAL( 0, test_shdr->vertex_handle().compare( "vertex" ) );
-        CHECK_EQUAL( 0, test_shdr->fragment_handle().compare( "fragment" ) );
-        CHECK_EQUAL( 0, test_shdr->tesselation_handle().compare( "tesselation" ) );
-        CHECK_EQUAL( 0, test_shdr->geometry_handle().compare( "geometry" ) );
+        CHECK_EQUAL( 0, test_shdr->vertex_path().compare( "vertex" ) );
+        CHECK_EQUAL( 0, test_shdr->fragment_path().compare( "fragment" ) );
+        CHECK_EQUAL( 0, test_shdr->tesselation_path().compare( "tesselation" ) );
+        CHECK_EQUAL( 0, test_shdr->geometry_path().compare( "geometry" ) );
         
         delete test_shdr;
 

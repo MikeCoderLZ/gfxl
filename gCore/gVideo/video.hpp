@@ -18,10 +18,12 @@
 namespace gfx {
     class video_system;
     class context;
+    class buffer;
     class shader;
 }
 #include "window.hpp"
 #include "context.hpp"
+#include "buffer.hpp"
 #include "shader.hpp"
 
 #include "video_system.hpp"

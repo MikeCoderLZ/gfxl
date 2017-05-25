@@ -40,23 +40,23 @@ namespace gfx {
  * ref    - the file makes reference to another file's contents
  * using  - indicates what version of GLSL the current block uses.
  *
- * The directives block, vert, frag, and geo all define a handle for a block of
+ * The directives block, vert, frag, and geo all define a path for a block of
  * source code.  The block comprises all the text between the line after the
  * directive and the line before the next blocking directive or EOF.
  *
  * 
  * "block" gives a name to the source, but does not flag that source as a
  * compilable shader stage.  Anything can appear in a block. "vert", "frag", and
- * "geo" define a handle and flag a source block as a compilable shader stage.
+ * "geo" define a path and flag a source block as a compilable shader stage.
  * The shader blocks must meet certain requirements to be "valid" (I have not
  * yet defined these, but they'll be the minimum requirements of the respective
  * shader stage).
  *
- * The "insert" directive substitutes the source associated with the given handle
+ * The "insert" directive substitutes the source associated with the given path
  * at the location of the directive.
  *
- * The "ref" directive indicates that the file makes use of handles from other
- * source files.  The handle given indicates what handles it will be using;
+ * The "ref" directive indicates that the file makes use of paths from other
+ * source files.  The path given indicates what paths it will be using;
  * the same matching rules apply here as well.
  *
  * Finally, the "using" directive declares what version the current block is using.
@@ -88,9 +88,9 @@ namespace gfx {
  * -- Handle Matching --
  *
  * Fully qualified names are always unique, so each named block has a unique
- * handle.  Names are broken into tokens by the period (.) character, and this
- * is used to dynamically match handles. Each token represents the 'order' of
- * the match.  For instance, the string "HandleA" matches both the handles
+ * path.  Names are broken into tokens by the period (.) character, and this
+ * is used to dynamically match paths. Each token represents the 'order' of
+ * the match.  For instance, the string "HandleA" matches both the paths
  * "HandleA.foo" and "HandleA.bar", but "HandleA.f" does not match "HandleA.foo".
  *
  * 
@@ -107,10 +107,10 @@ namespace gfx {
  *
  * @end
  *
- * Thus creating two handles, "Vertex.LowDef" and "Vertex.HighDef".  Because
+ * Thus creating two paths, "Vertex.LowDef" and "Vertex.HighDef".  Because
  * of the potential ambiguity, the "insert" directive and other mutagenic
  * directives cannot use the "..." syntax (what would it mean, anyway?) and
- * instead must use a name that starts at the root of the handles.
+ * instead must use a name that starts at the root of the paths.
  *
  *
  * @begin 'ExtHeader'
@@ -153,18 +153,18 @@ namespace gfx {
  * <code-block>             ::= what's left over, basically
  * <directive>              ::= "@" <directive-expression> <EOL>
  * <directive-expression>   ::= <block-expression> | <markup-expression>
- * <block-expression>       ::= <block-tag> "'" <handle-expression> "'"
+ * <block-expression>       ::= <block-tag> "'" <path-expression> "'"
  * <block-tag>              ::= "begin" | "vert" | "frag" | "geo"
- * <handle-expression>      ::= <handle> | "..." <handle>
- * <handle>                 ::= <handle-tag> | <handle-tag> "." <handle>
- * <handle-tag>             ::= <handle-character> | <handle-character> <handle-tag>
- * <handle-character>       ::= <letter> | <number> | "_"
+ * <path-expression>      ::= <path> | "..." <path>
+ * <path>                 ::= <path-tag> | <path-tag> "." <path>
+ * <path-tag>             ::= <path-character> | <path-character> <path-tag>
+ * <path-character>       ::= <letter> | <number> | "_"
  * <markup-expression>      ::= <terminator-expression> | <version-expresion> | <version-end-expression> | <insertion-expression>
  * <terminator-espression>  ::= "end"
  * <version-expression>     ::= "ifversion" <version-tag>
  * <end_version-expression> ::= "endversion"
  * <version-tag>            ::= <number> <number> <number>
- * <insertion-expression>   ::= "insert" "'" <handle-tag> "'"
+ * <insertion-expression>   ::= "insert" "'" <path-tag> "'"
  * 
  * 
  * */
@@ -216,18 +216,18 @@ namespace gfx {
             
             source_node();
             ~source_node();
-            std::string*        handle;
+            std::string*        path;
             std::string*        source;
             child_vector*       children; // null address means leaf node
         };
         
-        typedef std::map<std::string, shader_system::source_node*>  handle_map;
+        typedef std::map<std::string, shader_system::source_node*>  path_map;
         typedef std::set<shader*>                                   shader_set;
         
         static shader_system* const     instance;
         unsigned long                   next_shdr_ID;
         source_node*                    source_tree;
-        handle_map*                     handles;
+        path_map*                     paths;
         shader_set*                     shaders;
         
         bool                            owned( shader const& shd );
@@ -251,15 +251,15 @@ namespace gfx {
         class settings {
         public:
                             settings();
-            settings&       vertex_handle( std::string const& new_v_handle );
-            settings&       fragment_handle( std::string const& new_f_handle );
-            settings&       tesselation_handle( std::string const& new_t_handle );
-            settings&       geometry_handle( std::string const& new_g_handle );
+            settings&       vertex_path( std::string const& new_v_path );
+            settings&       fragment_path( std::string const& new_f_path );
+            settings&       tesselation_path( std::string const& new_t_path );
+            settings&       geometry_path( std::string const& new_g_path );
         private:
-            std::string     v_handle;
-            std::string     f_handle;
-            std::string     t_handle;
-            std::string     g_handle;
+            std::string     v_path;
+            std::string     f_path;
+            std::string     t_path;
+            std::string     g_path;
             
             bool            has_vert;
             bool            has_frag;
@@ -271,10 +271,10 @@ namespace gfx {
                         shader( context const& context,
                                 settings const& set = settings() );
                         ~shader();
-        std::string     vertex_handle() const;
-        std::string     fragment_handle() const;
-        std::string     tesselation_handle() const;
-        std::string     geometry_handle() const;
+        std::string     vertex_path() const;
+        std::string     fragment_path() const;
+        std::string     tesselation_path() const;
+        std::string     geometry_path() const;
         
 #ifdef DEBUG
         
@@ -295,16 +295,16 @@ namespace gfx {
 
     private:
         context const*  target_context;
-        std::string     v_handle;
-        std::string     f_handle;
-        std::string     g_handle;
-        std::string     t_handle;
+        std::string     v_path;
+        std::string     f_path;
+        std::string     g_path;
+        std::string     t_path;
         GLuint          vert_ID;
         GLuint          frag_ID;
         GLuint          geom_ID;
         GLuint          tess_ID;
         GLuint          prog_ID;
-        void            compile( GLuint stage_ID, std::string const& stage_handle );
+        void            compile( GLuint stage_ID, std::string const& stage_path );
         friend          class video_system;
         //friend          class shader_system;
     };
@@ -316,62 +316,62 @@ namespace gfx {
     
     std::ostream& operator<<( std::ostream& out, shader const& rhs );
     
-    inline shader::settings::settings() : v_handle( "" ),
-                                          f_handle( "" ),
-                                          t_handle( "" ),
-                                          g_handle( "" ),
+    inline shader::settings::settings() : v_path( "" ),
+                                          f_path( "" ),
+                                          t_path( "" ),
+                                          g_path( "" ),
                                           has_vert( false ),
                                           has_frag( false ),
                                           has_tess( false ),
                                           has_geom( false ){}
 
-    inline shader::settings&  shader::settings::vertex_handle( std::string const& new_v_handle )
+    inline shader::settings&  shader::settings::vertex_path( std::string const& new_v_path )
     {
-        v_handle = new_v_handle;
-        if ( v_handle.compare( "" ) != 0 ) {
+        v_path = new_v_path;
+        if ( v_path.compare( "" ) != 0 ) {
             has_vert = true;
         }
         return *this;
     }
 
-    inline shader::settings&  shader::settings::fragment_handle( std::string const& new_f_handle )
+    inline shader::settings&  shader::settings::fragment_path( std::string const& new_f_path )
     {
-        f_handle = new_f_handle;
-        if ( f_handle.compare( "" ) != 0 ) {
+        f_path = new_f_path;
+        if ( f_path.compare( "" ) != 0 ) {
             has_frag = true;
         }
         return *this;
     }
 
-    inline shader::settings&  shader::settings::tesselation_handle( std::string const& new_t_handle )
+    inline shader::settings&  shader::settings::tesselation_path( std::string const& new_t_path )
     {
-        t_handle = new_t_handle;
-        if ( t_handle.compare( "" ) != 0 ) {
+        t_path = new_t_path;
+        if ( t_path.compare( "" ) != 0 ) {
             has_tess = true;
         }
         return *this;
     }
     
-    inline shader::settings&  shader::settings::geometry_handle( std::string const& new_g_handle )
+    inline shader::settings&  shader::settings::geometry_path( std::string const& new_g_path )
     {
-        g_handle = new_g_handle;
-        if ( g_handle.compare( "" ) != 0 ) {
+        g_path = new_g_path;
+        if ( g_path.compare( "" ) != 0 ) {
             has_geom = true;
         }
         return *this;
     }
     
-    inline std::string shader::vertex_handle() const
-    { return v_handle; }
+    inline std::string shader::vertex_path() const
+    { return v_path; }
     
-    inline std::string shader::fragment_handle() const
-    { return f_handle; }
+    inline std::string shader::fragment_path() const
+    { return f_path; }
     
-    inline std::string shader::tesselation_handle() const
-    { return t_handle; }
+    inline std::string shader::tesselation_path() const
+    { return t_path; }
     
-    inline std::string shader::geometry_handle() const
-    { return g_handle; }
+    inline std::string shader::geometry_path() const
+    { return g_path; }
     
 #ifdef DEBUG
 

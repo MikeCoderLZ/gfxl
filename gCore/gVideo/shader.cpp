@@ -14,7 +14,7 @@ namespace gfx {
     {
         next_shdr_ID = 0;
         source_tree = 0;
-        handles = 0;
+        paths = 0;
         shaders = new shader_system::shader_set();
     }
 
@@ -22,7 +22,7 @@ namespace gfx {
     {
         // HAHAHAHAHAHAHA
         delete source_tree;
-        delete handles;
+        delete paths;
         delete shaders;
     }
 
@@ -33,14 +33,14 @@ namespace gfx {
 
     shader_system::source_node::source_node()
     {
-        handle = 0;
+        path = 0;
         source = 0;
         children = 0;
     }
 
     shader_system::source_node::~source_node()
     {
-        delete handle;
+        delete path;
         delete source;
         delete children;
     }
@@ -66,10 +66,10 @@ namespace gfx {
     
     shader::shader( context const& context,
                     shader::settings const& set ) : target_context ( &context ),
-                                                    v_handle( set.v_handle ),
-                                                    f_handle( set.f_handle ),
-                                                    g_handle( set.g_handle ),
-                                                    t_handle( set.t_handle ),
+                                                    v_path( set.v_path ),
+                                                    f_path( set.f_path ),
+                                                    g_path( set.g_path ),
+                                                    t_path( set.t_path ),
                                                     vert_ID( 0 ),
                                                     frag_ID( 0 ),
                                                     geom_ID( 0 ),
@@ -81,15 +81,15 @@ namespace gfx {
 
         if ( set.has_vert ) {
             vert_ID = gl::CreateShader( gl::VERTEX_SHADER );
-            v_handle = set.v_handle;
+            v_path = set.v_path;
         }
         if ( set.has_frag ) {
                 frag_ID = gl::CreateShader( gl::FRAGMENT_SHADER );
-                f_handle = set.f_handle;
+                f_path = set.f_path;
         }
         if ( set.has_geom ) {
                 geom_ID = gl::CreateShader( gl::GEOMETRY_SHADER );
-                g_handle = set.g_handle;
+                g_path = set.g_path;
         }
         /** if ( settings.has_tess_shader ) {
                     new_program->tess_ID = gl::CreateShader( gl::TESSALLATION_SHADER_ARB );
@@ -106,36 +106,59 @@ namespace gfx {
     
     void    shader::compile()
     {
-        compile( vert_ID, v_handle );
+        compile( vert_ID, v_path );
         gl::AttachShader( prog_ID, vert_ID );
-        compile( frag_ID, f_handle );
+        compile( frag_ID, f_path );
         gl::AttachShader( prog_ID, frag_ID );
         /** Compile geometry shader only if present */
         if ( geom_ID != 0 ) {
-            compile( geom_ID, g_handle );
+            compile( geom_ID, g_path );
             gl::AttachShader( prog_ID, geom_ID );
         }
         if ( tess_ID != 0 ) {
-            compile( tess_ID, t_handle );
+            compile( tess_ID, t_path );
             gl::AttachShader( prog_ID, tess_ID );
         }
         
     }
 
     void    shader::link()
-    {    }
+    {   
+        /**gl::AttachShader( prog_ID, vert_ID );
+        gl::AttachShader( prog_ID, frag_ID );
+        if ( geom_ID != 0 ) {
+            gl::AttachShader( prog_ID, geom_ID );
+        }*/
+        
+        gl::LinkProgram( prog_ID );
+
+        GLint status = 0;
+        gl::GetProgramiv( prog_ID, gl::LINK_STATUS, &status );
+        if ( status == gl::FALSE_ ) {
+            std::cout << "Link failed." << std::endl;
+            std::string msg = "Linking of program failed.\n";
+            GLint log_length;
+            gl::GetProgramiv(prog_ID, gl::INFO_LOG_LENGTH, &log_length );
+            char* info_log = new char[log_length];
+            GLint returned_length;
+            gl::GetProgramInfoLog( prog_ID, log_length, &returned_length, info_log );
+            msg += info_log;
+            delete[] info_log;
+            throw compilation_error( msg );
+        }
+    }
 
     void    shader::use()
-    {    }
+    {  gl::UseProgram( prog_ID );  }
 
     std::ostream& operator<<( std::ostream& out, shader const& rhs )
     {
         return out;
     }
     
-    void    shader::compile( GLuint stage_ID, std::string const& stage_handle )
+    void    shader::compile( GLuint stage_ID, std::string const& stage_path )
     {
-        std::fstream shader_in( stage_handle.c_str(),
+        std::fstream shader_in( stage_path.c_str(),
                                 std::ios_base::in );
         size_t buffer_size = 128;
         char* buffer = new char[buffer_size];
