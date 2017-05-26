@@ -10,6 +10,7 @@ namespace gfx {
 
     buffer::buffer( context const& context,
                     settings const& set ) :
+                        target_context ( context ),
                         data ( 0 ),
                         n_blocks ( set.n_blocks ),
                         stride ( 0 ),
@@ -23,6 +24,7 @@ namespace gfx {
     {
         gl::GenBuffers( 1, &buff_ID );
         gl::GenVertexArrays( 1, &vao_ID );
+        //video_system::get().register_buffer( this );
     }
 
     buffer::~buffer()
@@ -84,7 +86,7 @@ namespace gfx {
         data_loaded = false;
     }
 
-    void    buffer::load_data()
+    void    buffer::upload_data()
     {
         if( intended_target == gl::ELEMENT_ARRAY_BUFFER ){
             gl::BindVertexArray( vao_ID );

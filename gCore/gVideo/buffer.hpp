@@ -69,16 +69,18 @@ namespace gfx {
         void                        blocks( GLsizeiptr const blocks );
         void                        add_blocks( GLsizeiptr const more_blocks );
         template< typename DATA >
-        void                        fill_attribute( GLuint index,
+        void                        load_attribute( GLuint index,
                                                     std::vector< DATA > const& attrib_data );
-        void                        load_data();
+        void                        upload_data();
         void                        align_vertices();
         // Unsure if everyone should be allowed to use this code...
+#ifdef DEBUG
         GLuint                      get_buff_ID() const { return buff_ID; }
-        
+#endif
         friend std::ostream&        operator <<( std::ostream& out, buffer const& rhs );
     private:
         friend                      class video_system;
+        context const*              target_context;
         unsigned char*              data;
         GLsizeiptr                  n_blocks;
         GLsizeiptr                  stride;
@@ -162,7 +164,7 @@ namespace gfx {
     { intended_target = gl::UNIFORM_BUFFER; return *this; }
 
     template< typename DATA >
-    void buffer::fill_attribute( GLuint index, std::vector< DATA > const& attrib_data )
+    void buffer::load_attribute( GLuint index, std::vector< DATA > const& attrib_data )
     {
         if ( (*(*attributes)[index]) != type< DATA >() ) {
             std::string msg = "Type stored in std::vector, ";

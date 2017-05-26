@@ -271,22 +271,17 @@ namespace gfx {
                         shader( context const& context,
                                 settings const& set = settings() );
                         ~shader();
-        std::string     vertex_path() const;
-        std::string     fragment_path() const;
-        std::string     tesselation_path() const;
-        std::string     geometry_path() const;
-        
+        std::string     vertex_path() const { return v_path; }
+        std::string     fragment_path() const { return f_path; }
+        std::string     tesselation_path() const { return t_path; }
+        std::string     geometry_path() const { return g_path; }
 #ifdef DEBUG
-        
-        GLuint          vertex_ID() const;
-        GLuint          fragment_ID() const;
-        GLuint          tesselation_ID() const;
-        GLuint          geometry_ID() const;
-        GLuint          program_ID() const;
-        
+        GLuint          vertex_ID() const { return vert_ID; }
+        GLuint          fragment_ID() const { return frag_ID; }
+        GLuint          tesselation_ID() const { return tess_ID; }
+        GLuint          geometry_ID() const { return geom_ID; }
+        GLuint          program_ID() const { return prog_ID; }
 #endif
-        
-                        
         void            compile();
         void            link();
         void            use();
@@ -361,41 +356,6 @@ namespace gfx {
         return *this;
     }
     
-    inline std::string shader::vertex_path() const
-    { return v_path; }
-    
-    inline std::string shader::fragment_path() const
-    { return f_path; }
-    
-    inline std::string shader::tesselation_path() const
-    { return t_path; }
-    
-    inline std::string shader::geometry_path() const
-    { return g_path; }
-    
-#ifdef DEBUG
-
-    inline GLuint shader::vertex_ID() const
-    { return vert_ID; }
-    
-    inline GLuint shader::fragment_ID() const
-    { return frag_ID; }
-    
-    inline GLuint shader::tesselation_ID() const
-    { return tess_ID; }
-    
-    inline GLuint shader::geometry_ID() const
-    { return geom_ID; }
-    
-    inline GLuint shader::program_ID() const
-    { return prog_ID; }
-    
-#endif
-    
-
-
-
-
 }
 
 #endif

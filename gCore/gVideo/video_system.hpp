@@ -50,14 +50,19 @@ namespace gfx {
         typedef std::set<shader*>       shader_set;
         shader_set*                     shaders;
         shader*                         active_shader;
+//        typedef std::set<buffer*>       buffer_set;
+//        buffer_set*                     buffers;
         bool                            zombie;
                                         video_system();
         void                            register_context( context* cntx );
         void                            unregister_context( context* cntx );
         void                            register_shader( shader* shdr );
         void                            unregister_shader( shader* shdr );
+//        void                            register_buffer( buffer* bffr );
+//        void                            unregister_buffer( buffer* bffr );
         friend                          class context;
         friend                          class shader;
+//        friend                          class buffer;
     };
 
 
