@@ -11,6 +11,11 @@ namespace gfx {
             throw std::logic_error( msg );
         }
         
+        int doubleBuffered = (set.is_double_buffered ? 1 : 0 );
+        SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, doubleBuffered );
+
+        SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, (int) set.n_depth_bits );
+        
         sys_context = SDL_GL_CreateContext( window.sys_window );
         
         video_system::get().register_context( this );

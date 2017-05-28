@@ -19,8 +19,14 @@ namespace gfx {
         class settings {
         public:
                                 settings();
+        settings&               double_buffered();
+        settings&               not_double_buffered();
+        settings&               depth_bits( unsigned int bits);
         private:
             friend              class video_system;
+            friend              class context;
+            unsigned int        n_depth_bits;
+            bool                is_double_buffered;
         };
         
                                 context( window const& target_window,
@@ -47,7 +53,17 @@ namespace gfx {
         friend                  class video_system;
     };
 
-    inline context::settings::settings() {};
+    inline context::settings::settings() : n_depth_bits ( 24 ),
+                                           is_double_buffered ( true ) {};
+    
+    inline context::settings& context::settings::double_buffered()
+    { is_double_buffered = true; return *this; }
+    
+    inline context::settings& context::settings::not_double_buffered()
+    { is_double_buffered = false; return *this; }
+    
+    inline context::settings& context::settings::depth_bits( unsigned int bits )
+    { n_depth_bits = bits; return *this; }
 
     inline  bool    context::operator ==( context const& rhs ) const
     { return this->sys_context == rhs.sys_context; }

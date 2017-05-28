@@ -75,7 +75,15 @@ namespace gfx {
         void                        align_vertices();
         // Unsure if everyone should be allowed to use this code...
 #ifdef DEBUG
+        context const*              get_target_context() const { return target_context; }
+        GLsizeiptr                  get_n_blocks() const { return n_blocks; }
+        GLsizeiptr                  get_stride() const { return stride; }
+        GLuint                      get_vao_ID() const { return vao_ID; }
         GLuint                      get_buff_ID() const { return buff_ID; }
+        GLenum                      get_usage() const { return usage; }
+        GLenum                      get_intended_target() const { return intended_target; }
+        bool                        get_data_loaded() const { return data_loaded; }
+        bool                        get_verts_specified() const { return verts_specified; }
 #endif
         friend std::ostream&        operator <<( std::ostream& out, buffer const& rhs );
     private:
@@ -92,12 +100,6 @@ namespace gfx {
         bool                        verts_specified;
         typedef std::vector<info*>  attrib_vector;
         attrib_vector*              attributes;
-    //                                buffer( video_manager* new_manager,
-    //                                       GLsizeiptr new_n_blocks,
-    //                                      GLuint new_vao_ID,
-    //                                     GLuint new_buff_ID,
-        //                                    GLenum new_usage,
-        //                                   GLenum new_target );
         GLsizeiptr                  attribute_offset( GLuint index ) const;
     };
 

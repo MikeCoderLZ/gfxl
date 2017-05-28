@@ -10,7 +10,7 @@ namespace gfx {
 
     buffer::buffer( context const& context,
                     settings const& set ) :
-                        target_context ( context ),
+                        target_context ( &context ),
                         data ( 0 ),
                         n_blocks ( set.n_blocks ),
                         stride ( 0 ),
@@ -24,12 +24,12 @@ namespace gfx {
     {
         gl::GenBuffers( 1, &buff_ID );
         gl::GenVertexArrays( 1, &vao_ID );
-        //video_system::get().register_buffer( this );
+        video_system::get().register_buffer( this );
     }
 
     buffer::~buffer()
     {
-        //video_system::get().unregister_buffer( this );
+        video_system::get().unregister_buffer( this );
         gl::DeleteBuffers( 1, &buff_ID );
         attrib_vector::iterator i;
         for( i = attributes->begin(); i != attributes->end(); ++i )

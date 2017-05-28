@@ -267,6 +267,155 @@ SUITE( ContextTests )
     }
 }
 
+SUITE( BufferTests )
+{
+    TEST( BufferCreation )
+    {
+        window test_wndw ( window::settings()
+                           .has_3D()          );
+        context test_cntx ( test_wndw );
+        
+        buffer test_bffr( test_cntx );
+        
+        CHECK_EQUAL( *(test_bffr.get_target_context()), test_cntx );
+        CHECK_EQUAL( test_bffr.get_n_blocks(), 0 );
+        CHECK_EQUAL( test_bffr.get_stride(), 0 );
+        CHECK_EQUAL( test_bffr.get_vao_ID(), 1 );
+        CHECK_EQUAL( test_bffr.get_buff_ID(), 1 );
+        CHECK_EQUAL( test_bffr.get_usage(), gl::DYNAMIC_DRAW );
+        CHECK_EQUAL( test_bffr.get_intended_target(), gl::ARRAY_BUFFER );
+        CHECK_EQUAL( test_bffr.get_data_loaded(), false );
+        CHECK_EQUAL( test_bffr.get_verts_specified(), false );
+    }
+    
+    TEST( BufferSpecification )
+    {
+        window test_wndw ( window::settings()
+                           .has_3D()          );
+        context test_cntx ( test_wndw );
+        
+        buffer test_bffr1( test_cntx,
+                           buffer::settings()
+                            .blocks( 4 )
+                            .static_draw()
+                            .for_array()     );
+        CHECK_EQUAL( test_bffr1.get_n_blocks(), 4 );
+        CHECK_EQUAL( test_bffr1.get_usage(), gl::STATIC_DRAW );
+        CHECK_EQUAL( test_bffr1.get_intended_target(), gl::ARRAY_BUFFER );
+        
+        buffer test_bffr2( test_cntx,
+                           buffer::settings()
+                            .static_read()
+                            .for_copy_read()   );
+        CHECK_EQUAL( test_bffr2.get_usage(), gl::STATIC_READ );
+        CHECK_EQUAL( test_bffr2.get_intended_target(), gl::COPY_READ_BUFFER );
+        
+        buffer test_bffr3( test_cntx,
+                           buffer::settings()
+                            .static_copy()
+                            .for_copy_write()   );
+        CHECK_EQUAL( test_bffr3.get_usage(), gl::STATIC_COPY );
+        CHECK_EQUAL( test_bffr3.get_intended_target(), gl::COPY_WRITE_BUFFER );
+        
+        buffer test_bffr4( test_cntx,
+                           buffer::settings()
+                            .dynamic_draw()
+                            .for_element_array()   );
+        CHECK_EQUAL( test_bffr4.get_usage(), gl::DYNAMIC_DRAW );
+        CHECK_EQUAL( test_bffr4.get_intended_target(), gl::ELEMENT_ARRAY_BUFFER );
+        
+        buffer test_bffr5( test_cntx,
+                           buffer::settings()
+                            .dynamic_read()
+                            .for_pixel_packing()   );
+        CHECK_EQUAL( test_bffr5.get_usage(), gl::DYNAMIC_READ );
+        CHECK_EQUAL( test_bffr5.get_intended_target(), gl::PIXEL_PACK_BUFFER );
+        
+        buffer test_bffr6( test_cntx,
+                           buffer::settings()
+                            .dynamic_copy()
+                            .for_pixel_unpacking()   );
+        CHECK_EQUAL( test_bffr6.get_usage(), gl::DYNAMIC_COPY );
+        CHECK_EQUAL( test_bffr6.get_intended_target(), gl::PIXEL_UNPACK_BUFFER );
+        
+        buffer test_bffr7( test_cntx,
+                           buffer::settings()
+                            .stream_draw()
+                            .for_texture()   );
+        CHECK_EQUAL( test_bffr7.get_usage(), gl::STREAM_DRAW );
+        CHECK_EQUAL( test_bffr7.get_intended_target(), gl::TEXTURE_BUFFER );
+        
+        buffer test_bffr8( test_cntx,
+                           buffer::settings()
+                            .stream_copy()
+                            .for_transform_feedback()   );
+        CHECK_EQUAL( test_bffr8.get_usage(), gl::STREAM_COPY );
+        CHECK_EQUAL( test_bffr8.get_intended_target(), gl::TRANSFORM_FEEDBACK_BUFFER );
+        
+        buffer test_bffr9( test_cntx,
+                           buffer::settings()
+                            .for_uniform()   );
+        CHECK_EQUAL( test_bffr9.get_usage(), gl::DYNAMIC_DRAW );
+        CHECK_EQUAL( test_bffr9.get_intended_target(), gl::UNIFORM_BUFFER );
+        
+    }
+    
+    TEST( BufferLoading )
+    {
+        bool logic_error_thrown__aligned_without_uploading = false;
+        bool logic_error_thrown__aligned_without_formatting = false;
+        
+        window test_wndw ( window::settings()
+                           .has_3D()          );
+        context test_cntx ( test_wndw,
+                            context::settings() );
+        
+        buffer test_bffr( test_cntx,
+                          buffer::settings()
+                          .blocks( 4 )      );
+        
+        try {
+            test_bffr.align_vertices();
+        } catch (std::logic_error e) {
+            logic_error_thrown__aligned_without_uploading = true;
+        }
+        
+        CHECK( logic_error_thrown__aligned_without_uploading );
+        
+        test_bffr.upload_data();
+        
+        try {
+            test_bffr.align_vertices();
+        } catch (std::logic_error e) {
+            logic_error_thrown__aligned_without_formatting = true;
+        }
+        
+        CHECK( logic_error_thrown__aligned_without_formatting );
+        
+        test_bffr.block_format( block_spec()
+                                .attribute( type<vec2>() )
+                                .attribute( type<vec3>() ) );
+        
+        /* vector< vec2 > position;
+        position.push_back( vec2( 0.5f ));
+        position.push_back( vec2( 0.5f, -0.5f ));
+        position.push_back( vec2( -0.5f ));
+        position.push_back( vec2( -0.5f, 0.5f ));
+
+        vector< vec3 > color;
+        color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
+        color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
+        color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
+        color.push_back( vec3( 0.0f, 1.0f, 1.0f ) );
+        
+        test_bffr1.load_attribute( 0, position );
+        test_bffr1.load_attribute( 1, color );
+        
+        test_bffr.upload_data(); */
+        
+    }
+}
+
 SUITE( ShaderTests )
 {
     TEST( ShaderCreationDefaults )
@@ -282,11 +431,6 @@ SUITE( ShaderTests )
         CHECK_EQUAL( 0, test_shdr.tesselation_path().compare( "" ) );
         CHECK_EQUAL( 0, test_shdr.geometry_path().compare( "" ) );
         
-        CHECK_EQUAL( 0, test_shdr.vertex_ID() );
-        CHECK_EQUAL( 0, test_shdr.fragment_ID() );
-        CHECK_EQUAL( 0, test_shdr.tesselation_ID() );
-        CHECK_EQUAL( 0, test_shdr.geometry_ID() );
-        CHECK_EQUAL( 1, test_shdr.program_ID() );
     }
     
     TEST( ShaderCreationHandles )
@@ -311,6 +455,86 @@ SUITE( ShaderTests )
 
     }
     
+    TEST( ShaderCompilation )
+    {
+        window test_wndw ( window::settings()
+                           .has_3D()          );
+        context test_cntx ( test_wndw );
+        
+        shader test_shdr ( test_cntx,
+                            shader::settings()
+                            .vertex_path( "./shader/testVert.glsl" )
+                            .fragment_path( "./shader/testFrag.glsl" ) );
+        test_shdr.compile();
+        //bool compilation_success;
+        
+        
+        
+    }
+    
+}
+
+SUITE( IntegratedTests )
+{
+    TEST( SimpleRendering ) {
+        bool logic_error_thrown__aligned_without_uploading = false;
+        bool logic_error_thrown__aligned_without_formatting = false;
+        
+        window test_wndw ( window::settings()
+                           .has_3D() );
+        context test_cntx ( test_wndw,
+                            context::settings()
+                            .depth_bits(24)
+                            .double_buffered());
+        shader test_shdr ( test_cntx,
+                           shader::settings()
+                           .vertex_path("./shader/testVert_colored.glsl")
+                           .fragment_path("./shader/testFrag_colored.glsl") );
+        test_shdr.compile();
+        
+        buffer test_bffr( test_cntx,
+                          buffer::settings()
+                          .blocks( 5 )      );
+        
+        test_bffr.block_format( block_spec()
+                                .attribute( type<vec2>() )
+                                .attribute( type<vec3>() ) );
+        
+        std::vector< vec2 > position;
+        position.push_back( vec2( 0.5f ));
+        position.push_back( vec2( 0.5f, -0.5f ));
+        position.push_back( vec2( -0.5f ));
+        position.push_back( vec2( -0.5f, 0.5f ));
+        position.push_back( vec2( 0.0f ));
+
+        std::vector< vec3 > color;
+        color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
+        color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
+        color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
+        color.push_back( vec3( 0.0f, 1.0f, 1.0f ) );
+        color.push_back( vec3( 0.5f, 0.75f, 0.25f ) );
+        
+        test_bffr.load_attribute( 0, position );
+        test_bffr.load_attribute( 1, color );
+        
+        test_bffr.upload_data();
+        test_bffr.align_vertices();
+        
+        test_shdr.link();
+        test_shdr.use();
+        
+        GLuint elements[] = { 0, 1, 4, 1, 2, 4, 2, 3, 4, 3, 0, 4 };
+        gl::DrawElements( gl::TRIANGLES, 12, gl::UNSIGNED_INT, elements );
+        
+        test_wndw.swap();
+        
+        std::cout << "Do you see a square? [y,n]. ";
+        
+        std::string input;
+        std::cin >> input;
+        
+        CHECK_EQUAL( 0, input.compare("y") );
+    }
 }
 
 /* SUITE( ShaderSystemTests )

@@ -50,19 +50,19 @@ namespace gfx {
         typedef std::set<shader*>       shader_set;
         shader_set*                     shaders;
         shader*                         active_shader;
-//        typedef std::set<buffer*>       buffer_set;
-//        buffer_set*                     buffers;
+        typedef std::set<buffer*>       buffer_set;
+        buffer_set*                     buffers;
         bool                            zombie;
                                         video_system();
         void                            register_context( context* cntx );
         void                            unregister_context( context* cntx );
         void                            register_shader( shader* shdr );
         void                            unregister_shader( shader* shdr );
-//        void                            register_buffer( buffer* bffr );
-//        void                            unregister_buffer( buffer* bffr );
+        void                            register_buffer( buffer* bffr );
+        void                            unregister_buffer( buffer* bffr );
         friend                          class context;
         friend                          class shader;
-//        friend                          class buffer;
+        friend                          class buffer;
     };
 
 
@@ -123,6 +123,7 @@ namespace gfx {
                             active_context( 0 ),
                             shaders ( new shader_set() ),
                             active_shader ( 0 ),
+                            buffers ( new buffer_set() ),
                             zombie ( false ) {}
                             
     inline void     video_system::register_context( context* cntx )
@@ -184,7 +185,38 @@ namespace gfx {
             shaders->erase( e );
         }
     }
-                            
+
+    inline void     video_system::register_buffer( buffer* bffr )
+    { buffers->insert( bffr ); }
+    
+    inline void     video_system::unregister_buffer( buffer* bffr )
+    {
+        buffer_set::iterator e = buffers->find( bffr );
+        if ( e != buffers->end() ) {
+            // The shader IS in this set
+            /*if ( shdr == active_shader ) {
+                // If it is also the active shader, we need to reseat
+                // the active shader
+                if ( shaders->size() == 1 ) {
+                    // If there is only one shader, then the pointer must
+                    // be assigned null
+                    active_shader = 0;
+                } else if ( e == --(shaders->end()) ) {
+                    // If the shader is the last in the set, then we need
+                    // need to back track
+                    active_shader = *(--e);
+                    ++e;
+                } else {
+                    // Otherwise, we can forward track
+                    active_shader = *(++e);
+                    --e;
+                }
+            } */
+            // Now we can erase the pointer from the set
+            buffers->erase( e );
+        }
+    }
+    
     inline video_system&  video_system::get()
     { return *video_system::instance; }
     

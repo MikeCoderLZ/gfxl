@@ -43,6 +43,7 @@ namespace gfx {
         zombie = true;    
         delete contexts;
         delete shaders;
+        delete buffers;
     }
     
     void    video_system::check_acceleration_error( std::string const& tag )
