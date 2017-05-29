@@ -1,13 +1,11 @@
 
 
-video_tests: $(BIN)/videoManagerTest.exe \
-             $(BIN)/shadingTest.exe \
+video_tests: $(BIN)/shadingTest.exe \
              $(BIN)/video_system_test
 
 $(BIN)/video_system_test: $(OBJ)/video_system_test.o \
                            $(OBJ)/video_debug.o \
                            $(OBJ)/gl_core_3_3.o
-                           
 	g++ $(OBJ)/video_system_test.o \
 	    $(OBJ)/video_debug.o \
 	    $(OBJ)/gl_core_3_3.o \
@@ -62,51 +60,6 @@ $(OBJ)/video.o: $(GVID)/video.cpp \
 	g++ -c $(COM) -Wno-sign-compare \
 	    $(GVID)/video.cpp \
 	    $(SDLFLAGS) -o $(OBJ)/video.o
-		
-$(BIN)/shadingTest.exe: $(OBJ)/shadingTest.o \
-                        $(OBJ)/videoManager.o \
-                        $(OBJ)/utility.o \
-                        $(OBJ)/gl_core_3_3.o
-	g++ $(OBJ)/shadingTest.o \
-	    $(OBJ)/videoManager.o \
-	    $(OBJ)/utility.o \
-	    $(OBJ)/gl_core_3_3.o \
-	    $(SDLLIBS) -o $(BIN)/shadingTest.exe
-
-$(OBJ)/shadingTest.o: $(GVID)/shadingTest.cpp \
-                      $(GVID)/videoManager.hpp \
-                      $(GVID)/gl_core_3_3.hpp \
-                      $(GVID)/checkError.hpp
-	g++ -c $(COM) -Wno-sign-compare $(GVID)/shadingTest.cpp \
-	    $(SDLFLAGS) -o $(OBJ)/shadingTest.o
-
-$(BIN)/videoManagerTest.exe: $(OBJ)/videoManagerTest.o \
-                             $(OBJ)/videoManager.o \
-                             $(OBJ)/utility.o \
-                             $(OBJ)/gl_core_3_3.o
-	g++ $(OBJ)/videoManagerTest.o \
-	    $(OBJ)/videoManager.o \
-	    $(OBJ)/utility.o \
-	    $(OBJ)/gl_core_3_3.o \
-	    -L ../../dev_lib -lUnitTest++ \
-	    $(SDLLIBS) \
-	    -o $(BIN)/videoManagerTest.exe
-
-$(OBJ)/videoManagerTest.o: $(GVID)/videoManagerTest.cpp \
-                           $(GVID)/videoManager.hpp \
-                           $(GVID)/gl_core_3_3.hpp
-	g++ -c $(COM) \
-	    -Wno-sign-compare -Wno-unused-but-set-variable \
-	    $(GVID)/videoManagerTest.cpp \
-	    $(SDLFLAGS) -o $(OBJ)/videoManagerTest.o
-
-$(OBJ)/videoManager.o: $(GVID)/videoManager.cpp \
-                       $(GVID)/videoManager.hpp \
-                       $(GVID)/gl_core_3_3.hpp \
-                       $(GMATH)/datatype.hpp \
-                       $(GVID)/checkError.hpp
-	g++ -c $(COM) -Wno-sign-compare $(GVID)/videoManager.cpp \
-	    $(SDLFLAGS) -o $(OBJ)/videoManager.o
 	
 $(OBJ)/gl_core_3_3.o: $(GVID)/gl_core_3_3.cpp \
                       $(GVID)/gl_core_3_3.hpp
