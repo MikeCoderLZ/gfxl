@@ -8,7 +8,7 @@
 
 namespace gfx {
 
-    shader_system* const shader_system::instance = new shader_system();
+    /* shader_system* const shader_system::instance = new shader_system();
 
     shader_system::shader_system()
     {
@@ -60,7 +60,7 @@ namespace gfx {
     void shader_system::unregister_shader( shader* shdr)
     {
         shaders->erase( shdr );
-    }
+    } */
     
     /* ------------------- */
     
@@ -70,24 +70,34 @@ namespace gfx {
                                                     f_path( set.f_path ),
                                                     g_path( set.g_path ),
                                                     t_path( set.t_path ),
+                                                    has_vert( set.has_vert),
+                                                    has_frag( set.has_frag),
+                                                    has_geom( set.has_geom),
+                                                    has_tess( set.has_tess),
                                                     vert_ID( 0 ),
                                                     frag_ID( 0 ),
                                                     geom_ID( 0 ),
                                                     tess_ID( 0 ),
                                                     prog_ID( 0 )
     {
-        
-        /** Add check for adequate version number of a context */
 
-        if ( set.has_vert ) {
+        if ( video_system::get().get_version() < opengl_2_0 ) {
+            throw version_error( "Program cannot be created: video system version insufficient (requires 2.0+).");
+        }
+        
+        if ( not video_system::get().context_present() ) {
+            throw initialization_error( "Program cannot be created: no context present.");
+        }
+        
+        if ( has_vert ) {
             vert_ID = gl::CreateShader( gl::VERTEX_SHADER );
             v_path = set.v_path;
         }
-        if ( set.has_frag ) {
+        if ( has_frag ) {
                 frag_ID = gl::CreateShader( gl::FRAGMENT_SHADER );
                 f_path = set.f_path;
         }
-        if ( set.has_geom ) {
+        if ( has_geom ) {
                 geom_ID = gl::CreateShader( gl::GEOMETRY_SHADER );
                 g_path = set.g_path;
         }
@@ -96,28 +106,70 @@ namespace gfx {
             }*/
 
         prog_ID = gl::CreateProgram();
-
+        // Probably remove dependencies
         video_system::get().register_shader( this );
             
     }
     
     shader::~shader()
-    { video_system::get().unregister_shader( this ); }
+    { // Probably remove dependencies
+        video_system::get().unregister_shader( this ); 
+        
+        if ( gl::IsShader( vert_ID ) ) {
+            gl::DeleteShader( vert_ID );
+        }
+        if ( gl::IsShader( frag_ID ) ) {
+            gl::DeleteShader( frag_ID );
+        }
+        if ( gl::IsShader( geom_ID ) ) {
+            gl::DeleteShader( geom_ID );
+        }
+        if ( gl::IsShader( tess_ID ) ) {
+            gl::DeleteShader( tess_ID );
+        }
+        if ( gl::IsProgram( prog_ID ) ) {
+                gl::DeleteProgram( prog_ID );
+        }
+        
+        uniform_map->clear();
+    }
+    
+    void    shader::uniform( std::string const& name )
+    { (*uniform_map)[ name ] = -1; }
     
     void    shader::compile()
     {
-        compile( vert_ID, v_path );
-        gl::AttachShader( prog_ID, vert_ID );
-        compile( frag_ID, f_path );
-        gl::AttachShader( prog_ID, frag_ID );
-        /** Compile geometry shader only if present */
-        if ( geom_ID != 0 ) {
-            compile( geom_ID, g_path );
-            gl::AttachShader( prog_ID, geom_ID );
+        if ( has_vert ) {
+            if ( vert_path == "" ) {
+                throw compilation_error( "Vertex shader source path uninitialized.");
+            } else {
+                compile( this->vert_ID, vert_path );
+                gl::AttachShader( prog_ID, vert_ID );
+            }
         }
-        if ( tess_ID != 0 ) {
-            compile( tess_ID, t_path );
-            gl::AttachShader( prog_ID, tess_ID );
+        if ( has_frag ) {
+            if ( frag_path == "" ) {
+                throw compilation_error( "Fragment shader source path uninitialized.");
+            } else {
+                compile( this->frag_ID, frag_path );
+                gl::AttachShader( prog_ID, frag_ID );
+            }
+        }
+        if ( has_geom ) {
+            if ( geom_path == "" ) {
+                throw compilation_error( "Geometry shader source path uninitialized.");
+            } else {
+                compile( this->geom_ID, geom_path );
+                gl::AttachShader( prog_ID, geom_ID );
+            }
+        }
+        if ( has_tess ) {
+            if ( tess_path == "" ) {
+                throw compilation_error( "Tesselation shader source path uninitialized.");
+            } else {
+                compile( this->tess_ID, tess_path );
+                gl::AttachShader( prog_ID, tess_ID );
+            }
         }
         
     }
@@ -146,6 +198,15 @@ namespace gfx {
             delete[] info_log;
             throw compilation_error( msg );
         }
+        
+        key_map::iterator unfm;
+        
+        for ( unfm = uniform_map->begin();
+              unfm != uniform_map->end();
+              ++unfm                       ) {
+            (*uniform_map)[unfm->first] = gl::GetUniformLocation( prog_ID,
+                                                                  unfm->first.c_str() );
+        }
     }
 
     void    shader::use()
@@ -153,6 +214,15 @@ namespace gfx {
 
     std::ostream& operator<<( std::ostream& out, shader const& rhs )
     {
+        out << "Program:\n";
+        out << "\tversion: " << rhs.maj_ver << "." << rhs.min_ver << "\n";
+        out << "\tvertex shader ID: " << rhs.vert_ID << "\n";
+        out << "\tvertex path: " << rhs.vert_path << "\n";
+        out << "\tfragment shader ID: " << rhs.frag_ID << "\n";
+        out << "\tfragment path: " << rhs.frag_path << "\n";
+        out << "\tgeometry shader ID: " << rhs.geom_ID << "\n";
+        out << "\tgeometry path: " << rhs.geom_path << "\n";
+        // out << "\ttessallation shader ID: " << rhs.tess_ID << "\n";
         return out;
     }
     
@@ -169,6 +239,9 @@ namespace gfx {
             // "read a number of bytes equal to the size of the read
             // buffer minus one then assign the character after the end
             // of that read to a null terminating character."
+            // The expression can't execute until the index to the array
+            // is known, so that expression will always execute first.
+            // Still terrifying.
             buffer[ shader_in.read( buffer, buffer_size - 1 ).gcount() ] = '\0';
             shader_file += buffer;
         }
@@ -211,90 +284,5 @@ namespace gfx {
             throw compilation_error( msg );
         }
     }
-                                 
-    /* shader::shader( std::string vertex_path,
-                    std::string frag_path )
-    {
-        vertex_file = new std::string();
-        frag_file = new std::string();
-
-        const char* vpth = vertex_path.c_str();
-
-        std::fstream vert_in( vpth, std::ios_base::in );
-        //vert_in.open();
-
-        char* read_buffer = new char[80];
-
-        while( vert_in.good() ) {
-
-            vert_in.get( read_buffer, 80 );
-
-            *vertex_file += read_buffer;
-
-        }
-
-        delete[] vpth;
-
-        const char* fpth = frag_path.c_str();
-
-        std::fstream frag_in( fpth, std::ios_base::in );
-        //frag_in.open();
-
-        while( frag_in.good() ) {
-
-            frag_in.get( read_buffer, 80 );
-
-            *frag_file += read_buffer;
-
-        }
-
-        delete[] read_buffer;
-
-        delete[] fpth;
-
-        vert_ID = gl::Createshader( gl::VERTEX_SHADER );
-        frag_ID = gl::Createshader( gl::FRAGMENT_SHADER );
-        prog_ID = gl::CreateProgram();
-
-    }
-
-    shader::~shader()
-    {
-        delete vertex_file;
-        delete frag_file;
-    }
-
-    / **
-    * The initial test module creates the OpenGL context beforehand;
-    * later these two things must be coupled to make it all safe
-    * and whatnot.
-    * */
-
-    /* bool shader::compile()
-    {
-        return false;
-    }
-
-    bool shader::link()
-    {
-        return false;
-    }
-
-    bool shader::use()
-    {
-        return false;
-    }
-
-    std::ostream& operator<<( std::ostream& out, shader const& rhs )
-    {
-        out << "vert_ID: " << rhs.vert_ID << "\n";
-        out << "frag_ID: " << rhs.frag_ID << "\n";
-        out << "prog_ID: " << rhs.prog_ID << "\n\n";
-
-        out << "vertex shader:\n\n" << *(rhs.vertex_file) << "\n";
-        out << "fragment shader:\n\n" << *(rhs.frag_file) << std::endl;
-
-        return out;
-    } */
 
 }

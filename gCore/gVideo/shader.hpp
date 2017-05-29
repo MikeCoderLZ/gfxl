@@ -251,10 +251,10 @@ namespace gfx {
         class settings {
         public:
                             settings();
-            settings&       vertex_path( std::string const& new_v_path );
-            settings&       fragment_path( std::string const& new_f_path );
-            settings&       tesselation_path( std::string const& new_t_path );
-            settings&       geometry_path( std::string const& new_g_path );
+            settings&       vertex_path( std::string const& path );
+            settings&       fragment_path( std::string const& path );
+            settings&       tesselation_path( std::string const& path );
+            settings&       geometry_path( std::string const& path );
         private:
             std::string     v_path;
             std::string     f_path;
@@ -271,6 +271,7 @@ namespace gfx {
                         shader( context const& context,
                                 settings const& set = settings() );
                         ~shader();
+        void            uniform( std::string const& name );
         std::string     vertex_path() const { return v_path; }
         std::string     fragment_path() const { return f_path; }
         std::string     tesselation_path() const { return t_path; }
@@ -284,16 +285,27 @@ namespace gfx {
 #endif
         void            compile();
         void            link();
+        emplate< typename T >
+        void            load_uniform( std::string const& name,
+                                      T const& val             );
         void            use();
         bool            operator ==( shader const& rhs ) const;
         friend          std::ostream& operator<<( std::ostream& out, shader const& rhs );
 
     private:
+        // Probably should remove interdependencies because they are unnecessary
         context const*  target_context;
+        typedef
+        std::map<std::string, GLint>    key_map;
+        key_map*                        uniform_map;
         std::string     v_path;
         std::string     f_path;
         std::string     g_path;
         std::string     t_path;
+        bool            has_vert;
+        bool            has_frag;
+        bool            has_geom;
+        bool            has_tess;
         GLuint          vert_ID;
         GLuint          frag_ID;
         GLuint          geom_ID;
@@ -320,41 +332,186 @@ namespace gfx {
                                           has_tess( false ),
                                           has_geom( false ){}
 
-    inline shader::settings&  shader::settings::vertex_path( std::string const& new_v_path )
+    inline shader::settings&  shader::settings::vertex_path( std::string const& path )
     {
-        v_path = new_v_path;
+        v_path = path;
         if ( v_path.compare( "" ) != 0 ) {
             has_vert = true;
         }
         return *this;
     }
 
-    inline shader::settings&  shader::settings::fragment_path( std::string const& new_f_path )
+    inline shader::settings&  shader::settings::fragment_path( std::string const& path )
     {
-        f_path = new_f_path;
+        f_path = path;
         if ( f_path.compare( "" ) != 0 ) {
             has_frag = true;
         }
         return *this;
     }
 
-    inline shader::settings&  shader::settings::tesselation_path( std::string const& new_t_path )
+    inline shader::settings&  shader::settings::tesselation_path( std::string const& path )
     {
-        t_path = new_t_path;
+        t_path = path;
         if ( t_path.compare( "" ) != 0 ) {
             has_tess = true;
         }
         return *this;
     }
     
-    inline shader::settings&  shader::settings::geometry_path( std::string const& new_g_path )
+    inline shader::settings&  shader::settings::geometry_path( std::string const& path )
     {
-        g_path = new_g_path;
+        g_path = path;
         if ( g_path.compare( "" ) != 0 ) {
             has_geom = true;
         }
         return *this;
     }
+    
+    template< typename T > inline
+    void    shader::load_uniform( std::string const& name,
+                                   T const& val     )
+    {
+        throw std::invalid_argument( "No support for given type of uniform." );
+    }
+    
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   float32 const& val  )
+    { gl::Uniform1f( (*uniform_map)[name], val ); }
+    
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   float const& val  )
+    { gl::Uniform1f( (*uniform_map)[name], val ); }
+    
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   vec2 const& val  )
+    { gl::Uniform2f( (*uniform_map)[name], val[0], val[1] ); }
+    
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   vec3 const& val  )
+    { gl::Uniform3f( (*uniform_map)[name], val[0], val[1], val[2] ); }
+    
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   vec4 const& val  )
+    { gl::Uniform4f( (*uniform_map)[name], val[0], val[1], val[2], val[3] ); }
+    
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   int32 const& val  )
+    { gl::Uniform1i( (*uniform_map)[name], val ); }
+    
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   int const& val  )
+    { gl::Uniform1i( (*uniform_map)[name], val ); }
+    
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   ivec2 const& val  )
+    { gl::Uniform2i( (*uniform_map)[name], val[0], val[1] ); }
+    
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   ivec3 const& val  )
+    { gl::Uniform3i( (*uniform_map)[name], val[0], val[1], val[2] ); }
+    
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   ivec4 const& val  )
+    { gl::Uniform4i( (*uniform_map)[name], val[0], val[1], val[2], val[3] ); }
+    
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   uint32 const& val  )
+    { gl::Uniform1ui( (*uniform_map)[name], val ); }
+    
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   uint32_t const& val  )
+    { gl::Uniform1ui( (*uniform_map)[name], val ); }
+    
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   uvec2 const& val  )
+    { gl::Uniform2ui( (*uniform_map)[name], val[0], val[1] ); }
+    
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   uvec3 const& val  )
+    { gl::Uniform3ui( (*uniform_map)[name], val[0], val[1], val[2] ); }
+    
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   uvec4 const& val  )
+    { gl::Uniform4ui( (*uniform_map)[name], val[0], val[1], val[2], val[3] ); }
+    
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   mat2 const& val         )
+    { gl::UniformMatrix2fv( (*uniform_map)[name],
+                            1, gl::FALSE_,
+                            (GLfloat*) val.to_map().bytes ); }
+
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   mat3 const& val         )
+    { gl::UniformMatrix3fv( (*uniform_map)[name],
+                            1, gl::FALSE_,
+                            (GLfloat*) val.to_map().bytes ); }
+                            
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   mat4 const& val         )
+    { gl::UniformMatrix4fv( (*uniform_map)[name],
+                            1, gl::FALSE_,
+                            (GLfloat*) val.to_map().bytes ); }
+                            
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   mat2x3 const& val         )
+    { gl::UniformMatrix2x3fv( (*uniform_map)[name],
+                              1, gl::FALSE_,
+                              (GLfloat*) val.to_map().bytes ); }
+                            
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   mat3x2 const& val         )
+    { gl::UniformMatrix3x2fv( (*uniform_map)[name],
+                              1, gl::FALSE_,
+                              (GLfloat*) val.to_map().bytes ); }
+                              
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   mat2x4 const& val         )
+    { gl::UniformMatrix2x4fv( (*uniform_map)[name],
+                              1, gl::FALSE_,
+                              (GLfloat*) val.to_map().bytes ); }
+                            
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   mat4x2 const& val         )
+    { gl::UniformMatrix4x2fv( (*uniform_map)[name],
+                              1, gl::FALSE_,
+                              (GLfloat*) val.to_map().bytes ); }
+                              
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   mat3x4 const& val         )
+    { gl::UniformMatrix3x4fv( (*uniform_map)[name],
+                              1, gl::FALSE_,
+                              (GLfloat*) val.to_map().bytes ); }
+                            
+    template<> inline
+    void    shader::load_uniform( std::string const& name,
+                                   mat4x3 const& val         )
+    { gl::UniformMatrix4x3fv( (*uniform_map)[name],
+                              1, gl::FALSE_,
+                              (GLfloat*) val.to_map().bytes ); }
     
 }
 
