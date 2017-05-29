@@ -5,7 +5,6 @@ namespace gfx {
 
     class block_spec {
     public:
-        friend                          class Buffer;
                                         block_spec();
                                         ~block_spec();
         template< typename T >
@@ -168,6 +167,9 @@ namespace gfx {
     template< typename DATA >
     void buffer::load_attribute( GLuint index, std::vector< DATA > const& attrib_data )
     {
+        if ( not verts_specified ) {
+            throw std::logic_error( "Attribute value assignment attempted when vertex format was not specified." );
+        }
         if ( (*(*attributes)[index]) != type< DATA >() ) {
             std::string msg = "Type stored in std::vector, ";
             msg += type< DATA >().name();
@@ -186,9 +188,7 @@ namespace gfx {
             msg += " attribute values.";
             throw std::invalid_argument( msg);
         }
-        if ( not verts_specified ) {
-            throw std::logic_error( "Attribute value assignment attempted when vertex format was not specified." );
-        }
+        
         if ( data == 0 ) {
             data = new unsigned char[n_blocks * stride];
         }

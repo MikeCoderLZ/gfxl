@@ -10,25 +10,34 @@ namespace gfx {
 
     buffer::buffer( context const& context,
                     settings const& set ) :
-                        target_context ( &context ),
-                        data ( 0 ),
-                        n_blocks ( set.n_blocks ),
-                        stride ( 0 ),
-                        vao_ID ( 0 ),
-                        buff_ID ( 0 ),
-                        usage ( set.usage ),
+                        target_context  ( &context ),
+                        data            ( 0 ),
+                        n_blocks        ( set.n_blocks ),
+                        stride          ( 0 ),
+                        vao_ID          ( 0 ),
+                        buff_ID         ( 0 ),
+                        usage           ( set.usage ),
                         intended_target ( set.intended_target ),
-                        data_loaded ( false ),
+                        data_loaded     ( false ),
                         verts_specified ( false ),
-                        attributes ( new attrib_vector() )
+                        attributes      ( new attrib_vector() )
     {
+        if ( video_system::get().get_version() < opengl_1_5 ) {
+            throw version_error( "Buffer cannot be created: video system version insufficient (requires 1.5+).");
+        }
+        if ( not video_system::get().context_present() ) {
+            throw initialization_error( "Buffer cannot be created: no context present.");
+        }
+        
         gl::GenBuffers( 1, &buff_ID );
         gl::GenVertexArrays( 1, &vao_ID );
+        // Looks like I decided the video_system doesn't need to know about buffers
         video_system::get().register_buffer( this );
     }
 
     buffer::~buffer()
     {
+        // Don't need to know about buffers!
         video_system::get().unregister_buffer( this );
         gl::DeleteBuffers( 1, &buff_ID );
         attrib_vector::iterator i;
@@ -76,6 +85,7 @@ namespace gfx {
         unsigned char* new_data =
                 new unsigned char[ (n_blocks + more_blocks) * stride ];
         GLsizeiptr i;
+        // copy over old data to new array
         for ( i = n_blocks; i < n_blocks; ++i )
             { new_data[i] = data[i]; }
         delete[] data;
@@ -140,7 +150,7 @@ namespace gfx {
                 std::cout << "\tstride: " << stride << '\n';
                 std::cout << "\toffset: " << offset << std::endl;
                 gl::EnableVertexAttribArray( index );
-                checkGLError( "Enableed Vertex Attribute Array" );
+                checkGLError( "Enabled Vertex Attribute Array" );
                 break;
             case INTEGER :
                 gl::VertexAttribIPointer( index,

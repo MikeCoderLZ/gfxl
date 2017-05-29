@@ -194,7 +194,7 @@ namespace gfx {
  * 
  * */
 
-    class shader;
+/*    class shader;
 
     class shader_system {
         
@@ -243,7 +243,7 @@ namespace gfx {
     inline size_t   shader_system::shader_set_size() const
     { return shaders->size(); }
 #endif
-
+*/
     class shader {
 
     public:
