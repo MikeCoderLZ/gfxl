@@ -218,8 +218,7 @@ namespace gfx {
             friend          class program;
         };
         
-                        program( context const& context,
-                                settings const& set = settings() );
+                        program( settings const& set = settings() );
                         ~program();
         void            uniform( std::string const& name );
         std::string     vertex_path() const { return vert_path; }
@@ -243,8 +242,6 @@ namespace gfx {
         friend          std::ostream& operator<<( std::ostream& out, program const& rhs );
 
     private:
-        // Probably should remove interdependencies because they are unnecessary
-        context const*  target_context;
         typedef
         std::map<std::string, GLint>    key_map;
         key_map*                        uniform_map;
@@ -262,7 +259,6 @@ namespace gfx {
         GLuint          tess_ID;
         GLuint          prog_ID;
         void            compile( GLuint stage_ID, std::string const& stage_path );
-        friend          class video_system;
     };
 
     inline bool     program::operator ==( program const& rhs ) const

@@ -8,9 +8,7 @@ namespace gfx {
         delete attributes;
     }
 
-    buffer::buffer( context const& context,
-                    settings const& set ) :
-                        target_context  ( &context ),
+    buffer::buffer( settings const& set ) :
                         data            ( 0 ),
                         n_blocks        ( set.n_blocks ),
                         stride          ( 0 ),
@@ -32,13 +30,13 @@ namespace gfx {
         gl::GenBuffers( 1, &buff_ID );
         gl::GenVertexArrays( 1, &vao_ID );
         // Looks like I decided the video_system doesn't need to know about buffers
-        video_system::get().register_buffer( this );
+        //video_system::get().register_buffer( this );
     }
 
     buffer::~buffer()
     {
         // Don't need to know about buffers!
-        video_system::get().unregister_buffer( this );
+        //video_system::get().unregister_buffer( this );
         gl::DeleteBuffers( 1, &buff_ID );
         attrib_vector::iterator i;
         for( i = attributes->begin(); i != attributes->end(); ++i )

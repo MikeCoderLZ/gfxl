@@ -230,7 +230,7 @@ namespace gfx {
         throw initialization_error( "Cannot provide active context: no context present" );
     }
 
-    
+    /*
     inline  shader const&    video_system::get_active_shader() const
     {
         if ( context_present() ) {
@@ -247,7 +247,7 @@ namespace gfx {
         }
         throw initialization_error( "Cannot provide active shader: no context present" );
     }
-    
+    */
 }
 
 #endif

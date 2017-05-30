@@ -8,21 +8,19 @@
 
 namespace gfx {
     
-    program::program( context const& context,
-                    program::settings const& set ) : target_context ( &context ),
-                                                    vert_path( set.vert_path ),
-                                                    frag_path( set.frag_path ),
-                                                    geom_path( set.geom_path ),
-                                                    tess_path( set.tess_path ),
-                                                    has_vert( set.has_vert),
-                                                    has_frag( set.has_frag),
-                                                    has_geom( set.has_geom),
-                                                    has_tess( set.has_tess),
-                                                    vert_ID( 0 ),
-                                                    frag_ID( 0 ),
-                                                    geom_ID( 0 ),
-                                                    tess_ID( 0 ),
-                                                    prog_ID( 0 )
+    program::program( program::settings const& set ) :vert_path( set.vert_path ),
+                                                      frag_path( set.frag_path ),
+                                                      geom_path( set.geom_path ),
+                                                      tess_path( set.tess_path ),
+                                                      has_vert( set.has_vert),
+                                                      has_frag( set.has_frag),
+                                                      has_geom( set.has_geom),
+                                                      has_tess( set.has_tess),
+                                                      vert_ID( 0 ),
+                                                      frag_ID( 0 ),
+                                                      geom_ID( 0 ),
+                                                      tess_ID( 0 ),
+                                                      prog_ID( 0 )
     {
 
         if ( video_system::get().get_version() < opengl_2_0 ) {
