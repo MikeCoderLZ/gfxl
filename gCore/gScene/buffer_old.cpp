@@ -1,26 +1,18 @@
+#include "buffer.hpp"
+
 namespace gfx {
 
-    block_spec::~block_spec()
-    {
-        attrib_vector::iterator i;
-        for( i = attributes->begin(); i != attributes->end(); ++i )
-            { delete *i; }
-        delete attributes;
-    }
-
-    buffer::buffer( context const& context,
-                    settings const& set ) :
-                        target_context  ( &context ),
-                        data            ( 0 ),
-                        n_blocks        ( set.n_blocks ),
-                        stride          ( 0 ),
-                        vao_ID          ( 0 ),
-                        buff_ID         ( 0 ),
-                        usage           ( set.usage ),
-                        intended_target ( set.intended_target ),
-                        data_loaded     ( false ),
-                        verts_specified ( false ),
-                        attributes      ( new attrib_vector() )
+    buffer::buffer( settings const& set ) :
+                            data            ( 0 ),
+                            blocks          ( set.blocks_v ),
+                            stride          ( 0 ),
+                            vao_ID          ( vao_ID ),
+                            buff_ID         ( buff_ID ),
+                            usage           ( set.usage_v ),
+                            target          ( set.target_v ),
+                            data_loaded     ( false ),
+                            verts_specified ( false ),
+                            attributes      ( new attrib_vector )
     {
         if ( video_system::get().get_version() < opengl_1_5 ) {
             throw version_error( "Buffer cannot be created: video system version insufficient (requires 1.5+).");
@@ -31,22 +23,18 @@ namespace gfx {
         
         gl::GenBuffers( 1, &buff_ID );
         gl::GenVertexArrays( 1, &vao_ID );
-        // Looks like I decided the video_system doesn't need to know about buffers
-        video_system::get().register_buffer( this );
     }
-
+    
     buffer::~buffer()
     {
-        // Don't need to know about buffers!
-        video_system::get().unregister_buffer( this );
         gl::DeleteBuffers( 1, &buff_ID );
         attrib_vector::iterator i;
-        for( i = attributes->begin(); i != attributes->end(); ++i )
-            { delete *i; }
+        for ( i = attributes->begin(); i < attributes->end(); ++i ) {
+            delete *i;
+        }
         delete attributes;
-        delete[] data;
     }
-
+    
     void buffer::block_format( block_spec const& spec )
     {
         attrib_vector::iterator a;
@@ -63,66 +51,65 @@ namespace gfx {
         if ( data != 0 ) {
             delete[] data;
         }
-        data = new unsigned char[ n_blocks * stride ];
+        data = new unsigned char[ blocks * stride ];
     }
-
-    void    buffer::blocks( GLsizeiptr const blocks )
+    
+    void    buffer::set_blocks( GLsizeiptr const n_blocks )
     {
-        unsigned char* new_data = new unsigned char[ blocks * stride ];
+        unsigned char* new_data = new unsigned char[ n_blocks * stride ];
         GLsizeiptr i;
-        for ( i = n_blocks; i < n_blocks; ++i )
+        for ( i = blocks; i < blocks; ++i )
             { new_data[i] = data[i]; }
         delete[] data;
         data = new_data;
-        this->n_blocks = blocks;
+        this->blocks = n_blocks;
         // The amount of data has changed and the buffer has been extended
         // so it is dirty again
         data_loaded = false;
     }
-
+    
     void    buffer::add_blocks( GLsizeiptr const more_blocks )
     {
         unsigned char* new_data =
-                new unsigned char[ (n_blocks + more_blocks) * stride ];
+                new unsigned char[ (blocks + more_blocks) * stride ];
         GLsizeiptr i;
-        // copy over old data to new array
-        for ( i = n_blocks; i < n_blocks; ++i )
+        for ( i = blocks; i < blocks; ++i )
             { new_data[i] = data[i]; }
         delete[] data;
         data = new_data;
-        this->n_blocks += more_blocks;
+        this->blocks += more_blocks;
         // The amount of data has changed and the buffer has been extended
         // so it is dirty again
         data_loaded = false;
     }
-
-    void    buffer::upload_data()
+    
+    GLsizeiptr buffer::attribute_offset( GLuint index ) const
     {
-        if( intended_target == gl::ELEMENT_ARRAY_BUFFER ){
-            gl::BindVertexArray( vao_ID );
-            checkGLError( "vao bound for element data load" );
-        }
-        gl::BindBuffer( intended_target, buff_ID );
-        gl::BufferData( intended_target, n_blocks * stride, data, usage );
+        if( index == 0 ) { return 0; }
 
-        data_loaded = true;
+        GLsizeiptr offset = 0;
+        GLuint attribute = 0;
+        for( attribute = 0; attribute < index; ++attribute )
+            { offset += (*attributes)[attribute]->mapped_size(); }
+        return offset;
     }
-
+    
+    
     void    buffer::align_vertices()
     {
         if ( not data_loaded ) {
-            std::string msg = "Buffer data has not been uploaded to OpenGL; ";
+            std::string msg = "Buffer data has not be uploaded to OpenGL; ";
             msg += "either the buffer is new or the data has changed since ";
             msg += "the last time it was loaded.";
-            throw std::logic_error( msg );
+            throw binding_error( msg );
         }
 
         if ( not verts_specified ) {
             std::string msg = "Blocks of buffer data not yet formated.";
-            throw std::logic_error( msg );
+            throw unformatted_error( msg );
         }
 
-        std::cout << "Buffer ID: " << buff_ID << std::endl;
+        //std::cout << "Buffer ID: " << buff_ID << std::endl;
         gl::BindBuffer( gl::ARRAY_BUFFER, buff_ID );
         checkGLError( "buffer bound to ARRAY_BUFFER" );
         gl::BindVertexArray( vao_ID );
@@ -143,14 +130,14 @@ namespace gfx {
                                         stride,
                                         ( void* ) offset );
                 checkGLError( "VertexAttribPointer called" );
-                std::cout << "VertexAttribPointer called." << std::endl;
-                std::cout << "\tindex: " << index << '\n';
-                std::cout << "\tsize: " << (*a)->n_components() << '\n';
-                std::cout << "\ttype: " << (*a)->component_to_GL() << '\n';
-                std::cout << "\tstride: " << stride << '\n';
-                std::cout << "\toffset: " << offset << std::endl;
+//                 std::cout << "VertexAttribPointer called." << std::endl;
+//                 std::cout << "\tindex: " << index << '\n';
+//                 std::cout << "\tsize: " << (*a)->n_components() << '\n';
+//                 std::cout << "\ttype: " << (*a)->component_to_GL() << '\n';
+//                 std::cout << "\tstride: " << stride << '\n';
+//                 std::cout << "\toffset: " << offset << std::endl;
                 gl::EnableVertexAttribArray( index );
-                checkGLError( "Enabled Vertex Attribute Array" );
+                checkGLError( "Enableed Vertex Attribute Array" );
                 break;
             case INTEGER :
                 gl::VertexAttribIPointer( index,
@@ -173,14 +160,31 @@ namespace gfx {
         }
     }
 
-    GLsizeiptr buffer::attribute_offset( GLuint index ) const
-    {
-        if( index == 0 ) { return 0; }
+    std::ostream&   operator <<( std::ostream& out, buffer const& rhs )
+    {   out << "Buffer:\n";
+        out << "\tbuffer ID: " << rhs.buff_ID << '\n';
+        out << "\tblocks in buffer: " << rhs.blocks << std::endl;
+        out << "\tblock size: " << rhs.stride << std::endl;
+        out << "\ttotal data bytes: " << rhs.blocks * rhs.stride << std::endl;
+        out << "\tdata loaded: " << rhs.data_loaded << std::endl;
+        out << "\tblocks formated: " << rhs.verts_specified << std::endl;
 
-        GLsizeiptr offset = 0;
-        GLuint attribute = 0;
-        for( attribute = 0; attribute < index; ++attribute )
-            { offset += (*attributes)[attribute]->mapped_size(); }
-        return offset;
+        if ( rhs.data != 0 ) {
+            out << "[";
+            GLsizeiptr i;
+            for ( i = 0; i < rhs.blocks * rhs.stride; ++i ) {
+                out << (unsigned int) rhs.data[i];
+                if ( i % rhs.stride == rhs.stride - 1 ) {
+                    if ( i + 1 == rhs.blocks * rhs.stride ) {
+                        out << "]";
+                    } else {
+                        out << "]\n[";
+                    }
+                } else {
+                    out << "|";
+                }
+            }
+        }
+        return out;
     }
 }

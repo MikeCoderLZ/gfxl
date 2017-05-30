@@ -58,6 +58,7 @@ public:
 protected:
     friend class            raw_mappable;
     friend class            program;
+    friend class            shader;
     unsigned char* bytes;
 };
 

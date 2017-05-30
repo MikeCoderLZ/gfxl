@@ -3,14 +3,14 @@
 #include <vector>
 #include <string>
 
-#include "../gVideo/video.hpp"
+#include "video.hpp"
 #include "../gMath/datatype.hpp"
-#include "texture.hpp"
+#include "../gScene/texture.hpp"
 #include "../../UnitTest++_src/UnitTest++.h"
-#include "../gVideo/gl_core_3_3.hpp"
+#include "gl_core_3_3.hpp"
 #include "program.hpp"
 #include "buffer.hpp"
-#include "camera.hpp"
+#include "../gScene/camera.hpp"
 
 using namespace gfx;
 

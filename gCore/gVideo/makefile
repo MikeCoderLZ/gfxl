@@ -1,6 +1,7 @@
 
 
 video_tests: $(BIN)/shadingTest.exe \
+             $(BIN)/program_shader_test \
              $(BIN)/video_system_test
 
 $(BIN)/video_system_test: $(OBJ)/video_system_test.o \
@@ -32,8 +33,8 @@ $(OBJ)/video_debug.o: $(GVID)/video.cpp \
                       $(GVID)/context.hpp \
                       $(GVID)/buffer.cpp \
                       $(GVID)/buffer.hpp \
-                      $(GVID)/shader.cpp \
-                      $(GVID)/shader.hpp \
+                      $(GVID)/program.cpp \
+                      $(GVID)/program.hpp \
                       $(GVID)/gfx_exception.hpp \
                       $(GVID)/gl_core_3_3.hpp \
                       $(GMATH)/datatype.hpp
@@ -52,8 +53,8 @@ $(OBJ)/video.o: $(GVID)/video.cpp \
                 $(GVID)/context.hpp \
                 $(GVID)/buffer.cpp \
                 $(GVID)/buffer.hpp \
-                $(GVID)/shader.cpp \
-                $(GVID)/shader.hpp \
+                $(GVID)/program.cpp \
+                $(GVID)/program.hpp \
                 $(GVID)/gfx_exception.hpp \
                 $(GVID)/gl_core_3_3.hpp \
                 $(GMATH)/datatype.hpp

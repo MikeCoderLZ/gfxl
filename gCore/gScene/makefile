@@ -38,11 +38,11 @@ $(OBJ)/texture.o: $(GSCN)/texture.cpp \
 	    $(SDLFLAGS) -o $(OBJ)/texture.o
 
 	    
-$(OBJ)/buffer.o: $(GSCN)/buffer.cpp \
+#$(OBJ)/buffer.o: $(GSCN)/buffer.cpp \
                  $(GSCN)/buffer.hpp \
                  $(GVID)/gfx_exception.hpp \
                  $(GVID)/version.hpp
-	g++ -c $(COM) -Wno-sign-compare \
+#	g++ -c $(COM) -Wno-sign-compare \
 	    $(GSCN)/buffer.cpp \
 	    $(SDLFLAGS) -o $(OBJ)/buffer.o
 	    

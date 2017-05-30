@@ -1,171 +1,169 @@
-#ifndef BUFFER_HPP
-#define BUFFER_HPP
-
-#include "../gVideo/video.hpp"
+#ifndef BUFFER
+#define BUFFER
 
 namespace gfx {
 
-//  TODO block_spec should be a member of buffer for self-documentation purposes
     class block_spec {
     public:
                                         block_spec();
                                         ~block_spec();
         template< typename T >
-        block_spec&                     attribute( type<T> const& proto );
+        block_spec&                      attribute( type<T> const& proto );
     private:
+        friend                          class buffer;
         typedef std::vector< info* >    attrib_vector;
         attrib_vector*                  attributes;
-        friend                          class buffer;
     };
 
     inline  block_spec::block_spec() : attributes( new block_spec::attrib_vector() ) {}
 
-    inline block_spec::~block_spec()
-    {
-        attrib_vector::iterator i;
-        for ( i = attributes->begin(); i < attributes->end(); ++i )
-        {
-            delete *i;
-        }
-        delete attributes;
-    }
-
     template< typename T > inline
     block_spec&     block_spec::attribute( type<T> const& proto )
-    {   info* new_attrib = (info*) proto.copy();
+    {   
+        // pointers to the type class can be safely
+        // cast to pointers to the info ABC
+        info* new_attrib = (info*) proto.copy();
         attributes->push_back( new_attrib );
         return *this; }
-        
+
     class buffer {
     public:
         
         class settings {
         public:
-                                settings();
-            settings&           blocks( GLsizeiptr new_n_blocks );
-            settings&           static_draw();
-            settings&           static_read();
-            settings&           static_copy();
-            settings&           dynamic_draw();
-            settings&           dynamic_read();
-            settings&           dynamic_copy();
-            settings&           stream_draw();
-            settings&           stream_read();
-            settings&           stream_copy();
-            settings&           for_array();
-        //    settings&     for_atomic_counter();
-            settings&           for_copy_read();
-            settings&           for_copy_write();
-        //    settings&     for_indirect_draw();
-        //    settings&     for_indirect_dispatch();
-            settings&           for_element_array();
-            settings&           for_pixel_packing();
-            settings&           for_pixel_unpacking();
-        //    settings&     for_shader_storage();
-            settings&           for_texture();
-            settings&           for_transform_feedback();
-            settings&           for_uniform();
+                        settings();
+            settings&   blocks( GLsizeiptr new_n_blocks );
+            settings&   static_draw();
+            settings&   static_read();
+            settings&   static_copy();
+            settings&   dynamic_draw();
+            settings&   dynamic_read();
+            settings&   dynamic_copy();
+            settings&   stream_draw();
+            settings&   stream_read();
+            settings&   stream_copy();
+            settings&   for_array();
+    //    settings&   for_atomic_counter();
+            settings&   for_copy_read();
+            settings&   for_copy_write();
+    //    settings&   for_indirect_draw();
+    //    settings&   for_indirect_dispatch();
+            settings&   for_element_array();
+            settings&   for_pixel_packing();
+            settings&   for_pixel_unpacking();
+    //    settings&   for_shader_storage();
+            settings&   for_texture();
+            settings&   for_transform_feedback();
+            settings&   for_uniform();
         private:
-            GLsizeiptr          blocks_v;
-            GLenum              usage_v;
-            GLenum              target_v;
             friend              class buffer;
+            GLsizeiptr          n_blocks;
+            GLenum              usage;
+            GLenum              intended_target;
         };
                                     buffer( settings const& set = settings() );
-        friend std::ostream&        operator <<( std::ostream& out, buffer const& rhs );
                                     ~buffer();
         void                        block_format( block_spec const& spec );
-        void                        set_blocks( GLsizeiptr const n_blocks );
+        void                        blocks( GLsizeiptr const blocks );
         void                        add_blocks( GLsizeiptr const more_blocks );
         template< typename DATA >
-        void                        fill_attribute( GLuint index,
+        void                        load_attribute( GLuint index,
                                                     std::vector< DATA > const& attrib_data );
-        void                        load_data();
+        void                        upload_data();
         void                        align_vertices();
-        GLuint                      get_id() const { return buff_ID; }
+        // Unsure if everyone should be allowed to use this code...
+#ifdef DEBUG
+//        context const*              get_target_context() const { return target_context; }
+        GLsizeiptr                  get_n_blocks() const { return n_blocks; }
+        GLsizeiptr                  get_stride() const { return stride; }
+        GLuint                      get_vao_ID() const { return vao_ID; }
+        GLuint                      get_buff_ID() const { return buff_ID; }
+        GLenum                      get_usage() const { return usage; }
+        GLenum                      get_intended_target() const { return intended_target; }
+        bool                        get_data_loaded() const { return data_loaded; }
+        bool                        get_verts_specified() const { return verts_specified; }
+#endif
+        friend std::ostream&        operator <<( std::ostream& out, buffer const& rhs );
     private:
+//        context const*              target_context;
         unsigned char*              data;
-        GLsizeiptr                  blocks;
+        GLsizeiptr                  n_blocks;
         GLsizeiptr                  stride;
         GLuint                      vao_ID;
         GLuint                      buff_ID;
         GLenum                      usage;
-        GLenum                      target;
+        GLenum                      intended_target;
         bool                        data_loaded;
         bool                        verts_specified;
         typedef std::vector<info*>  attrib_vector;
         attrib_vector*              attributes;
-                                    
         GLsizeiptr                  attribute_offset( GLuint index ) const;
-        friend                      class video_system;
     };
 
-    inline buffer::settings::settings() :
-                            blocks_v ( 0 ),
-                            usage_v  ( gl::DYNAMIC_DRAW ),
-                            target_v ( gl::ARRAY_BUFFER ) {}
-                            
-    inline buffer::settings&    buffer::settings::blocks( GLsizeiptr blocks )
-    { blocks_v = blocks; return *this; }
+    inline  buffer::settings::settings() :
+                    n_blocks(0),
+                    usage( gl::DYNAMIC_DRAW ),
+                    intended_target( gl::ARRAY_BUFFER ) {}
 
-    inline buffer::settings&    buffer::settings::static_draw()
-    { usage_v = gl::STATIC_DRAW; return *this; }
+    inline buffer::settings&  buffer::settings::blocks( GLsizeiptr n_blocks )
+    { this->n_blocks = n_blocks; return *this; }
 
-    inline buffer::settings&    buffer::settings::static_read()
-    { usage_v = gl::STATIC_READ; return *this; }
+    inline  buffer::settings&     buffer::settings::static_draw()
+    { usage = gl::STATIC_DRAW; return *this; }
 
-    inline buffer::settings&    buffer::settings::static_copy()
-    { usage_v = gl::STATIC_COPY; return *this; }
+    inline  buffer::settings&     buffer::settings::static_read()
+    { usage = gl::STATIC_READ; return *this; }
 
-    inline buffer::settings&    buffer::settings::dynamic_draw()
-    { usage_v = gl::DYNAMIC_DRAW; return *this; }
+    inline  buffer::settings&     buffer::settings::static_copy()
+    { usage = gl::STATIC_COPY; return *this; }
 
-    inline buffer::settings&    buffer::settings::dynamic_read()
-    { usage_v = gl::DYNAMIC_READ; return *this; }
+    inline  buffer::settings&     buffer::settings::dynamic_draw()
+    { usage = gl::DYNAMIC_DRAW; return *this; }
 
-    inline buffer::settings&    buffer::settings::dynamic_copy()
-    { usage_v = gl::DYNAMIC_COPY; return *this; }
+    inline  buffer::settings&     buffer::settings::dynamic_read()
+    { usage = gl::DYNAMIC_READ; return *this; }
 
-    inline buffer::settings&    buffer::settings::stream_draw()
-    { usage_v = gl::STREAM_DRAW; return *this; }
+    inline  buffer::settings&     buffer::settings::dynamic_copy()
+    { usage = gl::DYNAMIC_COPY; return *this; }
 
-    inline buffer::settings&    buffer::settings::stream_read()
-    { usage_v = gl::STREAM_READ; return *this; }
+    inline  buffer::settings&     buffer::settings::stream_draw()
+    { usage = gl::STREAM_DRAW; return *this; }
 
-    inline buffer::settings&    buffer::settings::stream_copy()
-    { usage_v = gl::STREAM_COPY; return *this; }
+    inline  buffer::settings&     buffer::settings::stream_read()
+    { usage = gl::STREAM_READ; return *this; }
 
-    inline buffer::settings&     buffer::settings::for_array()
-    { target_v = gl::ARRAY_BUFFER; return *this; }
+    inline  buffer::settings&     buffer::settings::stream_copy()
+    { usage = gl::STREAM_COPY; return *this; }
 
-    inline buffer::settings&     buffer::settings::for_copy_read()
-    { target_v = gl::COPY_READ_BUFFER; return *this; }
+    inline  buffer::settings&     buffer::settings::for_array()
+    { intended_target = gl::ARRAY_BUFFER; return *this; }
+    //inline  buffer::settings&     buffer::settings::for_atomic_counter()
+    //{ intended_target = gl::ATOMIC_COUNTER_BUFFER; return *this; }
+    inline  buffer::settings&     buffer::settings::for_copy_read()
+    { intended_target = gl::COPY_READ_BUFFER; return *this; }
+    inline  buffer::settings&     buffer::settings::for_copy_write()
+    { intended_target = gl::COPY_WRITE_BUFFER; return *this; }
+    //inline  buffer::settings&     buffer::settings::for_indirect_draw()
+    //{ intended_target = gl::DRAW_INDIRECT_BUFFER; return *this; }
+    //inline  buffer::settings&     buffer::settings::for_indirect_dispatch()
+    //{ intended_target = gl::DISPATCH_INDIRECT_BUFFER; return *this; }
+    inline  buffer::settings&     buffer::settings::for_element_array()
+    { intended_target = gl::ELEMENT_ARRAY_BUFFER; return *this; }
+    inline  buffer::settings&     buffer::settings::for_pixel_packing()
+    { intended_target = gl::PIXEL_PACK_BUFFER; return *this; }
+    inline  buffer::settings&     buffer::settings::for_pixel_unpacking()
+    { intended_target = gl::PIXEL_UNPACK_BUFFER; return *this; }
+    //inline  buffer::settings&     buffer::settings::for_shader_storage()
+    //{ intended_target = gl::SHADER_STORAGE_BUFFER; return *this; }
+    inline  buffer::settings&     buffer::settings::for_texture()
+    { intended_target = gl::TEXTURE_BUFFER; return *this; }
+    inline  buffer::settings&     buffer::settings::for_transform_feedback()
+    { intended_target = gl::TRANSFORM_FEEDBACK_BUFFER; return *this; }
+    inline  buffer::settings&     buffer::settings::for_uniform()
+    { intended_target = gl::UNIFORM_BUFFER; return *this; }
 
-    inline buffer::settings&     buffer::settings::for_copy_write()
-    { target_v = gl::COPY_WRITE_BUFFER; return *this; }
-
-    inline buffer::settings&     buffer::settings::for_element_array()
-    { target_v = gl::ELEMENT_ARRAY_BUFFER; return *this; }
-
-    inline buffer::settings&     buffer::settings::for_pixel_packing()
-    { target_v = gl::PIXEL_PACK_BUFFER; return *this; }
-
-    inline buffer::settings&     buffer::settings::for_pixel_unpacking()
-    { target_v = gl::PIXEL_UNPACK_BUFFER; return *this; }
-
-    inline buffer::settings&     buffer::settings::for_texture()
-    { target_v = gl::TEXTURE_BUFFER; return *this; }
-
-    inline buffer::settings&     buffer::settings::for_transform_feedback()
-    { target_v = gl::TRANSFORM_FEEDBACK_BUFFER; return *this; }
-
-    inline buffer::settings&     buffer::settings::for_uniform()
-    { target_v = gl::UNIFORM_BUFFER; return *this; }
-
-
-                            
     template< typename DATA >
-    void buffer::fill_attribute( GLuint index, std::vector< DATA > const& attrib_data )
+    void buffer::load_attribute( GLuint index, std::vector< DATA > const& attrib_data )
     {
         if ( not verts_specified ) {
             throw std::logic_error( "Attribute value assignment attempted when vertex format was not specified." );
@@ -180,41 +178,29 @@ namespace gfx {
             msg += ".";
             throw std::invalid_argument( msg );
         }
-        if ( attrib_data.size() > blocks ) {
+        if ( attrib_data.size() > n_blocks ) {
             std::string msg = "Attribute value assignment attempted with ";
-            msg += blocks;
+            msg += n_blocks;
             msg += " allocated data blocks but ";
             msg += attrib_data.size();
             msg += " attribute values.";
-            throw std::out_of_range( msg );
+            throw std::invalid_argument( msg);
         }
-
+        
         if ( data == 0 ) {
-            data = new unsigned char[blocks * stride];
+            data = new unsigned char[n_blocks * stride];
         }
 
         GLsizeiptr block;
         unsigned char* cursor = data;
         cursor += attribute_offset( index );
-        for( block = 0; block < blocks; ++block ) {
+        for( block = 0; block < n_blocks; ++block ) {
             raw_map const mapped_data = attrib_data[block].to_map();
             for( size_t b = 0; b < mapped_data.n_bytes; ++b ) {
                 cursor[b] = mapped_data[b];
             }
             cursor += stride;
         }
-    }
-
-    inline  void    buffer::load_data()
-    {
-        if( target == gl::ELEMENT_ARRAY_BUFFER ){
-            gl::BindVertexArray( vao_ID );
-            checkGLError( "vao bound for element data load" );
-        }
-        gl::BindBuffer( target, buff_ID );
-        gl::BufferData( target, blocks * stride, data, usage );
-
-        data_loaded = true;
     }
 }
 #endif

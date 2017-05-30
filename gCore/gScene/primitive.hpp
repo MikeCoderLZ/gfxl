@@ -84,8 +84,8 @@ namespace gfx {
     
     class sphere : public primitive {
     public:
-                            cube( primitive::settings const& set );
-                            ~cube();
+                            sphere( primitive::settings const& set );
+                            ~sphere();
         virtual buffer&     geometry();    
     };
     
