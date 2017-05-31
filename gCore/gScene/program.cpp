@@ -8,6 +8,8 @@
 
 namespace gfx {
     
+    program*    program::current_prgm = 0;
+    
     program::program( program::settings const& set ) :vert_path( set.vert_path ),
                                                       frag_path( set.frag_path ),
                                                       geom_path( set.geom_path ),
@@ -20,7 +22,8 @@ namespace gfx {
                                                       frag_ID( 0 ),
                                                       geom_ID( 0 ),
                                                       tess_ID( 0 ),
-                                                      prog_ID( 0 )
+                                                      prog_ID( 0 ),
+                                                      in_use ( false )
     {
 
         if ( video_system::get().get_version() < opengl_2_0 ) {
@@ -152,7 +155,14 @@ namespace gfx {
     }
 
     void    program::use()
-    {  gl::UseProgram( prog_ID );  }
+    {  
+        if ( *(program::current_prgm) != *this ) {
+            program::current_prgm->in_use = false;
+            program::current_prgm = this;
+        }
+        gl::UseProgram( prog_ID );
+        in_use = true;
+    }
 
     std::ostream& operator<<( std::ostream& out, program const& rhs )
     {

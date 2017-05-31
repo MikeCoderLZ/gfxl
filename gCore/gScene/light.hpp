@@ -1,19 +1,34 @@
 #ifndef LIGHT_HPP
 #define LIGHT_HPP
 
+#include <string>
+
 #include "../gMath/constant.hpp"
 #include "../gMath/datatype.hpp"
+#include "uniform.hpp"
 
 namespace gfx {
     
-    class light {
+    class light : public uniform {
     public:
                         light();
+        virtual void    upload_uniform( program const& prgm,
+                                std::string const& name );
         light&          radiance( float rad );
         float           radiance() const;
+
     protected:
         float           rad;
     };
+    
+    /**
+     * struct sphere_light {
+     *      float   rad;
+     *      vec3    pos;
+     *      vec3    col;
+     *      float   rd;
+     * }
+     * */
     
     class sphere_light : public light {
     public:

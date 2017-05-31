@@ -240,32 +240,41 @@ namespace gfx {
                                       T const& val             );
         void            use();
         bool            operator ==( program const& rhs ) const;
+        bool            operator !=( program const& rhs ) const;
         friend          std::ostream& operator<<( std::ostream& out, program const& rhs );
 
     private:
+        friend              class uniform;
         typedef
         std::map<std::string, GLint>    key_map;
         key_map*                        uniform_map;
-        std::string     vert_path;
-        std::string     frag_path;
-        std::string     geom_path;
-        std::string     tess_path;
-        bool            has_vert;
-        bool            has_frag;
-        bool            has_geom;
-        bool            has_tess;
-        GLuint          vert_ID;
-        GLuint          frag_ID;
-        GLuint          geom_ID;
-        GLuint          tess_ID;
-        GLuint          prog_ID;
-        void            compile( GLuint stage_ID, std::string const& stage_path );
+        std::string         vert_path;
+        std::string         frag_path;
+        std::string         geom_path;
+        std::string         tess_path;
+        bool                has_vert;
+        bool                has_frag;
+        bool                has_geom;
+        bool                has_tess;
+        GLuint              vert_ID;
+        GLuint              frag_ID;
+        GLuint              geom_ID;
+        GLuint              tess_ID;
+        GLuint              prog_ID;
+        static program*     current_prgm;
+        bool                in_use;
+        void                compile( GLuint stage_ID, std::string const& stage_path );
     };
 
     inline bool     program::operator ==( program const& rhs ) const
     {   // This is a placeholder; there are cases where this MIGHT cause
         // pronlems.
         return this->prog_ID == rhs.prog_ID; }
+    
+    inline bool     program::operator !=( program const& rhs ) const
+    {   // This is a placeholder; there are cases where this MIGHT cause
+        // pronlems.
+        return this->prog_ID != rhs.prog_ID; }
     
     std::ostream& operator<<( std::ostream& out, program const& rhs );
     

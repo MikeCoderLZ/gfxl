@@ -187,11 +187,12 @@ $(OBJ)/light_test.o: $(GSCN)/light_test.cpp \
 	g++ -c $(COM) \
 	$(GSCN)/light_test.cpp \
 	 $(SDLFLAGS) -o $(OBJ)/light_test.o
-    
+
 $(OBJ)/light.o: $(GSCN)/light.cpp \
-                 $(GSCN)/light.hpp \
-                 $(GMATH)/datatype.hpp \
-                 $(GMATH)/op.hpp \
+                $(GSCN)/light.hpp \
+                $(GMATH)/datatype.hpp \
+                $(GMATH)/op.hpp \
+                $(GSCN)/uniform.hpp
 #                  $(GVID)/gfx_exception.hpp \
 #                  $(GVID)/video.hpp \
 #                  $(GVID)/version.hpp \

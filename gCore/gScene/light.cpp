@@ -1,11 +1,23 @@
 #include <string>
 
+#include "program.hpp"
 #include "light.hpp"
 
 namespace gfx {
     
     light::light() : rad ( 0.0f ) {}
-                    
+
+    void        light::upload_uniform( program const& prgm,
+                                       std::string const& name )
+    {
+        if ( not prgm.in_use ) {
+            throw logic_error( "Cannot load uniform data into program that is not in use." );
+        }
+        
+        
+        
+    }
+    
     light&      light::radiance( float rad )
     { this->rad = rad; return *this; }
     
