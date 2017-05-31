@@ -6,7 +6,7 @@ $(BIN)/texture_test: $(OBJ)/texture_test.o \
                      $(OBJ)/texture.o \
                      $(OBJ)/video.o \
                      $(OBJ)/gl_core_3_3.o
-                     
+
 	g++ $(OBJ)/texture_test.o \
 	    $(OBJ)/texture.o \
 	    $(OBJ)/video.o \
@@ -38,23 +38,25 @@ $(OBJ)/texture.o: $(GSCN)/texture.cpp \
 	    $(SDLFLAGS) -o $(OBJ)/texture.o
 
 	    
-#$(OBJ)/buffer.o: $(GSCN)/buffer.cpp \
+$(OBJ)/buffer.o: $(GSCN)/buffer.cpp \
                  $(GSCN)/buffer.hpp \
+                 $(GVID)/video.hpp \
                  $(GVID)/gfx_exception.hpp \
                  $(GVID)/version.hpp
-#	g++ -c $(COM) -Wno-sign-compare \
+	g++ -c $(COM) -Wno-sign-compare \
 	    $(GSCN)/buffer.cpp \
 	    $(SDLFLAGS) -o $(OBJ)/buffer.o
 	    
-program_tests: $(BIN)/program_shader_test $(BIN)/program_laboratory
-
 $(OBJ)/program.o: $(GSCN)/program.cpp \
                   $(GSCN)/program.hpp \
+                  $(GVID)/video.hpp \
                   $(GVID)/gfx_exception.hpp \
                   $(GVID)/version.hpp
 	g++ -c $(COM) -Wno-sign-compare \
 	    $(GSCN)/program.cpp \
 	    $(SDLFLAGS) -o $(OBJ)/program.o
+	    
+program_tests: $(BIN)/program_shader_test $(BIN)/program_laboratory
 	    
 $(BIN)/program_laboratory: $(OBJ)/program_laboratory.o \
                             $(OBJ)/video.o \
@@ -71,7 +73,7 @@ $(BIN)/program_laboratory: $(OBJ)/program_laboratory.o \
 	    -L ../../dev_lib -lUnitTest++ \
 	    -lfreeimage \
 	    $(SDLLIBS) -o $(BIN)/program_laboratory
-    
+
 $(OBJ)/program_laboratory.o: $(GSCN)/program_laboratory.cpp \
                               $(GVID)/video.hpp \
                               $(GSCN)/buffer.hpp \
@@ -102,7 +104,7 @@ $(BIN)/program_shader_test: $(OBJ)/program_shader_test.o \
 	    -L ../../dev_lib -lUnitTest++ \
 	    -lfreeimage \
 	    $(SDLLIBS) -o $(BIN)/program_shader_test
-    
+
 $(OBJ)/program_shader_test.o: $(GSCN)/program_shader_test.cpp \
                               $(GVID)/video.hpp \
                               $(GSCN)/buffer.hpp \

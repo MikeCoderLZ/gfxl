@@ -10,7 +10,8 @@
 //#define GL3_PROTOTYPES
 //#include "gl3.h"
 
-#include "gl_core_3_3.hpp"
+#include "../gVideo/gl_core_3_3.hpp"
+#include "../gVideo/video.hpp"
 //#include "videoManager.hpp"
 //PFNGLCREATESHADERPROC glCreateShader;
 //PFNGLCREATEPROGRAMPROC glCreateProgram;

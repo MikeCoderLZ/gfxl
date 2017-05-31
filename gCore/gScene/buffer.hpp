@@ -1,6 +1,8 @@
 #ifndef BUFFER
 #define BUFFER
 
+#include "../gVideo/video.hpp"
+
 namespace gfx {
 
     class block_spec {
@@ -64,6 +66,7 @@ namespace gfx {
                                     buffer( settings const& set = settings() );
                                     ~buffer();
         void                        block_format( block_spec const& spec );
+        GLsizeiptr                  size() const;
         void                        blocks( GLsizeiptr const blocks );
         void                        add_blocks( GLsizeiptr const more_blocks );
         template< typename DATA >
@@ -162,6 +165,9 @@ namespace gfx {
     inline  buffer::settings&     buffer::settings::for_uniform()
     { intended_target = gl::UNIFORM_BUFFER; return *this; }
 
+    inline GLsizeiptr  buffer::size() const
+    { return n_blocks; }
+    
     template< typename DATA >
     void buffer::load_attribute( GLuint index, std::vector< DATA > const& attrib_data )
     {

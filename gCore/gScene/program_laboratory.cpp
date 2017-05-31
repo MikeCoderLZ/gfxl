@@ -100,14 +100,14 @@ SUITE( GLSLShadingTests )
         context test_cntx ( test_wndw );
         video_system::get().attach_context( test_wndw, test_cntx );
         program correction_prgm ( program::settings()
-                            .use_vert( "./shader/testVert_2Dtextured.glsl" )
-                            .use_frag( "./shader/testNormalRepair_Frag.glsl" ) );
+                            .vertex_path( "./shader/testVert_2Dtextured.glsl" )
+                            .fragment_path( "./shader/testNormalRepair_Frag.glsl" ) );
         correction_prgm.compile();
         correction_prgm.uniform( "smilie" );
         
         program test_prgm ( program::settings()
-                            .use_vert( "./shader/testVert_2Dtextured.glsl" )
-                            .use_frag( "./shader/testFrag_2Dtextured.glsl" ) );
+                            .vertex_path( "./shader/testVert_2Dtextured.glsl" )
+                            .fragment_path( "./shader/testFrag_2Dtextured.glsl" ) );
         test_prgm.compile();
         test_prgm.uniform( "smilie" );
         
@@ -127,10 +127,10 @@ SUITE( GLSLShadingTests )
         uv.push_back( vec2( 0.0f ) );
         uv.push_back( vec2( 0.0f, 1.0f ) );
         
-        test_buff.fill_attribute( 0, position );
-        test_buff.fill_attribute( 1, uv );
+        test_buff.load_attribute( 0, position );
+        test_buff.load_attribute( 1, uv );
         
-        test_buff.load_data();
+        test_buff.upload_data();
         test_buff.align_vertices();
         
         texture_2D test_txtr ( texture_2D::settings()

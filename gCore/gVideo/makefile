@@ -1,14 +1,13 @@
 
 
 video_tests: $(BIN)/shadingTest.exe \
-             $(BIN)/program_shader_test \
              $(BIN)/video_system_test
 
 $(BIN)/video_system_test: $(OBJ)/video_system_test.o \
-                           $(OBJ)/video_debug.o \
+                           $(OBJ)/video.o \
                            $(OBJ)/gl_core_3_3.o
 	g++ $(OBJ)/video_system_test.o \
-	    $(OBJ)/video_debug.o \
+	    $(OBJ)/video.o \
 	    $(OBJ)/gl_core_3_3.o \
 	    -L ../../dev_lib -lUnitTest++ \
 	    $(SDLLIBS) -o $(BIN)/video_system_test
@@ -22,26 +21,6 @@ $(OBJ)/video_system_test.o: $(GVID)/video_system_test.cpp \
 	    $(GVID)/video_system_test.cpp \
 	    $(SDLFLAGS) -o $(OBJ)/video_system_test.o
 
-$(OBJ)/video_debug.o: $(GVID)/video.cpp \
-                      $(GVID)/video.hpp \
-                      $(GVID)/version.hpp \
-                      $(GVID)/video_system.cpp \
-                      $(GVID)/video_system.hpp \
-                      $(GVID)/window.cpp \
-                      $(GVID)/window.hpp \
-                      $(GVID)/context.cpp \
-                      $(GVID)/context.hpp \
-                      $(GVID)/buffer.cpp \
-                      $(GVID)/buffer.hpp \
-                      $(GVID)/program.cpp \
-                      $(GVID)/program.hpp \
-                      $(GVID)/gfx_exception.hpp \
-                      $(GVID)/gl_core_3_3.hpp \
-                      $(GMATH)/datatype.hpp
-	g++ -c $(COM) -Wno-sign-compare -D DEBUG \
-	    $(GVID)/video.cpp \
-	    $(SDLFLAGS) -o $(OBJ)/video_debug.o
-
 $(OBJ)/video.o: $(GVID)/video.cpp \
                 $(GVID)/video.hpp \
                 $(GVID)/version.hpp \
@@ -51,10 +30,6 @@ $(OBJ)/video.o: $(GVID)/video.cpp \
                 $(GVID)/window.hpp \
                 $(GVID)/context.cpp \
                 $(GVID)/context.hpp \
-                $(GVID)/buffer.cpp \
-                $(GVID)/buffer.hpp \
-                $(GVID)/program.cpp \
-                $(GVID)/program.hpp \
                 $(GVID)/gfx_exception.hpp \
                 $(GVID)/gl_core_3_3.hpp \
                 $(GMATH)/datatype.hpp

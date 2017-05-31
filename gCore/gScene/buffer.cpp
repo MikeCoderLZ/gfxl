@@ -1,3 +1,5 @@
+#include "./buffer.hpp"
+
 namespace gfx {
 
     block_spec::~block_spec()
@@ -63,7 +65,7 @@ namespace gfx {
         }
         data = new unsigned char[ n_blocks * stride ];
     }
-
+    
     void    buffer::blocks( GLsizeiptr const blocks )
     {
         unsigned char* new_data = new unsigned char[ blocks * stride ];
