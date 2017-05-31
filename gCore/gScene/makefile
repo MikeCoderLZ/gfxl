@@ -166,12 +166,15 @@ light_tests: $(BIN)/light_test
 
 $(BIN)/light_test: $(OBJ)/light_test.o \
                    $(OBJ)/light.o \
+                   $(OBJ)/light.o \
+                   $(OBJ)/gl_core_3_3.o
 #                    $(OBJ)/op.o \
 #                    $(OBJ)/video.o \
-#                    $(OBJ)/gl_core_3_3.o
+
 	g++ $(OBJ)/light_test.o \
 	$(OBJ)/light.o \
 	$(OBJ)/op.o \
+	$(OBJ)/gl_core_3_3.o \
 	-L ../../dev_lib -lUnitTest++ \
 	$(SDLLIBS) -o $(BIN)/light_test
 	    
@@ -192,7 +195,8 @@ $(OBJ)/light.o: $(GSCN)/light.cpp \
                 $(GSCN)/light.hpp \
                 $(GMATH)/datatype.hpp \
                 $(GMATH)/op.hpp \
-                $(GSCN)/uniform.hpp
+                $(GSCN)/uniform.hpp \
+                $(GVID)/gl_core_3_3.hpp \
 #                  $(GVID)/gfx_exception.hpp \
 #                  $(GVID)/video.hpp \
 #                  $(GVID)/version.hpp \

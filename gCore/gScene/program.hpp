@@ -239,6 +239,7 @@ namespace gfx {
         void            load_uniform( std::string const& name,
                                       T const& val             );
         void            use();
+        bool            in_use() const;
         bool            operator ==( program const& rhs ) const;
         bool            operator !=( program const& rhs ) const;
         friend          std::ostream& operator<<( std::ostream& out, program const& rhs );
@@ -262,9 +263,12 @@ namespace gfx {
         GLuint              tess_ID;
         GLuint              prog_ID;
         static program*     current_prgm;
-        bool                in_use;
+        bool                in_use_v;
         void                compile( GLuint stage_ID, std::string const& stage_path );
     };
+    
+    inline bool     program::in_use() const
+    { return in_use_v; }
 
     inline bool     program::operator ==( program const& rhs ) const
     {   // This is a placeholder; there are cases where this MIGHT cause

@@ -1,5 +1,6 @@
 #include <string>
 
+#include "../gVideo/gl_core_3_3.hpp"
 #include "program.hpp"
 #include "light.hpp"
 
@@ -7,15 +8,11 @@ namespace gfx {
     
     light::light() : rad ( 0.0f ) {}
 
-    void        light::upload_uniform( program const& prgm,
+    void        light::upload_uniform( program& prgm,
                                        std::string const& name )
     {
-        if ( not prgm.in_use ) {
-            throw logic_error( "Cannot load uniform data into program that is not in use." );
-        }
-        
-        
-        
+        check_program( prgm );
+        prgm.load_uniform( name + ".rad", rad );
     }
     
     light&      light::radiance( float rad )
@@ -47,6 +44,16 @@ namespace gfx {
     
     float     sphere_light::radius() const
     { return rd; }
+    
+    void        sphere_light::upload_uniform( program& prgm,
+                                              std::string const& name )
+    {
+        check_program( prgm );
+        prgm.load_uniform( name + ".rad", rad );
+        prgm.load_uniform( name + ".pos", pos );
+        prgm.load_uniform( name + ".col", col );
+        prgm.load_uniform( name + ".rd", rd );
+    }
     
     spot_light::spot_light( settings const& set ) :
                             light(),
@@ -81,6 +88,18 @@ namespace gfx {
     float     spot_light::radius() const
     { return rd; }
     
+    void        spot_light::upload_uniform( program& prgm,
+                                            std::string const& name )
+    {
+        check_program( prgm );
+        prgm.load_uniform( name + ".rad", rad );
+        prgm.load_uniform( name + ".pos", pos );
+        prgm.load_uniform( name + ".dir", dir );
+        prgm.load_uniform( name + ".col", col );
+        prgm.load_uniform( name + ".swp", swp );
+        prgm.load_uniform( name + ".rd", rd );
+    }
+    
     sun_light::sun_light( settings const& set ) :
                             light(),
                             dir ( set.dir_v ),
@@ -95,4 +114,13 @@ namespace gfx {
     { this->col = col; return *this; }
     vec3 const&     sun_light::color() const
     { return col; }
+    
+    void        sun_light::upload_uniform( program& prgm,
+                                           std::string const& name )
+    {
+        check_program( prgm );
+        prgm.load_uniform( name + ".rad", rad );
+        prgm.load_uniform( name + ".dir", dir );
+        prgm.load_uniform( name + ".col", col );
+    }
 }

@@ -23,7 +23,7 @@ namespace gfx {
                                                       geom_ID( 0 ),
                                                       tess_ID( 0 ),
                                                       prog_ID( 0 ),
-                                                      in_use ( false )
+                                                      in_use_v ( false )
     {
 
         if ( video_system::get().get_version() < opengl_2_0 ) {
@@ -59,6 +59,11 @@ namespace gfx {
     program::~program()
     { // Probably remove dependencies
         //video_system::get().unregister_shader( this ); 
+        
+        if ( *(program::current_prgm) == *this ) {
+            program::current_prgm->in_use_v = false;
+            program::current_prgm = 0;
+        }
         
         if ( gl::IsShader( vert_ID ) ) {
             gl::DeleteShader( vert_ID );
@@ -156,12 +161,14 @@ namespace gfx {
 
     void    program::use()
     {  
-        if ( *(program::current_prgm) != *this ) {
-            program::current_prgm->in_use = false;
+        if ( program::current_prgm == 0 ) {
+            program::current_prgm = this;
+        } else if ( *(program::current_prgm) != *this ) {
+            program::current_prgm->in_use_v = false;
             program::current_prgm = this;
         }
         gl::UseProgram( prog_ID );
-        in_use = true;
+        in_use_v = true;
     }
 
     std::ostream& operator<<( std::ostream& out, program const& rhs )

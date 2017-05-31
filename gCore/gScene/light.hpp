@@ -9,11 +9,17 @@
 
 namespace gfx {
     
+    /**
+     * struct light {
+     *      float   rad;
+     * }
+     * */
+    
     class light : public uniform {
     public:
                         light();
-        virtual void    upload_uniform( program const& prgm,
-                                std::string const& name );
+        virtual void    upload_uniform( program& prgm,
+                                        std::string const& name );
         light&          radiance( float rad );
         float           radiance() const;
 
@@ -39,6 +45,7 @@ namespace gfx {
             settings&   position( vec3 const& pos );
             settings&   color( vec3 const& col );
             settings&   radius( float rd );
+            
         protected:
             float           rad_v;
             vec3            pos_v;
@@ -53,6 +60,8 @@ namespace gfx {
         vec3 const&     color() const;
         sphere_light&   radius( float rd );
         float           radius() const;
+        virtual void    upload_uniform( program& prgm,
+                                        std::string const& name );
     protected:
         vec3            pos;
         vec3            col;
@@ -80,6 +89,17 @@ namespace gfx {
     inline sphere_light::settings&
     sphere_light::settings::radius( float rd )
     { rd_v = rd; return *this; }
+    
+    /**
+     * struct spot_light {
+     *      float   rad;
+     *      vec3    pos;
+     *      vec3    dir;
+     *      vec3    col;
+     *      vec3    swp;
+     *      float   rd;
+     * }
+     * */
     
     class spot_light : public light {
     public:
@@ -112,6 +132,8 @@ namespace gfx {
         angle const&    sweep() const;
         spot_light&     radius( float rd );
         float           radius() const;
+        void            upload_uniform( program& prgm,
+                                        std::string const& name );
     protected:
         vec3            pos;
         vec3            dir;
@@ -152,6 +174,14 @@ namespace gfx {
     spot_light::settings::radius( float rd )
     { rd_v = rd; return *this; }
     
+    /**
+     * struct sun_light {
+     *      float   rad;
+     *      vec3    dir;
+     *      vec3    col;
+     * }
+     * */
+    
     class sun_light : public light {
     public:
         class settings {
@@ -171,6 +201,8 @@ namespace gfx {
         vec3 const&     direction() const;
         sun_light&      color( vec3 const& col );
         vec3 const&     color() const;
+        void            upload_uniform( program& prgm,
+                                        std::string const& name );
     protected:
         vec3            dir;
         vec3            col;
