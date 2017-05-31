@@ -1,16 +1,27 @@
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
 
+#include <string>
+
 #include "../gVideo/video.hpp"
 #include "../gMath/datatype.hpp"
 #include "../gMath/constant.hpp"
+#include "uniform.hpp"
 
 namespace gfx {
 
-    class camera {
+    /**
+     * struct camera {
+     *      mat4    view;
+     * }
+     */
+    
+    class camera: public uniform {
     public:
                         camera();
                         ~camera();
+        virtual void    upload_uniform( program& prgm,
+                                        std::string const& name );
         mat4 const&     view_matrix();
     protected:
         bool            view_changed;
@@ -22,6 +33,10 @@ namespace gfx {
      * An easy to use perspective camera: put it somewhere, tell it
      * what to look at, and specify what up is, and it does the rest.
      * "proj" stand for "projection".
+     * 
+     * struct proj_cam {
+     *      mat4    view;
+     * }
      */
     class proj_cam : public camera {
     public:
@@ -102,6 +117,9 @@ namespace gfx {
     /**
      * An orthographic camera. Functions just like a proj_cam, but
      * with no persepctive.
+     * struct ortho_cam {
+     *      mat4    view;
+     * 
      */    
     class ortho_cam : public camera {
     public:
@@ -174,6 +192,11 @@ namespace gfx {
      * rendering textures to the screen. The mask region is the sub
      * area of the plane [-1,1][-1,1] to project and the screen
      * region is the sub area of the renderbuffer to project to.
+     * 
+     * struct process_cam {
+     *      mat4    view;
+     * }
+     * 
      */
     class process_cam : public camera {
     public:

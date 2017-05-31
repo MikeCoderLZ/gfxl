@@ -28,6 +28,41 @@ namespace gfx {
     };
     
     /**
+     * struct point_light {
+     *      float   rad;
+     *      vec3    pos;
+     *      vec3    col;
+     * }
+     * */
+    
+    class point_light : public light {
+    public:
+        class settings {
+        public:
+                        settings();
+            settings&   radiance( float rad );
+            settings&   position( vec3 const& pos );
+            settings&   color( vec3 const& col );
+            
+        protected:
+            float           rad_v;
+            vec3            pos_v;
+            vec3            col_v;
+            friend          class point_light;
+        };
+                        point_light( settings const& set = settings() );
+        sphere_light&   position( vec3 const& pos );
+        vec3 const&     position() const;
+        sphere_light&   color( vec3 const& col );
+        vec3 const&     color() const;
+        virtual void    upload_uniform( program& prgm,
+                                        std::string const& name );
+    protected:
+        vec3            pos;
+        vec3            col;
+    };
+    
+    /**
      * struct sphere_light {
      *      float   rad;
      *      vec3    pos;
@@ -132,7 +167,7 @@ namespace gfx {
         angle const&    sweep() const;
         spot_light&     radius( float rd );
         float           radius() const;
-        void            upload_uniform( program& prgm,
+        virtual void    upload_uniform( program& prgm,
                                         std::string const& name );
     protected:
         vec3            pos;
@@ -201,7 +236,7 @@ namespace gfx {
         vec3 const&     direction() const;
         sun_light&      color( vec3 const& col );
         vec3 const&     color() const;
-        void            upload_uniform( program& prgm,
+        virtual void    upload_uniform( program& prgm,
                                         std::string const& name );
     protected:
         vec3            dir;

@@ -11,6 +11,13 @@ namespace gfx {
                        
     camera::~camera() {}
     
+    void    camera::upload_uniform( program& prgm,
+                                    std::string const& name )
+    {
+        check_program( prgm );
+        prgm.load_uniform( name += ".view", view );
+    }
+    
     mat4 const&     camera::view_matrix()
     {
         if ( view_changed ) {

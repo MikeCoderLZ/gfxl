@@ -21,6 +21,33 @@ namespace gfx {
     float       light::radiance() const
     { return rad; }
     
+    point_light::point_light( settings const& set ) :
+                                    light (),
+                                    pos ( set.pos_v ),
+                                    col ( set.col_v ),
+                                    rd ( set.rd_v ) { rad = set.rad_v; }
+    
+    point_light&   point_light::position( vec3 const& pos )
+    { this->pos = pos; return *this; }
+    
+    vec3 const&     point_light::position() const
+    { return pos; }
+    
+    point_light&   point_light::color( vec3 const& col )
+    { this->col = col; return *this; }
+    
+    vec3 const&     point_light::color() const
+    { return col; }
+    
+    void        point_light::upload_uniform( program& prgm,
+                                              std::string const& name )
+    {
+        check_program( prgm );
+        prgm.load_uniform( name + ".rad", rad );
+        prgm.load_uniform( name + ".pos", pos );
+        prgm.load_uniform( name + ".col", col );
+    }
+    
     sphere_light::sphere_light( settings const& set ) :
                                     light (),
                                     pos ( set.pos_v ),
