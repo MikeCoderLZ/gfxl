@@ -27,8 +27,8 @@ SUITE( IntegratedTests )
                             .depth_bits(24)
                             .double_buffered());
         program test_prgm ( program::settings()
-                           .vertex_path("./shader/testVert_colored.glsl")
-                           .fragment_path("./shader/testFrag_colored.glsl") );
+                           .vertex_path("./shader/scene_test_vert.glsl")
+                           .fragment_path("./shader/scene_test_frag.glsl") );
         test_prgm.compile();
         
         buffer test_bffr( buffer::settings()
@@ -206,6 +206,9 @@ SUITE( IntegratedTests )
         color.push_back( vec3( 1.0f, 0.0f, 1.0f ) );
         color.push_back( vec3( 1.0f, 0.0f, 1.0f ) );
         
+        mat4 test_obj_mtrx = mat4::rotation( vec3( 0.0f, 1.0f, 0.0f),
+                                        d_angle::in_degs( 0.0f) )
+        
         point_light test_lght( point_light::settings()
                                .radiance( 0.8f )
                                .position( vec3( 1.0f, 1.0f, -1.0f ) )
@@ -230,7 +233,8 @@ SUITE( IntegratedTests )
         test_prgm.link();
         test_prgm.use();
         
-        test_lght.upload_uniform( test_prgm, "primary_light" );
+        test_prgm.uniform( test_obj_mtrx, "obj_mtrx" );
+        test_lght.upload_uniform( test_prgm, "light" );
         test_cmra.upload_uniform( test_prgm, "camera" );
         
         GLuint elements[] = { 0, 1, 2, 3, 4, 5,
@@ -246,6 +250,11 @@ SUITE( IntegratedTests )
             ++frames;
             gl::DrawElements( gl::TRIANGLES, 36, gl::UNSIGNED_INT, elements );
             test_wndw.swap();
+            test_obj_mtrx = test_obj_mtrx
+                            * mat4::rotation( vec3( 0.0f, 1.0f, 0.0f ),
+                                              d_angle::in_degs( 360.0 / 30.0 ) );
+            test_obj_mtrx.norm();
+            test_prgm.uniform( test_obj_mtrx, "obj_mtrx" );
         }
     }
 }

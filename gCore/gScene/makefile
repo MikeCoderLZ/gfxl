@@ -146,7 +146,7 @@ $(OBJ)/camera_test.o: $(GSCN)/camera_test.cpp \
 	g++ -c $(COM) \
 	$(GSCN)/camera_test.cpp \
 	 $(SDLFLAGS) -o $(OBJ)/camera_test.o
-    
+
 $(OBJ)/camera.o: $(GSCN)/camera.cpp \
                  $(GSCN)/camera.hpp \
                  $(GMATH)/datatype.hpp \
@@ -207,3 +207,14 @@ $(OBJ)/light.o: $(GSCN)/light.cpp \
 	g++ -c $(COM) \
 	$(GSCN)/light.cpp \
 	$(SDLFLAGS) -o $(OBJ)/light.o
+	
+geometry_tests: $(OBJ)/primitive.o
+
+$(OBJ)/primitive.o: $(GSCN)/primitive.cpp \
+                    $(GSCN)/primitive.hpp \
+                    $(GSCN)/buffer.hpp \
+                    $(GSCN)/orientable.hpp \
+                    $(GMATH)/datatype.hpp
+	g++ -c $(COM) \
+	$(GSCN)/primitive.cpp \
+	$(SDLFLAGS) -o $(OBJ)/primitive.o

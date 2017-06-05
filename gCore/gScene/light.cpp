@@ -24,8 +24,8 @@ namespace gfx {
     point_light::point_light( settings const& set ) :
                                     light (),
                                     pos ( set.pos_v ),
-                                    col ( set.col_v ),
-                                    rd ( set.rd_v ) { rad = set.rad_v; }
+                                    col ( set.col_v )
+    { rad = set.rad_v; }
     
     point_light&   point_light::position( vec3 const& pos )
     { this->pos = pos; return *this; }

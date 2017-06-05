@@ -51,9 +51,9 @@ namespace gfx {
             friend          class point_light;
         };
                         point_light( settings const& set = settings() );
-        sphere_light&   position( vec3 const& pos );
+        point_light&    position( vec3 const& pos );
         vec3 const&     position() const;
-        sphere_light&   color( vec3 const& col );
+        point_light&    color( vec3 const& col );
         vec3 const&     color() const;
         virtual void    upload_uniform( program& prgm,
                                         std::string const& name );
