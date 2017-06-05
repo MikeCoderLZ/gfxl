@@ -16,7 +16,8 @@ namespace gfx {
     {
         check_program( prgm );
         std::string mod_name = name;
-        prgm.load_uniform( mod_name += ".view", view );
+        mod_name += ".view";
+        prgm.load_uniform( mod_name, view );
     }
     
     mat4 const&     camera::view_matrix()
