@@ -22,6 +22,7 @@ SUITE( IntegratedTests )
         window test_wndw ( window::settings()
                            .has_3D()
                            .dimensions( 512, 512 ) );
+        
         context test_cntx ( test_wndw,
                             context::settings()
                             .depth_bits(24)
@@ -29,18 +30,34 @@ SUITE( IntegratedTests )
         program test_prgm ( program::settings()
                            .vertex_path("./shader/scene_test_vert.glsl")
                            .fragment_path("./shader/scene_test_frag.glsl") );
-        test_prgm.compile();
+        try {
+            test_prgm.compile();
+        } catch ( std::exception& e ) {
+            std::cout << e.what() << std::endl;
+        }
+        
+        std::cout<< "Mark1!" << std::endl;
+        test_prgm.uniform( "obj_mat" );
+        std::cout<< "Mark2!" << std::endl;
+       
+       
+        test_prgm.uniform( "cam" );
+         try {
+        test_prgm.uniform( "light" );
+        } catch ( std::exception& e ) {
+                 std::cout << e.what() << std::endl;
+        }
         
         buffer test_bffr( buffer::settings()
-                          .blocks( 24 )      );
+                          .blocks( 36 )      );
         
         test_bffr.block_format( block_spec()
                                 .attribute( type<vec3>() )  // position
                                 .attribute( type<vec3>() )  // normal
-                                .attribute( type<vec3>() ); // color
+                                .attribute( type<vec3>() ) ); // color
         
         std::vector< vec3 > position;
-        
+
         // Front
         position.push_back( vec3(  0.5f,  0.5f, -0.5f ));
         position.push_back( vec3( -0.5f,  0.5f, -0.5f ));
@@ -207,36 +224,56 @@ SUITE( IntegratedTests )
         color.push_back( vec3( 1.0f, 0.0f, 1.0f ) );
         
         mat4 test_obj_mtrx = mat4::rotation( vec3( 0.0f, 1.0f, 0.0f),
-                                        d_angle::in_degs( 0.0f) )
-        
-        point_light test_lght( point_light::settings()
-                               .radiance( 0.8f )
-                               .position( vec3( 1.0f, 1.0f, -1.0f ) )
-                               .color( vec3( 1.0f, 1.0f, 1.0f ) )     );
+                                        d_angle::in_degs( 0.0f) );
+
+        point_light test_lght ( point_light::settings()
+                                .radiance( 0.8f )
+                                .position( vec3( 1.0f, 1.0f, -1.0f ) )
+                                .color( vec3( 1.0f, 1.0f, 1.0f ) )     );
         
         proj_cam test_cmra( proj_cam::settings()
                             .position( vec3( 0.0f, 0.0f, 5.0f ) )
                             .look_at( vec3() )
-                            .upward( 0.0f, 1.0f, 0.0f )
+                            .upward( vec3( 0.0f, 1.0f, 0.0f ) )
                             .field_of_view( d_angle::in_degs( 135.0 ) )
                             .aspect_ratio( 1.0 )
                             .near_plane( 0.01 )
                             .far_plane( 100.0 )                         );
-        
+
+        try {
         test_bffr.load_attribute( 0, position );
+        } catch (std::exception& e ) {
+            std::cout << e.what() << std::endl;
+        }
         test_bffr.load_attribute( 1, normal );
+        
+        
         test_bffr.load_attribute( 2, color );
         
+        
+        
         test_bffr.upload_data();
+        
         test_bffr.align_vertices();
         
-        test_prgm.link();
+        try {
+            test_prgm.link();
+            
+        } catch (compilation_error& e ) {
+            std::cout<< e.what() << std::endl;
+        }
+        try {
         test_prgm.use();
-        
-        test_prgm.uniform( test_obj_mtrx, "obj_mtrx" );
-        test_lght.upload_uniform( test_prgm, "light" );
-        test_cmra.upload_uniform( test_prgm, "camera" );
-        
+        } catch (std::exception& e ) {
+            std::cout << e.what() << std::endl;
+        }
+        try {
+        test_prgm.load_uniform( "obj_mtrx", test_obj_mtrx );
+        test_lght.upload_uniform( test_prgm, std::string( "light" ) );
+        test_cmra.upload_uniform( test_prgm, std::string( "camera" ) );
+        } catch (std::exception& e) {
+            std::cout << e.what() << std::endl;
+        }
         GLuint elements[] = { 0, 1, 2, 3, 4, 5,
                               6, 7, 8, 9, 10, 11,
                               12, 13, 14, 15, 16, 17,
@@ -254,13 +291,14 @@ SUITE( IntegratedTests )
                             * mat4::rotation( vec3( 0.0f, 1.0f, 0.0f ),
                                               d_angle::in_degs( 360.0 / 30.0 ) );
             test_obj_mtrx.norm();
-            test_prgm.uniform( test_obj_mtrx, "obj_mtrx" );
+            test_prgm.load_uniform( std::string( "obj_mtrx" ), test_obj_mtrx );
+
         }
     }
 }
 
 int main( int argc, char* argv[] )
 {
-    video_system::get().initialize( video_system::settings() );
+    video_system::get().initialize( video_system::settings().ver( 3, 3 ) );
     return UnitTest::RunAllTests();
 }

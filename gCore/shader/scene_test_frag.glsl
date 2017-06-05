@@ -10,8 +10,8 @@ layout( location = 0 ) out vec4 color;
 
 void main()
 {
-    norm_out = normalize( norm_out );
-    float dist = mag( light_out.xyz );
-    shading = rad_out * max( dot( norm_out, normalize( light_out ) ), 0.0 ) * 6.28 / (dist * dist);
-    color = light_col_out * col_out * shading;
+    vec3 norm = normalize( norm_out.xyz );
+    float dist = length( light_out.xyz );
+    float shading = rad_out * max( dot( norm, normalize( light_out.xyz ) ), 0.0 ) * 6.28 / (dist * dist);
+    color = vec4( light_col_out * col_out * shading, 1.0 );
 }

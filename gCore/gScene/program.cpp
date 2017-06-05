@@ -1,6 +1,6 @@
 #include <stdexcept>
 #include <fstream>
-
+#include <iostream>
 #include "./program.hpp"
 
 //#define GL3_PROTOTYPES 1
@@ -10,7 +10,8 @@ namespace gfx {
     
     program*    program::current_prgm = 0;
     
-    program::program( program::settings const& set ) :vert_path( set.vert_path ),
+    program::program( program::settings const& set ) : uniform_map( new program::key_map() ),
+                                                      vert_path( set.vert_path ),
                                                       frag_path( set.frag_path ),
                                                       geom_path( set.geom_path ),
                                                       tess_path( set.tess_path ),
@@ -85,7 +86,7 @@ namespace gfx {
     }
     
     void    program::uniform( std::string const& name )
-    { (*uniform_map)[ name ] = -1; }
+    { (*uniform_map)[name] = -1;}
     
     void    program::compile()
     {
@@ -133,27 +134,32 @@ namespace gfx {
         }*/
         
         gl::LinkProgram( prog_ID );
-
+        
         GLint status = 0;
         gl::GetProgramiv( prog_ID, gl::LINK_STATUS, &status );
+        std::cout<< "Mark2.1.1!"<< std::endl;
         if ( status == gl::FALSE_ ) {
             std::cout << "Link failed." << std::endl;
             std::string msg = "Linking of program failed.\n";
+            
             GLint log_length;
             gl::GetProgramiv(prog_ID, gl::INFO_LOG_LENGTH, &log_length );
             char* info_log = new char[log_length];
+            
             GLint returned_length;
             gl::GetProgramInfoLog( prog_ID, log_length, &returned_length, info_log );
             msg += info_log;
             delete[] info_log;
+            
             throw compilation_error( msg );
         }
         
         key_map::iterator unfm;
-        
+        std::cout<< "Mark2.1.2!"<< std::endl;
         for ( unfm = uniform_map->begin();
               unfm != uniform_map->end();
               ++unfm                       ) {
+            std::cout<< "Mark2.1.3!"<< std::endl;
             (*uniform_map)[unfm->first] = gl::GetUniformLocation( prog_ID,
                                                                   unfm->first.c_str() );
         }
@@ -203,13 +209,12 @@ namespace gfx {
             buffer[ program_in.read( buffer, buffer_size - 1 ).gcount() ] = '\0';
             program_file += buffer;
         }
-
         // std::cout << program_file << std::endl;
 
         const char* stage_file_ptr = program_file.c_str();
         gl::ShaderSource( stage_ID, 1, &stage_file_ptr, 0 );
         gl::CompileShader( stage_ID );
-
+        
         GLint status = 0;
         gl::GetShaderiv( stage_ID, gl::COMPILE_STATUS, &status );
 

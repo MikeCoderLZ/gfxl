@@ -1,4 +1,38 @@
-scene_tests: texture_tests camera_tests program_tests light_tests
+scene_tests: texture_tests camera_tests program_tests light_tests scene_test
+
+scene_test: $(BIN)/scene_test
+
+$(BIN)/scene_test: $(OBJ)/scene_test.o \
+                   $(OBJ)/gl_core_3_3.o \
+                   $(OBJ)/buffer.o \
+                   $(OBJ)/program.o \
+                   $(OBJ)/light.o \
+                   $(OBJ)/camera.o \
+                   $(OBJ)/video.o \
+                   $(OBJ)/op.o
+
+	g++ $(OBJ)/scene_test.o \
+	    $(OBJ)/gl_core_3_3.o \
+	    $(OBJ)/buffer.o \
+	    $(OBJ)/program.o \
+	    $(OBJ)/light.o \
+	    $(OBJ)/camera.o \
+	    $(OBJ)/video.o \
+	    $(OBJ)/op.o \
+	    -L ../../dev_lib -lUnitTest++ \
+	    $(SDLLIBS) -o $(BIN)/scene_test
+
+$(OBJ)/scene_test.o: $(GSCN)/scene_test.cpp \
+                     $(GVID)/video.hpp \
+                     $(GMATH)/datatype.hpp \
+                     $(GMATH)/constant.hpp \
+                     $(GSCN)/buffer.hpp \
+                     $(GSCN)/program.hpp \
+                     $(GSCN)/light.hpp \
+                     $(GSCN)/camera.hpp
+	g++ -c $(COM) -Wno-sign-compare \
+	    $(GSCN)/scene_test.cpp \
+	    $(SDLFLAGS) -o $(OBJ)/scene_test.o
 
 texture_tests: $(BIN)/texture_test
 

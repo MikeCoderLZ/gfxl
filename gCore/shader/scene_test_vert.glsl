@@ -2,13 +2,13 @@
 
 struct camera {
     mat4 view;
-}
+};
 
 struct point_light {
     float rad;
     vec3  pos;
     vec3  col;
-}
+};
 
 uniform mat4 obj_mat;
 
@@ -29,10 +29,9 @@ out vec3 col_out;
 void main()
 {
     mat4 transform = obj_mat * cam.view;
-    pos_out = vec4( pos, 1.0f ) * transform;
     norm_out = vec4( norm, 1.0f ) * transform;
     light_out = vec4( light.pos - pos, 1.0f ) * transform;
     light_col_out = light.col;
     rad_out = light.rad;
-    glPosition = pos_out;
+    gl_Position = vec4( pos, 1.0f ) * transform;
 }

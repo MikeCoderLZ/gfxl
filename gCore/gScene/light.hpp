@@ -62,6 +62,28 @@ namespace gfx {
         vec3            col;
     };
     
+    inline point_light::settings::settings() : rad_v ( 1.0f ),
+                                               pos_v ( vec3( 0.0f ) ),
+                                               col_v ( vec3( 1.0f ) ) {}
+
+    inline point_light::settings& point_light::settings::radiance( float rad )
+    {
+        rad_v = rad;
+        return *this;
+    }
+    
+    inline point_light::settings& point_light::settings::position( vec3 const& pos )
+    {
+        pos_v = pos;
+        return *this;
+    }
+    
+    inline point_light::settings& point_light::settings::color( vec3 const& col )
+    {
+        col_v = col;
+        return *this;
+    }
+    
     /**
      * struct sphere_light {
      *      float   rad;
