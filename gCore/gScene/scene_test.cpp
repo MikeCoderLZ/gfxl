@@ -25,7 +25,7 @@ SUITE( IntegratedTests )
         
         context test_cntx ( test_wndw,
                             context::settings()
-                            .depth_bits(24)
+                            .depth_bits(32)
                             .double_buffered());
         test_cntx.clear_color( 0.5f, 0.5f, 0.5f );
         program test_prgm ( program::settings()
@@ -38,7 +38,7 @@ SUITE( IntegratedTests )
         }        
         
         buffer test_bffr( buffer::settings()
-                          .blocks( 4 )      );
+                          .blocks( 24 )      );
         test_bffr.block_format( block_spec()
                                 .attribute( type<vec3>() )  // position
                                 //.attribute( type<vec3>() )  // normal
@@ -48,10 +48,35 @@ SUITE( IntegratedTests )
         std::vector< vec3 > normal;
         std::vector< vec3 > color;
         
-        position.push_back( vec3(  0.5f,  0.5f, 0.0f ) );
-        position.push_back( vec3(  0.5f, -0.5f, 0.0f ) );
-        position.push_back( vec3( -0.5f, -0.5f, 0.0f ) );
-        position.push_back( vec3( -0.5f,  0.5f, 0.0f ) );
+        position.push_back( vec3(  -0.5f,  0.5f,  0.5f ) ); 
+        position.push_back( vec3(  -0.5f, -0.5f,  0.5f ) ); 
+        position.push_back( vec3(   0.5f, -0.5f,  0.5f ) ); 
+        position.push_back( vec3(   0.5f,  0.5f,  0.5f ) );
+        
+        position.push_back( vec3(  -0.5f,  0.5f,  0.5f ) );
+        position.push_back( vec3(   0.5f,  0.5f,  0.5f ) );
+        position.push_back( vec3(   0.5f,  0.5f, -0.5f ) );
+        position.push_back( vec3(  -0.5f,  0.5f, -0.5f ) );
+        
+        position.push_back( vec3(   0.5f,  0.5f,  0.5f ) );
+        position.push_back( vec3(   0.5f, -0.5f,  0.5f ) );
+        position.push_back( vec3(   0.5f, -0.5f, -0.5f ) );
+        position.push_back( vec3(   0.5f,  0.5f, -0.5f ) );
+        
+        position.push_back( vec3(   0.5f, -0.5f,  0.5f ) );
+        position.push_back( vec3(  -0.5f, -0.5f,  0.5f ) );
+        position.push_back( vec3(  -0.5f, -0.5f, -0.5f ) );
+        position.push_back( vec3(   0.5f, -0.5f, -0.5f ) );
+        
+        position.push_back( vec3(  -0.5f, -0.5f,  0.5f ) );
+        position.push_back( vec3(  -0.5f,  0.5f,  0.5f ) );
+        position.push_back( vec3(  -0.5f,  0.5f, -0.5f ) );
+        position.push_back( vec3(  -0.5f, -0.5f, -0.5f ) );
+        
+        position.push_back( vec3(  -0.5f,  0.5f, -0.5f ) );
+        position.push_back( vec3(   0.5f,  0.5f, -0.5f ) );
+        position.push_back( vec3(   0.5f, -0.5f, -0.5f ) );
+        position.push_back( vec3(  -0.5f, -0.5f, -0.5f ) );
         
         normal.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
         normal.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
@@ -59,9 +84,34 @@ SUITE( IntegratedTests )
         normal.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
         
         color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
+        color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
+        color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
+        color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
+        
         color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
+        color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
+        color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
+        color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
+        
         color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
+        color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
+        color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
+        color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
+        
         color.push_back( vec3( 0.0f, 1.0f, 1.0f ) );
+        color.push_back( vec3( 0.0f, 1.0f, 1.0f ) );
+        color.push_back( vec3( 0.0f, 1.0f, 1.0f ) );
+        color.push_back( vec3( 0.0f, 1.0f, 1.0f ) );
+        
+        color.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
+        color.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
+        color.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
+        color.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
+        
+        color.push_back( vec3( 1.0f, 0.0f, 1.0f ) );
+        color.push_back( vec3( 1.0f, 0.0f, 1.0f ) );
+        color.push_back( vec3( 1.0f, 0.0f, 1.0f ) );
+        color.push_back( vec3( 1.0f, 0.0f, 1.0f ) );
         
         /**
         // Front
@@ -238,13 +288,13 @@ SUITE( IntegratedTests )
                                 .color( vec3( 1.0f, 1.0f, 1.0f ) )     );
         
         proj_cam test_cmra( proj_cam::settings()
-                            .position( vec3( 0.0f, 0.0f, 1.0f ) )
+                            .position( vec3( 1.0f, 1.0f, 1.0f ) )
                             .look_at( vec3( 0.0f ) )
-                            .upward( vec3( 0.0f, 1.0f, 0.0f ) )
+                            .upward( vec3( 0.0f, 0.0f, 1.0f ) )
                             .field_of_view( d_angle::in_degs( 135.0 ) )
                             .aspect_ratio( 1.0 )
                             .near_plane( 0.01 )
-                            .far_plane( 10.0 )                         );
+                            .far_plane( 1000.0 )                         );
         
 
         try {
@@ -258,68 +308,49 @@ SUITE( IntegratedTests )
         test_bffr.upload_data();
         test_bffr.align_vertices();
         
-        //test_prgm.uniform( "obj_mat" );
+        test_prgm.uniform( "obj_mat" );
         //test_prgm.uniform( "light" );
         test_prgm.uniform( "cam" );
+        
         try {
             test_prgm.link();
-            
         } catch (compilation_error& e ) {
             std::cout<< e.what() << std::endl;
         }
+        
         try {
-        test_prgm.use();
+            test_prgm.use();
         } catch (std::exception& e ) {
             std::cout << e.what() << std::endl;
         }
-        
-        
-        //test_prgm.load_uniform( "obj_mat", test_obj_mtrx );
-        
-        //test_lght.upload_uniform( test_prgm, std::string( "light" ) );
-        
-        //test_cmra.upload_uniform( test_prgm, std::string( "cam" ) );
-        GLuint elements[] = { 0, 2, 1, 0, 3, 2 };
-        /*GLuint elements[] = { 0, 1, 2, 3, 4, 5,
-                              6, 7, 8, 9, 10, 11,
-                              12, 13, 14, 15, 16, 17,
-                              18, 19, 20, 21, 22, 23,
-                              24, 25, 26, 27, 28, 29,
-                              30, 31, 32, 33, 34, 35 };*/
-        
-        std::cout << "transformed positions:" << std::endl;
-            //std::cout << test_cmra.view_matrix() << std::endl;
-            std::cout << test_obj_mtrx << std::endl;
-            mat4 view_mat = test_obj_mtrx;
-            //std::cout << view_mat << std::endl;
-            vec4 ur_corner = view_mat * vec4( position[0], 1.0f );
-            vec4 lr_corner = view_mat * vec4( position[1], 1.0f );
-            vec4 ll_corner = view_mat * vec4( position[2], 1.0f );
-            vec4 ul_corner = view_mat * vec4( position[3], 1.0f );
-            std::cout << ur_corner << std::endl;
-            std::cout << lr_corner << std::endl;
-            std::cout << ll_corner << std::endl;
-            std::cout << ul_corner << std::endl;
 
-            test_cmra.upload_uniform( test_prgm, std::string( "cam" ) );
+        GLuint elements[] = { 0, 1, 2, 0, 2, 3,
+                              4, 6, 5, 4, 7, 6,
+                              8, 10, 9, 8, 11, 10,
+                              12, 14, 13, 12, 15, 14,
+                              16, 18, 17, 16, 19, 18,
+                              20, 22, 21, 20, 23, 22 };
+        
         unsigned int frames = 0;
-        while( frames < 20 ) {
+        gl::Enable( gl::DEPTH_TEST );
+        while( frames < 2 ) {
+
             
-            
-            
-            SDL_Delay( 66 );
-            ++frames;
-            test_cntx.clear_color( 0.5f, 0.5f, 0.5f, 1.0f );
-            gl::DrawElements( gl::TRIANGLES, 6, gl::UNSIGNED_INT, elements );
-            test_wndw.swap();
-            test_obj_mtrx = test_obj_mtrx
-                            * mat4::rotation( vec3( 0.0f, 0.0f, 1.0f ),
-                                              d_angle::in_degs( 360.0 / 30.0 ) );
-            test_obj_mtrx.norm();
-            //test_prgm.load_uniform( std::string( "obj_mat" ), test_obj_mtrx );
+            test_prgm.load_uniform( std::string( "obj_mat" ), test_obj_mtrx );
             test_cmra.upload_uniform( test_prgm, std::string( "cam" ) );
-            //test_prgm.load_uniform( std::string( "view" ), test_cmra.view_matrix() );
+
+            test_cntx.clear_color( 0.5f, 0.5f, 0.5f, 1.0f );
+            gl::DrawElements( gl::TRIANGLES, 24, gl::UNSIGNED_INT, elements );
+            test_wndw.swap();            
+            
+            //test_obj_mtrx = test_obj_mtrx
+              //              * mat4::rotation( vec3( 0.0f, 0.0f, 1.0f ),
+                //                              d_angle::in_degs( 360.0 / 30.0 ) );
+            //test_obj_mtrx.norm();
+            SDL_Delay( 1000 );
+            ++frames;
         }
+        test_obj_mtrx.norm();
     }
 }
 

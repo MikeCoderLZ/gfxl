@@ -34,6 +34,8 @@ namespace gfx {
      * what to look at, and specify what up is, and it does the rest.
      * "proj" stand for "projection".
      * 
+     * TODO Ummm, chouldn't proj_changed just be view_changed? Review this.
+     * 
      * struct proj_cam {
      *      mat4    view;
      * }

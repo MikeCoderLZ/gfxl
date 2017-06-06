@@ -10,7 +10,7 @@ struct camera {
 //    vec3  col;
 //};
 
-//uniform mat4 obj_mat;
+uniform mat4 obj_mat;
 
 uniform camera cam;
 //uniform point_light light;
@@ -29,7 +29,7 @@ out vec3 col_out;
 void main()
 {
     //mat4 transform = obj_mat;
-    mat4 transform = cam.view;
+    mat4 transform = cam.view * obj_mat;
     //norm_out = vec4( norm, 1.0f ) * transform;
     //light_out = vec4( light.pos - pos, 1.0f ) * transform;
     //light_col_out = light.col;

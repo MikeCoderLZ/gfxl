@@ -41,7 +41,7 @@ namespace gfx {
                                                       aspect,
                                                       near,
                                                       far      ) ),
-                        proj_changed ( false ) {}
+                        proj_changed ( false ) { update_view(); }
     proj_cam::~proj_cam() {}
     
     proj_cam&     proj_cam::position( vec3 const& point )
