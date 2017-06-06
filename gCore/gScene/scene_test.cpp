@@ -284,7 +284,7 @@ SUITE( IntegratedTests )
 
         point_light test_lght ( point_light::settings()
                                 .radiance( 0.8f )
-                                .position( vec3( 1.0f, 1.0f, 1.0f ) )
+                                .position( vec3( -1.0f, 1.0f, 1.0f ) )
                                 .color( vec3( 1.0f, 1.0f, 1.0f ) )     );
         
         proj_cam test_cmra( proj_cam::settings()
@@ -325,32 +325,32 @@ SUITE( IntegratedTests )
         }
 
         GLuint elements[] = { 0, 1, 2, 0, 2, 3,
-                              4, 6, 5, 4, 7, 6,
-                              8, 10, 9, 8, 11, 10,
-                              12, 14, 13, 12, 15, 14,
-                              16, 18, 17, 16, 19, 18,
-                              20, 22, 21, 20, 23, 22 };
+                              4, 5, 6, 4, 6, 7,
+                              8, 9, 10, 8, 10, 11,
+                              12, 13, 14, 12, 14, 15,
+                              16, 17, 18, 16, 18, 19,
+                              20, 21, 22, 20, 22, 23 };
         
         unsigned int frames = 0;
         gl::Enable( gl::DEPTH_TEST );
-        while( frames < 2 ) {
+        gl::Enable( gl::CULL_FACE );
+        while( frames < 150 ) {
 
             
             test_prgm.load_uniform( std::string( "obj_mat" ), test_obj_mtrx );
             test_cmra.upload_uniform( test_prgm, std::string( "cam" ) );
 
             test_cntx.clear_color( 0.5f, 0.5f, 0.5f, 1.0f );
-            gl::DrawElements( gl::TRIANGLES, 24, gl::UNSIGNED_INT, elements );
+            gl::DrawElements( gl::TRIANGLES, 36, gl::UNSIGNED_INT, elements );
             test_wndw.swap();            
             
-            //test_obj_mtrx = test_obj_mtrx
-              //              * mat4::rotation( vec3( 0.0f, 0.0f, 1.0f ),
-                //                              d_angle::in_degs( 360.0 / 30.0 ) );
-            //test_obj_mtrx.norm();
-            SDL_Delay( 1000 );
+            test_obj_mtrx = test_obj_mtrx
+                            * mat4::rotation( vec3( 0.0f, 0.0f, 1.0f ),
+                                              d_angle::in_degs( 360.0 / 30.0 ) );
+            test_obj_mtrx.norm();
+            SDL_Delay( 33 );
             ++frames;
         }
-        test_obj_mtrx.norm();
     }
 }
 

@@ -50,6 +50,12 @@ namespace gfx {
 
         gl::ClearColor( red, green, blue, alpha );
         gl::Clear( gl::COLOR_BUFFER_BIT );
+        
+        int isDoubleBuffered = 0;
+        SDL_GL_GetAttribute( SDL_GL_DOUBLEBUFFER, &isDoubleBuffered );
+        if (isDoubleBuffered ) {
+            gl::Clear( gl::DEPTH_BUFFER_BIT );
+        }
     }
     
     bool    context::is_active() const
