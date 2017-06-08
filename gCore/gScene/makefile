@@ -227,6 +227,7 @@ $(OBJ)/light_test.o: $(GSCN)/light_test.cpp \
 
 $(OBJ)/light.o: $(GSCN)/light.cpp \
                 $(GSCN)/light.hpp \
+                $(GSCN)/program.hpp \
                 $(GMATH)/datatype.hpp \
                 $(GMATH)/op.hpp \
                 $(GSCN)/uniform.hpp \

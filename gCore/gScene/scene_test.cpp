@@ -41,7 +41,7 @@ SUITE( IntegratedTests )
                           .blocks( 24 )      );
         test_bffr.block_format( block_spec()
                                 .attribute( type<vec3>() )  // position
-                                //.attribute( type<vec3>() )  // normal
+                                .attribute( type<vec3>() )  // normal
                                 .attribute( type<vec3>() ) ); // color
         
         std::vector< vec3 > position;
@@ -82,6 +82,31 @@ SUITE( IntegratedTests )
         normal.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
         normal.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
         normal.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
+        
+        normal.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
+        normal.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
+        normal.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
+        normal.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
+        
+        normal.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
+        normal.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
+        normal.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
+        normal.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
+        
+        normal.push_back( vec3( 0.0f, -1.0f, 0.0f ) );
+        normal.push_back( vec3( 0.0f, -1.0f, 0.0f ) );
+        normal.push_back( vec3( 0.0f, -1.0f, 0.0f ) );
+        normal.push_back( vec3( 0.0f, -1.0f, 0.0f ) );
+        
+        normal.push_back( vec3( -1.0f, 0.0f, 0.0f ) );
+        normal.push_back( vec3( -1.0f, 0.0f, 0.0f ) );
+        normal.push_back( vec3( -1.0f, 0.0f, 0.0f ) );
+        normal.push_back( vec3( -1.0f, 0.0f, 0.0f ) );
+        
+        normal.push_back( vec3( 0.0f, 0.0f, -1.0f ) );
+        normal.push_back( vec3( 0.0f, 0.0f, -1.0f ) );
+        normal.push_back( vec3( 0.0f, 0.0f, -1.0f ) );
+        normal.push_back( vec3( 0.0f, 0.0f, -1.0f ) );
         
         color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
         color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
@@ -283,8 +308,8 @@ SUITE( IntegratedTests )
                                         d_angle::in_degs( 0.0f) );
 
         point_light test_lght ( point_light::settings()
-                                .radiance( 0.8f )
-                                .position( vec3( -1.0f, 1.0f, 1.0f ) )
+                                .radiance( 16.0f )
+                                .position( vec3( -7.5f, 7.5f, 7.5f ) )
                                 .color( vec3( 1.0f, 1.0f, 1.0f ) )     );
         
         proj_cam test_cmra( proj_cam::settings()
@@ -302,15 +327,17 @@ SUITE( IntegratedTests )
         } catch (std::exception& e ) {
             std::cout << e.what() << std::endl;
         }
-        //test_bffr.load_attribute( 1, normal );
-        test_bffr.load_attribute( 1, color );
+        test_bffr.load_attribute( 1, normal );
+        test_bffr.load_attribute( 2, color );
         
         test_bffr.upload_data();
         test_bffr.align_vertices();
         
         test_prgm.uniform( "obj_mat" );
-        //test_prgm.uniform( "light" );
-        test_prgm.uniform( "cam" );
+        test_prgm.uniform( "light.rad" );
+        test_prgm.uniform( "light.pos" );
+        test_prgm.uniform( "light.col" );
+        test_prgm.uniform( "cam.view" );
         
         try {
             test_prgm.link();
@@ -318,12 +345,20 @@ SUITE( IntegratedTests )
             std::cout<< e.what() << std::endl;
         }
         
+        
+        
         try {
             test_prgm.use();
         } catch (std::exception& e ) {
             std::cout << e.what() << std::endl;
         }
 
+        try {
+            test_prgm.use();
+        } catch (std::exception& e ) {
+            std::cout << e.what() << std::endl;
+        }
+        
         GLuint elements[] = { 0, 1, 2, 0, 2, 3,
                               4, 5, 6, 4, 6, 7,
                               8, 9, 10, 8, 10, 11,
@@ -332,13 +367,15 @@ SUITE( IntegratedTests )
                               20, 21, 22, 20, 22, 23 };
         
         unsigned int frames = 0;
+        // TODO Move this into context or video_system. Probably the latter?
         gl::Enable( gl::DEPTH_TEST );
         gl::Enable( gl::CULL_FACE );
-        while( frames < 150 ) {
+        while( frames < 300 ) {
 
-            
-            test_prgm.load_uniform( std::string( "obj_mat" ), test_obj_mtrx );
-            test_cmra.upload_uniform( test_prgm, std::string( "cam" ) );
+            test_prgm.use();
+            test_prgm.load_uniform( "obj_mat" , test_obj_mtrx );
+            test_lght.upload_uniform( test_prgm, "light" );
+            test_cmra.upload_uniform( test_prgm, "cam"  );
 
             test_cntx.clear_color( 0.5f, 0.5f, 0.5f, 1.0f );
             gl::DrawElements( gl::TRIANGLES, 36, gl::UNSIGNED_INT, elements );
@@ -346,8 +383,13 @@ SUITE( IntegratedTests )
             
             test_obj_mtrx = test_obj_mtrx
                             * mat4::rotation( vec3( 0.0f, 0.0f, 1.0f ),
-                                              d_angle::in_degs( 360.0 / 30.0 ) );
+                                              d_angle::in_degs( 360.0 / 60.0 ) )
+                            * mat4::rotation( vec3( 0.0f, 1.0f, 0.0f ),
+                                              d_angle::in_degs( -360.0 / 120.0 ) );
             test_obj_mtrx.norm();
+            
+            //std::cout << test_obj_mtrx * vec4( 0.5f,0.5f,0.5f,1.0f) << std::endl;
+            
             SDL_Delay( 33 );
             ++frames;
         }

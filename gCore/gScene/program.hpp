@@ -342,7 +342,11 @@ namespace gfx {
     template<> inline
     void    program::load_uniform( std::string const& name,
                                    float const& val  )
-    { gl::Uniform1f( (*uniform_map)[name], val ); }
+    { //std::cout << "Mark1.1" << std::endl;
+      //std::cout << name << std::endl;
+      //std::cout << (*uniform_map)[name] << std::endl;
+      //std::cout << gl::GetUniformLocation( prog_ID, name.c_str() ) << std::endl;
+        gl::Uniform1f( (*uniform_map)[name], val ); }
     
     template<> inline
     void    program::load_uniform( std::string const& name,

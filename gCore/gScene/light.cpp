@@ -3,6 +3,7 @@
 #include "../gVideo/gl_core_3_3.hpp"
 #include "program.hpp"
 #include "light.hpp"
+#include "../gVideo/checkError.hpp"
 
 namespace gfx {
     
@@ -42,8 +43,12 @@ namespace gfx {
     void        point_light::upload_uniform( program& prgm,
                                               std::string const& name )
     {
-        check_program( prgm );
+        //std::cout << "Mark2" << std::endl;
+        //std::cout << name << std::endl;
+        //check_program( prgm );
+        //std::string rad_name = name + ".rad";
         prgm.load_uniform( name + ".rad", rad );
+        //checkGLError( "Loaded uniform light.rad" );
         prgm.load_uniform( name + ".pos", pos );
         prgm.load_uniform( name + ".col", col );
     }

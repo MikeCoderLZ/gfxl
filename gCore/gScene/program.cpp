@@ -137,7 +137,6 @@ namespace gfx {
         
         GLint status = 0;
         gl::GetProgramiv( prog_ID, gl::LINK_STATUS, &status );
-        std::cout<< "Mark2.1.1!"<< std::endl;
         if ( status == gl::FALSE_ ) {
             std::cout << "Link failed." << std::endl;
             std::string msg = "Linking of program failed.\n";
@@ -155,11 +154,9 @@ namespace gfx {
         }
         
         key_map::iterator unfm;
-        std::cout<< "Mark2.1.2!"<< std::endl;
         for ( unfm = uniform_map->begin();
               unfm != uniform_map->end();
               ++unfm                       ) {
-            std::cout<< "Mark2.1.3!"<< std::endl;
             (*uniform_map)[unfm->first] = gl::GetUniformLocation( prog_ID,
                                                                   unfm->first.c_str() );
         }
