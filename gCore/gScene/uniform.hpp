@@ -8,6 +8,12 @@
 
 namespace gfx {
     
+    class uniformable {
+    private:
+        virtual void    register_uniform() = 0;
+        virtual void    upload_uniform() = 0;
+    };
+    
     class uniform {
     public:
         virtual void    upload_uniform( program& prgm,

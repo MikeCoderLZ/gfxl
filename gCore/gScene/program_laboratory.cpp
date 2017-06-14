@@ -103,13 +103,13 @@ SUITE( GLSLShadingTests )
                             .vertex_path( "./shader/testVert_2Dtextured.glsl" )
                             .fragment_path( "./shader/testNormalRepair_Frag.glsl" ) );
         correction_prgm.compile();
-        correction_prgm.uniform( "smilie" );
+        correction_prgm.uniform_name( "smilie" );
         
         program test_prgm ( program::settings()
                             .vertex_path( "./shader/testVert_2Dtextured.glsl" )
                             .fragment_path( "./shader/testFrag_2Dtextured.glsl" ) );
         test_prgm.compile();
-        test_prgm.uniform( "smilie" );
+        test_prgm.uniform_name( "smilie" );
         
         buffer test_buff ( buffer::settings().blocks(4) );
         test_buff.block_format( block_spec()
@@ -143,7 +143,7 @@ SUITE( GLSLShadingTests )
         test_prgm.link();
         test_prgm.use();
         
-        test_prgm.load_uniform( "smilie", 0 );
+        test_prgm.upload_uniform( "smilie", 0 );
         
         GLuint elements[] = { 0, 1, 2, 0, 2, 3 };
         
@@ -173,7 +173,7 @@ SUITE( GLSLShadingTests )
         correction_prgm.link();
         correction_prgm.use();
         
-        correction_prgm.load_uniform( "smilie", 0 );
+        correction_prgm.upload_uniform( "smilie", 0 );
         
         test_cntx.clear_color( 1.0f, 1.0f, 0.0f );
         

@@ -28,7 +28,7 @@ namespace gfx {
         attributes->push_back( new_attrib );
         return *this; }
 
-    class buffer {
+    class uniform_buffer {
     public:
         
         class settings {
@@ -56,15 +56,15 @@ namespace gfx {
     //    settings&   for_shader_storage();
             settings&   for_texture();
             settings&   for_transform_feedback();
-            //settings&   for_uniform();
+            settings&   for_uniform();
         private:
-            friend              class buffer;
+            friend              class uniform_buffer;
             GLsizeiptr          n_blocks;
             GLenum              usage;
             GLenum              intended_target;
         };
-                                    buffer( settings const& set = settings() );
-                                    ~buffer();
+                                    uniform_buffer( settings const& set = settings() );
+                                    ~uniform_buffer();
         void                        block_format( block_spec const& spec );
         GLsizeiptr                  size() const;
         void                        blocks( GLsizeiptr const blocks );
@@ -74,18 +74,6 @@ namespace gfx {
                                                     std::vector< DATA > const& attrib_data );
         void                        upload_data();
         void                        align_vertices();
-        // Unsure if everyone should be allowed to use this code...
-#ifdef DEBUG
-//        context const*              get_target_context() const { return target_context; }
-        GLsizeiptr                  get_n_blocks() const { return n_blocks; }
-        GLsizeiptr                  get_stride() const { return stride; }
-        GLuint                      get_vao_ID() const { return vao_ID; }
-        GLuint                      get_buff_ID() const { return buff_ID; }
-        GLenum                      get_usage() const { return usage; }
-        GLenum                      get_intended_target() const { return intended_target; }
-        bool                        get_data_loaded() const { return data_loaded; }
-        bool                        get_verts_specified() const { return verts_specified; }
-#endif
         friend std::ostream&        operator <<( std::ostream& out, buffer const& rhs );
     private:
 //        context const*              target_context;
@@ -158,12 +146,12 @@ namespace gfx {
     { intended_target = gl::PIXEL_UNPACK_BUFFER; return *this; }
     //inline  buffer::settings&     buffer::settings::for_shader_storage()
     //{ intended_target = gl::SHADER_STORAGE_BUFFER; return *this; }
-    //inline  buffer::settings&     buffer::settings::for_texture()
-    //{ intended_target = gl::TEXTURE_BUFFER; return *this; }
+    inline  buffer::settings&     buffer::settings::for_texture()
+    { intended_target = gl::TEXTURE_BUFFER; return *this; }
     inline  buffer::settings&     buffer::settings::for_transform_feedback()
     { intended_target = gl::TRANSFORM_FEEDBACK_BUFFER; return *this; }
-    //inline  buffer::settings&     buffer::settings::for_uniform()
-    //{ intended_target = gl::UNIFORM_BUFFER; return *this; }
+    inline  buffer::settings&     buffer::settings::for_uniform()
+    { intended_target = gl::UNIFORM_BUFFER; return *this; }
 
     inline GLsizeiptr  buffer::size() const
     { return n_blocks; }

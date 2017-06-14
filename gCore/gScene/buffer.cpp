@@ -103,6 +103,8 @@ namespace gfx {
             checkGLError( "vao bound for element data load" );
         }
         gl::BindBuffer( intended_target, buff_ID );
+        // TODO Add logic to use gl::BufferSubData() if the number of blocks
+        // and the specification hasn't changed
         gl::BufferData( intended_target, n_blocks * stride, data, usage );
 
         data_loaded = true;

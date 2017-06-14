@@ -13,7 +13,7 @@ namespace gfx {
                                        std::string const& name )
     {
         check_program( prgm );
-        prgm.load_uniform( name + ".rad", rad );
+        prgm.upload_uniform( name + ".rad", rad );
     }
     
     light&      light::radiance( float rad )
@@ -47,10 +47,10 @@ namespace gfx {
         //std::cout << name << std::endl;
         //check_program( prgm );
         //std::string rad_name = name + ".rad";
-        prgm.load_uniform( name + ".rad", rad );
+        prgm.upload_uniform( name + ".rad", rad );
         //checkGLError( "Loaded uniform light.rad" );
-        prgm.load_uniform( name + ".pos", pos );
-        prgm.load_uniform( name + ".col", col );
+        prgm.upload_uniform( name + ".pos", pos );
+        prgm.upload_uniform( name + ".col", col );
     }
     
     sphere_light::sphere_light( settings const& set ) :
@@ -81,10 +81,10 @@ namespace gfx {
                                               std::string const& name )
     {
         check_program( prgm );
-        prgm.load_uniform( name + ".rad", rad );
-        prgm.load_uniform( name + ".pos", pos );
-        prgm.load_uniform( name + ".col", col );
-        prgm.load_uniform( name + ".rd", rd );
+        prgm.upload_uniform( name + ".rad", rad );
+        prgm.upload_uniform( name + ".pos", pos );
+        prgm.upload_uniform( name + ".col", col );
+        prgm.upload_uniform( name + ".rd", rd );
     }
     
     spot_light::spot_light( settings const& set ) :
@@ -124,12 +124,12 @@ namespace gfx {
                                             std::string const& name )
     {
         check_program( prgm );
-        prgm.load_uniform( name + ".rad", rad );
-        prgm.load_uniform( name + ".pos", pos );
-        prgm.load_uniform( name + ".dir", dir );
-        prgm.load_uniform( name + ".col", col );
-        prgm.load_uniform( name + ".swp", swp );
-        prgm.load_uniform( name + ".rd", rd );
+        prgm.upload_uniform( name + ".rad", rad );
+        prgm.upload_uniform( name + ".pos", pos );
+        prgm.upload_uniform( name + ".dir", dir );
+        prgm.upload_uniform( name + ".col", col );
+        prgm.upload_uniform( name + ".swp", swp );
+        prgm.upload_uniform( name + ".rd", rd );
     }
     
     sun_light::sun_light( settings const& set ) :
@@ -151,8 +151,8 @@ namespace gfx {
                                            std::string const& name )
     {
         check_program( prgm );
-        prgm.load_uniform( name + ".rad", rad );
-        prgm.load_uniform( name + ".dir", dir );
-        prgm.load_uniform( name + ".col", col );
+        prgm.upload_uniform( name + ".rad", rad );
+        prgm.upload_uniform( name + ".dir", dir );
+        prgm.upload_uniform( name + ".col", col );
     }
 }

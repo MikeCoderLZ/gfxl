@@ -108,201 +108,35 @@ SUITE( IntegratedTests )
         normal.push_back( vec3( 0.0f, 0.0f, -1.0f ) );
         normal.push_back( vec3( 0.0f, 0.0f, -1.0f ) );
         
-        color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
-        color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
-        color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
-        color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
+        color.push_back( vec3( 0.9f, 0.1f, 0.1f ) );
+        color.push_back( vec3( 0.9f, 0.1f, 0.1f ) );
+        color.push_back( vec3( 0.9f, 0.1f, 0.1f ) );
+        color.push_back( vec3( 0.9f, 0.1f, 0.1f ) );
         
-        color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
-        color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
-        color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
-        color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
+        color.push_back( vec3( 0.9f, 0.9f, 0.1f ) );
+        color.push_back( vec3( 0.9f, 0.9f, 0.1f ) );
+        color.push_back( vec3( 0.9f, 0.9f, 0.1f ) );
+        color.push_back( vec3( 0.9f, 0.9f, 0.1f ) );
         
-        color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
-        color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
-        color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
-        color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
+        color.push_back( vec3( 0.1f, 0.9f, 0.1f ) );
+        color.push_back( vec3( 0.1f, 0.9f, 0.1f ) );
+        color.push_back( vec3( 0.1f, 0.9f, 0.1f ) );
+        color.push_back( vec3( 0.1f, 0.9f, 0.1f ) );
         
-        color.push_back( vec3( 0.0f, 1.0f, 1.0f ) );
-        color.push_back( vec3( 0.0f, 1.0f, 1.0f ) );
-        color.push_back( vec3( 0.0f, 1.0f, 1.0f ) );
-        color.push_back( vec3( 0.0f, 1.0f, 1.0f ) );
+        color.push_back( vec3( 0.1f, 0.9f, 0.9f ) );
+        color.push_back( vec3( 0.1f, 0.9f, 0.9f ) );
+        color.push_back( vec3( 0.1f, 0.9f, 0.9f ) );
+        color.push_back( vec3( 0.1f, 0.9f, 0.9f ) );
         
-        color.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
-        color.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
-        color.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
-        color.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
+        color.push_back( vec3( 0.1f, 0.1f, 0.9f ) );
+        color.push_back( vec3( 0.1f, 0.1f, 0.9f ) );
+        color.push_back( vec3( 0.1f, 0.1f, 0.9f ) );
+        color.push_back( vec3( 0.1f, 0.1f, 0.9f ) );
         
-        color.push_back( vec3( 1.0f, 0.0f, 1.0f ) );
-        color.push_back( vec3( 1.0f, 0.0f, 1.0f ) );
-        color.push_back( vec3( 1.0f, 0.0f, 1.0f ) );
-        color.push_back( vec3( 1.0f, 0.0f, 1.0f ) );
-        
-        /**
-        // Front
-        position.push_back( vec3(  0.5f,  0.5f, -0.5f ));
-        position.push_back( vec3( -0.5f,  0.5f, -0.5f ));
-        position.push_back( vec3( -0.5f, -0.5f, -0.5f ));
-        
-        position.push_back( vec3(  0.5f,  0.5f, -0.5f ));
-        position.push_back( vec3( -0.5f, -0.5f, -0.5f ));
-        position.push_back( vec3(  0.5f, -0.5f, -0.5f ));
-        
-        // Right
-        position.push_back( vec3(  0.5f,  0.5f,  0.5f ));
-        position.push_back( vec3( -0.5f, -0.5f,  0.5f ));
-        position.push_back( vec3(  0.5f, -0.5f, -0.5f ));
-        
-        position.push_back( vec3(  0.5f,  0.5f,  0.5f ));
-        position.push_back( vec3(  0.5f, -0.5f, -0.5f ));
-        position.push_back( vec3(  0.5f, -0.5f,  0.5f ));
-        
-        // Left
-        position.push_back( vec3( -0.5f,  0.5f, -0.5f ));
-        position.push_back( vec3( -0.5f,  0.5f,  0.5f ));
-        position.push_back( vec3( -0.5f, -0.5f,  0.5f ));
-        
-        position.push_back( vec3( -0.5f,  0.5f, -0.5f ));
-        position.push_back( vec3( -0.5f, -0.5f,  0.5f ));
-        position.push_back( vec3( -0.5f, -0.5f, -0.5f ));
-        
-        // Back
-        position.push_back( vec3( -0.5f,  0.5f,  0.5f ));
-        position.push_back( vec3(  0.5f,  0.5f,  0.5f ));
-        position.push_back( vec3(  0.5f, -0.5f,  0.5f ));
-        
-        position.push_back( vec3( -0.5f,  0.5f,  0.5f ));
-        position.push_back( vec3(  0.5f, -0.5f,  0.5f ));
-        position.push_back( vec3( -0.5f, -0.5f,  0.5f ));
-        
-        // Top
-        position.push_back( vec3(  0.5f,  0.5f,  0.5f ));
-        position.push_back( vec3( -0.5f,  0.5f,  0.5f ));
-        position.push_back( vec3( -0.5f,  0.5f, -0.5f ));
-        
-        position.push_back( vec3(  0.5f,  0.5f,  0.5f ));
-        position.push_back( vec3( -0.5f,  0.5f, -0.5f ));
-        position.push_back( vec3(  0.5f,  0.5f, -0.5f ));
-        
-        // Bottom
-        position.push_back( vec3( -0.5f, -0.5f,  0.5f ));
-        position.push_back( vec3(  0.5f, -0.5f,  0.5f ));
-        position.push_back( vec3(  0.5f, -0.5f, -0.5f ));
-        
-        position.push_back( vec3( -0.5f, -0.5f,  0.5f ));
-        position.push_back( vec3(  0.5f, -0.5f, -0.5f ));
-        position.push_back( vec3( -0.5f, -0.5f, -0.5f ));
-
-        
-        // Front
-        normal.push_back( vec3( 0.0f, 0.0f, -1.0f ) );
-        normal.push_back( vec3( 0.0f, 0.0f, -1.0f ) );
-        normal.push_back( vec3( 0.0f, 0.0f, -1.0f ) );
-        
-        normal.push_back( vec3( 0.0f, 0.0f, -1.0f ) );
-        normal.push_back( vec3( 0.0f, 0.0f, -1.0f ) );
-        normal.push_back( vec3( 0.0f, 0.0f, -1.0f ) );
-        
-        // Right
-        normal.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
-        normal.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
-        normal.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
-       
-        normal.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
-        normal.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
-        normal.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
-        
-        // Left
-        normal.push_back( vec3( -1.0f, 0.0f, 0.0f ) );
-        normal.push_back( vec3( -1.0f, 0.0f, 0.0f ) );
-        normal.push_back( vec3( -1.0f, 0.0f, 0.0f ) );
-       
-        normal.push_back( vec3( -1.0f, 0.0f, 0.0f ) );
-        normal.push_back( vec3( -1.0f, 0.0f, 0.0f ) );
-        normal.push_back( vec3( -1.0f, 0.0f, 0.0f ) );
-        
-        // Back
-        normal.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
-        normal.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
-        normal.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
-        
-        normal.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
-        normal.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
-        normal.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
-        
-        // Top
-        normal.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
-        normal.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
-        normal.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
-        
-        normal.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
-        normal.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
-        normal.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
-        
-        // Bottom
-        normal.push_back( vec3( 0.0f, -1.0f, 0.0f ) );
-        normal.push_back( vec3( 0.0f, -1.0f, 0.0f ) );
-        normal.push_back( vec3( 0.0f, -1.0f, 0.0f ) );
-        
-        normal.push_back( vec3( 0.0f, -1.0f, 0.0f ) );
-        normal.push_back( vec3( 0.0f, -1.0f, 0.0f ) );
-        normal.push_back( vec3( 0.0f, -1.0f, 0.0f ) );
-        
-        
-        
-        // Front
-        color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
-        color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
-        color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
-        
-        color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
-        color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
-        color.push_back( vec3( 1.0f, 0.0f, 0.0f ) );
-        
-        // Right
-        color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
-        color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
-        color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
-        
-        color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
-        color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
-        color.push_back( vec3( 1.0f, 1.0f, 0.0f ) );
-        
-        // Left
-        color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
-        color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
-        color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
-        
-        color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
-        color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
-        color.push_back( vec3( 0.0f, 1.0f, 0.0f ) );
-        
-        // Back
-        color.push_back( vec3( 0.0f, 1.0f, 1.0f ) );
-        color.push_back( vec3( 0.0f, 1.0f, 1.0f ) );
-        color.push_back( vec3( 0.0f, 1.0f, 1.0f ) );
-        
-        color.push_back( vec3( 0.0f, 1.0f, 1.0f ) );
-        color.push_back( vec3( 0.0f, 1.0f, 1.0f ) );
-        color.push_back( vec3( 0.0f, 1.0f, 1.0f ) );
-        
-        // Top
-        color.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
-        color.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
-        color.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
-        
-        color.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
-        color.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
-        color.push_back( vec3( 0.0f, 0.0f, 1.0f ) );
-        
-        // Bottom
-        color.push_back( vec3( 1.0f, 0.0f, 1.0f ) );
-        color.push_back( vec3( 1.0f, 0.0f, 1.0f ) );
-        color.push_back( vec3( 1.0f, 0.0f, 1.0f ) );
-        
-        color.push_back( vec3( 1.0f, 0.0f, 1.0f ) );
-        color.push_back( vec3( 1.0f, 0.0f, 1.0f ) );
-        color.push_back( vec3( 1.0f, 0.0f, 1.0f ) ); */
+        color.push_back( vec3( 0.9f, 0.1f, 0.9f ) );
+        color.push_back( vec3( 0.9f, 0.1f, 0.9f ) );
+        color.push_back( vec3( 0.9f, 0.1f, 0.9f ) );
+        color.push_back( vec3( 0.9f, 0.1f, 0.9f ) );
         
         mat4 test_obj_mtrx = mat4::rotation( vec3( 0.0f, 1.0f, 0.0f),
                                         d_angle::in_degs( 0.0f) );
@@ -333,11 +167,11 @@ SUITE( IntegratedTests )
         test_bffr.upload_data();
         test_bffr.align_vertices();
         
-        test_prgm.uniform( "obj_mat" );
-        test_prgm.uniform( "light.rad" );
-        test_prgm.uniform( "light.pos" );
-        test_prgm.uniform( "light.col" );
-        test_prgm.uniform( "cam.view" );
+        test_prgm.uniform_name( "obj_mat" );
+        test_prgm.uniform_name( "light.rad" );
+        test_prgm.uniform_name( "light.pos" );
+        test_prgm.uniform_name( "light.col" );
+        test_prgm.uniform_name( "cam.view" );
         
         try {
             test_prgm.link();
@@ -373,7 +207,7 @@ SUITE( IntegratedTests )
         while( frames < 300 ) {
 
             test_prgm.use();
-            test_prgm.load_uniform( "obj_mat" , test_obj_mtrx );
+            test_prgm.upload_uniform( "obj_mat" , test_obj_mtrx );
             test_lght.upload_uniform( test_prgm, "light" );
             test_cmra.upload_uniform( test_prgm, "cam"  );
 

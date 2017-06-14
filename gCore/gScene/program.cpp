@@ -85,7 +85,7 @@ namespace gfx {
         uniform_map->clear();
     }
     
-    void    program::uniform( std::string const& name )
+    void    program::uniform_name( std::string const& name )
     { (*uniform_map)[name] = -1;}
     
     void    program::compile()

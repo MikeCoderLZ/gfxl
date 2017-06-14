@@ -221,7 +221,7 @@ namespace gfx {
         
                         program( settings const& set = settings() );
                         ~program();
-        void            uniform( std::string const& name );
+        void            uniform_name( std::string const& name );
         std::string     vertex_path() const { return vert_path; }
         std::string     fragment_path() const { return frag_path; }
         std::string     tesselation_path() const { return tess_path; }
@@ -236,7 +236,7 @@ namespace gfx {
         void            compile();
         void            link();
         template< typename T >
-        void            load_uniform( std::string const& name,
+        void            upload_uniform( std::string const& name,
                                       T const& val             );
         void            use();
         bool            in_use() const;
@@ -328,19 +328,19 @@ namespace gfx {
     }
     
     template< typename T > inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    T const& val     )
     {
         throw std::invalid_argument( "No support for given type of uniform." );
     }
     
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    float32 const& val  )
     { gl::Uniform1f( (*uniform_map)[name], val ); }
     
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    float const& val  )
     { //std::cout << "Mark1.1" << std::endl;
       //std::cout << name << std::endl;
@@ -349,128 +349,128 @@ namespace gfx {
         gl::Uniform1f( (*uniform_map)[name], val ); }
     
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    vec2 const& val  )
     { gl::Uniform2f( (*uniform_map)[name], val[0], val[1] ); }
     
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    vec3 const& val  )
     { gl::Uniform3f( (*uniform_map)[name], val[0], val[1], val[2] ); }
     
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    vec4 const& val  )
     { gl::Uniform4f( (*uniform_map)[name], val[0], val[1], val[2], val[3] ); }
     
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    int32 const& val  )
     { gl::Uniform1i( (*uniform_map)[name], val ); }
     
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    int const& val  )
     { gl::Uniform1i( (*uniform_map)[name], val ); }
     
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    ivec2 const& val  )
     { gl::Uniform2i( (*uniform_map)[name], val[0], val[1] ); }
     
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    ivec3 const& val  )
     { gl::Uniform3i( (*uniform_map)[name], val[0], val[1], val[2] ); }
     
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    ivec4 const& val  )
     { gl::Uniform4i( (*uniform_map)[name], val[0], val[1], val[2], val[3] ); }
     
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    uint32 const& val  )
     { gl::Uniform1ui( (*uniform_map)[name], val ); }
     
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    uint32_t const& val  )
     { gl::Uniform1ui( (*uniform_map)[name], val ); }
     
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    uvec2 const& val  )
     { gl::Uniform2ui( (*uniform_map)[name], val[0], val[1] ); }
     
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    uvec3 const& val  )
     { gl::Uniform3ui( (*uniform_map)[name], val[0], val[1], val[2] ); }
     
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    uvec4 const& val  )
     { gl::Uniform4ui( (*uniform_map)[name], val[0], val[1], val[2], val[3] ); }
     
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    mat2 const& val         )
     { gl::UniformMatrix2fv( (*uniform_map)[name],
                             1, gl::FALSE_,
                             (GLfloat*) val.to_map().bytes ); }
 
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    mat3 const& val         )
     { gl::UniformMatrix3fv( (*uniform_map)[name],
                             1, gl::FALSE_,
                             (GLfloat*) val.to_map().bytes ); }
                             
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    mat4 const& val         )
     { gl::UniformMatrix4fv( (*uniform_map)[name],
                             1, gl::FALSE_,
                             (GLfloat*) val.to_map().bytes ); }
                             
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    mat2x3 const& val         )
     { gl::UniformMatrix2x3fv( (*uniform_map)[name],
                               1, gl::FALSE_,
                               (GLfloat*) val.to_map().bytes ); }
                             
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    mat3x2 const& val         )
     { gl::UniformMatrix3x2fv( (*uniform_map)[name],
                               1, gl::FALSE_,
                               (GLfloat*) val.to_map().bytes ); }
                               
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    mat2x4 const& val         )
     { gl::UniformMatrix2x4fv( (*uniform_map)[name],
                               1, gl::FALSE_,
                               (GLfloat*) val.to_map().bytes ); }
                             
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    mat4x2 const& val         )
     { gl::UniformMatrix4x2fv( (*uniform_map)[name],
                               1, gl::FALSE_,
                               (GLfloat*) val.to_map().bytes ); }
                               
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    mat3x4 const& val         )
     { gl::UniformMatrix3x4fv( (*uniform_map)[name],
                               1, gl::FALSE_,
                               (GLfloat*) val.to_map().bytes ); }
                             
     template<> inline
-    void    program::load_uniform( std::string const& name,
+    void    program::upload_uniform( std::string const& name,
                                    mat4x3 const& val         )
     { gl::UniformMatrix4x3fv( (*uniform_map)[name],
                               1, gl::FALSE_,
