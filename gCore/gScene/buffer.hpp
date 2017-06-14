@@ -3,6 +3,25 @@
 
 #include "../gVideo/video.hpp"
 
+/**
+ * What must happen here is to separate out the vertex related elements of
+ * the class, leaving only the buffer object elements. Then, create derived
+ * classes for each of the various things that use buffers:
+ * 
+ * vertex_buffer
+ * uniform_buffer
+ * texture_buffer
+ * feedback_buffer
+ * pixel_buffer
+ * 
+ * and so on. Each drived class will implement the appropriate special
+ * things that make them work. _Probably_ leave block_spec outside the
+ * buffer class because it is going to be useful for all sorts of things.
+ * Also, improve the attribute/name alignment stuff, probably via buffer
+ * mapping.
+ * 
+ */
+
 namespace gfx {
 
     class block_spec {
@@ -56,7 +75,7 @@ namespace gfx {
     //    settings&   for_shader_storage();
             settings&   for_texture();
             settings&   for_transform_feedback();
-            //settings&   for_uniform();
+            settings&   for_uniform();
         private:
             friend              class buffer;
             GLsizeiptr          n_blocks;
@@ -72,6 +91,12 @@ namespace gfx {
         template< typename DATA >
         void                        load_attribute( GLuint index,
                                                     std::vector< DATA > const& attrib_data );
+        /*template< typename DATA >
+        void                        load_attribute( char const* name,
+                                                    std::vector< DATA > const& attrib_data );*/
+        /*template< typename DATA >
+        void                        load_attribute( std::string const& name,
+                                                    std::vector< DATA > const& attrib_data );*/
         void                        upload_data();
         void                        align_vertices();
         // Unsure if everyone should be allowed to use this code...
@@ -87,7 +112,7 @@ namespace gfx {
         bool                        get_verts_specified() const { return verts_specified; }
 #endif
         friend std::ostream&        operator <<( std::ostream& out, buffer const& rhs );
-    private:
+    protected:
 //        context const*              target_context;
         unsigned char*              data;
         GLsizeiptr                  n_blocks;
