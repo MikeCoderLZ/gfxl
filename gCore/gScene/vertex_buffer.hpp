@@ -13,11 +13,16 @@ namespace gfx {
             friend      class vertex_buffer;
         };
         
-                    vertex_buffer( settings const& set = settings();
-                    ~vertex_buffer();
-        void        align_vertices();
+                        vertex_buffer( settings const& set = settings() );
+        virtual         ~vertex_buffer();
+        virtual void    align();
+    protected:
+        GLuint          vao_ID;
 
     };
+    
+    inline  vertex_buffer::settings::settings( buffer::settings const& set )
+                                                : buffer::settings( set ) {}
 
 
 }

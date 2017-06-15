@@ -70,7 +70,6 @@ $(OBJ)/texture.o: $(GSCN)/texture.cpp \
 	g++ -c $(COM) -Wno-sign-compare \
 	    $(GSCN)/texture.cpp \
 	    $(SDLFLAGS) -o $(OBJ)/texture.o
-
 	    
 $(OBJ)/buffer.o: $(GSCN)/buffer.cpp \
                  $(GSCN)/buffer.hpp \

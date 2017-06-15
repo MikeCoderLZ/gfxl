@@ -2,6 +2,7 @@
 #define BUFFER
 
 #include "../gVideo/video.hpp"
+#include "block_spec.hpp"
 
 /**
  * What must happen here is to separate out the vertex related elements of
@@ -23,13 +24,13 @@
  */
 
 namespace gfx {
-
+    
     class block_spec {
     public:
                                         block_spec();
                                         ~block_spec();
         template< typename T >
-        block_spec&                      attribute( type<T> const& proto );
+        block_spec&                     attribute( type<T> const& proto );
     private:
         friend                          class buffer;
         typedef std::vector< info* >    attrib_vector;
@@ -83,7 +84,7 @@ namespace gfx {
             GLenum              intended_target;
         };
                                     buffer( settings const& set = settings() );
-                                    ~buffer();
+        virtual                     ~buffer();
         void                        block_format( block_spec const& spec );
         GLsizeiptr                  size() const;
         void                        blocks( GLsizeiptr const blocks );
@@ -99,6 +100,7 @@ namespace gfx {
                                                     std::vector< DATA > const& attrib_data );*/
         void                        upload_data();
         void                        align_vertices();
+        virtual void                align();
         // Unsure if everyone should be allowed to use this code...
 #ifdef DEBUG
 //        context const*              get_target_context() const { return target_context; }
