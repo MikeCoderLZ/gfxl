@@ -6,7 +6,7 @@ namespace gfx {
                                     buffer::buffer( set ) 
     { gl::GenVertexArrays( 1, &vao_ID ); }
     
-    vertex_buffer::~vertex__buffer()
+    vertex_buffer::~vertex_buffer()
     { gl::DeleteVertexArrays( 1, &vao_ID ); }
     
     void  vertex_buffer::align()
