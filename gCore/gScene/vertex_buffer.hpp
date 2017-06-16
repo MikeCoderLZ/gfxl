@@ -16,9 +16,10 @@ namespace gfx {
         
                         vertex_buffer( settings const& set = settings() );
         virtual         ~vertex_buffer();
+        virtual void    upload_data();
         virtual void    align();
     protected:
-        //GLuint          vao_ID;
+        GLuint          vao_ID;
 
     };
     

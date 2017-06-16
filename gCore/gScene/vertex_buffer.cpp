@@ -9,6 +9,15 @@ namespace gfx {
     vertex_buffer::~vertex_buffer()
     { gl::DeleteVertexArrays( 1, &vao_ID ); }
     
+    void    vertex_buffer::upload_data()
+    {
+        if( intended_target == gl::ELEMENT_ARRAY_BUFFER ){
+            gl::BindVertexArray( vao_ID );
+            checkGLError( "vao bound for element data load" );
+        }
+        buffer::upload_data();
+    }
+    
     void  vertex_buffer::align()
     {
         if ( not data_loaded ) {

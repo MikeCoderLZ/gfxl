@@ -97,28 +97,14 @@ namespace gfx {
         /*template< typename DATA >
         void                        load_attribute( std::string const& name,
                                                     std::vector< DATA > const& attrib_data );*/
-        void                        upload_data();
-        //void                        align_vertices();
+        virtual void                upload_data();
         virtual void                align() = 0;
-        // Unsure if everyone should be allowed to use this code...
-#ifdef DEBUG
-//        context const*              get_target_context() const { return target_context; }
-        GLsizeiptr                  get_n_blocks() const { return n_blocks; }
-        GLsizeiptr                  get_stride() const { return stride; }
-        GLuint                      get_vao_ID() const { return vao_ID; }
-        GLuint                      get_buff_ID() const { return buff_ID; }
-        GLenum                      get_usage() const { return usage; }
-        GLenum                      get_intended_target() const { return intended_target; }
-        bool                        get_data_loaded() const { return data_loaded; }
-        bool                        get_verts_specified() const { return verts_specified; }
-#endif
         friend std::ostream&        operator <<( std::ostream& out, buffer const& rhs );
     protected:
-//        context const*              target_context;
         unsigned char*              data;
         GLsizeiptr                  n_blocks;
         GLsizeiptr                  stride;
-        GLuint                      vao_ID;
+        //GLuint                      vao_ID;
         GLuint                      buff_ID;
         GLenum                      usage;
         GLenum                      intended_target;
