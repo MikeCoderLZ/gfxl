@@ -109,7 +109,7 @@ namespace gfx {
     }
     
     window::~window()
-    { SDL_DestroyWindow( sys_window ); }
+    { SDL_DestroyWindow( sys_window );}
     
     void window::swap()
     {

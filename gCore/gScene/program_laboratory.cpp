@@ -131,7 +131,7 @@ SUITE( GLSLShadingTests )
         test_buff.load_attribute( 1, uv );
         
         test_buff.upload_data();
-        test_buff.align_vertices();
+        test_buff.align();
         
         texture_2D test_txtr ( texture_2D::settings()
                                .file( "./tex/caves/cavemossshader01_n.png" )

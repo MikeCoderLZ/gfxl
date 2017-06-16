@@ -132,6 +132,7 @@ $(OBJ)/program_laboratory.o: $(GSCN)/program_laboratory.cpp \
 	    
 $(BIN)/program_shader_test: $(OBJ)/program_shader_test.o \
                             $(OBJ)/video.o \
+                            $(OBJ)/vertex_buffer.o \
                             $(OBJ)/buffer.o \
                             $(OBJ)/program.o \
                             $(OBJ)/texture.o \
@@ -140,6 +141,7 @@ $(BIN)/program_shader_test: $(OBJ)/program_shader_test.o \
                             $(OBJ)/gl_core_3_3.o
 	g++ $(OBJ)/program_shader_test.o \
 	    $(OBJ)/video.o \
+	    $(OBJ)/vertex_buffer.o \
 	    $(OBJ)/buffer.o \
 	    $(OBJ)/program.o \
 	    $(OBJ)/texture.o \
@@ -152,6 +154,7 @@ $(BIN)/program_shader_test: $(OBJ)/program_shader_test.o \
 
 $(OBJ)/program_shader_test.o: $(GSCN)/program_shader_test.cpp \
                               $(GVID)/video.hpp \
+                              $(GSCN)/vertex_buffer.hpp \
                               $(GSCN)/buffer.hpp \
                               $(GSCN)/program.hpp \
                               $(GSCN)/texture.hpp \

@@ -60,12 +60,10 @@ namespace gfx {
     program::~program()
     { // Probably remove dependencies
         //video_system::get().unregister_shader( this ); 
-        
-        if ( *(program::current_prgm) == *this ) {
+        if ( program::current_prgm != 0 and *(program::current_prgm) == *this ) {
             program::current_prgm->in_use_v = false;
             program::current_prgm = 0;
         }
-        
         if ( gl::IsShader( vert_ID ) ) {
             gl::DeleteShader( vert_ID );
         }
@@ -81,7 +79,6 @@ namespace gfx {
         if ( gl::IsProgram( prog_ID ) ) {
                 gl::DeleteProgram( prog_ID );
         }
-        
         uniform_map->clear();
     }
     

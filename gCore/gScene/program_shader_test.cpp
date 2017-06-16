@@ -7,7 +7,7 @@
 #include "../../UnitTest++_src/UnitTest++.h"
 
 #include "../gVideo/video.hpp"
-#include "buffer.hpp"
+#include "vertex_buffer.hpp"
 #include "program.hpp"
 
 using namespace gfx;
@@ -21,7 +21,7 @@ SUITE( BufferTests )
         CHECK( not video_system::get().context_present() );
         bool initialization_error_thrown__no_context_present = false;
         try {
-            buffer test_bffr();
+            vertex_buffer test_bffr;
         } catch (initialization_error e) {
             initialization_error_thrown__no_context_present = true;
         }
@@ -31,7 +31,7 @@ SUITE( BufferTests )
         context test_cntx ( test_wndw );
         CHECK( video_system::get().context_present() );
         
-        buffer test_bffr();
+        vertex_buffer test_bffr;
         
         CHECK_EQUAL( test_bffr.size(), 0 );
 
@@ -43,7 +43,7 @@ SUITE( BufferTests )
                            .has_3D()          );
         context test_cntx ( test_wndw );
         
-        buffer test_bffr1( buffer::settings()
+        vertex_buffer test_bffr1( vertex_buffer::settings()
                             .blocks( 4 )      );
         CHECK_EQUAL( test_bffr1.size(), 4 );
         
@@ -58,8 +58,7 @@ SUITE( BufferTests )
                            .has_3D()          );
         context test_cntx ( test_wndw,
                             context::settings() );
-        
-        buffer test_bffr( buffer::settings()
+        vertex_buffer test_bffr( vertex_buffer::settings()
                           .blocks( 4 )      );
         
         try {
@@ -90,14 +89,11 @@ SUITE( ProgramTests )
         window test_wndw ( window::settings()
                            .has_3D()          );
         context test_cntx ( test_wndw );
-        
         program test_prgm;
-        
         CHECK_EQUAL( 0, test_prgm.vertex_path().compare( "" ) );
         CHECK_EQUAL( 0, test_prgm.fragment_path().compare( "" ) );
         CHECK_EQUAL( 0, test_prgm.tesselation_path().compare( "" ) );
         CHECK_EQUAL( 0, test_prgm.geometry_path().compare( "" ) );
-        
     }
     
     TEST( ProgramCreationHandles )
@@ -105,7 +101,6 @@ SUITE( ProgramTests )
         window test_wndw ( window::settings()
                            .has_3D()          );
         context test_cntx ( test_wndw );
-        
         program test_prgm( program::settings()
                            .vertex_path( "vertex" )
                            .fragment_path( "fragment" )
@@ -150,7 +145,7 @@ SUITE( IntegratedTests )
                            .fragment_path("./shader/testFrag_colored.glsl") );
         test_prgm.compile();
         
-        buffer test_bffr( buffer::settings()
+        vertex_buffer test_bffr( vertex_buffer::settings()
                           .blocks( 5 )      );
         
         test_bffr.block_format( block_spec()

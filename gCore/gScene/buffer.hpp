@@ -98,7 +98,7 @@ namespace gfx {
         void                        load_attribute( std::string const& name,
                                                     std::vector< DATA > const& attrib_data );*/
         void                        upload_data();
-        void                        align_vertices();
+        //void                        align_vertices();
         virtual void                align();
         // Unsure if everyone should be allowed to use this code...
 #ifdef DEBUG

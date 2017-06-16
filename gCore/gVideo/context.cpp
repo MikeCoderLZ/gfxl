@@ -36,6 +36,7 @@ namespace gfx {
         // case.
         // 
         // But paranoia usually prevails.
+        
         if ( not video_system::get().zombie ) {
             video_system::get().unregister_context( this );
         }
