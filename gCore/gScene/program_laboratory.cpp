@@ -9,7 +9,7 @@
 #include "../../UnitTest++_src/UnitTest++.h"
 #include "../gVideo/gl_core_3_3.hpp"
 #include "program.hpp"
-#include "buffer.hpp"
+#include "vertex_buffer.hpp"
 
 using namespace gfx;
 
@@ -111,7 +111,7 @@ SUITE( GLSLShadingTests )
         test_prgm.compile();
         test_prgm.uniform_name( "smilie" );
         
-        buffer test_buff ( buffer::settings().blocks(4) );
+        vertex_buffer test_buff ( vertex_buffer::settings().blocks(4) );
         test_buff.block_format( block_spec()
                                 .attribute( type<vec2>() )
                                 .attribute( type<vec2>() ) );

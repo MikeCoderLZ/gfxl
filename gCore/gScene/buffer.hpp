@@ -99,7 +99,7 @@ namespace gfx {
                                                     std::vector< DATA > const& attrib_data );*/
         void                        upload_data();
         //void                        align_vertices();
-        virtual void                align();
+        virtual void                align() = 0;
         // Unsure if everyone should be allowed to use this code...
 #ifdef DEBUG
 //        context const*              get_target_context() const { return target_context; }

@@ -175,7 +175,7 @@ namespace gfx {
         }
     }*/
     
-    void buffer::align()
+    /*void buffer::align()
     {
         if ( not data_loaded ) {
             std::string msg = "Buffer data has not been uploaded to OpenGL; ";
@@ -189,7 +189,7 @@ namespace gfx {
             throw std::logic_error( msg );
         }
 
-        std::cout << "Buffer ID: " << buff_ID << std::endl;
+        //std::cout << "Buffer ID: " << buff_ID << std::endl;
         gl::BindBuffer( gl::ARRAY_BUFFER, buff_ID );
         checkGLError( "buffer bound to ARRAY_BUFFER" );
         gl::BindVertexArray( vao_ID );
@@ -210,12 +210,12 @@ namespace gfx {
                                         stride,
                                         ( void* ) offset );
                 checkGLError( "VertexAttribPointer called" );
-                std::cout << "VertexAttribPointer called." << std::endl;
-                std::cout << "\tindex: " << index << '\n';
-                std::cout << "\tsize: " << (*a)->n_components() << '\n';
-                std::cout << "\ttype: " << (*a)->component_to_GL() << '\n';
-                std::cout << "\tstride: " << stride << '\n';
-                std::cout << "\toffset: " << offset << std::endl;
+                //std::cout << "VertexAttribPointer called." << std::endl;
+                //std::cout << "\tindex: " << index << '\n';
+                //std::cout << "\tsize: " << (*a)->n_components() << '\n';
+                //std::cout << "\ttype: " << (*a)->component_to_GL() << '\n';
+                //std::cout << "\tstride: " << stride << '\n';
+                //std::cout << "\toffset: " << offset << std::endl;
                 gl::EnableVertexAttribArray( index );
                 checkGLError( "Enabled Vertex Attribute Array" );
                 break;
@@ -227,18 +227,18 @@ namespace gfx {
                                         ( void* ) offset );
                 gl::EnableVertexAttribArray( index );
                 break;
-        /**  case DOUBLE :
-                gl::VertexAttribLPointer( index,
-                                        (*a)->n_components(),
-                                        (*a)->component_to_GL(),
-                                        stride,
-                                        ( void*) offset );*/
+//           case DOUBLE :
+//                 gl::VertexAttribLPointer( index,
+//                                         (*a)->n_components(),
+//                                         (*a)->component_to_GL(),
+//                                         stride,
+//                                         ( void*) offset );
             default :
                 break;
             }
             ++index;
         }
-    }
+    } */
 
     GLsizeiptr buffer::attribute_offset( GLuint index ) const
     {

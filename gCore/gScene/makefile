@@ -106,12 +106,14 @@ program_tests: $(BIN)/program_shader_test $(BIN)/program_laboratory
 $(BIN)/program_laboratory: $(OBJ)/program_laboratory.o \
                             $(OBJ)/video.o \
                             $(OBJ)/buffer.o \
+                            $(OBJ)/vertex_buffer.o \
                             $(OBJ)/program.o \
                             $(OBJ)/texture.o \
                             $(OBJ)/gl_core_3_3.o
 	g++ $(OBJ)/program_laboratory.o \
 	    $(OBJ)/video.o \
 	    $(OBJ)/buffer.o \
+	    $(OBJ)/vertex_buffer.o \
 	    $(OBJ)/program.o \
 	    $(OBJ)/texture.o \
 	    $(OBJ)/gl_core_3_3.o \
@@ -122,6 +124,7 @@ $(BIN)/program_laboratory: $(OBJ)/program_laboratory.o \
 $(OBJ)/program_laboratory.o: $(GSCN)/program_laboratory.cpp \
                               $(GVID)/video.hpp \
                               $(GSCN)/buffer.hpp \
+                              $(GSCN)/vertex_buffer.hpp \
                               $(GSCN)/program.hpp \
                               $(GVID)/gl_core_3_3.hpp \
                               $(GMATH)/datatype.hpp
