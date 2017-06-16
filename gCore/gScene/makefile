@@ -5,6 +5,7 @@ scene_test: $(BIN)/scene_test
 $(BIN)/scene_test: $(OBJ)/scene_test.o \
                    $(OBJ)/gl_core_3_3.o \
                    $(OBJ)/buffer.o \
+                   $(OBJ)/vertex_buffer.o \
                    $(OBJ)/program.o \
                    $(OBJ)/light.o \
                    $(OBJ)/camera.o \
@@ -14,6 +15,7 @@ $(BIN)/scene_test: $(OBJ)/scene_test.o \
 	g++ $(OBJ)/scene_test.o \
 	    $(OBJ)/gl_core_3_3.o \
 	    $(OBJ)/buffer.o \
+	    $(OBJ)/vertex_buffer.o \
 	    $(OBJ)/program.o \
 	    $(OBJ)/light.o \
 	    $(OBJ)/camera.o \
@@ -79,6 +81,16 @@ $(OBJ)/buffer.o: $(GSCN)/buffer.cpp \
 	g++ -c $(COM) -Wno-sign-compare \
 	    $(GSCN)/buffer.cpp \
 	    $(SDLFLAGS) -o $(OBJ)/buffer.o
+	    
+$(OBJ)/vertex_buffer.o: $(GSCN)/vertex_buffer.cpp \
+                        $(GSCN)/vertex_buffer.hpp \
+                        $(GSCN)/buffer.hpp \
+                        $(GVID)/video.hpp \
+                        $(GVID)/gfx_exception.hpp \
+                        $(GVID)/version.hpp
+	g++ -c $(COM) -Wno-sign-compare \
+	    $(GSCN)/vertex_buffer.cpp \
+	    $(SDLFLAGS) -o $(OBJ)/vertex_buffer.o
 	    
 $(OBJ)/program.o: $(GSCN)/program.cpp \
                   $(GSCN)/program.hpp \

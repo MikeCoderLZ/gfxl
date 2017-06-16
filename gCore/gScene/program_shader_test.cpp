@@ -18,17 +18,20 @@ SUITE( BufferTests )
     {
         window test_wndw ( window::settings()
                            .has_3D()          );
+        CHECK( not video_system::get().context_present() );
         bool initialization_error_thrown__no_context_present = false;
         try {
             buffer test_bffr();
         } catch (initialization_error e) {
             initialization_error_thrown__no_context_present = true;
         }
+        
         CHECK( initialization_error_thrown__no_context_present );
         
         context test_cntx ( test_wndw );
+        CHECK( video_system::get().context_present() );
         
-        buffer test_bffr;
+        buffer test_bffr();
         
         CHECK_EQUAL( test_bffr.size(), 0 );
 
@@ -60,7 +63,7 @@ SUITE( BufferTests )
                           .blocks( 4 )      );
         
         try {
-            test_bffr.align_vertices();
+            test_bffr.align();
         } catch (std::logic_error e) {
             logic_error_thrown__aligned_without_uploading = true;
         }
@@ -70,7 +73,7 @@ SUITE( BufferTests )
         test_bffr.upload_data();
         
         try {
-            test_bffr.align_vertices();
+            test_bffr.align();
         } catch (std::logic_error e) {
             logic_error_thrown__aligned_without_formatting = true;
         }
@@ -172,7 +175,7 @@ SUITE( IntegratedTests )
         test_bffr.load_attribute( 1, color );
         
         test_bffr.upload_data();
-        test_bffr.align_vertices();
+        test_bffr.align();
         
         test_prgm.link();
         test_prgm.use();
@@ -193,6 +196,6 @@ SUITE( IntegratedTests )
 
 int main( int argc, char* argv[] )
 {
-    video_system::get().initialize( video_system::settings() );
+    video_system::get().initialize( video_system::settings().ver(3,3) );
     return UnitTest::RunAllTests();
 }

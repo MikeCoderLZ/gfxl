@@ -174,6 +174,9 @@ namespace gfx {
             ++index;
         }
     }
+    
+    void buffer::align()
+    { this->align_vertices(); }
 
     GLsizeiptr buffer::attribute_offset( GLuint index ) const
     {

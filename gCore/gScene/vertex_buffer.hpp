@@ -8,6 +8,7 @@ namespace gfx {
     class vertex_buffer : public buffer {
     public:
         class settings : public buffer::settings {
+        public:
                         settings( buffer::settings const& set
                                     = buffer::settings() );
             friend      class vertex_buffer;
@@ -17,7 +18,7 @@ namespace gfx {
         virtual         ~vertex_buffer();
         virtual void    align();
     protected:
-        GLuint          vao_ID;
+        //GLuint          vao_ID;
 
     };
     

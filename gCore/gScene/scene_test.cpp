@@ -8,7 +8,7 @@
 #include "../gMath/constant.hpp"
 #include "../../UnitTest++_src/UnitTest++.h"
 
-#include "buffer.hpp"
+#include "vertex_buffer.hpp"
 #include "program.hpp"
 #include "light.hpp"
 #include "camera.hpp"
@@ -37,8 +37,8 @@ SUITE( IntegratedTests )
             std::cout << e.what() << std::endl;
         }        
         
-        buffer test_bffr( buffer::settings()
-                          .blocks( 24 )      );
+        vertex_buffer test_bffr( buffer::settings()
+                                 .blocks( 24 )      );
         test_bffr.block_format( block_spec()
                                 .attribute( type<vec3>() )  // position
                                 .attribute( type<vec3>() )  // normal
@@ -165,7 +165,7 @@ SUITE( IntegratedTests )
         test_bffr.load_attribute( 2, color );
         
         test_bffr.upload_data();
-        test_bffr.align_vertices();
+        test_bffr.align();
         
         test_prgm.uniform_name( "obj_mat" );
         test_prgm.uniform_name( "light.rad" );

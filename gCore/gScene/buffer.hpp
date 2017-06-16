@@ -2,7 +2,6 @@
 #define BUFFER
 
 #include "../gVideo/video.hpp"
-#include "block_spec.hpp"
 
 /**
  * What must happen here is to separate out the vertex related elements of
