@@ -1,7 +1,9 @@
 #include "./buffer.hpp"
 
 namespace gfx {
-
+    /**
+     * \brief Destruct the block specificaiton object.
+     */
     block_spec::~block_spec()
     {
         attrib_vector::iterator i;
@@ -9,7 +11,10 @@ namespace gfx {
             { delete *i; }
         delete attributes;
     }
-
+    /**
+     * \brief Construct a new \ref gfx::buffer "buffer" object.
+     * \param set The settings for the new buffer object.
+     */
     buffer::buffer( settings const& set ) :
                         data            ( 0 ),
                         n_blocks        ( set.n_blocks ),
@@ -33,7 +38,9 @@ namespace gfx {
         // Looks like I decided the video_system doesn't need to know about buffers
         //video_system::get().register_buffer( this );
     }
-
+    /**
+     * \brief Destruct the buffer.
+     */
     buffer::~buffer()
     {
         // Don't need to know about buffers!
@@ -44,7 +51,13 @@ namespace gfx {
         delete attributes;
         delete[] data;
     }
-
+    /**
+     * \brief Use the given block specification to format the data of the
+     * buffer.
+     * Each time you call this function, the format is completely overwritten.
+     * \param spec The block specification describing the formatting of the
+     * buffer.
+     */
     void buffer::block_format( block_spec const& spec )
     {
         attrib_vector::iterator a;

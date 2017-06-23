@@ -5,6 +5,13 @@
 #include "gl_core_3_3.hpp"
 
 inline
+/**
+ * \fn void checkGLError( char const* codetag )
+ * \brief Digest OpenGL error state and print to standard output.
+ * Intended for debug and development use. 
+ * \param codeTag A string to indicate context from the calling code
+ * \todo Make this suitable for use in error logging.
+ */
 void checkGLError( char const* codeTag ) {
     GLuint errorStatus = gl::GetError();
     if( errorStatus != gl::NO_ERROR_ ){

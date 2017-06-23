@@ -1,7 +1,22 @@
 namespace gfx {
 
+    /**
+     * \internal This statement creates the \ref gfx::video_system "video system" instance.
+     * \see gfx::video_system::video_system()
+     * \see gfx::video_system::initialize()
+     */
     video_system* const video_system::instance = new video_system();
-    
+    /**
+     * \brief Initialize the \ref gfx::video_system "video system" with the
+     * given settings.
+     * 
+     * The video_system must be manually initialized in order to set up SDL
+     * and OpenGL with the desired settings. The
+     * \ref gfx::video_system:settings "settings" object default construtor is
+     * called if no argument is given, and so the default settings are version
+     * 1.4 of OpenGl using the core profile.
+     * @param set The video system settings; defaults to version 1.4 using core profile
+     */
     video_system&  video_system::initialize( video_system::settings const& set )
     {
         if ( not SDL_WasInit( SDL_INIT_VIDEO ) ) {
@@ -38,12 +53,22 @@ namespace gfx {
         return *video_system::instance;
     }
 
+    /**
+     * \brief Destruct the \ref gfx::video_system "video system".
+     * 
+     * Since the video_system is a singleton, this is only ever called after
+     * all application code has ended.
+     */
     video_system::~video_system()
     {
         zombie = true;    
         delete contexts;
     }
-    
+    /**
+     * \brief Output useful debuging information to standard error.
+     * 
+     * @param tag A code tag that is appended to the error message.
+     */
     void    video_system::check_acceleration_error( std::string const& tag )
     {
         if ( context_present() ) {
@@ -73,7 +98,23 @@ namespace gfx {
             std::cerr << msg << std::endl;
         }
     }
-    
+    /**
+     * \brief Attach the given \ref gfx::context "context" to the given
+     * \ref gfx::window "window".
+     * 
+     * Using this function will cause the given context to become the current
+     * and active one and set it to be used in the given window. An error is
+     * thrown if the window does not support OpenGL.
+     * 
+     * \todo Review this function and it's relation to \ref gfx::context::context()
+     * "gfx::context's constructor" as they seem to do the same thing; this
+     * functionality should most likely be merged into that function instead.
+     * 
+     * @param wndw The window to use the context with
+     * @param cntx The context to use for rendering
+     * @exception std::logic_error A standard logic error is thrown if the specified
+     * window was created without support for OpenGL rendering contexts.
+     */
     void video_system::attach_context( window const& wndw,
                                         context& cntx)
     {
@@ -88,7 +129,15 @@ namespace gfx {
         SDL_GL_MakeCurrent( wndw.sys_window, cntx.sys_context );
         active_context = &cntx;
     }
-    
+    /**
+     * \brief Make the given \ref gfx::context "context" the active one.
+     * 
+     * Activating a context will cause all subsquent rendering calls and
+     * OpenGL state modifications to be enacted on that context. The target
+     * window of the given context will be made the current one.
+     * @param cntx The context to activate
+     * @see gfx::program::use()
+     */
     void video_system::activate_context( context& cntx )
     {
         SDL_GL_MakeCurrent( cntx.target_window->sys_window, cntx.sys_context );

@@ -1,5 +1,14 @@
 namespace gfx {
 
+    /**
+     * \brief Construct a new \ref gfx::context "context" targeting the given
+     * window with the given settings.
+     * 
+     * @param window The target window for the context
+     * @param set The settings for the new context
+     * @exception std::logic_error If the given window does not support OpenGL,
+     * a standard logic error is thrown.
+     */
     context::context( window const& window,
                       settings const& set  ) :
                           target_window( &window )
@@ -22,6 +31,10 @@ namespace gfx {
         video_system::get().activate_context( *this );        
     }
     
+    /**
+     * \brief Destruct the \ref gfx::context "context" object.
+     * \todo Review the 'zombie flag'.
+     */
     context::~context()
     {
         // I suspect this implementation of the zombie flag isn't useful,
@@ -42,7 +55,16 @@ namespace gfx {
         }
         SDL_GL_DeleteContext( sys_context );
     }
-    
+    /**
+     * \brief Clear the \ref gfx::context "context's" framebuffer to the given
+     * color.
+     * @param red The value of the red chanel, normalized on [0.0f, 1.0f]
+     * @param green The value of the green chanel, normalized on [0.0f, 1.0f]
+     * @param blue The value of the blue chanel, normalized on [0.0f, 1.0f]
+     * @param alpha The value of the alpha chanel, normalized on [0.0f, 1.0f]
+     * @exception std::logic_error If the context is not the active context, a
+     * standard logic error is thrown.
+     */
     void context::clear_color( float red, float green, float blue, float alpha )
     {
         if ( not this->is_active() ) {
@@ -58,10 +80,22 @@ namespace gfx {
             gl::Clear( gl::DEPTH_BUFFER_BIT );
         }
     }
-    
+    /**
+     * \brief Query the \ref gfx::context "context" if it is the active context.
+     * @return Whether or not the context is active.
+     */
     bool    context::is_active() const
     { return (*this) == video_system::get().get_active_context(); }
-    
+    /**
+     * \brief Query the \ref gfx::context "context" for the major version of
+     * the context.
+     * \todo Why do we even need this? Review for removal.
+     * @return The major version number of the context.
+     * @exception std::logic_error Calling this function on a context that is not
+     * the active one generates a standard logic error.
+     * @exception std::runtime_error If, for some reason, the query fails, a
+     * standard runtime error will be thrwon.
+     */
     unsigned int    context::major_version() const
     {
         if ( not this->is_active() ) {
@@ -76,7 +110,16 @@ namespace gfx {
         }
         return (unsigned int)  maj_ver;
     }
-    
+    /**
+     * \brief Query the \ref gfx::context "context" for the minor version of
+     * the context.
+     * \todo Why do we even need this? Review for removal.
+     * @return The minor version number of the context.
+     * @exception std::logic_error Calling this function on a context that is not
+     * the active one generates a standard logic error.
+     * @exception std::runtime_error If, for some reason, the query fails, a
+     * standard runtime error will be thrwon.
+     */
     unsigned int    context::minor_version() const
     {
         if ( not this->is_active() ) {
@@ -91,7 +134,17 @@ namespace gfx {
         }
         return (unsigned int) min_ver ;
     }
-    
+    /**
+     * \brief Query the \ref gfx::context "context" for the version of the
+     * context.
+     * \todo Why do we even need this? Review for removal. If it is kept,
+     * then change the return type to a \ref gfx::version "version" object.
+     * @return The version number of the context, represented as a vec2
+     * @exception std::logic_error Calling this function on a context that is not
+     * the active one generates a standard logic error.
+     * @exception std::runtime_error If, for some reason, the query fails, a
+     * standard runtime error will be thrwon.
+     */
     uvec2    context::version() const
     {
         if ( not this->is_active() ) {
@@ -114,7 +167,15 @@ namespace gfx {
         }
         return uvec2( (unsigned int) maj_ver, (unsigned int) min_ver );
     }
-    
+    /**
+     * \brief Query the \ref gfx::context "context" for the number of depth
+     * bits it uses.
+     * @return The number of dpeth bits the context uses
+     * @exception std::logic_error Calling this function on a context that is not
+     * the active one generates a standard logic error.
+     * @exception std::runtime_error If, for some reason, the query fails, a
+     * standard runtime error will be thrwon.
+    */
     unsigned int    context::depth_bits() const
     {
         if ( not this->is_active() ) {
@@ -129,7 +190,15 @@ namespace gfx {
         }
         return (unsigned int) bits;
     }
-    
+    /**
+     * \brief Query the \ref gfx::context "context" whether or not it uses
+     * double buffering.
+     * @return Whether the context uses double buffering
+     * @exception std::logic_error Calling this function on a context that is not
+     * the active one generates a standard logic error.
+     * @exception std::runtime_error If, for some reason, the query fails, a
+     * standard runtime error will be thrwon.
+     */
     bool    context::double_buffered() const
     {
         if ( not this->is_active() ) {
