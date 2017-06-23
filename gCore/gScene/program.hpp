@@ -194,11 +194,39 @@ namespace gfx {
  * the associated Shader objects.
  * 
  * */
-
+    /**
+     * \class gfx::program program.hpp "gCore/gScene/program.hpp"
+     * \brief A representation of an OpenGL shading program.
+     * Currently, the program class does alot of heavy lifting. The above
+     * thoughts represent the end goal, but that system is going to be
+     * tackled after the gScene module is finished.
+     * 
+     * For now, program objects are in charge of opening their own
+     * source files and the given paths refer to the file system and not
+     * a virtual file system stowed off-line in a container file. There
+     * is no pre-preprocessor implemented, which has effects on other
+     * parts of the gScene module. Specifically, shading abstractions like
+     * lights, cameras, and primitives that align themselves with uniform
+     * variables and structures require that that appropriate uniform blocks
+     * be implemented manually in the shader source files instead of
+     * being automagically inserted by a pre-preprocessor. Furthermore,
+     * the system at the moment is not yet smart enough to know how to line
+     * up uniform blocks without the names being specified manually.
+     * 
+     * The program functionality that will not change all that much in the
+     * future is compilation.
+     * 
+     */
     class program {
 
     public:
-        
+        /**
+         * \class gfx::program::settings program.hpp "gCore/gScene/program.hpp"
+         * \brief Used for configuring a new \ref gfx::program "program" object.
+         * So far, the only settings exposed in this setting sobject are for
+         * shader source paths. When materials and/or the asset management
+         * system come around, I expect that will change.
+         */
         class settings {
         public:
                             settings();
@@ -266,20 +294,40 @@ namespace gfx {
         bool                in_use_v;
         void                compile( GLuint stage_ID, std::string const& stage_path );
     };
-    
+    /**
+     * \brief Query this \ref gfx::program "program" object to see
+     * if it is currently in use by OpenGL.
+     * \return Whether OpenGL is using this program
+     */
     inline bool     program::in_use() const
     { return in_use_v; }
-
+    /**
+     * \brief Compare this \ref gfx::program "program" to the given one
+     * to see if it does represent the same OpenGL shader program as the one
+     * given.
+     * \return Whether this program is refers to the same OpenGL program as
+     * the given program
+     */
     inline bool     program::operator ==( program const& rhs ) const
     {   // This is a placeholder; there are cases where this MIGHT cause
         // pronlems.
         return this->prog_ID == rhs.prog_ID; }
-    
+    /**
+     * \brief Compare this \ref gfx::program "program" to the given one
+     * to see if it does not represent the same OpenGL shader program as the
+     * one given
+     * \return Whether this program is refers to the same OpenGL program as
+     * the given program
+     */
     inline bool     program::operator !=( program const& rhs ) const
     {   // This is a placeholder; there are cases where this MIGHT cause
         // pronlems.
         return this->prog_ID != rhs.prog_ID; }
-    
+    /**
+     * \brief Output the \ref gfx::program "program's" detail to this output
+     * stream.
+     * \param rhs The program to print to the output stream
+     */
     std::ostream& operator<<( std::ostream& out, program const& rhs );
     
     inline program::settings::settings() : vert_path( "" ),
@@ -290,7 +338,14 @@ namespace gfx {
                                           has_frag( false ),
                                           has_tess( false ),
                                           has_geom( false ){}
-
+    /**
+     * \brief Set the new \ref gfx::program "program's" vertex shader source
+     * path.
+     * Only slight parameter checking is done; so long as the given string isn't empty,
+     * this function will indicate that the program has a vertex shader.
+     * \param path The vertex shader source's path
+     * \return This settings object
+     */
     inline program::settings&  program::settings::vertex_path( std::string const& path )
     {
         vert_path = path;
@@ -299,7 +354,14 @@ namespace gfx {
         }
         return *this;
     }
-
+    /**
+     * \brief Set the new \ref gfx::program "program's" fragment shader source
+     * path.
+     * Only slight parameter checking is done; so long as the given string isn't empty,
+     * this function will indicate that the program has a fragment shader.
+     * \param path The fragment shader source's path
+     * \return This settings object
+     */
     inline program::settings&  program::settings::fragment_path( std::string const& path )
     {
         frag_path = path;
@@ -308,7 +370,14 @@ namespace gfx {
         }
         return *this;
     }
-
+    /**
+     * \brief Set the new \ref gfx::program "program's" tesselation shader source
+     * path.
+     * Only slight parameter checking is done; so long as the given string isn't empty,
+     * this function will indicate that the program has a tesselation shader.
+     * \param path The tesselation shader source's path
+     * \return This settings object
+     */
     inline program::settings&  program::settings::tesselation_path( std::string const& path )
     {
         tess_path = path;
@@ -317,7 +386,14 @@ namespace gfx {
         }
         return *this;
     }
-    
+    /**
+     * \brief Set the new \ref gfx::program "program's" geometry shader source
+     * path.
+     * Only slight parameter checking is done; so long as the given string isn't empty,
+     * this function will indicate that the program has a geometry shader.
+     * \param path The geometry shader source's path
+     * \return This settings object
+     */
     inline program::settings&  program::settings::geometry_path( std::string const& path )
     {
         geom_path = path;
@@ -326,7 +402,16 @@ namespace gfx {
         }
         return *this;
     }
-    
+    /**
+     * \brief Upload the given uniform's value to the OpenGL
+     * program object.
+     * This is the generic template, which actually just throws an exception
+     * because there are template specializations for all the supported data
+     * types.
+     * \param name The name of the uniform
+     * \param val The value of the uniform
+     * \exception  std::invalid_argument Always throw when this version is called.
+     */
     template< typename T > inline
     void    program::upload_uniform( std::string const& name,
                                    T const& val     )

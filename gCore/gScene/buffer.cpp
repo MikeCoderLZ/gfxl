@@ -76,11 +76,21 @@ namespace gfx {
         }
         data = new unsigned char[ n_blocks * stride ];
     }
-    
+    /**
+     * \brief Set the number of data blocks in the \ref gfx::buffer "buffer".
+     * This will reallocate the internal memory in order to resize it, copying
+     * whatever data has been uploaded via \ref gfx::buffer::load_attribute() 
+     * "load_attribute()" into the new memory, as far as it can fit.
+     * \todo The copying functionality, as implemented, is wrong. Either
+     * fix the loop or remove the copying.
+     * \param blocks The number of blocks the buffer now has
+     */
     void    buffer::blocks( GLsizeiptr const blocks )
     {
         unsigned char* new_data = new unsigned char[ blocks * stride ];
         GLsizeiptr i;
+        // This loop is dead wrong! It is counting BYTES and not BLOCKS.
+        // It has been working because I haven't tested it!
         for ( i = n_blocks; i < n_blocks; ++i )
             { new_data[i] = data[i]; }
         delete[] data;
@@ -90,12 +100,22 @@ namespace gfx {
         // so it is dirty again
         data_loaded = false;
     }
-
+    /**
+     * \brief Expand the number of data blocks in the \ref gfx::buffer "buffer".
+     * This will reallocate the internal memory in order to resize it, copying
+     * whatever data has been uploaded via \ref gfx::buffer::load_attribute() 
+     * "load_attribute()" into the new memory, as far as it can fit.
+     * \todo The copying functionality, as implemented, is wrong. Either
+     * fix the loop or remove the copying.
+     * \param more_blocks The number of blocks to add to the buffer
+     */
     void    buffer::add_blocks( GLsizeiptr const more_blocks )
     {
         unsigned char* new_data =
                 new unsigned char[ (n_blocks + more_blocks) * stride ];
         GLsizeiptr i;
+        // This loop is dead wrong! It is counting BYTES and not BLOCKS.
+        // It has been working because I haven't tested it!
         // copy over old data to new array
         for ( i = n_blocks; i < n_blocks; ++i )
             { new_data[i] = data[i]; }
@@ -106,7 +126,17 @@ namespace gfx {
         // so it is dirty again
         data_loaded = false;
     }
-
+    /**
+     * \brief Upload the \ref gfx::buffer "buffer's" data to OpenGL.
+     * \todo There is no check to see if you have actually specified the data
+     * format. This means, internally, the stride member has not been correctly
+     * specified and so the upload will send OpenGL an unpredictable number of
+     * bytes (usually 0 but in more complex use cases it could be anything
+     * depending on the lifetime of the particular buffer). It also doesn't
+     * check to see if you have even loaded any data into the buffer client-
+     * side or if the buffer is "dirty". Though that is not quite as bad,
+     * it certainly isn't very helpful for the user.
+     */
     void    buffer::upload_data()
     {
         gl::BindBuffer( intended_target, buff_ID );
@@ -116,7 +146,16 @@ namespace gfx {
 
         data_loaded = true;
     }
-
+    /**
+     * \brief Query the \ref gfx::buffer "buffer" for the byte offset
+     * of the attribute with the given index.
+     * This is probably not going to stick around; it exposes the internals
+     * of OpenGL and the buffer class too much. More of a thing to hack
+     * functionality that isn't implemented yet, and to be honest I don't
+     * know if it even used.
+     * \todo Review for deprecation or removal
+     * \param index The index of the attribute to get the offset of
+     */
     GLsizeiptr buffer::attribute_offset( GLuint index ) const
     {
         if( index == 0 ) { return 0; }
