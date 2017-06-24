@@ -9,12 +9,17 @@
 
 namespace gfx {
     
-    /**
+    /*
      * struct light {
      *      float   rad;
      * }
      * */
-    
+    /**
+     * \class gfx::light light.hpp "gCore/gVideo/light.hpp"
+     * \brief A representation of a simple light.
+     * Intended as a base class for other lights as this one is missing
+     * important rendering information like position or direction.
+     */
     class light : public uniform {
     public:
                         light();
@@ -27,14 +32,18 @@ namespace gfx {
         float           rad;
     };
     
-    /**
+    /*
      * struct point_light {
      *      float   rad;
      *      vec3    pos;
      *      vec3    col;
      * }
      * */
-    
+    /**
+     * \class gfx::point_light light.hpp "gCore/gVideo/light.hpp"
+     * \brief A representation of a point light.
+     * This light has color and position as well as radiance.
+     */
     class point_light : public light {
     public:
         class settings {
@@ -61,30 +70,46 @@ namespace gfx {
         vec3            pos;
         vec3            col;
     };
-    
+    /**
+     * \brief Construct a default point light settings object.
+     * A default light is position at the origin with a radiance of
+     * 1 and is white.
+     */
     inline point_light::settings::settings() : rad_v ( 1.0f ),
                                                pos_v ( vec3( 0.0f ) ),
                                                col_v ( vec3( 1.0f ) ) {}
-
+    /**
+     * \brief Set the radiance to the given value.
+     * \param rad The radiance for the new point light
+     * \return This settings object
+     */
     inline point_light::settings& point_light::settings::radiance( float rad )
     {
         rad_v = rad;
         return *this;
     }
-    
+    /**
+     * \brief Set the position to the given value.
+     * \param pos The position of the new point light
+     * \return This settings object
+     */
     inline point_light::settings& point_light::settings::position( vec3 const& pos )
     {
         pos_v = pos;
         return *this;
     }
-    
+    /**
+     * \brief Set the color to the given value.
+     * \param color The color of the new point light
+     * \return This settings object
+     */
     inline point_light::settings& point_light::settings::color( vec3 const& col )
     {
         col_v = col;
         return *this;
     }
     
-    /**
+    /*
      * struct sphere_light {
      *      float   rad;
      *      vec3    pos;
@@ -92,7 +117,14 @@ namespace gfx {
      *      float   rd;
      * }
      * */
-    
+    /**
+     * \class gfx::sphere_light light.hpp "gCore/gVideo/light.hpp"
+     * \brief A representation of a spherical light source.
+     * This light has color, position, and radius as well as radiance.
+     * A sphere light is a type of area light where light is emitted from
+     * the entire surface of a sphere of the given radius.
+     * \todo Derive or look up the mathematics on how to do this in the shader.
+     */
     class sphere_light : public light {
     public:
         class settings {
@@ -124,30 +156,50 @@ namespace gfx {
         vec3            col;
         float           rd;
     };
-    
+    /**
+     * \brief Consruct a new default spherical light settings object.
+     * The default spherical light is placed a the origin with a color of
+     * white, a radiance of 1 and a radius of 1.
+     */
     inline sphere_light::settings::settings() :
                                     rad_v ( 1.0f ),
                                     pos_v ( vec3( 0.0f ) ),
                                     col_v ( vec3( 1.0f) ),
                                     rd_v ( 1.0f ) {}
-                                    
+    /**
+     * \brief Set the radiance to the given value.
+     * \param rad The rad of the new spherical light
+     * \return This settings object
+     */
     inline sphere_light::settings&
     sphere_light::settings::radiance( float rad )
     { rad_v = rad; return *this; }
-    
+    /**
+     * \brief Set the position to the given value/
+     * \param pos The position of the new spherical light
+     * \return This settings object
+     */
     inline sphere_light::settings&
     sphere_light::settings::position( vec3 const& pos )
     { pos_v = pos; return *this; }
-    
+    /**
+     * \brief Set the color to the given value/
+     * \param pos The color of the new spherical light
+     * \return This settings object
+     */
     inline sphere_light::settings&
     sphere_light::settings::color( vec3 const& col )
     { col_v = col; return *this; }
-    
+    /**
+     * \brief Set the radius to the given value/
+     * \param pos The radius of the new spherical light
+     * \return This settings object
+     */
     inline sphere_light::settings&
     sphere_light::settings::radius( float rd )
     { rd_v = rd; return *this; }
     
-    /**
+    /*
      * struct spot_light {
      *      float   rad;
      *      vec3    pos;
@@ -157,7 +209,14 @@ namespace gfx {
      *      float   rd;
      * }
      * */
-    
+    /**
+     * \class gfx::spot_light light.hpp "gCore/gVideo/light.hpp"
+     * \brief A representation of a spot light.
+     * This light has color and position as well as radiance. In addition,
+     * spot lights have values related to the size of the cone they illumunate.
+     * \todo This is even more complex than the sphere light mathematically.
+     * Gonna take some work.
+     */
     class spot_light : public light {
     public:
         class settings {
@@ -231,14 +290,19 @@ namespace gfx {
     spot_light::settings::radius( float rd )
     { rd_v = rd; return *this; }
     
-    /**
+    /*
      * struct sun_light {
      *      float   rad;
      *      vec3    dir;
      *      vec3    col;
      * }
      * */
-    
+    /**
+     * \class gfx::sun_light light.hpp "gCore/gVideo/light.hpp"
+     * \brief A representation of a sun type light.
+     * This light has color and direction as well as radiance. Sunlight
+     * effectively shines from the same direction everywhere.
+     */
     class sun_light : public light {
     public:
         class settings {

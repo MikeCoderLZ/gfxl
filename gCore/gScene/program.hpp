@@ -403,7 +403,7 @@ namespace gfx {
         return *this;
     }
     /**
-     * \brief Upload the given uniform's value to the OpenGL
+     * \brief Upload the given data as a uniform to the OpenGL
      * program object.
      * This is the generic template, which actually just throws an exception
      * because there are template specializations for all the supported data
@@ -418,12 +418,22 @@ namespace gfx {
     {
         throw std::invalid_argument( "No support for given type of uniform." );
     }
-    
+    /**
+     * \brief Upload the given \ref gfx::float "float" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the float
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    float32 const& val  )
     { gl::Uniform1f( (*uniform_map)[name], val ); }
-    
+    /**
+     * \brief Upload the given primitive float as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the float
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    float const& val  )
@@ -432,128 +442,238 @@ namespace gfx {
       //std::cout << (*uniform_map)[name] << std::endl;
       //std::cout << gl::GetUniformLocation( prog_ID, name.c_str() ) << std::endl;
         gl::Uniform1f( (*uniform_map)[name], val ); }
-    
+    /**
+     * \brief Upload the given \ref gfx::vec2 "vector" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the float
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    vec2 const& val  )
     { gl::Uniform2f( (*uniform_map)[name], val[0], val[1] ); }
-    
+    /**
+     * \brief Upload the given \ref gfx::vec3 "vector" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the vector
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    vec3 const& val  )
     { gl::Uniform3f( (*uniform_map)[name], val[0], val[1], val[2] ); }
-    
+    /**
+     * \brief Upload the given \ref gfx::vec4 "vector" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the vector
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    vec4 const& val  )
     { gl::Uniform4f( (*uniform_map)[name], val[0], val[1], val[2], val[3] ); }
-    
+    /**
+     * \brief Upload the given \ref gfx::int32 "integer" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the integer
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    int32 const& val  )
     { gl::Uniform1i( (*uniform_map)[name], val ); }
-    
+    /**
+     * \brief Upload the given primitive integer as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the integer
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    int const& val  )
     { gl::Uniform1i( (*uniform_map)[name], val ); }
-    
+    /**
+     * \brief Upload the given \ref gfx::ivec2 "vector" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the integer vector
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    ivec2 const& val  )
     { gl::Uniform2i( (*uniform_map)[name], val[0], val[1] ); }
-    
+    /**
+     * \brief Upload the given \ref gfx::ivec3 "vector" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the integer vector
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    ivec3 const& val  )
     { gl::Uniform3i( (*uniform_map)[name], val[0], val[1], val[2] ); }
-    
+    /**
+     * \brief Upload the given \ref gfx::ivec4 "vector" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the integer vector
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    ivec4 const& val  )
     { gl::Uniform4i( (*uniform_map)[name], val[0], val[1], val[2], val[3] ); }
-    
+    /**
+     * \brief Upload the given \ref gfx::uint32 "integer" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the unsigned integer
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    uint32 const& val  )
     { gl::Uniform1ui( (*uniform_map)[name], val ); }
-    
+    /**
+     * \brief Upload the given primitive integer as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the unsigned integer
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    uint32_t const& val  )
     { gl::Uniform1ui( (*uniform_map)[name], val ); }
-    
+    /**
+     * \brief Upload the given \ref gfx::uvec2 "vector" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the unsigned integer vector
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    uvec2 const& val  )
     { gl::Uniform2ui( (*uniform_map)[name], val[0], val[1] ); }
-    
+    /**
+     * \brief Upload the given \ref gfx::uvec3 "vector" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the unsigned integer vector
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    uvec3 const& val  )
     { gl::Uniform3ui( (*uniform_map)[name], val[0], val[1], val[2] ); }
-    
+    /**
+     * \brief Upload the given \ref gfx::uvec4 "vector" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the unsigned integer vector
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    uvec4 const& val  )
     { gl::Uniform4ui( (*uniform_map)[name], val[0], val[1], val[2], val[3] ); }
-    
+    /**
+     * \brief Upload the given \ref gfx::mat2 "matrix" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the matrix
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    mat2 const& val         )
     { gl::UniformMatrix2fv( (*uniform_map)[name],
                             1, gl::FALSE_,
                             (GLfloat*) val.to_map().bytes ); }
-
+    /**
+     * \brief Upload the given \ref gfx::mat3 "matrix" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the matrix
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    mat3 const& val         )
     { gl::UniformMatrix3fv( (*uniform_map)[name],
                             1, gl::FALSE_,
                             (GLfloat*) val.to_map().bytes ); }
-                            
+    /**
+     * \brief Upload the given \ref gfx::mat4 "matrix" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the matrix
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    mat4 const& val         )
     { gl::UniformMatrix4fv( (*uniform_map)[name],
                             1, gl::FALSE_,
                             (GLfloat*) val.to_map().bytes ); }
-                            
+    /**
+     * \brief Upload the given \ref gfx::mat2x3 "matrix" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the matrix
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    mat2x3 const& val         )
     { gl::UniformMatrix2x3fv( (*uniform_map)[name],
                               1, gl::FALSE_,
                               (GLfloat*) val.to_map().bytes ); }
-                            
+    /**
+     * \brief Upload the given \ref gfx::mat3x2 "matrix" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the matrix
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    mat3x2 const& val         )
     { gl::UniformMatrix3x2fv( (*uniform_map)[name],
                               1, gl::FALSE_,
                               (GLfloat*) val.to_map().bytes ); }
-                              
+    /**
+     * \brief Upload the given \ref gfx::mat2x4 "matrix" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the matrix
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    mat2x4 const& val         )
     { gl::UniformMatrix2x4fv( (*uniform_map)[name],
                               1, gl::FALSE_,
                               (GLfloat*) val.to_map().bytes ); }
-                            
+    /**
+     * \brief Upload the given \ref gfx::mat4x2 "matrix" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the matrix
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    mat4x2 const& val         )
     { gl::UniformMatrix4x2fv( (*uniform_map)[name],
                               1, gl::FALSE_,
                               (GLfloat*) val.to_map().bytes ); }
-                              
+    /**
+     * \brief Upload the given \ref gfx::mat3x4 "matrix" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the matrix
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    mat3x4 const& val         )
     { gl::UniformMatrix3x4fv( (*uniform_map)[name],
                               1, gl::FALSE_,
                               (GLfloat*) val.to_map().bytes ); }
-                            
+    /**
+     * \brief Upload the given \ref gfx::mat4x3 "matrix" as a uniform to the OpenGL
+     * program object.
+     * \param name The name of the uniform
+     * \param val The value of the matrix
+     */
     template<> inline
     void    program::upload_uniform( std::string const& name,
                                    mat4x3 const& val         )

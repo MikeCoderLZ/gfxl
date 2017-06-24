@@ -9,7 +9,10 @@
 namespace gfx {
     
     program*    program::current_prgm = 0;
-    
+    /**
+     * \brief Construct a new \ref gfx::program "program" object.
+     * \param set The \ref gfx::program::settings "settings" for the new program
+     */
     program::program( program::settings const& set ) : uniform_map( new program::key_map() ),
                                                       vert_path( set.vert_path ),
                                                       frag_path( set.frag_path ),
@@ -56,7 +59,9 @@ namespace gfx {
         //video_system::get().register_shader( this );
             
     }
-    
+    /**
+     * \brief Destruct this \ref gfx::program "program"
+     */
     program::~program()
     { // Probably remove dependencies
         //video_system::get().unregister_shader( this ); 
@@ -81,10 +86,27 @@ namespace gfx {
         }
         uniform_map->clear();
     }
-    
+    /**
+     * \brief Specify that this program has a uniform slot with the given
+     * name.
+     * The program class is not smart enough to knwo about the various fields
+     * within a \ref gfx::light "light" or \ref gfx::camera "camera", so for
+     * now these fields must be specified manually.
+     * \param name The name of the uniform slot in the shader source.
+     */
     void    program::uniform_name( std::string const& name )
     { (*uniform_map)[name] = -1;}
-    
+    /**
+     * \brief Compile the shader source associated with this program.
+     * If no shader source paths have been specified, this function
+     * compiles nothing and does not generate an error state.
+     * \todo Review this function's implementation, as it should be
+     * impossible for the program to think it has a vertex shader but
+     * the path is an empty string.
+     * \exception gfx::compilation_error If the program thinks it has
+     * a particular shader stage but the path is somehow empty, a
+     * compilation error is thrown.
+     */
     void    program::compile()
     {
         if ( has_vert ) {
@@ -121,7 +143,13 @@ namespace gfx {
         }
         
     }
-
+    /**
+     * \brief Link compiled shader stages into one program.
+     * Linking the compiled shader stages allow uniforms and atributes
+     * to be uploaded to OpenGL.
+     * \exception gfx::compilaton_error If shader linking fails, a
+     * compilation error is thrown.
+     */
     void    program::link()
     {   
         /**gl::AttachShader( prog_ID, vert_ID );
@@ -158,7 +186,10 @@ namespace gfx {
                                                                   unfm->first.c_str() );
         }
     }
-
+    /**
+     * \brief Set OpenGL to use this program for all subsquent drawing
+     * instructions.
+     */
     void    program::use()
     {  
         if ( program::current_prgm == 0 ) {
@@ -170,7 +201,11 @@ namespace gfx {
         gl::UseProgram( prog_ID );
         in_use_v = true;
     }
-
+    /**
+     * \brief Output details about the program to the output stream.
+     * \param out The output stream
+     * \param rhs The program to print to the output stream
+     */
     std::ostream& operator<<( std::ostream& out, program const& rhs )
     {
         out << "Program:\n";
@@ -183,7 +218,14 @@ namespace gfx {
         // out << "\ttessallation program ID: " << rhs.tess_ID << "\n";
         return out;
     }
-    
+    /**
+     * \brief Compile the given shader stage using the source at the given
+     * path.
+     * This is an internal utility function, used by the parameterless
+     * function of the same name.
+     * \param stage_ID The OpenGL id corresponding to the stage to be compiled
+     * \param stage_path The path to the shader source for the stage indicated
+     */
     void    program::compile( GLuint stage_ID, std::string const& stage_path )
     {
         std::fstream program_in( stage_path.c_str(),
