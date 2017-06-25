@@ -257,7 +257,13 @@ namespace gfx {
         angle           swp;
         float           rd;
     };
-    
+    /**
+     * \brief Construct a new default spot light settings object.
+     * The default settings for a spot light are a radiance of 1,
+     * placed at the origin, looking down the negative z-axis, with
+     * a sweep angle of 45 degrees, a radius of 1, and a color of
+     * white.
+     */
     inline spot_light::settings::settings() :
                                   rad_v ( 1.0f ),
                                   pos_v ( vec3( 0.0f ) ),
@@ -265,27 +271,51 @@ namespace gfx {
                                   col_v ( vec3( 1.0f) ),
                                   swp_v ( angle::in_degs( 45.0f ) ),
                                   rd_v  ( 1.0f ) {}
-    
+    /**
+     * \brief Set the radiance to the given value.
+     * \param rad The radiance of the new spot light.
+     * \return This settings object
+     */
     inline spot_light::settings&
     spot_light::settings::radiance( float rad )
     { rad_v = rad; return *this; }
-    
+    /**
+     * \brief Set the position to the given value.
+     * \param pos The position of the new spot light.
+     * \return This settings object
+     */
     inline spot_light::settings&
     spot_light::settings::position( vec3 const& pos )
     { this->pos_v = pos; return *this; }
-    
+    /**
+     * \brief Set the direction to the given value.
+     * \param dir The direction of the new spot light.
+     * \return This settings object
+     */
     inline spot_light::settings&
     spot_light::settings::direction( vec3 const& dir )
     { this->dir_v = dir; return *this; }
-    
+    /**
+     * \brief Set the color to the given value.
+     * \param col The color of the new spot light.
+     * \return This settings object
+     */
     inline spot_light::settings&
     spot_light::settings::color( vec3 const& col )
     { this->col_v = col; return *this; }
-    
+    /**
+     * \brief Set the sweep to the given value.
+     * \param swp The sweep of the new spot light.
+     * \return This settings object
+     */
     inline spot_light::settings&
     spot_light::settings::sweep( angle const& swp )
     { this->swp_v = swp; return *this; }
-    
+    /**
+     * \brief Set the radius to the given value.
+     * \param rd The radius of the new spot light.
+     * \return This settings object
+     */
     inline spot_light::settings&
     spot_light::settings::radius( float rd )
     { rd_v = rd; return *this; }
