@@ -55,7 +55,7 @@ namespace gfx {
     mat4 const& orientable::object_matrix() const
     {
         if ( orientation_changed ) {
-            update_obj_mtrx;
+            this->update_obj_mtrx();
         }
         return obj_mtrx;
     }

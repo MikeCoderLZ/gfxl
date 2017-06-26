@@ -358,20 +358,33 @@ namespace gfx {
         vec3            dir;
         vec3            col;
     };
-    
+    /**
+     * \brief Construct a new default sun light settings object.
+     * The default settings for a sun light are a radiance of 1,
+     * pointing down the negative s-axis, with a white color.
+     */
     inline sun_light::settings::settings() :
                                   rad_v ( 1.0f ),
                                   dir_v ( vec3( 0.0f, 0.0f, -1.0f ) ),
                                   col_v ( vec3( 1.0f ) ) {}
-    
+    /**
+     * \brief Set the radiance to the given value.
+     * \param rad The radiance of the new sun light
+     */
     inline sun_light::settings&
     sun_light::settings::radiance( float rad )
     { rad_v = rad; return *this; }
-    
+    /**
+     * \brief Set the direction to the given value.
+     * \param rad The direction of the new sun light
+     */
     inline sun_light::settings&
     sun_light::settings::direction( vec3 const& dir )
     { this->dir_v = dir; return *this; }
-    
+    /**
+     * \brief Set the color to the given value.
+     * \param rad The color of the new sun light
+     */
     inline sun_light::settings&
     sun_light::settings::color( vec3 const& col )
     { this->col_v = col; return *this; }
