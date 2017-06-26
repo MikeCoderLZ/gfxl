@@ -10,12 +10,16 @@
 
 namespace gfx {
 
-    /**
+    /*
      * struct camera {
      *      mat4    view;
      * }
      */
-    
+    /**
+     * \class gfx::camera camera.hpp "gCore/gScene/camera.hpp"
+     * \brief A base class for cameras.
+     * Cameras need only implement the why the view matrix is updated.
+     */
     class camera: public uniform {
     public:
                         camera();
@@ -30,16 +34,18 @@ namespace gfx {
     };
     
     /**
-     * An easy to use perspective camera: put it somewhere, tell it
-     * what to look at, and specify what up is, and it does the rest.
-     * "proj" stand for "projection".
+     * \class gfx::proj_cam camera.hpp "gCore/gScene/camera.hpp"
+     * \brief A directable projection camera.
+     * Put it somewhere, tell it what to look at, and specify what up is,
+     * and it does the rest.
      * 
-     * TODO Ummm, chouldn't proj_changed just be view_changed? Review this.
-     * 
+     * \todo Ummm, chouldn't proj_changed just be view_changed? Review this.
+     */
+    /* 
      * struct proj_cam {
      *      mat4    view;
      * }
-     */
+    */
     class proj_cam : public camera {
     public:
         
@@ -85,40 +91,81 @@ namespace gfx {
         bool            proj_changed;
         virtual void    update_view();
     };
-    
+    /**
+     * \brief Construct a new default projection camera settings object.
+     * The default pjection camera is positioned at the origin, looking
+     * down the negative z-axis with the positive y-axis as the up
+     * direction. The vertical field of view is 135 degrees, the near
+     * plane is 0.01 units in front of the camera and the far plane is
+     * at 100 units. Lastly, the aspect ratio is 1.
+     */
     inline proj_cam::settings::settings() :
                                 pos_v ( 0.0f, 0.0f,  0.0f ),
                                 look_v ( 0.0f, 0.0f, -1.0f ),
                                 up_v ( 0.0f, 1.0f, 0.0f ),
                                 fov_vert_v ( d_angle::in_degs( 135.0 ) ),
-                                aspect_v ( 1.33 ),
+                                aspect_v ( 1.0 ),
                                 near_v ( 0.01 ),
                                 far_v ( 100.0 ) {}
-                                
+    /**
+     * \brief Set the new projection camera's position.
+     * \param pos The new projection camera's position.
+     * \return This settings object
+     */
     inline proj_cam::settings&    proj_cam::settings::position( vec3 const& pos )
     { pos_v = pos; return *this; }
-    
+    /**
+     * \brief Set the point the new projection camera looks at.
+     * \param point The point the new projection camera looks at.
+     * \return This settings object
+     */
     inline proj_cam::settings&    proj_cam::settings::look_at( vec3 const& point )
     { look_v = point; return *this; }
-    
+    /**
+     * \brief Set the what new projection camera considers 'up'.
+     * \param up The 'up' vector of the camera.
+     * \return This settings object
+     */
     inline proj_cam::settings&    proj_cam::settings::upward( vec3 const& up )
     { up_v = up; return *this; }
-    
+    /**
+     * \brief Set the new projection camera's vertical field of view.
+     * \param fov_vert The new projection camera's vertical field of view.    
+     * \return This settings object
+     * \todo Should this use the vertical field of view? I feel like the
+     * horizontal fov is more useful.
+     */
     inline proj_cam::settings&    proj_cam::settings::field_of_view( d_angle const& fov_vert )
     { fov_vert_v = fov_vert; return *this; }
-    
+    /**
+     * \brief Set the new projection camera's aspect ratio.
+     * \param aspect The new projection camera's aspect ratio.
+     * \return This settings object
+     */
     inline proj_cam::settings&    proj_cam::settings::aspect_ratio( double aspect )
     { aspect_v = aspect; return *this; }
-    
+    /**
+     * \brief Set the new projection camera's near clipping plane.
+     * \param near The new projection camera's near clipping plane.
+     * \return This settings object
+     */
     inline proj_cam::settings&    proj_cam::settings::near_plane( double near )
     { near_v = near; return *this; }
-    
+    /**
+     * \brief Set the new projection camera's far clipping plane.
+     * \param pos The new projection camera's far clipping plane.
+     * \return This settings object
+     */
     inline proj_cam::settings&    proj_cam::settings::far_plane( double far )
     { far_v = far; return *this; }
     
     /**
-     * An orthographic camera. Functions just like a proj_cam, but
-     * with no persepctive.
+     * \class gfx::ortho_cam camera.hpp "gCore/gScene/camera/hpp"
+     * \brief An orthographic camera.
+     * Functions just like a proj_cam, but with no persepctive, instead
+     * using a scaling factor.
+     */
+    /*
      * struct ortho_cam {
      *      mat4    view;
      * 
@@ -162,30 +209,60 @@ namespace gfx {
         bool            volume_changed;
         virtual void    update_view();
     };
-    
+    /**
+     * \brief Construct a default orthogrpahic camera settings object.
+     * The default settins for an orthographic camera are to be
+     * positioned at the origin, looking down the negative z-axis
+     * with the y-axis designated as 'up'. The aspect ratio is 1,
+     * the scale is 1, and the far clipping plane is at 100.
+     */
     inline ortho_cam::settings::settings() :
                                  pos_v ( 0.0f, 0.0f,  0.0f ),
                                  look_v ( 0.0f, 0.0f, -1.0f ),
                                  up_v ( 0.0f, 1.0f, 0.0f ),
-                                 aspect_v ( 1.33 ),
+                                 aspect_v ( 1.0 ),
                                  scale_v ( 1.0 ),
                                  far_v ( 100.0 ) {}
-    
+    /**
+     * \brief Set the new orthographic camera's position.
+     * \param pos The new orthographic camera's position.
+     * \return This orthographic camera settings object
+     */
     inline ortho_cam::settings&    ortho_cam::settings::position( vec3 const& pos )
     { pos_v = pos; return *this; }
-    
+    /**
+     * \brief Set the point the new orthographic camera looks at.
+     * \param point The point the new orthographic camera looks at.
+     * \return This settings object
+     */
     inline ortho_cam::settings&    ortho_cam::settings::look_at( vec3 const& point )
     { look_v = point; return *this; }
-    
+    /**
+     * \brief Set the what new orthographic camera considers 'up'.
+     * \param up The 'up' vector of the camera.
+     * \return This settings object
+     */
     inline ortho_cam::settings&    ortho_cam::settings::upward( vec3 const& up )
     { up_v = up; return *this; }
-    
+    /**
+     * \brief Set the new orthographic camera's aspect ratio.
+     * \param aspect The new orthographic camera's aspect ratio.
+     * \return This settings object
+     */
     inline ortho_cam::settings&    ortho_cam::settings::aspect_ratio( double ar )
     { aspect_v = ar; return *this; }
-    
+    /**
+     * \brief Set the new orthographic camera's scale.
+     * \param scl The new orthographic camera's scale.
+     * \return This settings object
+     */
     inline ortho_cam::settings&    ortho_cam::settings::scale( double scl )
     { scale_v = scl; return *this; }
-    
+    /**
+     * \brief Set the new orthographic camera's far clipping plane.
+     * \param pos The new orthographic camera's far clipping plane.
+     * \return This settings object
+     */
     inline ortho_cam::settings&    ortho_cam::settings::far_plane( double fp )
     { far_v = fp; return *this; }
     

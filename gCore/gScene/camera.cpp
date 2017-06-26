@@ -5,7 +5,9 @@
 #include "camera.hpp"
 #include "../gMath/op.hpp"
 namespace gfx {
-
+    /**
+     * \brief Construct a new camera.
+     */
     camera::camera() : view_changed (true),
                        view () {};
                        

@@ -3,7 +3,10 @@
 #include "primitive.hpp"
 
 namespace gfx {
-
+    /**
+     * \brief Construct a new box.
+     * \param set The settings object ofr this box.
+     */
     box::box( box::settings const& set ) : primitive( set )
         {
             geom = new buffer( buffer::settings()
@@ -61,12 +64,17 @@ namespace gfx {
             draw_elements[35] = 7;
             
         }
-        
+    /**
+     * Destruct this box.
+     */
     box::~box() {
         delete geom;
         delete[] draw_elements;
     }
-
+    /**
+     * \brief Construct a new sphere.
+     * \param set The Settiongs for the sphere.
+     */
     sphere::sphere( sphere::settings const& set ) : primitive( set )
         {
             geom = new buffer( buffer::settings()
@@ -85,7 +93,9 @@ namespace gfx {
             
             geom->load_attribute( 0, position );
         }
-        
+    /**
+     * \breif Destruc this sphere.
+     */
     sphere::~sphere() {
         delete geom;
     }
