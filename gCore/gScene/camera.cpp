@@ -1,4 +1,4 @@
-#include <cmath>
+ #include <cmath>
 #include <iostream>
 
 
@@ -10,9 +10,19 @@ namespace gfx {
      */
     camera::camera() : view_changed (true),
                        view () {};
-                       
+    /**
+     * \brief Destruct this camera
+     */
     camera::~camera() {}
-    
+    /**
+     * \brief Upload this camera as a uniform to the program given.
+     * At the moment, this function requires that you have first specified
+     * the names of the fields in a camera manually in the program
+     * object.
+     * \todo Fix this uniform problem
+     * \param prgm The program to upload the uniform to
+     * \param name The name of the camera variable in the shader source
+     */
     void    camera::upload_uniform( program& prgm,
                                     std::string const& name )
     {
@@ -21,7 +31,10 @@ namespace gfx {
         mod_name += ".view";
         prgm.upload_uniform( mod_name, view );
     }
-    
+    /**
+     * \brief Return the view matrix of this camera
+     * \return The view matrix
+     */
     mat4 const&     camera::view_matrix()
     {
         if ( view_changed ) {
@@ -29,7 +42,10 @@ namespace gfx {
         }
         return view;
     }
-    
+    /**
+     * \brief Construct a new projection camera.
+     * \param set The settings for the new projection camera
+     */
     proj_cam::proj_cam( settings const& set ) :
                         camera(),
                         pos ( set.pos_v ),
@@ -44,17 +60,36 @@ namespace gfx {
                                                       near,
                                                       far      ) ),
                         proj_changed ( false ) { update_view(); }
+    /**
+     * \brief Destruct this projection camera.
+     */
     proj_cam::~proj_cam() {}
-    
+    /**
+     * \brief Set the projection camera's position.
+     * \param point The position of the projection camera
+     * \return This projection camera
+     */
     proj_cam&     proj_cam::position( vec3 const& point )
     { pos = point; view_changed = true; return *this; }
-    
+    /**
+     * \brief Set the point the projection camera looks at.
+     * \param point The point the projection camera looks at
+     * \return This projection camera
+     */
     proj_cam&     proj_cam::look_at( vec3 const& point )
     { look = point; view_changed = true; return *this; }
-    
+    /**
+     * \brief Set the direction the projection camera considers to be up.
+     * \param dir The direction that the projection camera considers to be up
+     * \return This projection camera
+     */
     proj_cam&     proj_cam::upward( vec3 const& dir )
     { up = dir; view_changed = true; return *this; }
-    
+    /**
+     * \brief Set the projection camera's vertical field of view.
+     * \param vert The vertical field of view
+     * \return This projection camera
+     */
     proj_cam&     proj_cam::field_of_view( d_angle const& vert )
     {
         fov_vert = vert;
@@ -62,7 +97,11 @@ namespace gfx {
         proj_changed = true;
         return *this;
     }
-    
+    /**
+     * \brief Set the projection camera's aspect ratio.
+     * \param vert The aspect ratio
+     * \return This projection camera
+     */
     proj_cam&     proj_cam::aspect_ratio( double ar )
     {
         aspect = ar;
@@ -70,7 +109,11 @@ namespace gfx {
         proj_changed = true;
         return *this;
     }
-    
+    /**
+     * \brief Set the projection camera's near clipping plane.
+     * \param np The distance to the near clipping plane
+     * \return This projection camera
+     */
     proj_cam&     proj_cam::near_plane( double np )
     {
         near = np;
@@ -78,7 +121,11 @@ namespace gfx {
         proj_changed = true;
         return *this;
     }
-    
+    /**
+     * \brief Set the projection camera's far clipping plane.
+     * \param fp The distance to the far clipping plane
+     * \return This projection camera
+     */
     proj_cam&     proj_cam::far_plane( double fp )
     {
         far = fp;
@@ -86,7 +133,10 @@ namespace gfx {
         proj_changed = true;
         return *this;
     }
-    
+    /**
+     * \brief Update the view matrix of the projection camera.
+     * Used internally.
+     */
     void    proj_cam::update_view()
     {
         // We could leave this to the norm() call later,
@@ -110,7 +160,10 @@ namespace gfx {
                    * mat4::translate(-pos) ).ortho();
         view_changed = false;
     }
-    
+    /**
+     * \brief Construct a new orthographic camera.
+     * \param set The settings for the new orthographic camera
+     */
     ortho_cam::ortho_cam( settings const& set ) :
                          camera(),
                          pos ( set.pos_v ),
@@ -121,18 +174,36 @@ namespace gfx {
                          far ( set.far_v ),
                          scale_m ( mat4::identity() ),
                          volume_changed ( true ) {}
-                         
+    /**
+     * \brief Destruct this orthographic camera.
+     */
     ortho_cam::~ortho_cam() {}
-    
+    /**
+     * \brief Set the orthographic camera's position.
+     * \param point The position of the orthographic camera
+     * \return This orthographic camera
+     */
     ortho_cam&     ortho_cam::position( vec3 const& point )
     { pos = point; view_changed = true; return *this; }
-    
+    /**
+     * \brief Set the point the orthographic camera looks at.
+     * \param point The point the orthographic camera looks at
+     * \return This orthographic camera
+     */
     ortho_cam&     ortho_cam::look_at( vec3 const& point )
     { look = point; view_changed = true; return *this; }
-    
+    /**
+     * \brief Set the direction the orthographic camera considers to be up.
+     * \param dir The direction that the orthographic camera considers to be up
+     * \return This orthographic camera
+     */
     ortho_cam&     ortho_cam::upward( vec3 const& dir )
     { up = dir; view_changed = true; return *this; }
-    
+    /**
+     * \brief Set the orthographic camera's aspect ratio.
+     * \param vert The aspect ratio
+     * \return This orthographic camera
+     */
     ortho_cam&     ortho_cam::aspect_ratio( double ar )
     {
         aspect = ar;
@@ -140,7 +211,11 @@ namespace gfx {
         volume_changed = true;
         return *this;
     }
-    
+    /**
+     * \brief Set the orthographic camera's scale.
+     * \param vert The scale
+     * \return This orthographic camera
+     */
     ortho_cam&     ortho_cam::scale( double scl )
     { 
         scale_v = scl;
@@ -148,7 +223,11 @@ namespace gfx {
         volume_changed = true;
         return *this;
     }
-    
+    /**
+     * \brief Set the orthographic camera's far clipping plane.
+     * \param fp The distance to the far clipping plane
+     * \return This orthographic camera
+     */
     ortho_cam&     ortho_cam::far_plane( double fp )
     {
         far = fp;
@@ -156,7 +235,10 @@ namespace gfx {
         volume_changed = true;
         return *this;
     }
-    
+    /**
+     * \brief Update the view matrix of the orthographic camera.
+     * Used internally.
+     */
     void    ortho_cam::update_view()
     {
         vec3 look_vec ( (look - pos).norm() ); 
@@ -175,16 +257,26 @@ namespace gfx {
                * (   orient
                    * mat4::translate(-pos) ).ortho();
     }
-    
+    /**
+     * \brief Construct a new process camera.
+     * \param set The settings for the new process camera
+     */
     process_cam::process_cam( settings const& set ) :
                                camera(),
                                mask ( set.mask_v ),
                                screen ( set.screen_v ),
                                clip_m ( mat4::identity() ),
                                clip_changed ( true ){}
-                               
+    /**
+     * \brief Destruct this process camera.
+     */
     process_cam::~process_cam() {}
-    
+    /**
+     * \brief Set the extent of the process camera's masking region.
+     * \param ul_corner The upper left corner of the masking region
+     * \param lr_corner The lower right corner of the masking region
+     * \return This process camera
+     */
     process_cam&    process_cam::mask_region( vec2 const& ul_corner,
                                               vec2 const& lr_corner )
     {
@@ -196,7 +288,12 @@ namespace gfx {
         clip_changed = true;
         return *this;
     }
-    
+    /**
+     * \brief Set the full extent of the process camera's renderable area.
+     * \param ul_corner The upper left corner of the renderable area
+     * \param lr_corner The lower right corner of the renderable area
+     * \return This process camera
+     */
     process_cam&    process_cam::screen_region( vec2 const& ul_corner,
                                               vec2 const& lr_corner )
     {
@@ -208,7 +305,12 @@ namespace gfx {
         clip_changed = true;
         return *this;
     }
-    
+    /**
+     * \brief Update the view matrix of the process camera.
+     * Used internally.
+     * \todo My internal comments indicate that this is totally broken.
+     * So fix it.
+     */
     void    process_cam::update_view()
     {
         // Oh, this is totally broken. Masking can't work that way,

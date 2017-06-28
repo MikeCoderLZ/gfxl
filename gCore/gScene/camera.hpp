@@ -267,12 +267,13 @@ namespace gfx {
     { far_v = fp; return *this; }
     
     /**
-     * A camera specifically for 'process work', or compositing and
-     * rendering textures to the screen. The mask region is the sub
-     * area of the plane [-1,1][-1,1] to project and the screen
-     * region is the sub area of the renderbuffer to project to.
-     * 
-     * struct process_cam {
+     * \class gfx::process_cam camera.hpp "gCore/gScene/camera.hpp"
+     * \brief A camera for 'process work'.
+     * That is, compositing and rendering mattes and elements to the screen.
+     * The mask region is the sub area of the plane [-1,1][-1,1] to project
+     * and the screen region is the sub area of the renderbuffer to project to.
+     */ 
+     /* struct process_cam {
      *      mat4    view;
      * }
      * 
@@ -304,11 +305,20 @@ namespace gfx {
         bool            clip_changed;
         virtual void    update_view();
     };
-    
+    /**
+     * \brief Construct a default process camera settings object.
+     * The default settings for a process camera is to mask the entire
+     * screen area, which is on ([-1.0,1.0],[-1.0,1.0]).
+     */
     inline process_cam::settings::settings() :
                                     mask_v( -1.0f, 1.0f, 1.0f, -1.0f ),
                                     screen_v( -1.0f, 1.0f, 1.0f, -1.0f ) {}
-                                    
+    /**
+     * \brief Set the mask region of the new process camera.
+     * \param ul_corner The upper left corner
+     * \param lr_corner The lower right corner
+     * \return This settings object
+     */
     inline process_cam::settings&
     process_cam::settings::mask_region( vec2 const& ul_corner,
                                         vec2 const& lr_corner )
@@ -319,7 +329,12 @@ namespace gfx {
         mask_v[3] = lr_corner[1];
         return *this;
     }
-    
+    /**
+     * \brief Set the screen region.
+     * \param ul_corner The upper left corner
+     * \param lr_corner The lower right corner
+     * \return This settings object
+     */
     inline process_cam::settings&
     process_cam::settings::screen_region( vec2 const& ul_corner,
                                           vec2 const& lr_corner )
