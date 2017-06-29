@@ -20,150 +20,373 @@ namespace gfx {
      * bit depths that are legal while producing comprehensible
      * error messages.
      */
-    
+    /**
+     * \class gfx::bit_t texture.hpp "gCore/gScene/texture.hpp"
+     * \brief The base class for channel format selectors.
+     * Channel format selectors are a utility class used in the configuration
+     * of \ref gfx::texture "textures". They consist of a multiply inheritted
+     * class hierarchy; the derived classes at the end of the hierarchy
+     * inherit from the directly derived classes of bit_t. The instances
+     * of these terminal classes which are provided are used to select the
+     * bit depth of the chanels in the texture, being passed to the number
+     * format and chanel multplicity selectors in the \ref gfx::texture::settings
+     * "settings" class.
+     * 
+     * Using multiple inheritance here means that only combinations of channel
+     * bit depth, number format, and chanel mulplicity which are legal in
+     * OpenGL are allowed. Illegal combinations cause compilation errors,
+     * stopping a developer from making a mistake and causing error messages
+     * that more or less actually mean what they say.
+     */
     class bit_t { public: virtual size_t      n() const = 0; };
-    
+    /**
+     * \class gfx::R texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for single channel formats.
+     */
     class R    : public virtual bit_t { public: virtual size_t      n() const = 0; };
+    /**
+     * \class gfx::RG texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for dual channel formats.
+     */
     class RG   : public virtual bit_t { public: virtual size_t      n() const = 0; };
+    /**
+     * \class gfx::RGB texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for three channel formats.
+     */
     class RGB  : public virtual bit_t { public: virtual size_t      n() const = 0; };
+    /**
+     * \class gfx::RGBA texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for four channel formats.
+     */
     class RGBA : public virtual bit_t { public: virtual size_t      n() const = 0; };
     
+    /**
+     * \class gfx::Rsn texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for single channel signed integer formats.
+     */
     class Rsn    : public virtual bit_t { public: virtual size_t      n() const = 0; };
+    /**
+     * \class gfx::RGsn texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for dual channel signed integer formats.
+     */
     class RGsn   : public virtual bit_t { public: virtual size_t      n() const = 0; };
+    /**
+     * \class gfx::RGBsn texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for four channel signed integer formats.
+     */
     class RGBsn  : public virtual bit_t { public: virtual size_t      n() const = 0; };
+    /**
+     * \class gfx::RGBAsn texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for four channel signed integer formats.
+     */
     class RGBAsn : public virtual bit_t { public: virtual size_t      n() const = 0; };
     
+    /**
+     * \class gfx::Rf texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for single channel floating point formats.
+     */
     class Rf    : public virtual bit_t { public: virtual size_t      n() const = 0; };
+    /**
+     * \class gfx::RGf texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for dual channel floating point formats.
+     */
     class RGf   : public virtual bit_t { public: virtual size_t      n() const = 0; };
+    /**
+     * \class gfx::RGBf texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for four channel floating point formats.
+     */
     class RGBf  : public virtual bit_t { public: virtual size_t      n() const = 0; };
+    /**
+     * \class gfx::RGBAf texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for four channel floating point formats.
+     */
     class RGBAf : public virtual bit_t { public: virtual size_t      n() const = 0; };
     
+    /**
+     * \class gfx::Ri texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for single channel integer formats.
+     */
     class Ri    : public virtual bit_t { public: virtual size_t      n() const = 0; };
+    /**
+     * \class gfx::RGi texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for dual channel integer formats.
+     */
     class RGi   : public virtual bit_t { public: virtual size_t      n() const = 0; };
+    /**
+     * \class gfx::RGBi texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for four channel integer formats.
+     */
     class RGBi  : public virtual bit_t { public: virtual size_t      n() const = 0; };
+    /**
+     * \class gfx::RGBAi texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for four channel integer formats.
+     */
     class RGBAi : public virtual bit_t { public: virtual size_t      n() const = 0; };
     
+    /**
+     * \class gfx::Rui texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for single channel unsigned integer formats.
+     */
     class Rui    : public virtual bit_t { public: virtual size_t      n() const = 0; };
+    /**
+     * \class gfx::RGui texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for dual channel unsigned integer formats.
+     */
     class RGui   : public virtual bit_t { public: virtual size_t      n() const = 0; };
+    /**
+     * \class gfx::RGBui texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for four channel unsigned integer formats.
+     */
     class RGBui  : public virtual bit_t { public: virtual size_t      n() const = 0; };
+    /**
+     * \class gfx::RGBAui texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for four channel unsigned integer formats.
+     */
     class RGBAui : public virtual bit_t { public: virtual size_t      n() const = 0; };
     
+    /**
+     * \class gfx::two_bit_t texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for two bit channel formats.
+     */
     class two_bit_t : public RGBA {
         public: virtual size_t      n() const { return 2; }
     };
+    /**
+     * \var gfx::two_bit_t const gfx::two_bit
+     * \brief The instance of the two bit channel format selector.
+     */
     two_bit_t const two_bit;
-    
+    /**
+     * \class gfx::four_bit_t texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for tour bit channel formats.
+     */
     class four_bit_t : public RGBA, public RGB {
         public: virtual size_t      n() const { return 4; }
     };
+    /**
+     * \var gfx::four_bit_t const gfx::four_bit
+     * \brief The instance of the four bit channel format selector.
+     */
     four_bit_t const four_bit;
-    
+    /**
+     * \class gfx::five_bit_t texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for five bit channel formats.
+     */
     class five_bit_t : /*public RGBA,*/ public RGB {
         public: virtual size_t      n() const { return 5; }
     };
+    /**
+     * \var gfx::five_bit_t const gfx::five_bit
+     * \brief The instance of the five bit channel format selector.
+     */
     five_bit_t const five_bit;
-    
+    /**
+     * \class gfx::eight_bit_t texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for eight bit channel formats.
+     */
     class eight_bit_t : public RGBA,   public RGB,   public RG,   public R,
-                      public RGBAsn, public RGBsn, public RGsn, public Rsn,
-                      public RGBAui, public RGBui, public RGui, public Rui,
-                      public RGBAi,  public RGBi,  public RGi,  public Ri {
+                        public RGBAsn, public RGBsn, public RGsn, public Rsn,
+                        public RGBAui, public RGBui, public RGui, public Rui,
+                        public RGBAi,  public RGBi,  public RGi,  public Ri {
         public: virtual size_t      n() const { return 8; }
     };
+    /**
+     * \var gfx::eight_bit_t const gfx::eight_bit
+     * \brief The instance of the eight bit channel format selector.
+     */
     eight_bit_t const eight_bit;
-    
+    /**
+     * \class gfx::ten_bit_t texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for ten bit channel formats.
+     */
     class ten_bit_t : public RGB {
         public: virtual size_t      n() const { return 10; }
     };
+    /**
+     * \var gfx::ten_bit_t const gfx::ten_bit
+     * \brief The instance of the two bit channel format selector.
+     */
     ten_bit_t const ten_bit;
-    
+    /**
+     * \class gfx::twelve_bit_t texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for 12 bit channel formats.
+     */
     class twelve_bit_t : public RGBA, public RGB {
         public: virtual size_t      n() const { return 12; }
     };
+    /**
+     * \var gfx::twelve_bit_t const gfx::twelve_bit
+     * \brief The instance of the 12 bit channel format selector.
+     */
     twelve_bit_t const twelve_bit;
-    
+    /**
+     * \class gfx::sixteen_bit_t texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for 16 bit channel formats.
+     */
     class sixteen_bit_t : public RGBA,   public RGB,   public RG,   public R,
-                        public RGBAsn, public RGBsn, public RGsn, public Rsn,
-                        public RGBAui, public RGBui, public RGui, public Rui,
-                        public RGBAi,  public RGBi,  public RGi,  public Ri,
-                        public RGBAf,  public RGBf,  public RGf,  public Rf {
+                          public RGBAsn, public RGBsn, public RGsn, public Rsn,
+                          public RGBAui, public RGBui, public RGui, public Rui,
+                          public RGBAi,  public RGBi,  public RGi,  public Ri,
+                          public RGBAf,  public RGBf,  public RGf,  public Rf {
         public: virtual size_t      n() const { return 16; }
     };
+    /**
+     * \var gfx::sixteen_bit_t const gfx::sixteen_bit
+     * \brief The instance of the 16 bit channel format selector.
+     */
     sixteen_bit_t const sixteen_bit;
-    
+    /**
+     * \class gfx::thirty_two_bit_t texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Selects for 32 bit channel formats.
+     */
     class thirty_two_bit_t : public RGBAui, public RGBui, public RGui, public Rui,
-                           public RGBAi,  public RGBi,  public RGi,  public Ri,
-                           public RGBAf,  public RGBf,  public RGf,  public Rf  {
+                             public RGBAi,  public RGBi,  public RGi,  public Ri,
+                             public RGBAf,  public RGBf,  public RGf,  public Rf  {
         public: virtual size_t      n() const { return 32; }
     };
+    /**
+     * \var gfx::thirty_two_bit_t const gfx::thirty_two_bit
+     * \brief The instance of the 32 bit channel format selector.
+     */
     thirty_two_bit_t const thrity_two_bit;
     
+    /**
+     * \class gfx::filter_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Base class for interpolation filter selectors.
+     * Interpolation selectors are used in the configuration of
+     * \ref gfx::texture "textures". Immediate derived classes of filter_t
+     * are a family of classes that provide the terminal classes of the
+     * inheritance hierarchy with type signatures that ensure only legal
+     * filter types can be used for configuring a particular filter mode.
+     */
     class filter_t {
         protected: virtual GLint   val() const = 0;
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
-    
+    /**
+     * \class gfx::min_filter_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Selector for minification filtering.
+     */
     class min_filter_t : public virtual filter_t {
         protected: virtual GLint   val() const = 0;
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
-    
+    /**
+     * \class gfx::mag_filter_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Selector for magnification filtering.
+     */
     class mag_filter_t : public virtual filter_t {
         protected: virtual GLint   val() const = 0;
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
-    
+    /**
+     * \class gfx::nearest_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Selector for nearest filtering.
+     */
     class nearest_t : public min_filter_t, public mag_filter_t {
         protected: virtual GLint   val() const { return gl::NEAREST; };
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
-    
+    /**
+     * \var gfx::nearest_t const gfx::nearest
+     * \brief Instance of the nearest filter selector.
+     */
     nearest_t const nearest;
     
+    /**
+     * \class gfx::linear_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Selector for linear filtering.
+     */
     class linear_t : public min_filter_t, public mag_filter_t {
         protected: virtual GLint   val() const { return gl::LINEAR; };
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
+    /**
+     * \var gfx::linear_t const gfx::linear
+     * \brief Instance of the linear filter selector.
+     */
     linear_t const linear;
     
+    /**
+     * \class gfx::nearest_mipmap_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Selector for nearest mipmap filtering.
+     */
     class nearest_mipmap_t : public min_filter_t {
         protected: virtual GLint   val() const { return gl::NEAREST_MIPMAP_NEAREST; };
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
+    /**
+     * \var gfx::nearest_mipmap_t const gfx::nearest_mipmap_t
+     * \brief Instance of the nearest image filtering and mipmapping.
+     */
     nearest_mipmap_t const nearest_mipmap;
     
+    /**
+     * \class gfx::linear_mipmap_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Selector for linear image filtering and mipmapping.
+     */
     class linear_mipmap_t : public min_filter_t {
         protected: virtual GLint   val() const { return gl::LINEAR_MIPMAP_LINEAR; };
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
+    /**
+     * \var gfx::linear_mipmap_t const gfx::linear_mipmap_t
+     * \brief Instance of the linear mipmap filter selector.
+     */
     linear_mipmap_t const linear_mipmap;
     
+    /**
+     * \class gfx::linear_mipmap_nearest_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Selector for linear image and nearest mipmap filtering.
+     */
     class linear_mipmap_nearest_t : public min_filter_t {
         protected: virtual GLint   val() const { return gl::LINEAR_MIPMAP_NEAREST; };
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
+    /**
+     * \var gfx::linear_mipmap_nearest_t const gfx::linear_mipmap_nearest_t
+     * \brief Instance of the linear image and mipmap nearest filter selector.
+     */
     linear_mipmap_nearest_t const linear_mipmap_nearest;
     
+    /**
+     * \class gfx::nearest_mipmap_linear_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Selector for nearest image and linear mipmap filtering.
+     */
     class nearest_mipmap_linear_t : public min_filter_t {
         protected: virtual GLint   val() const { return gl::NEAREST_MIPMAP_LINEAR; };
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
+    /**
+     * \var gfx::nearest_mipmap_linear_t const gfx::nearest_mipmap_linear_t
+     * \brief Instance of the nearest image and mipmap linear filter selector.
+     */
     nearest_mipmap_linear_t const nearest_mipmap_linear;
     
+    /**
+     * \class gfx::wrap_mode_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Base class for wrapping mode selectors.
+     * An interface for wrap mode selectors; there is no multiple inheritance
+     * in this class hierarachy, the derived classes are also the terminal ones.
+     */
     class wrap_mode_t {
         protected: virtual GLint   val() const = 0;
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
-    
+    /**
+     * \class gfx::clamp_to_border_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Selector for clamp to border sampling.
+     */
     class clamp_to_border_t : public wrap_mode_t {
         protected: virtual GLint   val() const { return gl::CLAMP_TO_BORDER; };
         friend                      class texture_1D;
