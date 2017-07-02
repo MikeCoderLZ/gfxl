@@ -373,6 +373,10 @@ namespace gfx {
 //             uint32_t color;
 //         };
 //     }; 
+    /**
+     * \brief Construct a new one dimensional texture.
+     * \param set The settings for the new texture.
+     */
     texture_1D::texture_1D( settings const& set ) :
                             tex_ID ( 0 ),
                             target ( 0 ),
@@ -426,24 +430,44 @@ namespace gfx {
         }
         gl::BindTexture( target, 0 );
     }
-    
+    /**
+     * \brief Destruct this one dimensional texture.
+     * \todo It doesn't free OpenGL resources, foo'!
+     */
     texture_1D::~texture_1D()
     {
         delete[] data;
     }
-    
+    /**
+     * \brief Return the one dimensional texture's width.
+     * \return The one dimensional texutre's width
+     */
     size_t  texture_1D::width() const
     { return width_v; }
-    
+    /**
+     * \brief Return the number of pixels in the one dimensional texture.
+     * \return The number of pixels in the one dimensional texture
+     * \todo Review this name. Not sold on it.
+     */
     size_t  texture_1D::pixels() const
     { return pixels_v; }
-    
+    /**
+     * \brief Return the number of bits in a pixel.
+     * \return The number of bits in a pixel
+     */
     size_t  texture_1D::pixel_bits() const
     { return pixel_bits_v; }
-    
+    /**
+     * \brief Set the file path to the texture's source file.
+     * \return The file path to the texture's source file
+     */
     void    texture_1D::file( std::string const& path )
     { this->path = path; }
-    
+    /**
+     * \brief Access the texture's source file and load it.
+     * Note that this does not hand the data over to OpenGL, it just
+     * opens the file and turns it into pixel data on the client side.
+     */
     void    texture_1D::decode_file()
     {
         FIBITMAP* src = FreeImage_Load( FIF_PNG, path.c_str(), PNG_DEFAULT );
@@ -472,7 +496,12 @@ namespace gfx {
         }
         
     }
-    
+    /**
+     * \brief Upload the texture's data to OpenGL.
+     * This function requires that \ref gfx::texture_1D::decode_file "decode_file()"
+     * has been called on this one dimensional texture.
+     * \todo Does this take into account the pxiel formatting options are all?
+     */
     void    texture_1D::load_data()
     {
         if ( not video_system::get().context_present() ) {
@@ -494,7 +523,13 @@ namespace gfx {
         //video_system::get().check_acceleration_error("Texture_1D load_data");
         
     }
-    
+    /**
+     * \brief Activate use of this texture in the current state of OpenGL.
+     * \todo This function is not very "intelligent", it assumes things about
+     * what texture bindings the texture should use (specifically it assigns
+     * this texture to binding 0). This is a relative of the uniform problem
+     * over in lights and cameras. These issues must be resolved.
+     */
     void    texture_1D::use()
     {
         if ( not video_system::get().context_present() ) {
@@ -503,7 +538,10 @@ namespace gfx {
         gl::ActiveTexture( gl::TEXTURE0 );
         gl::BindTexture( target, tex_ID );
     }
-    
+    /**
+     * \brief Return the number of bytes in the texture.
+     * \return The number of bytes in the texture.
+     */
     size_t  texture_1D::bytes()
     { return pixel_bits_v * pixels_v; }
     
@@ -513,8 +551,11 @@ namespace gfx {
     
     
     
-    
-        texture_2D::texture_2D( settings const& set ) :
+    /**
+     * \brief Construct a new two dimensional texture.
+     * \param set The settings for the new texture.
+     */
+    texture_2D::texture_2D( settings const& set ) :
                             tex_ID ( 0 ),
                             target ( 0 ),
                             width_v ( set.dw_v ),
@@ -568,27 +609,50 @@ namespace gfx {
         }
         gl::BindTexture( target, 0 );
     }
-    
+    /**
+     * \brief Destruct this one dimensional texture.
+     * \todo It doesn't free OpenGL resources, foo'!
+     */
     texture_2D::~texture_2D()
     {
         delete[] data;
     }
-    
+    /**
+     * \brief Return the two dimensional texture's width.
+     * \return The two dimensional texutre's width
+     */
     size_t  texture_2D::width() const
     { return width_v; }
-    
+    /**
+     * \brief Return the two dimensional texture's height.
+     * \return The two dimensional texutre's height
+     */
     size_t  texture_2D::height() const
     { return height_v; }
-    
+    /**
+     * \brief Return the number of pixels in the two dimensional texture.
+     * \return The number of pixels in the two dimensional texture
+     * \todo Review this name. Not sold on it.
+     */
     size_t  texture_2D::pixels() const
     { return pixels_v; }
-    
+    /**
+     * \brief Return the number of bits in a pixel.
+     * \return The number of bits in a pixel
+     */
     size_t  texture_2D::pixel_bits() const
     { return pixel_bits_v; }
-    
+    /**
+     * \brief Set the file path to the texture's source file.
+     * \return The file path to the texture's source file
+     */
     void    texture_2D::file( std::string const& path )
     { this->path = path; }
-    
+    /**
+     * \brief Access the texture's source file and load it.
+     * Note that this does not hand the data over to OpenGL, it just
+     * opens the file and turns it into pixel data on the client side.
+     */
     void    texture_2D::decode_file()
     {
         FIBITMAP* src = FreeImage_Load( FIF_PNG, path.c_str(), PNG_DEFAULT );
@@ -615,7 +679,12 @@ namespace gfx {
         }
         
     }
-    
+    /**
+     * \brief Upload the texture's data to OpenGL.
+     * This function requires that \ref gfx::texture_1D::decode_file "decode_file()"
+     * has been called on this two dimensional texture.
+     * \todo Does this take into account the pxiel formatting options are all?
+     */
     void    texture_2D::load_data()
     {
         if ( not video_system::get().context_present() ) {
@@ -637,7 +706,13 @@ namespace gfx {
                         data              );
         //video_system::get().check_acceleration_error("Texture_2D load_data");
     }
-    
+    /**
+     * \brief Activate use of this texture in the current state of OpenGL.
+     * \todo This function is not very "intelligent", it assumes things about
+     * what texture bindings the texture should use (specifically it assigns
+     * this texture to binding 0). This is a relative of the uniform problem
+     * over in lights and cameras. These issues must be resolved.
+     */
     void    texture_2D::use()
     {
         if ( not video_system::get().context_present() ) {
@@ -646,7 +721,10 @@ namespace gfx {
         gl::ActiveTexture( gl::TEXTURE0 );
         gl::BindTexture( target, tex_ID );
     }
-    
+    /**
+     * \brief Return the number of bytes in the texture.
+     * \return The number of bytes in the texture.
+     */
     size_t  texture_2D::bytes()
     { return pixel_bits_v * pixels_v; }
     

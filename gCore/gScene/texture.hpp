@@ -11,26 +11,20 @@
 #include "../gVideo/video.hpp"
 
 namespace gfx {
-
-    /**
-     * This is weird, I know. Similar to swizzles over in datatype.hpp,
-     * the bit_t class and the rat's nest of multiply inherited
-     * subclasses serve to make it so the texture::settings
-     * functions that deal with image format can only accept
-     * bit depths that are legal while producing comprehensible
-     * error messages.
-     */
     /**
      * \class gfx::bit_t texture.hpp "gCore/gScene/texture.hpp"
      * \brief The base class for channel format selectors.
      * Channel format selectors are a utility class used in the configuration
-     * of \ref gfx::texture "textures". They consist of a multiply inheritted
-     * class hierarchy; the derived classes at the end of the hierarchy
-     * inherit from the directly derived classes of bit_t. The instances
-     * of these terminal classes which are provided are used to select the
-     * bit depth of the chanels in the texture, being passed to the number
-     * format and chanel multplicity selectors in the \ref gfx::texture::settings
-     * "settings" class.
+     * of \ref gfx::texture "textures". Functionally, there are an enum with
+     * special type charactersitics to make formatting errors cause compilation
+     * errors.
+     * 
+     * They consist of a multiply inheritted class hierarchy; the derived
+     * classes at the end of the hierarchy inherit from the directly derived
+     * classes of bit_t. The instances of these terminal classes which are
+     * provided are used to select the bit depth of the chanels in the texture,
+     * being passed to the number format and chanel multplicity selectors in
+     * the \ref gfx::texture::settings "settings" class.
      * 
      * Using multiple inheritance here means that only combinations of channel
      * bit depth, number format, and chanel mulplicity which are legal in
@@ -392,13 +386,25 @@ namespace gfx {
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
+    /**
+     * \var gfx::clamp_to_border_t const gfx::clamp_to_border_t
+     * \brief Instance of the clamp to border sampling selector.
+     */
     clamp_to_border_t const clamp_to_border;
     
+    /**
+     * \class gfx::clamp_to_edge_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Selector for clamp to edge sampling.
+     */
     class clamp_to_edge_t : public wrap_mode_t {
         protected: virtual GLint   val() const { return gl::CLAMP_TO_EDGE; };
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
+    /**
+     * \var gfx::clamp_to_edge_t const gfx::clamp_to_edge_t
+     * \brief Instance of the clamp to edge sampling selector.
+     */
     clamp_to_edge_t const clamp_to_edge;
     
 //     class mirror_clamp_to_edge_t : public wrap_mode_t {
@@ -407,82 +413,177 @@ namespace gfx {
 //     };
 //     mirror_clamp_to_edge_t const mirror_clamp_to_edge;
     
+    /**
+     * \class gfx::mirrored_repeat_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Selector for mirrored repeat sampling.
+     */
     class mirrored_repeat_t : public wrap_mode_t {
         protected: virtual GLint   val() const { return gl::MIRRORED_REPEAT; };
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
+    /**
+     * \var gfx::mirrored_repeat_t const gfx::mirrored_repeat_t
+     * \brief Instance of the mirrored repeating sampling selector.
+     */
     mirrored_repeat_t const mirrored_repeat;
     
+    /**
+     * \class gfx::repeat_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Selector for repeat sampling.
+     */
     class repeat_t : public wrap_mode_t {
         protected: virtual GLint   val() const { return gl::REPEAT; };
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
+    /**
+     * \var gfx::repeat_t const gfx::repeat_t
+     * \brief Instance of the repeat sampling selector.
+     */
     repeat_t const repeat;
     
+    /**
+     * \class gfx::comparison_function_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Base class for comparison function selectors.
+     * An interface for comparison function selectors; there is no multiple inheritance
+     * in this class hierarachy, the derived classes are also the terminal ones.
+     */
     class comparison_function_t {
         protected: virtual GLint   val() const = 0;
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
     
+    /**
+     * \class gfx::less_or_equal_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Selector for the less than or equal to comparison function.
+     */
     class less_or_equal_t : public comparison_function_t {
         protected: virtual GLint   val() const { return gl::LEQUAL; };
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
+    /**
+     * \var gfx::less_or_equal_t const gfx::less_or_equal_t
+     * \brief Instance of the less than or equal to function selector.
+     */
     less_or_equal_t const less_or_equal;
     
+    /**
+     * \class gfx::greater_or_equal_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Selector for the greater than or equal to comparison function.
+     */
     class greater_or_equal_t : public comparison_function_t {
         protected: virtual GLint   val() const { return gl::GEQUAL; };
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
+    /**
+     * \var gfx::greater_or_equal_t const gfx::greater_or_equal_t
+     * \brief Instance of the greater than or equal to function selector.
+     */
     greater_or_equal_t const greater_or_equal;
     
+    /**
+     * \class gfx::less_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Selector for the less than comparison function.
+     */
     class less_t : public comparison_function_t {
         protected: virtual GLint   val() const { return gl::LESS; };
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
+    /**
+     * \var gfx::less_t const gfx::less_equal_t
+     * \brief Instance of the less than function selector.
+     */
     less_t const less;
     
+    /**
+     * \class gfx::greater_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Selector for the greater than comparison function.
+     */
     class greater_t : public comparison_function_t {
         protected: virtual GLint   val() const { return gl::GREATER; };
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
+    /**
+     * \var gfx:greater_t const gfx::greater_equal_t
+     * \brief Instance of the greater than function selector.
+     */
     greater_t const greater;
     
+    /**
+     * \class gfx::equal_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Selector for the equal to comparison function.
+     */
     class equal_t : public comparison_function_t {
         protected: virtual GLint   val() const { return gl::EQUAL; };
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
+    /**
+     * \var gfx:equal_t const gfx::equal_t
+     * \brief Instance of the equal to function selector.
+     */
     equal_t const equal;
     
+    /**
+     * \class gfx::not_equal_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Selector for the not equal to comparison function.
+     */
     class not_equal_t : public comparison_function_t {
         protected: virtual GLint   val() const { return gl::NOTEQUAL; };
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
+    /**
+     * \var gfx:not_equal_t const gfx::not_equal_t
+     * \brief Instance of the not equal to function selector.
+     */
     not_equal_t const not_equal;
     
+    /**
+     * \class gfx::always_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Selector for the always comparison function.
+     */
     class always_t : public comparison_function_t {
         protected: virtual GLint   val() const { return gl::ALWAYS; };
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
+    /**
+     * \var gfx:always_t const gfx::always_t
+     * \brief Instance of the always to function selector.
+     */
     always_t const always;
     
+    /**
+     * \class gfx::never_t texture.hpp "gCore/gVideo/texture.hpp"
+     * \brief Selector for the never comparison function.
+     */
     class never_t : public comparison_function_t {
         protected: virtual GLint   val() const { return gl::NEVER; };
         friend                      class texture_1D;
         friend                      class texture_2D;
     };
+    /**
+     * \var gfx:never_t const gfx::never_t
+     * \brief Instance of the never to function selector.
+     */
     never_t const never;
     
+    /**
+     * \class gfx::texture_1D texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Represents a one dimenstional texture.
+     * One dimensional textures are configured with the member class
+     * \ref gfx::texture_1D::settings "settings". They consist of a single
+     * row of color information, which can be formatted in a large number
+     * of ways.
+     * 
+     */
     class texture_1D {
     public:
         
@@ -629,6 +730,13 @@ namespace gfx {
         size_t              bytes();
     };
     
+    /**
+     * \brief Construct a new default one dimensional texture settings object.
+     * The default settings for a one dimenstional texture are to have a
+     * width of zero, no extra multi-texturing features, standard channel
+     * soruces, and the cheapest interpolation and sampling filters. The
+     * path is also empty.
+     */
     inline texture_1D::settings::settings() :
                                     dw_v ( 0 ),
                                     as_cube_v ( false ),
@@ -654,20 +762,32 @@ namespace gfx {
                                     b_src_v ( gl::BLUE ),
                                     a_src_v ( gl::ALPHA ),
                                     path_v ( "" ) {}
-    
+    /**
+     * \brief Set the new one dimensional texture's dimension.
+     * \param dw The new dimension of the one dimensional texture.
+     */
     inline  texture_1D::settings&  texture_1D::settings::dimension( size_t const dw )
     { dw_v = dw; pixels_v = dw; return *this; }
-    
+    /**
+     * \brief Set the new one dimensional texture to be sourced from a buffer.
+     */
     inline  texture_1D::settings&  texture_1D::settings::from_buffer()
     { from_buffer_v = true; return *this; }
-    
+    /**
+     * \brief Set the new one dimensional texture ot be an array of textures.
+     * \param layers The number of one dimensional textures in the array.
+     */
     inline  texture_1D::settings&  texture_1D::settings::array( size_t const layers )
     {
         as_array_v = true;
         layers_v = layers;
         return *this;
     }
-    
+    /**
+     * \brief Set the new one dimensional texture to have one unsigned
+     * normalized chanel at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     */
     inline  texture_1D::settings&
     texture_1D::settings::unsigned_norm_1( R const& depth )
     {
@@ -691,7 +811,13 @@ namespace gfx {
         return *this;
     }
 
-
+    /**
+     * \brief Set the new one dimensional texture to have two unsigned
+     * normalized chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     */
     inline  texture_1D::settings&
     texture_1D::settings::unsigned_norm_2( RG const& depth,
                                            swizz2 const& r_src,
@@ -734,7 +860,14 @@ namespace gfx {
         
         return *this;
     }
-
+    /**
+     * \brief Set the new one dimensional texture to have three unsigned
+     * normalized chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     * \param b_src The source of the blue chanel.
+     */
     inline  texture_1D::settings&
     texture_1D::settings::unsigned_norm_3( RGB const& depth,
                                            swizz3 const& r_src,
@@ -812,7 +945,15 @@ namespace gfx {
         channels_v = 3;
         return *this;
     }
-
+    /**
+     * \brief Set the new one dimensional texture to have four unsigned
+     * normalized chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     * \param b_src The source of the green chanel.
+     * \param a_src The source of the green chanel.
+     */
     inline  texture_1D::settings&
     texture_1D::settings::unsigned_norm_4( RGBA const& depth,
                                            swizz4 const& r_src,
@@ -912,7 +1053,11 @@ namespace gfx {
         channels_v = 4;
         return *this;
     }
-
+    /**
+     * \brief Set the new one dimensional texture to have one normalized
+     * chanel at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     */
     inline  texture_1D::settings&   texture_1D::settings::signed_norm_1( Rsn const& depth )
         {
             switch ( depth.n() ) {
@@ -933,7 +1078,13 @@ namespace gfx {
             channels_v = 1;
             return *this;
         }
-
+    /**
+     * \brief Set the new one dimensional texture to have two normalized
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     */
     inline  texture_1D::settings&
     texture_1D::settings::signed_norm_2( RGsn const& depth,
                                            swizz2 const& r_src,
@@ -976,7 +1127,14 @@ namespace gfx {
         channels_v = 2;
         return *this;
     }
-
+    /**
+     * \brief Set the new one dimensional texture to have three normalized
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     * \param b_src The source of the green chanel.
+     */
     inline  texture_1D::settings&
     texture_1D::settings::signed_norm_3( RGBsn const& depth,
                                          swizz3 const& r_src,
@@ -1038,7 +1196,15 @@ namespace gfx {
         channels_v = 3;
         return *this;
     }
-
+    /**
+     * \brief Set the new one dimensional texture to have four normalized
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     * \param b_src The source of the blue chanel.
+     * \param a_src The source of the alpha chanel.
+     */
     inline  texture_1D::settings&
     texture_1D::settings::signed_norm_4( RGBAsn const& depth,
                                          swizz4 const& r_src,
@@ -1123,7 +1289,11 @@ namespace gfx {
         channels_v = 4;
         return *this;
     }
-
+    /**
+     * \brief Set the new one dimensional texture to have one unsigned integer
+     * chanel at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     */
     inline  texture_1D::settings&   texture_1D::settings::unsigned_int_1( Rui const& depth )
         {
             switch ( depth.n() ) {
@@ -1149,6 +1319,13 @@ namespace gfx {
             return *this;
         }
 
+    /**
+     * \brief Set the new one dimensional texture to have two unsigned integer
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     */
     inline  texture_1D::settings&
     texture_1D::settings::unsigned_int_2( RGui const& depth,
                                            swizz2 const& r_src,
@@ -1194,7 +1371,14 @@ namespace gfx {
         channels_v = 2;
         return *this;
     }
-
+    /**
+     * \brief Set the new one dimensional texture to have three unsigned
+     * integer chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     * \param b_src The source of the green chanel.
+     */
     inline  texture_1D::settings&
     texture_1D::settings::unsigned_int_3( RGBui const& depth,
                                           swizz3 const& r_src,
@@ -1259,7 +1443,15 @@ namespace gfx {
         channels_v = 3;
         return *this;
     }
-
+    /**
+     * \brief Set the new one dimensional texture to have four unsigned integer
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     * \param b_src The source of the green chanel.
+     * \param a_src The source of the green chanel.
+     */
     inline  texture_1D::settings&
     texture_1D::settings::unsigned_int_4( RGBAui const& depth,
                                           swizz4 const& r_src,
@@ -1348,7 +1540,11 @@ namespace gfx {
         channels_v = 4;
         return *this;
     }
-
+    /**
+     * \brief Set the new one dimensional texture to have one signed integer
+     * chanel at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     */
     inline  texture_1D::settings&   texture_1D::settings::signed_int_1( Ri const& depth )
         {
             switch ( depth.n() ) {
@@ -1373,7 +1569,13 @@ namespace gfx {
             channels_v = 1;
             return *this;
         }
-
+    /**
+     * \brief Set the new one dimensional texture to have two signed integers
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     */
     inline  texture_1D::settings&
     texture_1D::settings::signed_int_2( RGi const& depth,
                                            swizz2 const& r_src,
@@ -1419,7 +1621,14 @@ namespace gfx {
         channels_v = 2;
         return *this;
     }
-
+    /**
+     * \brief Set the new one dimensional texture to have three signed integers
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     * \param b_src The source of the blue chanel.
+     */
     inline  texture_1D::settings&
     texture_1D::settings::signed_int_3( RGBi const& depth,
                                         swizz3 const& r_src,
@@ -1484,7 +1693,15 @@ namespace gfx {
         channels_v = 3;
         return *this;
     }
-
+    /**
+     * \brief Set the new one dimensional texture to have four signed integers
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     * \param b_src The source of the green chanel.
+     * \param a_src The source of the green chanel.
+     */
     inline  texture_1D::settings&
     texture_1D::settings::signed_int_4( RGBAi const& depth,
                                         swizz4 const& r_src,
@@ -1573,7 +1790,11 @@ namespace gfx {
         channels_v = 4;
         return *this;
     }
-
+    /**
+     * \brief Set the new one dimensional texture to have one floating point
+     * chanel at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     */
     inline  texture_1D::settings&   texture_1D::settings::floating_point_1( Rf const& depth )
         {
             switch ( depth.n() ) {
@@ -1594,7 +1815,13 @@ namespace gfx {
             channels_v = 1;
             return *this;
         }
-
+    /**
+     * \brief Set the new one dimensional texture to have two floating point
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     */
     inline  texture_1D::settings&
     texture_1D::settings::floating_point_2( RGf const& depth,
                                            swizz2 const& r_src,
@@ -1636,7 +1863,14 @@ namespace gfx {
         channels_v = 2;
         return *this;
     }
-
+    /**
+     * \brief Set the new one dimensional texture to have three floating point
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     * \param b_src The source of the green chanel.
+     */
     inline  texture_1D::settings&
     texture_1D::settings::floating_point_3( RGBf const& depth,
                                             swizz3 const& r_src,
@@ -1697,7 +1931,15 @@ namespace gfx {
         channels_v = 3;
         return *this;
     }
-
+    /**
+     * \brief Set the new one dimensional texture to have four floating point
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     * \param b_src The source of the green chanel.
+     * \param a_src The source of the green chanel.
+     */
     inline  texture_1D::settings&
     texture_1D::settings::floating_point_4( RGBAf const& depth,
                                             swizz4 const& r_src,
@@ -1782,32 +2024,73 @@ namespace gfx {
         channels_v = 4;
         return *this;
     }
-
+    /**
+     * \brief Set the new one dimensional texture to have three chanels packed
+     * into 8 bits.
+     * 3 bits for Red and Green, and 2 bits for Blue.
+     */
     inline  texture_1D::settings&  texture_1D::settings::packed_3channel_8bit()
     { image_format_v = gl::R3_G3_B2; pixel_size_v = 8u; return *this; }
-
+    /**
+     * \brief Set the new one dimensional texture to have four chanels packed
+     * into 16 bits.
+     * Five bits for Red, Green, and Blue, and one bit for Alpha.
+     */
     inline  texture_1D::settings&  texture_1D::settings::packed_4channel_16bit()
     { image_format_v = gl::RGB5_A1; pixel_size_v = 16u; return *this; }
-
+    /**
+     * \brief Set the new one dimensional texture to have four chanels packed
+     * into 32 bits.
+     * Ten bits for Red, Green, and Blue, and two for Alpha.
+     */
     inline  texture_1D::settings&  texture_1D::settings::packed_4channel_32bit()
     { image_format_v = gl::RGB10_A2; pixel_size_v = 32u; return *this; }
-
+    /**
+     * \brief Set the new one dimensional texture to have four chanels packed
+     * into 32 bits.
+     * Ten bits for Red, Green, and Blue, and two for Alpha. Unsigned.
+     */
     inline  texture_1D::settings&  texture_1D::settings::packed_4channel_32bit_unsigned()
     { image_format_v = gl::RGB10_A2UI; pixel_size_v = 32u; return *this; }
-
+    /**
+     * \brief Set the new one dimensional texture to have three floating point
+     * chanels packed into 32 bits.
+     * Eleven bits for Red and Green, and ten for Blue.
+     */
     inline  texture_1D::settings&  texture_1D::settings::packed_3channel_32bit_float()
     { image_format_v = gl::R11F_G11F_B10F; pixel_size_v = 32u; return *this; }
-        
+    /**
+     * \brief Set the new one dimensional texture to have three floating point
+     * chanels packed into 32 bits with a shared exponent.
+     * Nine bits for Red, Green, Blue mantissa, then five bits for their shared
+     * exponent. May not be supported as a renderable format, because WAT!?!
+     * There amy be an approrpiate use for this (the OpenGL wiki mentions images
+     * whose color channels all have, more or less, the same order of (binary)
+     * magnitude when expressed as 9 bit floating point), but it is going to be
+     * extremely specific and worse will need to be generated offline.
+     */
     inline texture_1D::settings&
     texture_1D::settings::if_you_find_a_use_for_this_image_format_you_get_a_cookie()
     { image_format_v = gl::RGB9_E5; pixel_size_v = 32u; return *this; }
-
+    /**
+     * \brief Set the new one dimensional texture to use the sRGB
+     * with eight bit chanels.
+     * Eight bits for Red, Green, and Blue. Unsigned.
+     */
     inline  texture_1D::settings&  texture_1D::settings::sRGB_8bit()
     { image_format_v = gl::SRGB8; pixel_size_v = 24u; return *this; }
-
+    /**
+     * \brief Set the new one dimensional texture to use the sRGB
+     * with eight bit chanels.
+     * Eight bits for Red, Green, and Blue, plus Alpha. Unsigned.
+     */
     inline  texture_1D::settings&  texture_1D::settings::sRGBA_8bit()
     { image_format_v = gl::SRGB8_ALPHA8; pixel_size_v = 32u; return *this; }
-    
+    /**
+     * \brief Set the new one dimensional texture's mipmapping range.
+     * \param base The lowest level of mipmap
+     * \param max The highest level of mipmap
+     */
     inline  texture_1D::settings&
     texture_1D::settings::mipmap_range( size_t const base,
                                         size_t const max )
@@ -1816,7 +2099,11 @@ namespace gfx {
         max_level_v = max;
         return *this;
     }
-    
+    /**
+     * \brief Set the new one dimensional texture's sampling range.
+     * \param base The lowest level of sampling
+     * \param max The highest level of sampling
+     */
     inline  texture_1D::settings&
     texture_1D::settings::sample_range( float const base,
                                         float const max )
@@ -1825,44 +2112,68 @@ namespace gfx {
         max_lod_v = max;
         return *this;
     }
-    
+    /**
+     * \brief Set the new one dimensional texture's sampling bias.
+     * The sampling bias is added to the calculated sample depth.
+     * \param bias The sampling bias
+     */
     inline  texture_1D::settings&
     texture_1D::settings::sample_bias( float const bias )
     {
         lod_bias_v = bias;
         return *this;
     }
-    
+    /**
+     * \brief Set the new one dimensional texture's sample mimification filter.
+     * \param min The minification filter
+     */
     inline  texture_1D::settings&
     texture_1D::settings::sample_minification( min_filter_t const& min )
     { min_filter_v = min.val(); return *this; }
-    
+    /**
+     * \brief Set the new one dimensional texture's sample magnification filter.
+     * \param min The maggnification filter
+     */
     inline  texture_1D::settings&
     texture_1D::settings::sample_magnification( mag_filter_t const& mag )
     { mag_filter_v = mag.val(); return *this; }
-    
+    /**
+     * \brief Set the new one dimensional texture's wrap mode along the s-axis.
+     * \param mode The wrap mode
+     */
     inline  texture_1D::settings&
     texture_1D::settings::wrap_s( wrap_mode_t const& mode )
     { wrap_s_v = mode.val(); return *this; }
-    
+    /**
+     * \brief Set the new one dimensional texture's wrap mode along the t-axis.
+     * \param mode The wrap mode
+     */
     inline  texture_1D::settings&
     texture_1D::settings::wrap_t( wrap_mode_t const& mode )
     { wrap_t_v = mode.val(); return *this; }
-    
+    /**
+     * \brief Set the new one dimensional texture's comparison function for
+     * accumulation.
+     * \param func The comparison function
+     */
     inline  texture_1D::settings&
     texture_1D::settings::comparison_function( comparison_function_t const& func )
     { compare_func_v = func.val(); return *this; }
-    
+    /**
+     * \brief Set the new one dimensional texture's source file.
+     * \param path The file path
+     */
     inline texture_1D::settings&    texture_1D::settings::file( std::string const& path )
     { path_v = path; return *this; }
-
-    
-    
-    
-    
-    
-    
-class texture_2D {
+    /**
+     * \class gfx::texture_2D texture.hpp "gCore/gScene/texture.hpp"
+     * \brief Represents a two dimenstional texture.
+     * Two dimensional textures are configured with the member class
+     * \ref gfx::texture_2D::settings "settings". They consist of a two
+     * dimensional grid of color information, which can be formatted in a large
+     * number of ways.
+     */
+    class texture_2D {
     public:
         
         class settings {
@@ -2009,7 +2320,13 @@ class texture_2D {
         
         size_t              bytes();
     };
-    
+    /**
+     * \brief Construct a new default two dimensional texture settings object.
+     * The default settings for a one dimenstional texture are to have a
+     * width of zero, no extra multi-texturing features, standard channel
+     * soruces, and the cheapest interpolation and sampling filters. The
+     * path is also empty.
+     */
     inline texture_2D::settings::settings() :
                                     dw_v ( 0 ),
                                     dh_v ( 0 ),
@@ -2035,21 +2352,32 @@ class texture_2D {
                                     b_src_v ( gl::BLUE ),
                                     a_src_v ( gl::ALPHA ),
                                     path_v ( "" ) {}
-    
+    /**
+     * \brief Set the new two dimensional texture's dimension.
+     * \param dw The new width of the two dimensional texture.
+     * \param dh The new height of the two dimensional texture.
+     */
     inline  texture_2D::settings&  texture_2D::settings::dimensions( size_t const dw,
                                                                      size_t const dh )
     {
         dw_v = dw;
         dh_v = dh;
         pixels_v = dw * dh; return *this; }
-    
+    /**
+     * \brief Set the new two dimensional texture ot be an array of textures.
+     * \param layers The number of one dimensional textures in the array.
+     */
     inline  texture_2D::settings&  texture_2D::settings::array( size_t const layers )
     {
         as_array_v = true;
         layers_v = layers;
         return *this;
     }
-    
+     /**
+     * \brief Set the new two dimensional texture to have one unsigned
+     * normalized chanel at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     */
     inline  texture_2D::settings&
     texture_2D::settings::unsigned_norm_1( R const& depth )
     {
@@ -2072,8 +2400,13 @@ class texture_2D {
         
         return *this;
     }
-
-
+    /**
+     * \brief Set the new two dimensional texture to have two unsigned
+     * normalized chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     */
     inline  texture_2D::settings&
     texture_2D::settings::unsigned_norm_2( RG const& depth,
                                            swizz2 const& r_src,
@@ -2116,7 +2449,14 @@ class texture_2D {
         
         return *this;
     }
-    
+    /**
+     * \brief Set the new two dimensional texture to have three unsigned
+     * normalized chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     * \param b_src The source of the blue chanel.
+     */
     inline  texture_2D::settings&
     texture_2D::settings::unsigned_norm_3( RGB const& depth,
                                            swizz3 const& r_src,
@@ -2194,7 +2534,15 @@ class texture_2D {
         channels_v = 3;
         return *this;
     }
-
+    /**
+     * \brief Set the new two dimensional texture to have four unsigned
+     * normalized chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     * \param b_src The source of the blue chanel.
+     * \param a_src The source of the alpha chanel.
+     */
     inline  texture_2D::settings&
     texture_2D::settings::unsigned_norm_4( RGBA const& depth,
                                            swizz4 const& r_src,
@@ -2294,7 +2642,11 @@ class texture_2D {
         channels_v = 4;
         return *this;
     }
-
+    /**
+     * \brief Set the new two dimensional texture to have one normalized
+     * chanel at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     */
     inline  texture_2D::settings&   texture_2D::settings::signed_norm_1( Rsn const& depth )
         {
             switch ( depth.n() ) {
@@ -2315,7 +2667,13 @@ class texture_2D {
             channels_v = 1;
             return *this;
         }
-
+    /**
+     * \brief Set the new two dimensional texture to have two normalized
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     */
     inline  texture_2D::settings&
     texture_2D::settings::signed_norm_2( RGsn const& depth,
                                            swizz2 const& r_src,
@@ -2358,7 +2716,14 @@ class texture_2D {
         channels_v = 2;
         return *this;
     }
-
+    /**
+     * \brief Set the new one dimensional texture to have three normalized
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     * \param b_src The source of the blue chanel.
+     */
     inline  texture_2D::settings&
     texture_2D::settings::signed_norm_3( RGBsn const& depth,
                                          swizz3 const& r_src,
@@ -2420,7 +2785,15 @@ class texture_2D {
         channels_v = 3;
         return *this;
     }
-
+    /**
+     * \brief Set the new two dimensional texture to have four normalized
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     * \param b_src The source of the blue chanel.
+     * \param a_src The source of the alpha chanel.
+     */
     inline  texture_2D::settings&
     texture_2D::settings::signed_norm_4( RGBAsn const& depth,
                                          swizz4 const& r_src,
@@ -2505,7 +2878,11 @@ class texture_2D {
         channels_v = 4;
         return *this;
     }
-
+    /**
+     * \brief Set the new two dimensional texture to have one unsigned integer
+     * chanel at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     */
     inline  texture_2D::settings&   texture_2D::settings::unsigned_int_1( Rui const& depth )
         {
             switch ( depth.n() ) {
@@ -2530,7 +2907,13 @@ class texture_2D {
             channels_v = 1;
             return *this;
         }
-
+    /**
+     * \brief Set the new two dimensional texture to have two unsigned integer
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     */
     inline  texture_2D::settings&
     texture_2D::settings::unsigned_int_2( RGui const& depth,
                                            swizz2 const& r_src,
@@ -2576,7 +2959,14 @@ class texture_2D {
         channels_v = 2;
         return *this;
     }
-
+    /**
+     * \brief Set the new two dimensional texture to have three unsigned
+     * integer chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     * \param b_src The source of the blue chanel.
+     */
     inline  texture_2D::settings&
     texture_2D::settings::unsigned_int_3( RGBui const& depth,
                                           swizz3 const& r_src,
@@ -2641,7 +3031,15 @@ class texture_2D {
         channels_v = 3;
         return *this;
     }
-
+    /**
+     * \brief Set the new two dimensional texture to have four unsigned integer
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     * \param b_src The source of the blue chanel.
+     * \param a_src The source of the alpha chanel.
+     */
     inline  texture_2D::settings&
     texture_2D::settings::unsigned_int_4( RGBAui const& depth,
                                           swizz4 const& r_src,
@@ -2730,7 +3128,11 @@ class texture_2D {
         channels_v = 4;
         return *this;
     }
-
+    /**
+     * \brief Set the new two dimensional texture to have one signed integer
+     * chanel at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     */
     inline  texture_2D::settings&   texture_2D::settings::signed_int_1( Ri const& depth )
         {
             switch ( depth.n() ) {
@@ -2755,7 +3157,13 @@ class texture_2D {
             channels_v = 1;
             return *this;
         }
-
+    /**
+     * \brief Set the new two dimensional texture to have two signed integers
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     */
     inline  texture_2D::settings&
     texture_2D::settings::signed_int_2( RGi const& depth,
                                            swizz2 const& r_src,
@@ -2801,7 +3209,14 @@ class texture_2D {
         channels_v = 2;
         return *this;
     }
-
+    /**
+     * \brief Set the new two dimensional texture to have three signed integers
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     * \param b_src The source of the blue chanel.
+     */
     inline  texture_2D::settings&
     texture_2D::settings::signed_int_3( RGBi const& depth,
                                         swizz3 const& r_src,
@@ -2866,7 +3281,15 @@ class texture_2D {
         channels_v = 3;
         return *this;
     }
-
+    /**
+     * \brief Set the new two dimensional texture to have four signed integers
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     * \param b_src The source of the blue chanel.
+     * \param a_src The source of the alpha chanel.
+     */
     inline  texture_2D::settings&
     texture_2D::settings::signed_int_4( RGBAi const& depth,
                                         swizz4 const& r_src,
@@ -2955,7 +3378,11 @@ class texture_2D {
         channels_v = 4;
         return *this;
     }
-
+    /**
+     * \brief Set the new two dimensional texture to have one floating point
+     * chanel at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     */
     inline  texture_2D::settings&   texture_2D::settings::floating_point_1( Rf const& depth )
         {
             switch ( depth.n() ) {
@@ -2976,7 +3403,13 @@ class texture_2D {
             channels_v = 1;
             return *this;
         }
-
+    /**
+     * \brief Set the new two dimensional texture to have two floating point
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     */
     inline  texture_2D::settings&
     texture_2D::settings::floating_point_2( RGf const& depth,
                                            swizz2 const& r_src,
@@ -3018,7 +3451,14 @@ class texture_2D {
         channels_v = 2;
         return *this;
     }
-
+    /**
+     * \brief Set the new two dimensional texture to have three floating point
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     * \param b_src The source of the blue chanel.
+     */
     inline  texture_2D::settings&
     texture_2D::settings::floating_point_3( RGBf const& depth,
                                             swizz3 const& r_src,
@@ -3079,7 +3519,15 @@ class texture_2D {
         channels_v = 3;
         return *this;
     }
-
+    /**
+     * \brief Set the new two dimensional texture to have four floating point
+     * chanels at the given bit depth.
+     * \param depth The bit depth of the chanel.
+     * \param r_src The source of the red chanel.
+     * \param g_src The source of the green chanel.
+     * \param b_src The source of the blue chanel.
+     * \param a_src The source of the alpha chanel.
+     */
     inline  texture_2D::settings&
     texture_2D::settings::floating_point_4( RGBAf const& depth,
                                             swizz4 const& r_src,
@@ -3164,32 +3612,73 @@ class texture_2D {
         channels_v = 4;
         return *this;
     }
-
+    /**
+     * \brief Set the new two dimensional texture to have three chanels packed
+     * into 8 bits.
+     * 3 bits for Red and Green, and 2 bits for Blue.
+     */
     inline  texture_2D::settings&  texture_2D::settings::packed_3channel_8bit()
     { image_format_v = gl::R3_G3_B2; pixel_size_v = 8u; return *this; }
-
+    /**
+     * \brief Set the new two dimensional texture to have four chanels packed
+     * into 16 bits.
+     * Five bits for Red, Green, and Blue, and one bit for Alpha.
+     */
     inline  texture_2D::settings&  texture_2D::settings::packed_4channel_16bit()
     { image_format_v = gl::RGB5_A1; pixel_size_v = 16u; return *this; }
-
+    /**
+     * \brief Set the new two dimensional texture to have four chanels packed
+     * into 32 bits.
+     * Ten bits for Red, Green, and Blue, and two for Alpha.
+     */
     inline  texture_2D::settings&  texture_2D::settings::packed_4channel_32bit()
     { image_format_v = gl::RGB10_A2; pixel_size_v = 32u; return *this; }
-
+    /**
+     * \brief Set the new two dimensional texture to have four chanels packed
+     * into 32 bits.
+     * Ten bits for Red, Green, and Blue, and two for Alpha. Unsigned.
+     */
     inline  texture_2D::settings&  texture_2D::settings::packed_4channel_32bit_unsigned()
     { image_format_v = gl::RGB10_A2UI; pixel_size_v = 32u; return *this; }
-
+    /**
+     * \brief Set the new two dimensional texture to have three floating point
+     * chanels packed into 32 bits.
+     * Eleven bits for Red and Green, and ten for Blue.
+     */
     inline  texture_2D::settings&  texture_2D::settings::packed_3channel_32bit_float()
     { image_format_v = gl::R11F_G11F_B10F; pixel_size_v = 32u; return *this; }
-        
+    /**
+     * \brief Set the new two dimensional texture to have three floating point
+     * chanels packed into 32 bits with a shared exponent.
+     * Nine bits for Red, Green, Blue mantissa, then five bits for their shared
+     * exponent. May not be supported as a renderable format, because WAT!?!
+     * There amy be an approrpiate use for this (the OpenGL wiki mentions images
+     * whose color channels all have, more or less, the same order of (binary)
+     * magnitude when expressed as 9 bit floating point), but it is going to be
+     * extremely specific and worse will need to be generated offline.
+     */
     inline texture_2D::settings&
     texture_2D::settings::if_you_find_a_use_for_this_image_format_you_get_a_cookie()
     { image_format_v = gl::RGB9_E5; pixel_size_v = 32u; return *this; }
-
+    /**
+     * \brief Set the new two dimensional texture to use the sRGB
+     * with eight bit chanels.
+     * Eight bits for Red, Green, and Blue. Unsigned.
+     */
     inline  texture_2D::settings&  texture_2D::settings::sRGB_8bit()
     { image_format_v = gl::SRGB8; pixel_size_v = 24u; return *this; }
-
+    /**
+     * \brief Set the new two dimensional texture to use the sRGB
+     * with eight bit chanels.
+     * Eight bits for Red, Green, and Blue, plus Alpha. Unsigned.
+     */
     inline  texture_2D::settings&  texture_2D::settings::sRGBA_8bit()
     { image_format_v = gl::SRGB8_ALPHA8; pixel_size_v = 32u; return *this; }
-    
+    /**
+     * \brief Set the new two dimensional texture's mipmapping range.
+     * \param base The lowest level of mipmap
+     * \param max The highest level of mipmap
+     */
     inline  texture_2D::settings&
     texture_2D::settings::mipmap_range( size_t const base,
                                         size_t const max )
@@ -3198,7 +3687,11 @@ class texture_2D {
         max_level_v = max;
         return *this;
     }
-    
+    /**
+     * \brief Set the new two dimensional texture's sampling range.
+     * \param base The lowest level of sampling
+     * \param max The highest level of sampling
+     */
     inline  texture_2D::settings&
     texture_2D::settings::sample_range( float const base,
                                         float const max )
@@ -3207,34 +3700,57 @@ class texture_2D {
         max_lod_v = max;
         return *this;
     }
-    
+     /**
+     * \brief Set the new two dimensional texture's sampling bias.
+     * The sampling bias is added to the calculated sample depth.
+     * \param bias The sampling bias
+     */
     inline  texture_2D::settings&
     texture_2D::settings::sample_bias( float const bias )
     {
         lod_bias_v = bias;
         return *this;
     }
-    
+    /**
+     * \brief Set the new two dimensional texture's sample mimification filter.
+     * \param min The minification filter
+     */
     inline  texture_2D::settings&
     texture_2D::settings::sample_minification( min_filter_t const& min )
     { min_filter_v = min.val(); return *this; }
-    
+    /**
+     * \brief Set the new two dimensional texture's sample magnification filter.
+     * \param min The maggnification filter
+     */
     inline  texture_2D::settings&
     texture_2D::settings::sample_magnification( mag_filter_t const& mag )
     { mag_filter_v = mag.val(); return *this; }
-    
+    /**
+     * \brief Set the new two dimensional texture's wrap mode along the s-axis.
+     * \param mode The wrap mode
+     */
     inline  texture_2D::settings&
     texture_2D::settings::wrap_s( wrap_mode_t const& mode )
     { wrap_s_v = mode.val(); return *this; }
-    
+    /**
+     * \brief Set the new two dimensional texture's wrap mode along the t-axis.
+     * \param mode The wrap mode
+     */
     inline  texture_2D::settings&
     texture_2D::settings::wrap_t( wrap_mode_t const& mode )
     { wrap_t_v = mode.val(); return *this; }
-    
+    /**
+     * \brief Set the new two dimensional texture's comparison function for
+     * accumulation.
+     * \param func The comparison function
+     */
     inline  texture_2D::settings&
     texture_2D::settings::comparison_function( comparison_function_t const& func )
     { compare_func_v = func.val(); return *this; }
-    
+    /**
+     * \brief Set the new two dimensional texture's source file.
+     * \param path The file path
+     */
     inline texture_2D::settings&    texture_2D::settings::file( std::string const& path )
     { path_v = path; return *this; }    
     
