@@ -16,6 +16,7 @@ namespace gfx {
     camera::~camera() {}
     /**
      * \brief Upload this camera as a uniform to the program given.
+     * 
      * At the moment, this function requires that you have first specified
      * the names of the fields in a camera manually in the program
      * object.

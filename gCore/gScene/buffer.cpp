@@ -54,6 +54,7 @@ namespace gfx {
     /**
      * \brief Use the given block specification to format the data of the
      * buffer.
+     * 
      * Each time you call this function, the format is completely overwritten.
      * \param spec The block specification describing the formatting of the
      * buffer.
@@ -78,6 +79,7 @@ namespace gfx {
     }
     /**
      * \brief Set the number of data blocks in the \ref gfx::buffer "buffer".
+     * 
      * This will reallocate the internal memory in order to resize it, copying
      * whatever data has been uploaded via \ref gfx::buffer::load_attribute() 
      * "load_attribute()" into the new memory, as far as it can fit.
@@ -102,6 +104,7 @@ namespace gfx {
     }
     /**
      * \brief Expand the number of data blocks in the \ref gfx::buffer "buffer".
+     * 
      * This will reallocate the internal memory in order to resize it, copying
      * whatever data has been uploaded via \ref gfx::buffer::load_attribute() 
      * "load_attribute()" into the new memory, as far as it can fit.
@@ -128,6 +131,7 @@ namespace gfx {
     }
     /**
      * \brief Upload the \ref gfx::buffer "buffer's" data to OpenGL.
+     * 
      * \todo There is no check to see if you have actually specified the data
      * format. This means, internally, the stride member has not been correctly
      * specified and so the upload will send OpenGL an unpredictable number of
@@ -149,6 +153,7 @@ namespace gfx {
     /**
      * \brief Query the \ref gfx::buffer "buffer" for the byte offset
      * of the attribute with the given index.
+     * 
      * This is probably not going to stick around; it exposes the internals
      * of OpenGL and the buffer class too much. More of a thing to hack
      * functionality that isn't implemented yet, and to be honest I don't

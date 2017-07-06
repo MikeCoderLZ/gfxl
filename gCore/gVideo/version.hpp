@@ -6,6 +6,7 @@ namespace gfx {
     /**
      * \class gfx::version version.hpp "gCore/gVideo/version.hpp"
      * \brief Class for expressing, storing, and comparing library versions.
+     * 
      * Specifically for OpenGL version checks, but can be used for any library.
      * Appropriate operators are overloaded so that version numbers can be
      * compared naturally in code. There is no default constructor; all
@@ -33,6 +34,7 @@ namespace gfx {
     };
     /**
      * \brief Construct a new version object.
+     * 
      * Explicit version numbers are required, but the sub version number has
      * a default value of 0.
      */

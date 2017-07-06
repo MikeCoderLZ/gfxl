@@ -94,7 +94,7 @@ namespace gfx {
             geom->load_attribute( 0, position );
         }
     /**
-     * \breif Destruc this sphere.
+     * \brief Destruc this sphere.
      */
     sphere::~sphere() {
         delete geom;

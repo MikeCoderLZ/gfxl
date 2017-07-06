@@ -1,0 +1,89 @@
+\hypertarget{classgfx_1_1box}{\section{gfx\-:\-:box Class Reference}
+\label{classgfx_1_1box}\index{gfx\-::box@{gfx\-::box}}
+}
+
+
+A six sided volume with all sides perpendicular to adjacent sides.  
+
+
+
+
+{\ttfamily \#include \char`\"{}g\-Core/g\-Scene/primitive.\-hpp\char`\"{}}
+
+Inheritance diagram for gfx\-:\-:box\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classgfx_1_1box}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classgfx_1_1box_1_1settings}{settings}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classgfx_1_1box_a29298bf9e3c0c7b69ab214a54cc753e3}{box} (\hyperlink{classgfx_1_1box_1_1settings}{settings} const \&set=\hyperlink{classgfx_1_1box_1_1settings}{settings}())
+\begin{DoxyCompactList}\small\item\em Construct a new box. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1box_a4b955c9dc2402f6d4bb9e59cf34acac4}{$\sim$box} ()
+\item 
+virtual \hyperlink{classgfx_1_1buffer}{buffer} const \& \hyperlink{classgfx_1_1box_a76d6f6bb065c811cba58d360de6db476}{geometry} () const 
+\begin{DoxyCompactList}\small\item\em Return the buffer of the box. \end{DoxyCompactList}\item 
+\hypertarget{classgfx_1_1box_ac9d152c560bc2474259266579f251f2e}{G\-Luint $\ast$ \hyperlink{classgfx_1_1box_ac9d152c560bc2474259266579f251f2e}{draw\-\_\-array} ()}\label{classgfx_1_1box_ac9d152c560bc2474259266579f251f2e}
+
+\begin{DoxyCompactList}\small\item\em A\-H\-H\-H\-H\-H\-H\-H\-H\-H\-H\-H\-H\-H\-H\-H\-H\-H\-H\-H\-H!!!!!!!!!!!!!!!!!!! The is just a H\-A\-C\-K. See comments for \hyperlink{classgfx_1_1box_a76d6f6bb065c811cba58d360de6db476}{gfx\-::box\-::geometry} \hyperlink{classgfx_1_1box_a76d6f6bb065c811cba58d360de6db476}{geometry()}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+A six sided volume with all sides perpendicular to adjacent sides. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classgfx_1_1box_a29298bf9e3c0c7b69ab214a54cc753e3}{\index{gfx\-::box@{gfx\-::box}!box@{box}}
+\index{box@{box}!gfx::box@{gfx\-::box}}
+\subsubsection[{box}]{\setlength{\rightskip}{0pt plus 5cm}gfx\-::box\-::box (
+\begin{DoxyParamCaption}
+\item[{{\bf box\-::settings} const \&}]{set = {\ttfamily {\bf settings}()}}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1box_a29298bf9e3c0c7b69ab214a54cc753e3}
+
+
+Construct a new box. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em set} & The settings object ofr this box. \\
+\hline
+\end{DoxyParams}
+\hypertarget{classgfx_1_1box_a4b955c9dc2402f6d4bb9e59cf34acac4}{\index{gfx\-::box@{gfx\-::box}!$\sim$box@{$\sim$box}}
+\index{$\sim$box@{$\sim$box}!gfx::box@{gfx\-::box}}
+\subsubsection[{$\sim$box}]{\setlength{\rightskip}{0pt plus 5cm}gfx\-::box\-::$\sim$box (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1box_a4b955c9dc2402f6d4bb9e59cf34acac4}
+Destruct this box. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classgfx_1_1box_a76d6f6bb065c811cba58d360de6db476}{\index{gfx\-::box@{gfx\-::box}!geometry@{geometry}}
+\index{geometry@{geometry}!gfx::box@{gfx\-::box}}
+\subsubsection[{geometry}]{\setlength{\rightskip}{0pt plus 5cm}{\bf buffer} const \& gfx\-::box\-::geometry (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{classgfx_1_1box_a76d6f6bb065c811cba58d360de6db476}
+
+
+Return the buffer of the box. 
+
+Using the buffer you can draw the box with Open\-G\-L. I do not like this method of drawing primtives, or any geometry for that matter. The ideal solution is a 'technique' class that synthesizes the drawing settings and tools like programs paired with a 'drawable' interface to define how geometry is provided. 
+
+Implements \hyperlink{classgfx_1_1primitive}{gfx\-::primitive}.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+g\-Scene/primitive.\-hpp\item 
+g\-Scene/primitive.\-cpp\end{DoxyCompactItemize}

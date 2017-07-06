@@ -7,6 +7,7 @@ namespace gfx {
     /**
      * \class gfx::window window.hpp "gCore/gVideo/window.hpp"
      * \brief Represents a system window.
+     * 
      * Full control over the window's settings are provided by the usual
      * \ref gfx::window::settings "settings" system. Windows require the
      * \ref gfx::video_system "video system" to be initialized, though
@@ -82,6 +83,7 @@ namespace gfx {
          * \class gfx::window::setings_3D window.hpp "gCore/gVideo/window.hpp"
          * \brief A settings object for \ref gfx::window "windows" conerned
          * with 3D rendering settings.
+         * 
          * Distinct from \ref gfx::window::settings "settings", settings_3D
          * keeps the OpenGL relevent settings separate. This may be useful
          * in some use cases, such as parsing high level graphical setting
@@ -200,6 +202,7 @@ namespace gfx {
     /**
      * \brief Output \ref gfx::window "window" state information to the given
      * output stream. Intended mostly for debugging and logging use.
+     * 
      * \param out The output stream
      * \param rhs The window object to output information from
      */
@@ -207,6 +210,7 @@ namespace gfx {
 
     /**
      * \brief Construct a default \ref gfx::window::settings "settings" object.
+     * 
      * The default values for a \ref gfx::window "window" are essentially
      * useless, consisting of the bare necessary graphical features and
      * zeroed out dimensions.
@@ -386,6 +390,7 @@ namespace gfx {
         return *this; }
     /**
      * \brief Set the \ref gfx::window "window" to be fullscreen.
+     * 
      * That is, the window will take up the whole screen and not have any
      * borders.
      * \see gfx::window::settings::maximized()
@@ -398,6 +403,7 @@ namespace gfx {
         return *this; }
     /**
      * \brief Set the \ref gfx::window "window" to be resizable.
+     * 
      * That is, the user can change the size of the window.
      * \see gfx::window::settings::lock_size()
      */
@@ -405,6 +411,7 @@ namespace gfx {
     { resizable_v = true; return *this; }
     /**
      * \brief Set the \ref gfx::window "window's" size to be static.
+     * 
      * That is, the user can not change the size of the window.
      * \see gfx::window::settings::resizable()
      */
@@ -453,6 +460,7 @@ namespace gfx {
     /**
      * \brief Construct a default \ref gfx::window::settings_3D "3D settings"
      * object.
+     * 
      * The default 3D settings are the basics: four chanel, 8bit color with
      * doublebuffering.
      */
@@ -584,6 +592,7 @@ namespace gfx {
     { in_stereo_v = false; return *this; }
     /**
      * \brief Set the \ref gfx::window "window" to use multisampling.
+     * 
      * This is required for multisampling to be active in an associated
      * \ref gfx::context "context".
      */

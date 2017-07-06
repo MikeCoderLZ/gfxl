@@ -1,0 +1,179 @@
+\hypertarget{classgfx_1_1texture__1D}{\section{gfx\-:\-:texture\-\_\-1\-D Class Reference}
+\label{classgfx_1_1texture__1D}\index{gfx\-::texture\-\_\-1\-D@{gfx\-::texture\-\_\-1\-D}}
+}
+
+
+Represents a one dimenstional texture.  
+
+
+
+
+{\ttfamily \#include \char`\"{}g\-Core/g\-Scene/texture.\-hpp\char`\"{}}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classgfx_1_1texture__1D_1_1settings}{settings}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classgfx_1_1texture__1D_aca51a5be04edd8173aa93b477b0095ea}{texture\-\_\-1\-D} (\hyperlink{classgfx_1_1texture__1D_1_1settings}{settings} const \&set=\hyperlink{classgfx_1_1texture__1D_1_1settings}{settings}())
+\begin{DoxyCompactList}\small\item\em Construct a new one dimensional texture. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1texture__1D_a20e9b9e4ff10e2ce94c457dd3de14984}{$\sim$texture\-\_\-1\-D} ()
+\begin{DoxyCompactList}\small\item\em Destruct this one dimensional texture. \end{DoxyCompactList}\item 
+size\-\_\-t \hyperlink{classgfx_1_1texture__1D_acc970cb5929f9292a389dd2c2c52d66e}{width} () const 
+\begin{DoxyCompactList}\small\item\em Return the one dimensional texture's width. \end{DoxyCompactList}\item 
+size\-\_\-t \hyperlink{classgfx_1_1texture__1D_a74147fa5a5b6a8a849936fe34bacf9d0}{pixels} () const 
+\begin{DoxyCompactList}\small\item\em Return the number of pixels in the one dimensional texture. \end{DoxyCompactList}\item 
+size\-\_\-t \hyperlink{classgfx_1_1texture__1D_a18a1e13d19de574ded9766e696ac5422}{pixel\-\_\-bits} () const 
+\begin{DoxyCompactList}\small\item\em Return the number of bits in a pixel. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1texture__1D_a58beed36f3575d3eaabccac318b3c61a}{file} (std\-::string const \&path)
+\begin{DoxyCompactList}\small\item\em Set the file path to the texture's source file. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1texture__1D_ad966383256b1161aa925b652717be10c}{decode\-\_\-file} ()
+\begin{DoxyCompactList}\small\item\em Access the texture's source file and load it. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1texture__1D_a3b5351295c03e9a29f8e8291d57078bf}{load\-\_\-data} ()
+\begin{DoxyCompactList}\small\item\em Upload the texture's data to Open\-G\-L. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1texture__1D_ab137e982a9faaa001b7ac7d1c087a1ce}{use} ()
+\begin{DoxyCompactList}\small\item\em Activate use of this texture in the current state of Open\-G\-L. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Represents a one dimenstional texture. 
+
+One dimensional textures are configured with the member class \hyperlink{classgfx_1_1texture__1D_1_1settings}{settings}. They consist of a single row of color information, which can be formatted in a large number of ways. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classgfx_1_1texture__1D_aca51a5be04edd8173aa93b477b0095ea}{\index{gfx\-::texture\-\_\-1\-D@{gfx\-::texture\-\_\-1\-D}!texture\-\_\-1\-D@{texture\-\_\-1\-D}}
+\index{texture\-\_\-1\-D@{texture\-\_\-1\-D}!gfx::texture_1D@{gfx\-::texture\-\_\-1\-D}}
+\subsubsection[{texture\-\_\-1\-D}]{\setlength{\rightskip}{0pt plus 5cm}gfx\-::texture\-\_\-1\-D\-::texture\-\_\-1\-D (
+\begin{DoxyParamCaption}
+\item[{{\bf settings} const \&}]{set = {\ttfamily {\bf settings}()}}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1texture__1D_aca51a5be04edd8173aa93b477b0095ea}
+
+
+Construct a new one dimensional texture. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em set} & The settings for the new texture. \\
+\hline
+\end{DoxyParams}
+\hypertarget{classgfx_1_1texture__1D_a20e9b9e4ff10e2ce94c457dd3de14984}{\index{gfx\-::texture\-\_\-1\-D@{gfx\-::texture\-\_\-1\-D}!$\sim$texture\-\_\-1\-D@{$\sim$texture\-\_\-1\-D}}
+\index{$\sim$texture\-\_\-1\-D@{$\sim$texture\-\_\-1\-D}!gfx::texture_1D@{gfx\-::texture\-\_\-1\-D}}
+\subsubsection[{$\sim$texture\-\_\-1\-D}]{\setlength{\rightskip}{0pt plus 5cm}gfx\-::texture\-\_\-1\-D\-::$\sim$texture\-\_\-1\-D (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1texture__1D_a20e9b9e4ff10e2ce94c457dd3de14984}
+
+
+Destruct this one dimensional texture. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000027}{Todo}]It doesn't free Open\-G\-L resources, foo'! \end{DoxyRefDesc}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classgfx_1_1texture__1D_ad966383256b1161aa925b652717be10c}{\index{gfx\-::texture\-\_\-1\-D@{gfx\-::texture\-\_\-1\-D}!decode\-\_\-file@{decode\-\_\-file}}
+\index{decode\-\_\-file@{decode\-\_\-file}!gfx::texture_1D@{gfx\-::texture\-\_\-1\-D}}
+\subsubsection[{decode\-\_\-file}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::texture\-\_\-1\-D\-::decode\-\_\-file (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1texture__1D_ad966383256b1161aa925b652717be10c}
+
+
+Access the texture's source file and load it. 
+
+Note that this does not hand the data over to Open\-G\-L, it just opens the file and turns it into pixel data on the client side. \hypertarget{classgfx_1_1texture__1D_a58beed36f3575d3eaabccac318b3c61a}{\index{gfx\-::texture\-\_\-1\-D@{gfx\-::texture\-\_\-1\-D}!file@{file}}
+\index{file@{file}!gfx::texture_1D@{gfx\-::texture\-\_\-1\-D}}
+\subsubsection[{file}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::texture\-\_\-1\-D\-::file (
+\begin{DoxyParamCaption}
+\item[{std\-::string const \&}]{path}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1texture__1D_a58beed36f3575d3eaabccac318b3c61a}
+
+
+Set the file path to the texture's source file. 
+
+\begin{DoxyReturn}{Returns}
+The file path to the texture's source file 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1texture__1D_a3b5351295c03e9a29f8e8291d57078bf}{\index{gfx\-::texture\-\_\-1\-D@{gfx\-::texture\-\_\-1\-D}!load\-\_\-data@{load\-\_\-data}}
+\index{load\-\_\-data@{load\-\_\-data}!gfx::texture_1D@{gfx\-::texture\-\_\-1\-D}}
+\subsubsection[{load\-\_\-data}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::texture\-\_\-1\-D\-::load\-\_\-data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1texture__1D_a3b5351295c03e9a29f8e8291d57078bf}
+
+
+Upload the texture's data to Open\-G\-L. 
+
+This function requires that \hyperlink{classgfx_1_1texture__1D_ad966383256b1161aa925b652717be10c}{decode\-\_\-file()} has been called on this one dimensional texture. \begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000029}{Todo}]Does this take into account the pxiel formatting options are all? \end{DoxyRefDesc}
+\hypertarget{classgfx_1_1texture__1D_a18a1e13d19de574ded9766e696ac5422}{\index{gfx\-::texture\-\_\-1\-D@{gfx\-::texture\-\_\-1\-D}!pixel\-\_\-bits@{pixel\-\_\-bits}}
+\index{pixel\-\_\-bits@{pixel\-\_\-bits}!gfx::texture_1D@{gfx\-::texture\-\_\-1\-D}}
+\subsubsection[{pixel\-\_\-bits}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t gfx\-::texture\-\_\-1\-D\-::pixel\-\_\-bits (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1texture__1D_a18a1e13d19de574ded9766e696ac5422}
+
+
+Return the number of bits in a pixel. 
+
+\begin{DoxyReturn}{Returns}
+The number of bits in a pixel 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1texture__1D_a74147fa5a5b6a8a849936fe34bacf9d0}{\index{gfx\-::texture\-\_\-1\-D@{gfx\-::texture\-\_\-1\-D}!pixels@{pixels}}
+\index{pixels@{pixels}!gfx::texture_1D@{gfx\-::texture\-\_\-1\-D}}
+\subsubsection[{pixels}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t gfx\-::texture\-\_\-1\-D\-::pixels (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1texture__1D_a74147fa5a5b6a8a849936fe34bacf9d0}
+
+
+Return the number of pixels in the one dimensional texture. 
+
+\begin{DoxyReturn}{Returns}
+The number of pixels in the one dimensional texture 
+\end{DoxyReturn}
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000028}{Todo}]Review this name. Not sold on it. \end{DoxyRefDesc}
+\hypertarget{classgfx_1_1texture__1D_ab137e982a9faaa001b7ac7d1c087a1ce}{\index{gfx\-::texture\-\_\-1\-D@{gfx\-::texture\-\_\-1\-D}!use@{use}}
+\index{use@{use}!gfx::texture_1D@{gfx\-::texture\-\_\-1\-D}}
+\subsubsection[{use}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::texture\-\_\-1\-D\-::use (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1texture__1D_ab137e982a9faaa001b7ac7d1c087a1ce}
+
+
+Activate use of this texture in the current state of Open\-G\-L. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000030}{Todo}]This function is not very \char`\"{}intelligent\char`\"{}, it assumes things about what texture bindings the texture should use (specifically it assigns this texture to binding 0). This is a relative of the uniform problem over in lights and cameras. These issues must be resolved. \end{DoxyRefDesc}
+\hypertarget{classgfx_1_1texture__1D_acc970cb5929f9292a389dd2c2c52d66e}{\index{gfx\-::texture\-\_\-1\-D@{gfx\-::texture\-\_\-1\-D}!width@{width}}
+\index{width@{width}!gfx::texture_1D@{gfx\-::texture\-\_\-1\-D}}
+\subsubsection[{width}]{\setlength{\rightskip}{0pt plus 5cm}size\-\_\-t gfx\-::texture\-\_\-1\-D\-::width (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1texture__1D_acc970cb5929f9292a389dd2c2c52d66e}
+
+
+Return the one dimensional texture's width. 
+
+\begin{DoxyReturn}{Returns}
+The one dimensional texutre's width 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+g\-Scene/texture.\-hpp\item 
+g\-Scene/texture.\-cpp\end{DoxyCompactItemize}

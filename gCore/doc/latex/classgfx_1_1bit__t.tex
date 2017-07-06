@@ -1,0 +1,38 @@
+\hypertarget{classgfx_1_1bit__t}{\section{gfx\-:\-:bit\-\_\-t Class Reference}
+\label{classgfx_1_1bit__t}\index{gfx\-::bit\-\_\-t@{gfx\-::bit\-\_\-t}}
+}
+
+
+The base class for channel format selectors.  
+
+
+
+
+{\ttfamily \#include \char`\"{}g\-Core/g\-Scene/texture.\-hpp\char`\"{}}
+
+Inheritance diagram for gfx\-:\-:bit\-\_\-t\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=12.000000cm]{classgfx_1_1bit__t}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgfx_1_1bit__t_a8d332ea709667a8f386f68391cdb0e44}{virtual size\-\_\-t {\bfseries n} () const =0}\label{classgfx_1_1bit__t_a8d332ea709667a8f386f68391cdb0e44}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The base class for channel format selectors. 
+
+Channel format selectors are a utility class used in the configuration of textures. Functionally, there are an enum with special type charactersitics to make formatting errors cause compilation errors.
+
+They consist of a multiply inheritted class hierarchy; the derived classes at the end of the hierarchy inherit from the directly derived classes of \hyperlink{classgfx_1_1bit__t}{bit\-\_\-t}. The instances of these terminal classes which are provided are used to select the bit depth of the chanels in the texture, being passed to the number format and chanel multplicity selectors in the settings class.
+
+Using multiple inheritance here means that only combinations of channel bit depth, number format, and chanel mulplicity which are legal in Open\-G\-L are allowed. Illegal combinations cause compilation errors, stopping a developer from making a mistake and causing error messages that more or less actually mean what they say. 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+g\-Scene/texture.\-hpp\end{DoxyCompactItemize}

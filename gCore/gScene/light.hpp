@@ -17,6 +17,7 @@ namespace gfx {
     /**
      * \class gfx::light light.hpp "gCore/gVideo/light.hpp"
      * \brief A representation of a simple light.
+     * 
      * Intended as a base class for other lights as this one is missing
      * important rendering information like position or direction.
      */
@@ -42,6 +43,7 @@ namespace gfx {
     /**
      * \class gfx::point_light light.hpp "gCore/gVideo/light.hpp"
      * \brief A representation of a point light.
+     * 
      * This light has color and position as well as radiance.
      */
     class point_light : public light {
@@ -72,6 +74,7 @@ namespace gfx {
     };
     /**
      * \brief Construct a default point light settings object.
+     * 
      * A default light is position at the origin with a radiance of
      * 1 and is white.
      */
@@ -120,6 +123,7 @@ namespace gfx {
     /**
      * \class gfx::sphere_light light.hpp "gCore/gVideo/light.hpp"
      * \brief A representation of a spherical light source.
+     * 
      * This light has color, position, and radius as well as radiance.
      * A sphere light is a type of area light where light is emitted from
      * the entire surface of a sphere of the given radius.
@@ -158,6 +162,7 @@ namespace gfx {
     };
     /**
      * \brief Consruct a new default spherical light settings object.
+     * 
      * The default spherical light is placed a the origin with a color of
      * white, a radiance of 1 and a radius of 1.
      */
@@ -175,7 +180,7 @@ namespace gfx {
     sphere_light::settings::radiance( float rad )
     { rad_v = rad; return *this; }
     /**
-     * \brief Set the position to the given value/
+     * \brief Set the position to the given value.
      * \param pos The position of the new spherical light
      * \return This settings object
      */
@@ -212,6 +217,7 @@ namespace gfx {
     /**
      * \class gfx::spot_light light.hpp "gCore/gVideo/light.hpp"
      * \brief A representation of a spot light.
+     * 
      * This light has color and position as well as radiance. In addition,
      * spot lights have values related to the size of the cone they illumunate.
      * \todo This is even more complex than the sphere light mathematically.
@@ -259,6 +265,7 @@ namespace gfx {
     };
     /**
      * \brief Construct a new default spot light settings object.
+     * 
      * The default settings for a spot light are a radiance of 1,
      * placed at the origin, looking down the negative z-axis, with
      * a sweep angle of 45 degrees, a radius of 1, and a color of
@@ -330,6 +337,7 @@ namespace gfx {
     /**
      * \class gfx::sun_light light.hpp "gCore/gVideo/light.hpp"
      * \brief A representation of a sun type light.
+     * 
      * This light has color and direction as well as radiance. Sunlight
      * effectively shines from the same direction everywhere.
      */
@@ -360,6 +368,7 @@ namespace gfx {
     };
     /**
      * \brief Construct a new default sun light settings object.
+     * 
      * The default settings for a sun light are a radiance of 1,
      * pointing down the negative s-axis, with a white color.
      */

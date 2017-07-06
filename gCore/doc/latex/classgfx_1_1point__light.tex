@@ -1,0 +1,165 @@
+\hypertarget{classgfx_1_1point__light}{\section{gfx\-:\-:point\-\_\-light Class Reference}
+\label{classgfx_1_1point__light}\index{gfx\-::point\-\_\-light@{gfx\-::point\-\_\-light}}
+}
+
+
+A representation of a point light.  
+
+
+
+
+{\ttfamily \#include \char`\"{}g\-Core/g\-Video/light.\-hpp\char`\"{}}
+
+Inheritance diagram for gfx\-:\-:point\-\_\-light\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classgfx_1_1point__light}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classgfx_1_1point__light_1_1settings}{settings}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classgfx_1_1point__light_adeb313976364f094bff0cd8086b3ec3c}{point\-\_\-light} (\hyperlink{classgfx_1_1point__light_1_1settings}{settings} const \&set=\hyperlink{classgfx_1_1point__light_1_1settings}{settings}())
+\begin{DoxyCompactList}\small\item\em Construct a new point light object. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1point__light}{point\-\_\-light} \& \hyperlink{classgfx_1_1point__light_ad0e0fa27a2136f000e1e30de07309697}{position} (vec3 const \&pos)
+\begin{DoxyCompactList}\small\item\em Set the position to the given value. \end{DoxyCompactList}\item 
+vec3 const \& \hyperlink{classgfx_1_1point__light_a0794f094bebf222bc6b379fc31b26bf1}{position} () const 
+\begin{DoxyCompactList}\small\item\em Return the point light's position. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1point__light}{point\-\_\-light} \& \hyperlink{classgfx_1_1point__light_a3f481861cb135d189f4e65c2cf184547}{color} (vec3 const \&col)
+\begin{DoxyCompactList}\small\item\em Set the color to the given value. \end{DoxyCompactList}\item 
+vec3 const \& \hyperlink{classgfx_1_1point__light_a376b6bfddbb471eabca4a69042f35a91}{color} () const 
+\begin{DoxyCompactList}\small\item\em Return the point light's color. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classgfx_1_1point__light_a9549403e263927018c000f857cb1e718}{upload\-\_\-uniform} (\hyperlink{classgfx_1_1program}{program} \&prgm, std\-::string const \&name)
+\begin{DoxyCompactList}\small\item\em Upload this point light as a uniform to the given \hyperlink{classgfx_1_1program}{program}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgfx_1_1point__light_aed8ad3ac893e2a6cee2b60273362dc0b}{vec3 {\bfseries pos}}\label{classgfx_1_1point__light_aed8ad3ac893e2a6cee2b60273362dc0b}
+
+\item 
+\hypertarget{classgfx_1_1point__light_a918bc9997234187a2de7f90492e8e3ef}{vec3 {\bfseries col}}\label{classgfx_1_1point__light_a918bc9997234187a2de7f90492e8e3ef}
+
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+A representation of a point light. 
+
+This light has color and position as well as radiance. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classgfx_1_1point__light_adeb313976364f094bff0cd8086b3ec3c}{\index{gfx\-::point\-\_\-light@{gfx\-::point\-\_\-light}!point\-\_\-light@{point\-\_\-light}}
+\index{point\-\_\-light@{point\-\_\-light}!gfx::point_light@{gfx\-::point\-\_\-light}}
+\subsubsection[{point\-\_\-light}]{\setlength{\rightskip}{0pt plus 5cm}gfx\-::point\-\_\-light\-::point\-\_\-light (
+\begin{DoxyParamCaption}
+\item[{{\bf settings} const \&}]{set = {\ttfamily {\bf settings}()}}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1point__light_adeb313976364f094bff0cd8086b3ec3c}
+
+
+Construct a new point light object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em set} & The settings for the new point light. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classgfx_1_1point__light_a3f481861cb135d189f4e65c2cf184547}{\index{gfx\-::point\-\_\-light@{gfx\-::point\-\_\-light}!color@{color}}
+\index{color@{color}!gfx::point_light@{gfx\-::point\-\_\-light}}
+\subsubsection[{color}]{\setlength{\rightskip}{0pt plus 5cm}{\bf point\-\_\-light} \& gfx\-::point\-\_\-light\-::color (
+\begin{DoxyParamCaption}
+\item[{vec3 const \&}]{col}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1point__light_a3f481861cb135d189f4e65c2cf184547}
+
+
+Set the color to the given value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em col} & The color of the point light \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This point light object 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1point__light_a376b6bfddbb471eabca4a69042f35a91}{\index{gfx\-::point\-\_\-light@{gfx\-::point\-\_\-light}!color@{color}}
+\index{color@{color}!gfx::point_light@{gfx\-::point\-\_\-light}}
+\subsubsection[{color}]{\setlength{\rightskip}{0pt plus 5cm}vec3 const \& gfx\-::point\-\_\-light\-::color (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1point__light_a376b6bfddbb471eabca4a69042f35a91}
+
+
+Return the point light's color. 
+
+\begin{DoxyReturn}{Returns}
+The color of the point light object. 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1point__light_ad0e0fa27a2136f000e1e30de07309697}{\index{gfx\-::point\-\_\-light@{gfx\-::point\-\_\-light}!position@{position}}
+\index{position@{position}!gfx::point_light@{gfx\-::point\-\_\-light}}
+\subsubsection[{position}]{\setlength{\rightskip}{0pt plus 5cm}{\bf point\-\_\-light} \& gfx\-::point\-\_\-light\-::position (
+\begin{DoxyParamCaption}
+\item[{vec3 const \&}]{pos}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1point__light_ad0e0fa27a2136f000e1e30de07309697}
+
+
+Set the position to the given value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos} & The position of the point light \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This point light object 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1point__light_a0794f094bebf222bc6b379fc31b26bf1}{\index{gfx\-::point\-\_\-light@{gfx\-::point\-\_\-light}!position@{position}}
+\index{position@{position}!gfx::point_light@{gfx\-::point\-\_\-light}}
+\subsubsection[{position}]{\setlength{\rightskip}{0pt plus 5cm}vec3 const \& gfx\-::point\-\_\-light\-::position (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1point__light_a0794f094bebf222bc6b379fc31b26bf1}
+
+
+Return the point light's position. 
+
+\begin{DoxyReturn}{Returns}
+The position of the point light object. 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1point__light_a9549403e263927018c000f857cb1e718}{\index{gfx\-::point\-\_\-light@{gfx\-::point\-\_\-light}!upload\-\_\-uniform@{upload\-\_\-uniform}}
+\index{upload\-\_\-uniform@{upload\-\_\-uniform}!gfx::point_light@{gfx\-::point\-\_\-light}}
+\subsubsection[{upload\-\_\-uniform}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::point\-\_\-light\-::upload\-\_\-uniform (
+\begin{DoxyParamCaption}
+\item[{{\bf program} \&}]{prgm, }
+\item[{std\-::string const \&}]{name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classgfx_1_1point__light_a9549403e263927018c000f857cb1e718}
+
+
+Upload this point light as a uniform to the given \hyperlink{classgfx_1_1program}{program}. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000020}{Todo}]The uniform class and programs aren't smart enough, yet, for this to work properly. Some shenanigans using an updated info and type system is needed. \end{DoxyRefDesc}
+
+
+Reimplemented from \hyperlink{classgfx_1_1light_a7b974f1340562d8740192b2ff0d62f93}{gfx\-::light}.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+g\-Scene/light.\-hpp\item 
+g\-Scene/light.\-cpp\end{DoxyCompactItemize}

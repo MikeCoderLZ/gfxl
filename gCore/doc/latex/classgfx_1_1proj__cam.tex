@@ -1,0 +1,251 @@
+\hypertarget{classgfx_1_1proj__cam}{\section{gfx\-:\-:proj\-\_\-cam Class Reference}
+\label{classgfx_1_1proj__cam}\index{gfx\-::proj\-\_\-cam@{gfx\-::proj\-\_\-cam}}
+}
+
+
+A directable projection camera.  
+
+
+
+
+{\ttfamily \#include \char`\"{}g\-Core/g\-Scene/camera.\-hpp\char`\"{}}
+
+Inheritance diagram for gfx\-:\-:proj\-\_\-cam\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classgfx_1_1proj__cam}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classgfx_1_1proj__cam_1_1settings}{settings}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classgfx_1_1proj__cam_af0e3ae63279b365f1cfe9e2da5d9defc}{proj\-\_\-cam} (\hyperlink{classgfx_1_1proj__cam_1_1settings}{settings} const \&set=\hyperlink{classgfx_1_1proj__cam_1_1settings}{settings}())
+\begin{DoxyCompactList}\small\item\em Construct a new projection camera. \end{DoxyCompactList}\item 
+\hypertarget{classgfx_1_1proj__cam_ad82cad064ed31c060800f31783ef15f5}{\hyperlink{classgfx_1_1proj__cam_ad82cad064ed31c060800f31783ef15f5}{$\sim$proj\-\_\-cam} ()}\label{classgfx_1_1proj__cam_ad82cad064ed31c060800f31783ef15f5}
+
+\begin{DoxyCompactList}\small\item\em Destruct this projection camera. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1proj__cam}{proj\-\_\-cam} \& \hyperlink{classgfx_1_1proj__cam_ae4787d17c3c026fc142405ed926f5197}{position} (vec3 const \&point)
+\begin{DoxyCompactList}\small\item\em Set the projection camera's position. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1proj__cam}{proj\-\_\-cam} \& \hyperlink{classgfx_1_1proj__cam_adc330250e18123f712e295270ab82e8d}{look\-\_\-at} (vec3 const \&point)
+\begin{DoxyCompactList}\small\item\em Set the point the projection camera looks at. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1proj__cam}{proj\-\_\-cam} \& \hyperlink{classgfx_1_1proj__cam_a4a56dae9f390db460f573a128786580f}{upward} (vec3 const \&dir)
+\begin{DoxyCompactList}\small\item\em Set the direction the projection camera considers to be up. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1proj__cam}{proj\-\_\-cam} \& \hyperlink{classgfx_1_1proj__cam_ad6e333007f9a943e4fa4ffdd49d46fd7}{field\-\_\-of\-\_\-view} (d\-\_\-angle const \&vert)
+\begin{DoxyCompactList}\small\item\em Set the projection camera's vertical field of view. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1proj__cam}{proj\-\_\-cam} \& \hyperlink{classgfx_1_1proj__cam_ad8982cf936ac2ca092c428783ba4b43a}{aspect\-\_\-ratio} (double ar)
+\begin{DoxyCompactList}\small\item\em Set the projection camera's aspect ratio. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1proj__cam}{proj\-\_\-cam} \& \hyperlink{classgfx_1_1proj__cam_a43d03b8818766ea972cd0253e6207c3f}{near\-\_\-plane} (double np)
+\begin{DoxyCompactList}\small\item\em Set the projection camera's near clipping plane. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1proj__cam}{proj\-\_\-cam} \& \hyperlink{classgfx_1_1proj__cam_abc2f979a40f4467fce33b90d752cdbfa}{far\-\_\-plane} (double fp)
+\begin{DoxyCompactList}\small\item\em Set the projection camera's far clipping plane. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgfx_1_1proj__cam_abc8a9c3bce414995385ccc7cdaeb3a1f}{virtual void \hyperlink{classgfx_1_1proj__cam_abc8a9c3bce414995385ccc7cdaeb3a1f}{update\-\_\-view} ()}\label{classgfx_1_1proj__cam_abc8a9c3bce414995385ccc7cdaeb3a1f}
+
+\begin{DoxyCompactList}\small\item\em Update the view matrix of the projection camera. Used internally. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgfx_1_1proj__cam_ac1ab5332debb501a37b5de30617880d2}{vec3 {\bfseries pos}}\label{classgfx_1_1proj__cam_ac1ab5332debb501a37b5de30617880d2}
+
+\item 
+\hypertarget{classgfx_1_1proj__cam_a27784dac2322e2f20e633a45a42411ab}{vec3 {\bfseries look}}\label{classgfx_1_1proj__cam_a27784dac2322e2f20e633a45a42411ab}
+
+\item 
+\hypertarget{classgfx_1_1proj__cam_a877c175c8b29f85ab3a4ea92f3e5d977}{vec3 {\bfseries up}}\label{classgfx_1_1proj__cam_a877c175c8b29f85ab3a4ea92f3e5d977}
+
+\item 
+\hypertarget{classgfx_1_1proj__cam_ac049cd3c7dbcf9cbf5b88613bed7d244}{d\-\_\-angle {\bfseries fov\-\_\-vert}}\label{classgfx_1_1proj__cam_ac049cd3c7dbcf9cbf5b88613bed7d244}
+
+\item 
+\hypertarget{classgfx_1_1proj__cam_a73fe11c5cdfe4947160bd3e7ab6b6732}{double {\bfseries aspect}}\label{classgfx_1_1proj__cam_a73fe11c5cdfe4947160bd3e7ab6b6732}
+
+\item 
+\hypertarget{classgfx_1_1proj__cam_afdbbd67b960c2ab5b9b0956cbe9030df}{double {\bfseries near}}\label{classgfx_1_1proj__cam_afdbbd67b960c2ab5b9b0956cbe9030df}
+
+\item 
+\hypertarget{classgfx_1_1proj__cam_a93986237b2dd89bf2bb47c9e676ba975}{double {\bfseries far}}\label{classgfx_1_1proj__cam_a93986237b2dd89bf2bb47c9e676ba975}
+
+\item 
+\hypertarget{classgfx_1_1proj__cam_a2f2d2e68eee3d2975056e874b05634ae}{mat4 {\bfseries perspect}}\label{classgfx_1_1proj__cam_a2f2d2e68eee3d2975056e874b05634ae}
+
+\item 
+\hypertarget{classgfx_1_1proj__cam_af3c86c7a6882a0a1b8f3820e401696f9}{bool {\bfseries proj\-\_\-changed}}\label{classgfx_1_1proj__cam_af3c86c7a6882a0a1b8f3820e401696f9}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A directable projection camera. 
+
+Put it somewhere, tell it what to look at, and specify what up is, and it does the rest.
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000017}{Todo}]Ummm, chouldn't proj\-\_\-changed just be view\-\_\-changed? Review this. \end{DoxyRefDesc}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classgfx_1_1proj__cam_af0e3ae63279b365f1cfe9e2da5d9defc}{\index{gfx\-::proj\-\_\-cam@{gfx\-::proj\-\_\-cam}!proj\-\_\-cam@{proj\-\_\-cam}}
+\index{proj\-\_\-cam@{proj\-\_\-cam}!gfx::proj_cam@{gfx\-::proj\-\_\-cam}}
+\subsubsection[{proj\-\_\-cam}]{\setlength{\rightskip}{0pt plus 5cm}gfx\-::proj\-\_\-cam\-::proj\-\_\-cam (
+\begin{DoxyParamCaption}
+\item[{{\bf settings} const \&}]{set = {\ttfamily {\bf settings}()}}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1proj__cam_af0e3ae63279b365f1cfe9e2da5d9defc}
+
+
+Construct a new projection camera. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em set} & The settings for the new projection camera \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classgfx_1_1proj__cam_ad8982cf936ac2ca092c428783ba4b43a}{\index{gfx\-::proj\-\_\-cam@{gfx\-::proj\-\_\-cam}!aspect\-\_\-ratio@{aspect\-\_\-ratio}}
+\index{aspect\-\_\-ratio@{aspect\-\_\-ratio}!gfx::proj_cam@{gfx\-::proj\-\_\-cam}}
+\subsubsection[{aspect\-\_\-ratio}]{\setlength{\rightskip}{0pt plus 5cm}{\bf proj\-\_\-cam} \& gfx\-::proj\-\_\-cam\-::aspect\-\_\-ratio (
+\begin{DoxyParamCaption}
+\item[{double}]{ar}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1proj__cam_ad8982cf936ac2ca092c428783ba4b43a}
+
+
+Set the projection camera's aspect ratio. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vert} & The aspect ratio \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This projection camera 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1proj__cam_abc2f979a40f4467fce33b90d752cdbfa}{\index{gfx\-::proj\-\_\-cam@{gfx\-::proj\-\_\-cam}!far\-\_\-plane@{far\-\_\-plane}}
+\index{far\-\_\-plane@{far\-\_\-plane}!gfx::proj_cam@{gfx\-::proj\-\_\-cam}}
+\subsubsection[{far\-\_\-plane}]{\setlength{\rightskip}{0pt plus 5cm}{\bf proj\-\_\-cam} \& gfx\-::proj\-\_\-cam\-::far\-\_\-plane (
+\begin{DoxyParamCaption}
+\item[{double}]{fp}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1proj__cam_abc2f979a40f4467fce33b90d752cdbfa}
+
+
+Set the projection camera's far clipping plane. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fp} & The distance to the far clipping plane \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This projection camera 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1proj__cam_ad6e333007f9a943e4fa4ffdd49d46fd7}{\index{gfx\-::proj\-\_\-cam@{gfx\-::proj\-\_\-cam}!field\-\_\-of\-\_\-view@{field\-\_\-of\-\_\-view}}
+\index{field\-\_\-of\-\_\-view@{field\-\_\-of\-\_\-view}!gfx::proj_cam@{gfx\-::proj\-\_\-cam}}
+\subsubsection[{field\-\_\-of\-\_\-view}]{\setlength{\rightskip}{0pt plus 5cm}{\bf proj\-\_\-cam} \& gfx\-::proj\-\_\-cam\-::field\-\_\-of\-\_\-view (
+\begin{DoxyParamCaption}
+\item[{d\-\_\-angle const \&}]{vert}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1proj__cam_ad6e333007f9a943e4fa4ffdd49d46fd7}
+
+
+Set the projection camera's vertical field of view. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vert} & The vertical field of view \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This projection camera 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1proj__cam_adc330250e18123f712e295270ab82e8d}{\index{gfx\-::proj\-\_\-cam@{gfx\-::proj\-\_\-cam}!look\-\_\-at@{look\-\_\-at}}
+\index{look\-\_\-at@{look\-\_\-at}!gfx::proj_cam@{gfx\-::proj\-\_\-cam}}
+\subsubsection[{look\-\_\-at}]{\setlength{\rightskip}{0pt plus 5cm}{\bf proj\-\_\-cam} \& gfx\-::proj\-\_\-cam\-::look\-\_\-at (
+\begin{DoxyParamCaption}
+\item[{vec3 const \&}]{point}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1proj__cam_adc330250e18123f712e295270ab82e8d}
+
+
+Set the point the projection camera looks at. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em point} & The point the projection camera looks at \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This projection camera 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1proj__cam_a43d03b8818766ea972cd0253e6207c3f}{\index{gfx\-::proj\-\_\-cam@{gfx\-::proj\-\_\-cam}!near\-\_\-plane@{near\-\_\-plane}}
+\index{near\-\_\-plane@{near\-\_\-plane}!gfx::proj_cam@{gfx\-::proj\-\_\-cam}}
+\subsubsection[{near\-\_\-plane}]{\setlength{\rightskip}{0pt plus 5cm}{\bf proj\-\_\-cam} \& gfx\-::proj\-\_\-cam\-::near\-\_\-plane (
+\begin{DoxyParamCaption}
+\item[{double}]{np}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1proj__cam_a43d03b8818766ea972cd0253e6207c3f}
+
+
+Set the projection camera's near clipping plane. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em np} & The distance to the near clipping plane \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This projection camera 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1proj__cam_ae4787d17c3c026fc142405ed926f5197}{\index{gfx\-::proj\-\_\-cam@{gfx\-::proj\-\_\-cam}!position@{position}}
+\index{position@{position}!gfx::proj_cam@{gfx\-::proj\-\_\-cam}}
+\subsubsection[{position}]{\setlength{\rightskip}{0pt plus 5cm}{\bf proj\-\_\-cam} \& gfx\-::proj\-\_\-cam\-::position (
+\begin{DoxyParamCaption}
+\item[{vec3 const \&}]{point}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1proj__cam_ae4787d17c3c026fc142405ed926f5197}
+
+
+Set the projection camera's position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em point} & The position of the projection camera \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This projection camera 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1proj__cam_a4a56dae9f390db460f573a128786580f}{\index{gfx\-::proj\-\_\-cam@{gfx\-::proj\-\_\-cam}!upward@{upward}}
+\index{upward@{upward}!gfx::proj_cam@{gfx\-::proj\-\_\-cam}}
+\subsubsection[{upward}]{\setlength{\rightskip}{0pt plus 5cm}{\bf proj\-\_\-cam} \& gfx\-::proj\-\_\-cam\-::upward (
+\begin{DoxyParamCaption}
+\item[{vec3 const \&}]{dir}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1proj__cam_a4a56dae9f390db460f573a128786580f}
+
+
+Set the direction the projection camera considers to be up. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dir} & The direction that the projection camera considers to be up \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This projection camera 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+g\-Scene/camera.\-hpp\item 
+g\-Scene/camera.\-cpp\end{DoxyCompactItemize}

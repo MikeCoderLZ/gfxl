@@ -465,6 +465,7 @@ namespace gfx {
     { this->path = path; }
     /**
      * \brief Access the texture's source file and load it.
+     * 
      * Note that this does not hand the data over to OpenGL, it just
      * opens the file and turns it into pixel data on the client side.
      */
@@ -498,6 +499,7 @@ namespace gfx {
     }
     /**
      * \brief Upload the texture's data to OpenGL.
+     * 
      * This function requires that \ref gfx::texture_1D::decode_file "decode_file()"
      * has been called on this one dimensional texture.
      * \todo Does this take into account the pxiel formatting options are all?
@@ -650,6 +652,7 @@ namespace gfx {
     { this->path = path; }
     /**
      * \brief Access the texture's source file and load it.
+     * 
      * Note that this does not hand the data over to OpenGL, it just
      * opens the file and turns it into pixel data on the client side.
      */
@@ -681,6 +684,7 @@ namespace gfx {
     }
     /**
      * \brief Upload the texture's data to OpenGL.
+     * 
      * This function requires that \ref gfx::texture_1D::decode_file "decode_file()"
      * has been called on this two dimensional texture.
      * \todo Does this take into account the pxiel formatting options are all?

@@ -1,0 +1,701 @@
+\hypertarget{classgfx_1_1window}{\section{gfx\-:\-:window Class Reference}
+\label{classgfx_1_1window}\index{gfx\-::window@{gfx\-::window}}
+}
+
+
+Represents a system window.  
+
+
+
+
+{\ttfamily \#include \char`\"{}g\-Core/g\-Video/window.\-hpp\char`\"{}}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classgfx_1_1window_1_1setings__3D}{setings\-\_\-3\-D}
+\begin{DoxyCompactList}\small\item\em A settings object for \hyperlink{classgfx_1_1window}{windows} conerned with 3\-D rendering settings. \end{DoxyCompactList}\item 
+class \hyperlink{classgfx_1_1window_1_1settings}{settings}
+\begin{DoxyCompactList}\small\item\em The settings object for the \hyperlink{classgfx_1_1window}{window} class. Mutators can be chained. \end{DoxyCompactList}\item 
+class \hyperlink{classgfx_1_1window_1_1settings__3D}{settings\-\_\-3\-D}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classgfx_1_1window_acb96d8b2a517dd068069932792b60ce1}{window} (\hyperlink{classgfx_1_1window_1_1settings}{settings} const \&set=\hyperlink{classgfx_1_1window_1_1settings}{settings}(), \hyperlink{classgfx_1_1window_1_1settings__3D}{settings\-\_\-3\-D} const \&set\-\_\-3\-D=\hyperlink{classgfx_1_1window_1_1settings__3D}{settings\-\_\-3\-D}())
+\begin{DoxyCompactList}\small\item\em Construct a new window object with the given settings. \end{DoxyCompactList}\item 
+\hypertarget{classgfx_1_1window_a73e6dbb43ad43fb17b8de80f2628c0f8}{\hyperlink{classgfx_1_1window_a73e6dbb43ad43fb17b8de80f2628c0f8}{$\sim$window} ()}\label{classgfx_1_1window_a73e6dbb43ad43fb17b8de80f2628c0f8}
+
+\begin{DoxyCompactList}\small\item\em Destruct the window. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1window_a276ca46d49627c6880eeb568f72044f6}{swap} ()
+\begin{DoxyCompactList}\small\item\em Swap the double buffers. \end{DoxyCompactList}\item 
+\hypertarget{classgfx_1_1window_a4597ab67e0187c2fa3ceb977643f7dc5}{bool \hyperlink{classgfx_1_1window_a4597ab67e0187c2fa3ceb977643f7dc5}{operator==} (\hyperlink{classgfx_1_1window}{window} const \&rhs) const }\label{classgfx_1_1window_a4597ab67e0187c2fa3ceb977643f7dc5}
+
+\begin{DoxyCompactList}\small\item\em Test whether the given \hyperlink{classgfx_1_1window}{window} is the same window as this one. \end{DoxyCompactList}\item 
+std\-::string \hyperlink{classgfx_1_1window_a0a1e663bd73e821033e887264b95a725}{title} () const 
+\begin{DoxyCompactList}\small\item\em Return the \hyperlink{classgfx_1_1window}{window's} title. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1window_a9d287c763f53db3d04e9a5213707f8eb}{title} (std\-::string const \&ttl)
+\begin{DoxyCompactList}\small\item\em Set the \hyperlink{classgfx_1_1window}{window's} title to the given string. \end{DoxyCompactList}\item 
+int \hyperlink{classgfx_1_1window_a66867684bf24fcb3621327702e0840d2}{x\-\_\-pos} () const 
+\begin{DoxyCompactList}\small\item\em Return the \hyperlink{classgfx_1_1window}{window's} x position. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1window_abc8bba1c74d722f4ed412491fb322866}{x\-\_\-pos} (int xp)
+\begin{DoxyCompactList}\small\item\em Set the \hyperlink{classgfx_1_1window}{window's} x position to the given value. \end{DoxyCompactList}\item 
+int \hyperlink{classgfx_1_1window_a95a085937c4469b8a098d975dcaf8ebc}{y\-\_\-pos} () const 
+\begin{DoxyCompactList}\small\item\em Return the \hyperlink{classgfx_1_1window}{window's} y position. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1window_a6f0e1d38b8c31f8dc2c58af54258a574}{y\-\_\-pos} (int yp)
+\begin{DoxyCompactList}\small\item\em Set the \hyperlink{classgfx_1_1window}{window's} y position to the given value. \end{DoxyCompactList}\item 
+ivec2 \hyperlink{classgfx_1_1window_a090720019f2da36382d0a947e2f71a36}{position} () const 
+\begin{DoxyCompactList}\small\item\em Return the \hyperlink{classgfx_1_1window}{window's} x and y position. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1window_a1194cc211d3a9d3c8849ae10e0316a12}{position} (int xp, int yp)
+\begin{DoxyCompactList}\small\item\em Set the \hyperlink{classgfx_1_1window}{window's} x and y position to the given values. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1window_a1c0ceb06e44800f44bf2de73fbc353f9}{position} (ivec2 const \&pos)
+\begin{DoxyCompactList}\small\item\em Set the \hyperlink{classgfx_1_1window}{window's} x and y position to the given values. \end{DoxyCompactList}\item 
+\hypertarget{classgfx_1_1window_a69968aebb6a2842953e11f2e51248942}{bool \hyperlink{classgfx_1_1window_a69968aebb6a2842953e11f2e51248942}{is\-\_\-x\-\_\-centered} () const }\label{classgfx_1_1window_a69968aebb6a2842953e11f2e51248942}
+
+\begin{DoxyCompactList}\small\item\em Query the \hyperlink{classgfx_1_1window}{window} to see if it set to be centered on the x axis. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1window_afac08c0b3964c9adc133cbc9ceeea155}{center\-\_\-x} ()
+\begin{DoxyCompactList}\small\item\em Set the \hyperlink{classgfx_1_1window}{window} to be centered on the x axis. \end{DoxyCompactList}\item 
+\hypertarget{classgfx_1_1window_af87fdac7ff7411499b93ed2182ee6bc3}{bool \hyperlink{classgfx_1_1window_af87fdac7ff7411499b93ed2182ee6bc3}{is\-\_\-y\-\_\-centered} () const }\label{classgfx_1_1window_af87fdac7ff7411499b93ed2182ee6bc3}
+
+\begin{DoxyCompactList}\small\item\em Query the \hyperlink{classgfx_1_1window}{window} to see if it set to be centered on the y axis. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1window_afef147064e76438ff276e2b6a7a08778}{center\-\_\-y} ()
+\begin{DoxyCompactList}\small\item\em Set the \hyperlink{classgfx_1_1window}{window} to be centered on the y axis. \end{DoxyCompactList}\item 
+int \hyperlink{classgfx_1_1window_a1e15545ad6e6a9b533bb0cf4fd473b65}{width} () const 
+\begin{DoxyCompactList}\small\item\em Return the \hyperlink{classgfx_1_1window}{window's} width. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1window_a1f5b791b54d5a05c4873d86acf5f7ff1}{width} (int dw)
+\begin{DoxyCompactList}\small\item\em Set the \hyperlink{classgfx_1_1window}{window's} width to the given value. \end{DoxyCompactList}\item 
+int \hyperlink{classgfx_1_1window_a1bb84edf10b914b130c1c8665c1fc988}{height} () const 
+\begin{DoxyCompactList}\small\item\em Return the \hyperlink{classgfx_1_1window}{window's} height. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1window_a0e4f80f47ad3943d6f330a87530fb3b5}{height} (int dh)
+\begin{DoxyCompactList}\small\item\em Set the \hyperlink{classgfx_1_1window}{window's} height to the given value. \end{DoxyCompactList}\item 
+ivec2 \hyperlink{classgfx_1_1window_a936065f7d801abf7c43c89f1a45f5ee5}{dimensions} () const 
+\begin{DoxyCompactList}\small\item\em Return the \hyperlink{classgfx_1_1window}{window's} width and height. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1window_a03f3685e4e89eb5fdffeb083bdec561d}{dimensions} (int dw, int dh)
+\begin{DoxyCompactList}\small\item\em Set the \hyperlink{classgfx_1_1window}{window's} width and height to the given values. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1window_a023153ae51b73dc6907c73f66209af0d}{dimensions} (ivec2 const \&dim)
+\begin{DoxyCompactList}\small\item\em Set the \hyperlink{classgfx_1_1window}{window's} width and height to the given values. \end{DoxyCompactList}\item 
+ivec2 \hyperlink{classgfx_1_1window_adc983eae8a3faab2a51ca118e8df0ad3}{ul\-\_\-corner} () const 
+\begin{DoxyCompactList}\small\item\em Return the \hyperlink{classgfx_1_1window}{window's} upper left corner. \end{DoxyCompactList}\item 
+ivec2 \hyperlink{classgfx_1_1window_a74e3177b1f1c64ed653848afd648749c}{lr\-\_\-corner} () const 
+\begin{DoxyCompactList}\small\item\em Return the \hyperlink{classgfx_1_1window}{window's} lower right corner. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1window_afc375a6888fb2f5fffa75b6d4d1e407e}{corners} (int ulx, int uly, int lrx, int lry)
+\begin{DoxyCompactList}\small\item\em Set the \hyperlink{classgfx_1_1window}{window's} corners. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1window_a37662d40ab8b6b3ac7f95ddebf98b29b}{corners} (ivec2 const \&ulc, ivec2 const \&lrc)
+\begin{DoxyCompactList}\small\item\em Set the \hyperlink{classgfx_1_1window}{window's} corners. \end{DoxyCompactList}\item 
+bool \hyperlink{classgfx_1_1window_aba18ff6d277ed78d54fe7e227ba655a1}{is\-\_\-maximized} () const 
+\begin{DoxyCompactList}\small\item\em Query that \hyperlink{classgfx_1_1window}{window} to see if it is maximized. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1window_a12b8c167d3d8dbad09614dcbf2d0289c}{maximize} ()
+\begin{DoxyCompactList}\small\item\em Maximize the \hyperlink{classgfx_1_1window}{window}. \end{DoxyCompactList}\item 
+bool \hyperlink{classgfx_1_1window_a0ea50f4c35f3865d22373030869d4c13}{is\-\_\-minimized} () const 
+\begin{DoxyCompactList}\small\item\em Query that \hyperlink{classgfx_1_1window}{window} to see if it is minimized. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1window_ae05581143104ba2ba018dbb68f09bbcf}{minimize} ()
+\begin{DoxyCompactList}\small\item\em Minimize the \hyperlink{classgfx_1_1window}{window}. \end{DoxyCompactList}\item 
+bool \hyperlink{classgfx_1_1window_a648234253a466fdd73e9b2163f6a0e18}{is\-\_\-resizable} () const 
+\begin{DoxyCompactList}\small\item\em Query the \hyperlink{classgfx_1_1window}{window} to see if it resizable. \end{DoxyCompactList}\item 
+bool \hyperlink{classgfx_1_1window_a5960a89f750fb092efc66c1555644a9c}{has\-\_\-3\-D} () const 
+\begin{DoxyCompactList}\small\item\em Query the \hyperlink{classgfx_1_1window}{window} to see if is equipped for Open\-G\-L. \end{DoxyCompactList}\item 
+bool \hyperlink{classgfx_1_1window_a6a85c290429b167c6be78f63265310e6}{is\-\_\-visible} () const 
+\begin{DoxyCompactList}\small\item\em Query the \hyperlink{classgfx_1_1window}{window} to see if it is visible. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1window_aecd7d20bad566d001a6bded7b79964f8}{make\-\_\-visible} ()
+\begin{DoxyCompactList}\small\item\em Make the \hyperlink{classgfx_1_1window}{window} visible. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1window_a7ef4c71a39ca077ec52564ec0324af58}{make\-\_\-hidden} ()
+\begin{DoxyCompactList}\small\item\em Make the \hyperlink{classgfx_1_1window}{window} invisible. \end{DoxyCompactList}\item 
+bool \hyperlink{classgfx_1_1window_a075300e632e6d7694a0c408951b2d9f4}{has\-\_\-border} () const 
+\begin{DoxyCompactList}\small\item\em Query the \hyperlink{classgfx_1_1window}{window} if it has a border. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgfx_1_1window_abfd69a86b028655cf7807981b1c58526}{class {\bfseries video\-\_\-system}}\label{classgfx_1_1window_abfd69a86b028655cf7807981b1c58526}
+
+\item 
+\hypertarget{classgfx_1_1window_ac78d499d6bdacfe4cc1f67b4ce865513}{class {\bfseries context}}\label{classgfx_1_1window_ac78d499d6bdacfe4cc1f67b4ce865513}
+
+\item 
+std\-::ostream \& \hyperlink{classgfx_1_1window_aabe1db27f980b7901b4147e5a31dc403}{operator$<$$<$} (std\-::ostream \&out, \hyperlink{classgfx_1_1window}{window} const \&rhs)
+\begin{DoxyCompactList}\small\item\em Output \hyperlink{classgfx_1_1window}{window} state information to the given output stream. Intended mostly for debugging and logging use. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Represents a system window. 
+
+Full control over the window's settings are provided by the usual \hyperlink{classgfx_1_1window_1_1settings}{settings} system. Windows require the \hyperlink{classgfx_1_1video__system}{video system} to be initialized, though all versions of Open\-G\-L are allowed. A working window is needed for a \hyperlink{classgfx_1_1context}{context} to be used for rendering. \begin{DoxySeeAlso}{See Also}
+\hyperlink{classgfx_1_1video__system}{gfx\-::video\-\_\-system} 
+
+\hyperlink{classgfx_1_1context}{gfx\-::context} 
+\end{DoxySeeAlso}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classgfx_1_1window_acb96d8b2a517dd068069932792b60ce1}{\index{gfx\-::window@{gfx\-::window}!window@{window}}
+\index{window@{window}!gfx::window@{gfx\-::window}}
+\subsubsection[{window}]{\setlength{\rightskip}{0pt plus 5cm}gfx\-::window\-::window (
+\begin{DoxyParamCaption}
+\item[{{\bf settings} const \&}]{set = {\ttfamily {\bf settings}()}, }
+\item[{{\bf settings\-\_\-3\-D} const \&}]{set\-\_\-3\-D = {\ttfamily {\bf settings\-\_\-3\-D}()}}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1window_acb96d8b2a517dd068069932792b60ce1}
+
+
+Construct a new window object with the given settings. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em set} & The all-\/purpose settings \\
+\hline
+{\em set\-\_\-3\-D} & The Open\-G\-L-\/speicfic settings \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classgfx_1_1window_1_1settings}{gfx\-::window\-::settings} 
+
+\hyperlink{classgfx_1_1window_1_1settings__3D}{gfx\-::window\-::settings\-\_\-3\-D} 
+\end{DoxySeeAlso}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classgfx_1_1window_afac08c0b3964c9adc133cbc9ceeea155}{\index{gfx\-::window@{gfx\-::window}!center\-\_\-x@{center\-\_\-x}}
+\index{center\-\_\-x@{center\-\_\-x}!gfx::window@{gfx\-::window}}
+\subsubsection[{center\-\_\-x}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::window\-::center\-\_\-x (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1window_afac08c0b3964c9adc133cbc9ceeea155}
+
+
+Set the \hyperlink{classgfx_1_1window}{window} to be centered on the x axis. 
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classgfx_1_1window_1_1settings_a6def8e531d663846945ce7b02ccfb734}{gfx\-::window\-::settings\-::center\-\_\-y()} 
+
+\hyperlink{classgfx_1_1window_1_1settings_a08bde3f0027bc7f5c0c89bb4ac756c35}{gfx\-::window\-::settings\-::center()} 
+\end{DoxySeeAlso}
+\hypertarget{classgfx_1_1window_afef147064e76438ff276e2b6a7a08778}{\index{gfx\-::window@{gfx\-::window}!center\-\_\-y@{center\-\_\-y}}
+\index{center\-\_\-y@{center\-\_\-y}!gfx::window@{gfx\-::window}}
+\subsubsection[{center\-\_\-y}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::window\-::center\-\_\-y (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1window_afef147064e76438ff276e2b6a7a08778}
+
+
+Set the \hyperlink{classgfx_1_1window}{window} to be centered on the y axis. 
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classgfx_1_1window_1_1settings_a7efa57ade4d629427f4c53bbb9f49df8}{gfx\-::window\-::settings\-::center\-\_\-x()} 
+
+\hyperlink{classgfx_1_1window_1_1settings_a08bde3f0027bc7f5c0c89bb4ac756c35}{gfx\-::window\-::settings\-::center()} 
+\end{DoxySeeAlso}
+\hypertarget{classgfx_1_1window_afc375a6888fb2f5fffa75b6d4d1e407e}{\index{gfx\-::window@{gfx\-::window}!corners@{corners}}
+\index{corners@{corners}!gfx::window@{gfx\-::window}}
+\subsubsection[{corners}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::window\-::corners (
+\begin{DoxyParamCaption}
+\item[{int}]{ulx, }
+\item[{int}]{uly, }
+\item[{int}]{lrx, }
+\item[{int}]{lry}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1window_afc375a6888fb2f5fffa75b6d4d1e407e}
+
+
+Set the \hyperlink{classgfx_1_1window}{window's} corners. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ulx} & The upper left x coordinate \\
+\hline
+{\em uly} & The upper left y coordinate \\
+\hline
+{\em lrx} & The lower right x coordinate \\
+\hline
+{\em lry} & The lower right y coordinate \\
+\hline
+\end{DoxyParams}
+\hypertarget{classgfx_1_1window_a37662d40ab8b6b3ac7f95ddebf98b29b}{\index{gfx\-::window@{gfx\-::window}!corners@{corners}}
+\index{corners@{corners}!gfx::window@{gfx\-::window}}
+\subsubsection[{corners}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::window\-::corners (
+\begin{DoxyParamCaption}
+\item[{ivec2 const \&}]{ulc, }
+\item[{ivec2 const \&}]{lrc}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1window_a37662d40ab8b6b3ac7f95ddebf98b29b}
+
+
+Set the \hyperlink{classgfx_1_1window}{window's} corners. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ulc} & The upper left corner \\
+\hline
+{\em lrc} & The lower right corner \\
+\hline
+\end{DoxyParams}
+\hypertarget{classgfx_1_1window_a936065f7d801abf7c43c89f1a45f5ee5}{\index{gfx\-::window@{gfx\-::window}!dimensions@{dimensions}}
+\index{dimensions@{dimensions}!gfx::window@{gfx\-::window}}
+\subsubsection[{dimensions}]{\setlength{\rightskip}{0pt plus 5cm}ivec2 gfx\-::window\-::dimensions (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1window_a936065f7d801abf7c43c89f1a45f5ee5}
+
+
+Return the \hyperlink{classgfx_1_1window}{window's} width and height. 
+
+\begin{DoxyReturn}{Returns}
+The width and height of the window, in pixels 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1window_a03f3685e4e89eb5fdffeb083bdec561d}{\index{gfx\-::window@{gfx\-::window}!dimensions@{dimensions}}
+\index{dimensions@{dimensions}!gfx::window@{gfx\-::window}}
+\subsubsection[{dimensions}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::window\-::dimensions (
+\begin{DoxyParamCaption}
+\item[{int}]{dw, }
+\item[{int}]{dh}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1window_a03f3685e4e89eb5fdffeb083bdec561d}
+
+
+Set the \hyperlink{classgfx_1_1window}{window's} width and height to the given values. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dw} & The width of the window, in pixels \\
+\hline
+{\em dh} & The height of the window, in pixels \\
+\hline
+\end{DoxyParams}
+\hypertarget{classgfx_1_1window_a023153ae51b73dc6907c73f66209af0d}{\index{gfx\-::window@{gfx\-::window}!dimensions@{dimensions}}
+\index{dimensions@{dimensions}!gfx::window@{gfx\-::window}}
+\subsubsection[{dimensions}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::window\-::dimensions (
+\begin{DoxyParamCaption}
+\item[{ivec2 const \&}]{dim}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1window_a023153ae51b73dc6907c73f66209af0d}
+
+
+Set the \hyperlink{classgfx_1_1window}{window's} width and height to the given values. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dim} & The width and height of the window, in pixels \\
+\hline
+\end{DoxyParams}
+\hypertarget{classgfx_1_1window_a5960a89f750fb092efc66c1555644a9c}{\index{gfx\-::window@{gfx\-::window}!has\-\_\-3\-D@{has\-\_\-3\-D}}
+\index{has\-\_\-3\-D@{has\-\_\-3\-D}!gfx::window@{gfx\-::window}}
+\subsubsection[{has\-\_\-3\-D}]{\setlength{\rightskip}{0pt plus 5cm}bool gfx\-::window\-::has\-\_\-3\-D (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1window_a5960a89f750fb092efc66c1555644a9c}
+
+
+Query the \hyperlink{classgfx_1_1window}{window} to see if is equipped for Open\-G\-L. 
+
+\begin{DoxyReturn}{Returns}
+Whether the window can use Open\-G\-L 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1window_a075300e632e6d7694a0c408951b2d9f4}{\index{gfx\-::window@{gfx\-::window}!has\-\_\-border@{has\-\_\-border}}
+\index{has\-\_\-border@{has\-\_\-border}!gfx::window@{gfx\-::window}}
+\subsubsection[{has\-\_\-border}]{\setlength{\rightskip}{0pt plus 5cm}bool gfx\-::window\-::has\-\_\-border (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1window_a075300e632e6d7694a0c408951b2d9f4}
+
+
+Query the \hyperlink{classgfx_1_1window}{window} if it has a border. 
+
+\begin{DoxyReturn}{Returns}
+Whether the window has a border 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1window_a1bb84edf10b914b130c1c8665c1fc988}{\index{gfx\-::window@{gfx\-::window}!height@{height}}
+\index{height@{height}!gfx::window@{gfx\-::window}}
+\subsubsection[{height}]{\setlength{\rightskip}{0pt plus 5cm}int gfx\-::window\-::height (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1window_a1bb84edf10b914b130c1c8665c1fc988}
+
+
+Return the \hyperlink{classgfx_1_1window}{window's} height. 
+
+\begin{DoxyReturn}{Returns}
+dh The height of the window, in pixels 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1window_a0e4f80f47ad3943d6f330a87530fb3b5}{\index{gfx\-::window@{gfx\-::window}!height@{height}}
+\index{height@{height}!gfx::window@{gfx\-::window}}
+\subsubsection[{height}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::window\-::height (
+\begin{DoxyParamCaption}
+\item[{int}]{dh}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1window_a0e4f80f47ad3943d6f330a87530fb3b5}
+
+
+Set the \hyperlink{classgfx_1_1window}{window's} height to the given value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dh} & The height of the window, in pixels \\
+\hline
+\end{DoxyParams}
+\hypertarget{classgfx_1_1window_aba18ff6d277ed78d54fe7e227ba655a1}{\index{gfx\-::window@{gfx\-::window}!is\-\_\-maximized@{is\-\_\-maximized}}
+\index{is\-\_\-maximized@{is\-\_\-maximized}!gfx::window@{gfx\-::window}}
+\subsubsection[{is\-\_\-maximized}]{\setlength{\rightskip}{0pt plus 5cm}bool gfx\-::window\-::is\-\_\-maximized (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1window_aba18ff6d277ed78d54fe7e227ba655a1}
+
+
+Query that \hyperlink{classgfx_1_1window}{window} to see if it is maximized. 
+
+\begin{DoxyReturn}{Returns}
+Whether the window is maximized 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classgfx_1_1window_a12b8c167d3d8dbad09614dcbf2d0289c}{gfx\-::window\-::maximize()} 
+\end{DoxySeeAlso}
+\hypertarget{classgfx_1_1window_a0ea50f4c35f3865d22373030869d4c13}{\index{gfx\-::window@{gfx\-::window}!is\-\_\-minimized@{is\-\_\-minimized}}
+\index{is\-\_\-minimized@{is\-\_\-minimized}!gfx::window@{gfx\-::window}}
+\subsubsection[{is\-\_\-minimized}]{\setlength{\rightskip}{0pt plus 5cm}bool gfx\-::window\-::is\-\_\-minimized (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1window_a0ea50f4c35f3865d22373030869d4c13}
+
+
+Query that \hyperlink{classgfx_1_1window}{window} to see if it is minimized. 
+
+\begin{DoxyReturn}{Returns}
+Whether the window is minimized 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classgfx_1_1window_ae05581143104ba2ba018dbb68f09bbcf}{gfx\-::window\-::minimize()} 
+\end{DoxySeeAlso}
+\hypertarget{classgfx_1_1window_a648234253a466fdd73e9b2163f6a0e18}{\index{gfx\-::window@{gfx\-::window}!is\-\_\-resizable@{is\-\_\-resizable}}
+\index{is\-\_\-resizable@{is\-\_\-resizable}!gfx::window@{gfx\-::window}}
+\subsubsection[{is\-\_\-resizable}]{\setlength{\rightskip}{0pt plus 5cm}bool gfx\-::window\-::is\-\_\-resizable (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1window_a648234253a466fdd73e9b2163f6a0e18}
+
+
+Query the \hyperlink{classgfx_1_1window}{window} to see if it resizable. 
+
+\begin{DoxyReturn}{Returns}
+Whether the window is resizable 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1window_a6a85c290429b167c6be78f63265310e6}{\index{gfx\-::window@{gfx\-::window}!is\-\_\-visible@{is\-\_\-visible}}
+\index{is\-\_\-visible@{is\-\_\-visible}!gfx::window@{gfx\-::window}}
+\subsubsection[{is\-\_\-visible}]{\setlength{\rightskip}{0pt plus 5cm}bool gfx\-::window\-::is\-\_\-visible (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1window_a6a85c290429b167c6be78f63265310e6}
+
+
+Query the \hyperlink{classgfx_1_1window}{window} to see if it is visible. 
+
+\begin{DoxyReturn}{Returns}
+Whether the window is visible 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1window_a74e3177b1f1c64ed653848afd648749c}{\index{gfx\-::window@{gfx\-::window}!lr\-\_\-corner@{lr\-\_\-corner}}
+\index{lr\-\_\-corner@{lr\-\_\-corner}!gfx::window@{gfx\-::window}}
+\subsubsection[{lr\-\_\-corner}]{\setlength{\rightskip}{0pt plus 5cm}ivec2 gfx\-::window\-::lr\-\_\-corner (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1window_a74e3177b1f1c64ed653848afd648749c}
+
+
+Return the \hyperlink{classgfx_1_1window}{window's} lower right corner. 
+
+\begin{DoxyReturn}{Returns}
+The lower right corner, in pixels 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classgfx_1_1window_adc983eae8a3faab2a51ca118e8df0ad3}{gfx\-::window\-::ul\-\_\-corner()} 
+\end{DoxySeeAlso}
+\hypertarget{classgfx_1_1window_a7ef4c71a39ca077ec52564ec0324af58}{\index{gfx\-::window@{gfx\-::window}!make\-\_\-hidden@{make\-\_\-hidden}}
+\index{make\-\_\-hidden@{make\-\_\-hidden}!gfx::window@{gfx\-::window}}
+\subsubsection[{make\-\_\-hidden}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::window\-::make\-\_\-hidden (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1window_a7ef4c71a39ca077ec52564ec0324af58}
+
+
+Make the \hyperlink{classgfx_1_1window}{window} invisible. 
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classgfx_1_1window_aecd7d20bad566d001a6bded7b79964f8}{gfx\-::window\-::make\-\_\-visible()} 
+\end{DoxySeeAlso}
+\hypertarget{classgfx_1_1window_aecd7d20bad566d001a6bded7b79964f8}{\index{gfx\-::window@{gfx\-::window}!make\-\_\-visible@{make\-\_\-visible}}
+\index{make\-\_\-visible@{make\-\_\-visible}!gfx::window@{gfx\-::window}}
+\subsubsection[{make\-\_\-visible}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::window\-::make\-\_\-visible (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1window_aecd7d20bad566d001a6bded7b79964f8}
+
+
+Make the \hyperlink{classgfx_1_1window}{window} visible. 
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classgfx_1_1window_a7ef4c71a39ca077ec52564ec0324af58}{gfx\-::window\-::make\-\_\-hidden()} 
+\end{DoxySeeAlso}
+\hypertarget{classgfx_1_1window_a12b8c167d3d8dbad09614dcbf2d0289c}{\index{gfx\-::window@{gfx\-::window}!maximize@{maximize}}
+\index{maximize@{maximize}!gfx::window@{gfx\-::window}}
+\subsubsection[{maximize}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::window\-::maximize (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1window_a12b8c167d3d8dbad09614dcbf2d0289c}
+
+
+Maximize the \hyperlink{classgfx_1_1window}{window}. 
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classgfx_1_1window_ae05581143104ba2ba018dbb68f09bbcf}{gfx\-::window\-::minimize()} 
+\end{DoxySeeAlso}
+\hypertarget{classgfx_1_1window_ae05581143104ba2ba018dbb68f09bbcf}{\index{gfx\-::window@{gfx\-::window}!minimize@{minimize}}
+\index{minimize@{minimize}!gfx::window@{gfx\-::window}}
+\subsubsection[{minimize}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::window\-::minimize (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1window_ae05581143104ba2ba018dbb68f09bbcf}
+
+
+Minimize the \hyperlink{classgfx_1_1window}{window}. 
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classgfx_1_1window_a12b8c167d3d8dbad09614dcbf2d0289c}{gfx\-::window\-::maximize()} 
+\end{DoxySeeAlso}
+\hypertarget{classgfx_1_1window_a090720019f2da36382d0a947e2f71a36}{\index{gfx\-::window@{gfx\-::window}!position@{position}}
+\index{position@{position}!gfx::window@{gfx\-::window}}
+\subsubsection[{position}]{\setlength{\rightskip}{0pt plus 5cm}ivec2 gfx\-::window\-::position (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1window_a090720019f2da36382d0a947e2f71a36}
+
+
+Return the \hyperlink{classgfx_1_1window}{window's} x and y position. 
+
+\begin{DoxyReturn}{Returns}
+The position of the window, in pixels 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1window_a1194cc211d3a9d3c8849ae10e0316a12}{\index{gfx\-::window@{gfx\-::window}!position@{position}}
+\index{position@{position}!gfx::window@{gfx\-::window}}
+\subsubsection[{position}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::window\-::position (
+\begin{DoxyParamCaption}
+\item[{int}]{xp, }
+\item[{int}]{yp}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1window_a1194cc211d3a9d3c8849ae10e0316a12}
+
+
+Set the \hyperlink{classgfx_1_1window}{window's} x and y position to the given values. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em xp} & The x position of the window, in pixels \\
+\hline
+{\em yp} & The y position of the window, in pixels \\
+\hline
+\end{DoxyParams}
+\hypertarget{classgfx_1_1window_a1c0ceb06e44800f44bf2de73fbc353f9}{\index{gfx\-::window@{gfx\-::window}!position@{position}}
+\index{position@{position}!gfx::window@{gfx\-::window}}
+\subsubsection[{position}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::window\-::position (
+\begin{DoxyParamCaption}
+\item[{ivec2 const \&}]{pos}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1window_a1c0ceb06e44800f44bf2de73fbc353f9}
+
+
+Set the \hyperlink{classgfx_1_1window}{window's} x and y position to the given values. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos} & The position of the window, in pixels \\
+\hline
+\end{DoxyParams}
+\hypertarget{classgfx_1_1window_a276ca46d49627c6880eeb568f72044f6}{\index{gfx\-::window@{gfx\-::window}!swap@{swap}}
+\index{swap@{swap}!gfx::window@{gfx\-::window}}
+\subsubsection[{swap}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::window\-::swap (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1window_a276ca46d49627c6880eeb568f72044f6}
+
+
+Swap the double buffers. 
+
+This will display the latest changes in the window, which will persist until \hyperlink{classgfx_1_1window_a276ca46d49627c6880eeb568f72044f6}{swap()} is called again. \begin{DoxySeeAlso}{See Also}
+\hyperlink{classgfx_1_1context_abd71c661a4eaf846a10b15ad36e2b117}{gfx\-::context\-::clear\-\_\-color()} 
+\end{DoxySeeAlso}
+\hypertarget{classgfx_1_1window_a0a1e663bd73e821033e887264b95a725}{\index{gfx\-::window@{gfx\-::window}!title@{title}}
+\index{title@{title}!gfx::window@{gfx\-::window}}
+\subsubsection[{title}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string gfx\-::window\-::title (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1window_a0a1e663bd73e821033e887264b95a725}
+
+
+Return the \hyperlink{classgfx_1_1window}{window's} title. 
+
+\begin{DoxyReturn}{Returns}
+The title of the window 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1window_a9d287c763f53db3d04e9a5213707f8eb}{\index{gfx\-::window@{gfx\-::window}!title@{title}}
+\index{title@{title}!gfx::window@{gfx\-::window}}
+\subsubsection[{title}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::window\-::title (
+\begin{DoxyParamCaption}
+\item[{std\-::string const \&}]{ttl}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1window_a9d287c763f53db3d04e9a5213707f8eb}
+
+
+Set the \hyperlink{classgfx_1_1window}{window's} title to the given string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em title} & The title of the window \\
+\hline
+\end{DoxyParams}
+\hypertarget{classgfx_1_1window_adc983eae8a3faab2a51ca118e8df0ad3}{\index{gfx\-::window@{gfx\-::window}!ul\-\_\-corner@{ul\-\_\-corner}}
+\index{ul\-\_\-corner@{ul\-\_\-corner}!gfx::window@{gfx\-::window}}
+\subsubsection[{ul\-\_\-corner}]{\setlength{\rightskip}{0pt plus 5cm}ivec2 gfx\-::window\-::ul\-\_\-corner (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1window_adc983eae8a3faab2a51ca118e8df0ad3}
+
+
+Return the \hyperlink{classgfx_1_1window}{window's} upper left corner. 
+
+\begin{DoxyReturn}{Returns}
+The upper left corner, in pixels 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classgfx_1_1window_a74e3177b1f1c64ed653848afd648749c}{gfx\-::window\-::lr\-\_\-corner()} 
+\end{DoxySeeAlso}
+\hypertarget{classgfx_1_1window_a1e15545ad6e6a9b533bb0cf4fd473b65}{\index{gfx\-::window@{gfx\-::window}!width@{width}}
+\index{width@{width}!gfx::window@{gfx\-::window}}
+\subsubsection[{width}]{\setlength{\rightskip}{0pt plus 5cm}int gfx\-::window\-::width (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1window_a1e15545ad6e6a9b533bb0cf4fd473b65}
+
+
+Return the \hyperlink{classgfx_1_1window}{window's} width. 
+
+\begin{DoxyReturn}{Returns}
+The width of the window, in pixels 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1window_a1f5b791b54d5a05c4873d86acf5f7ff1}{\index{gfx\-::window@{gfx\-::window}!width@{width}}
+\index{width@{width}!gfx::window@{gfx\-::window}}
+\subsubsection[{width}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::window\-::width (
+\begin{DoxyParamCaption}
+\item[{int}]{dw}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1window_a1f5b791b54d5a05c4873d86acf5f7ff1}
+
+
+Set the \hyperlink{classgfx_1_1window}{window's} width to the given value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dw} & The width of the window, in pixels \\
+\hline
+\end{DoxyParams}
+\hypertarget{classgfx_1_1window_a66867684bf24fcb3621327702e0840d2}{\index{gfx\-::window@{gfx\-::window}!x\-\_\-pos@{x\-\_\-pos}}
+\index{x\-\_\-pos@{x\-\_\-pos}!gfx::window@{gfx\-::window}}
+\subsubsection[{x\-\_\-pos}]{\setlength{\rightskip}{0pt plus 5cm}int gfx\-::window\-::x\-\_\-pos (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1window_a66867684bf24fcb3621327702e0840d2}
+
+
+Return the \hyperlink{classgfx_1_1window}{window's} x position. 
+
+\begin{DoxyReturn}{Returns}
+The x position of the window, in pixels 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1window_abc8bba1c74d722f4ed412491fb322866}{\index{gfx\-::window@{gfx\-::window}!x\-\_\-pos@{x\-\_\-pos}}
+\index{x\-\_\-pos@{x\-\_\-pos}!gfx::window@{gfx\-::window}}
+\subsubsection[{x\-\_\-pos}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::window\-::x\-\_\-pos (
+\begin{DoxyParamCaption}
+\item[{int}]{xp}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1window_abc8bba1c74d722f4ed412491fb322866}
+
+
+Set the \hyperlink{classgfx_1_1window}{window's} x position to the given value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em xp} & The x position of the window, in pixels \\
+\hline
+\end{DoxyParams}
+\hypertarget{classgfx_1_1window_a95a085937c4469b8a098d975dcaf8ebc}{\index{gfx\-::window@{gfx\-::window}!y\-\_\-pos@{y\-\_\-pos}}
+\index{y\-\_\-pos@{y\-\_\-pos}!gfx::window@{gfx\-::window}}
+\subsubsection[{y\-\_\-pos}]{\setlength{\rightskip}{0pt plus 5cm}int gfx\-::window\-::y\-\_\-pos (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1window_a95a085937c4469b8a098d975dcaf8ebc}
+
+
+Return the \hyperlink{classgfx_1_1window}{window's} y position. 
+
+\begin{DoxyReturn}{Returns}
+The y position of the window, in pixels 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1window_a6f0e1d38b8c31f8dc2c58af54258a574}{\index{gfx\-::window@{gfx\-::window}!y\-\_\-pos@{y\-\_\-pos}}
+\index{y\-\_\-pos@{y\-\_\-pos}!gfx::window@{gfx\-::window}}
+\subsubsection[{y\-\_\-pos}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::window\-::y\-\_\-pos (
+\begin{DoxyParamCaption}
+\item[{int}]{yp}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1window_a6f0e1d38b8c31f8dc2c58af54258a574}
+
+
+Set the \hyperlink{classgfx_1_1window}{window's} y position to the given value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em yp} & The y position of the window, in pixels \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classgfx_1_1window_aabe1db27f980b7901b4147e5a31dc403}{\index{gfx\-::window@{gfx\-::window}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!gfx::window@{gfx\-::window}}
+\subsubsection[{operator$<$$<$}]{\setlength{\rightskip}{0pt plus 5cm}std\-::ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{out, }
+\item[{{\bf window} const \&}]{rhs}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{classgfx_1_1window_aabe1db27f980b7901b4147e5a31dc403}
+
+
+Output \hyperlink{classgfx_1_1window}{window} state information to the given output stream. Intended mostly for debugging and logging use. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em out} & The output stream \\
+\hline
+{\em rhs} & The window object to output information from \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+g\-Video/window.\-hpp\item 
+g\-Video/window.\-cpp\end{DoxyCompactItemize}

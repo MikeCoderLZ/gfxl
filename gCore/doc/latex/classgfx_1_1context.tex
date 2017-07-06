@@ -1,0 +1,315 @@
+\hypertarget{classgfx_1_1context}{\section{gfx\-:\-:context Class Reference}
+\label{classgfx_1_1context}\index{gfx\-::context@{gfx\-::context}}
+}
+
+
+Represents an Open\-G\-L rendering context.  
+
+
+
+
+{\ttfamily \#include \char`\"{}g\-Core/g\-Video/context.\-hp\char`\"{}}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classgfx_1_1context_1_1settings}{settings}
+\begin{DoxyCompactList}\small\item\em Used to configure a \hyperlink{classgfx_1_1context}{context}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgfx_1_1context_a8b1f7ba6e8a44dd16078d4084eef50ff}{typedef std\-::vector$<$ G\-Lubyte $>$ {\bfseries ub\-\_\-indexer}}\label{classgfx_1_1context_a8b1f7ba6e8a44dd16078d4084eef50ff}
+
+\item 
+\hypertarget{classgfx_1_1context_ae58ebbe469b3a22bf3e66ea7908cb877}{typedef std\-::vector$<$ G\-Lushort $>$ {\bfseries us\-\_\-indexer}}\label{classgfx_1_1context_ae58ebbe469b3a22bf3e66ea7908cb877}
+
+\item 
+\hypertarget{classgfx_1_1context_ac1f08fb34b7dad45044044611a76ec0c}{typedef std\-::vector$<$ G\-Luint $>$ {\bfseries ui\-\_\-indexer}}\label{classgfx_1_1context_ac1f08fb34b7dad45044044611a76ec0c}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classgfx_1_1context_a7994d7183d5febf0b66f8e574d172180}{context} (\hyperlink{classgfx_1_1window}{window} const \&target\-\_\-window, \hyperlink{classgfx_1_1context_1_1settings}{settings} const \&set=\hyperlink{classgfx_1_1context_1_1settings}{settings}())
+\begin{DoxyCompactList}\small\item\em Construct a new \hyperlink{classgfx_1_1context}{gfx\-::context} targeting the given window with the given settings. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1context_a02588dfb533acd93bab925211bb48273}{$\sim$context} ()
+\begin{DoxyCompactList}\small\item\em Destruct the \hyperlink{classgfx_1_1context}{context} object. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1context_abd71c661a4eaf846a10b15ad36e2b117}{clear\-\_\-color} (float red, float green, float blue, float alpha=1.\-0f)
+\begin{DoxyCompactList}\small\item\em Clear the \hyperlink{classgfx_1_1context}{context's} framebuffer to the given color. \end{DoxyCompactList}\item 
+bool \hyperlink{classgfx_1_1context_a49cbe1635efb5446884361c883b9756e}{is\-\_\-active} () const 
+\begin{DoxyCompactList}\small\item\em Query the \hyperlink{classgfx_1_1context}{context} if it is the active context. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{classgfx_1_1context_aa16d73f975660c691ec1b23d2b357838}{major\-\_\-version} () const 
+\begin{DoxyCompactList}\small\item\em Query the \hyperlink{classgfx_1_1context}{context} for the major version of the context. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{classgfx_1_1context_a42b72fb029aab81096e576b3a8a7de52}{minor\-\_\-version} () const 
+\begin{DoxyCompactList}\small\item\em Query the \hyperlink{classgfx_1_1context}{context} for the minor version of the context. \end{DoxyCompactList}\item 
+uvec2 \hyperlink{classgfx_1_1context_ab8ca4b7f55d6a658f08db1078781e4ba}{version} () const 
+\begin{DoxyCompactList}\small\item\em Query the \hyperlink{classgfx_1_1context}{context} for the version of the context. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{classgfx_1_1context_ac56da3c0c0c6ebf4bd12462a21ed62c4}{depth\-\_\-bits} () const 
+\begin{DoxyCompactList}\small\item\em Query the \hyperlink{classgfx_1_1context}{context} for the number of depth bits it uses. \end{DoxyCompactList}\item 
+bool \hyperlink{classgfx_1_1context_ab74649cd35aee6e49a03ec6e31f97ee2}{double\-\_\-buffered} () const 
+\begin{DoxyCompactList}\small\item\em Query the \hyperlink{classgfx_1_1context}{context} whether or not it uses double buffering. \end{DoxyCompactList}\item 
+bool \hyperlink{classgfx_1_1context_a3004cb783117e15e03e477ab7660657a}{operator==} (\hyperlink{classgfx_1_1context}{context} const \&rhs) const 
+\begin{DoxyCompactList}\small\item\em Compare this \hyperlink{classgfx_1_1context}{context} to another for equality. \end{DoxyCompactList}\item 
+void \hyperlink{classgfx_1_1context_aaef26684c1625beaea62af3f1b6aefd2}{draw\-\_\-triangles} (size\-\_\-t const tris, ui\-\_\-indexer const \&indices)
+\begin{DoxyCompactList}\small\item\em Draw triangles using the indices given. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgfx_1_1context_abfd69a86b028655cf7807981b1c58526}{class {\bfseries video\-\_\-system}}\label{classgfx_1_1context_abfd69a86b028655cf7807981b1c58526}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Represents an Open\-G\-L rendering context. 
+
+The way in which contexts and windows interact is obscure; It is possible that some Open\-G\-L settings need to be saved in order to make this all work correctly.
+
+The context class is a representation of an Open\-G\-L rendering context. A valid context and associated \hyperlink{classgfx_1_1window}{window} are needed to render using Open\-G\-L, and an initialized \hyperlink{classgfx_1_1video__system}{video system} must be present. Some tedious details are handled automagically and configuration uses the \hyperlink{classgfx_1_1context_1_1settings}{settings member class}.
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000006}{Todo}]Review interaction with the window class. The way in which the two interact is obscure; it is possible that some Open\-G\-L settings need to be saved in order to make this all work correctly.\end{DoxyRefDesc}
+
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classgfx_1_1window}{gfx\-::window} 
+\end{DoxySeeAlso}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classgfx_1_1context_a7994d7183d5febf0b66f8e574d172180}{\index{gfx\-::context@{gfx\-::context}!context@{context}}
+\index{context@{context}!gfx::context@{gfx\-::context}}
+\subsubsection[{context}]{\setlength{\rightskip}{0pt plus 5cm}gfx\-::context\-::context (
+\begin{DoxyParamCaption}
+\item[{{\bf window} const \&}]{window, }
+\item[{{\bf settings} const \&}]{set = {\ttfamily {\bf settings}()}}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1context_a7994d7183d5febf0b66f8e574d172180}
+
+
+Construct a new \hyperlink{classgfx_1_1context}{gfx\-::context} targeting the given window with the given settings. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em window} & The target window for the context \\
+\hline
+{\em set} & The settings for the new context \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\-::logic\-\_\-error} & If the given window does not support Open\-G\-L, a standard logic error is thrown. \\
+\hline
+\end{DoxyExceptions}
+\hypertarget{classgfx_1_1context_a02588dfb533acd93bab925211bb48273}{\index{gfx\-::context@{gfx\-::context}!$\sim$context@{$\sim$context}}
+\index{$\sim$context@{$\sim$context}!gfx::context@{gfx\-::context}}
+\subsubsection[{$\sim$context}]{\setlength{\rightskip}{0pt plus 5cm}gfx\-::context\-::$\sim$context (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1context_a02588dfb533acd93bab925211bb48273}
+
+
+Destruct the \hyperlink{classgfx_1_1context}{context} object. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000002}{Todo}]Review the 'zombie flag'. \end{DoxyRefDesc}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classgfx_1_1context_abd71c661a4eaf846a10b15ad36e2b117}{\index{gfx\-::context@{gfx\-::context}!clear\-\_\-color@{clear\-\_\-color}}
+\index{clear\-\_\-color@{clear\-\_\-color}!gfx::context@{gfx\-::context}}
+\subsubsection[{clear\-\_\-color}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::context\-::clear\-\_\-color (
+\begin{DoxyParamCaption}
+\item[{float}]{red, }
+\item[{float}]{green, }
+\item[{float}]{blue, }
+\item[{float}]{alpha = {\ttfamily 1.0f}}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1context_abd71c661a4eaf846a10b15ad36e2b117}
+
+
+Clear the \hyperlink{classgfx_1_1context}{context's} framebuffer to the given color. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em red} & The value of the red chanel, normalized on \mbox{[}0.\-0f, 1.\-0f\mbox{]} \\
+\hline
+{\em green} & The value of the green chanel, normalized on \mbox{[}0.\-0f, 1.\-0f\mbox{]} \\
+\hline
+{\em blue} & The value of the blue chanel, normalized on \mbox{[}0.\-0f, 1.\-0f\mbox{]} \\
+\hline
+{\em alpha} & The value of the alpha chanel, normalized on \mbox{[}0.\-0f, 1.\-0f\mbox{]} \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\-::logic\-\_\-error} & If the context is not the active context, a standard logic error is thrown. \\
+\hline
+\end{DoxyExceptions}
+\hypertarget{classgfx_1_1context_ac56da3c0c0c6ebf4bd12462a21ed62c4}{\index{gfx\-::context@{gfx\-::context}!depth\-\_\-bits@{depth\-\_\-bits}}
+\index{depth\-\_\-bits@{depth\-\_\-bits}!gfx::context@{gfx\-::context}}
+\subsubsection[{depth\-\_\-bits}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int gfx\-::context\-::depth\-\_\-bits (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1context_ac56da3c0c0c6ebf4bd12462a21ed62c4}
+
+
+Query the \hyperlink{classgfx_1_1context}{context} for the number of depth bits it uses. 
+
+\begin{DoxyReturn}{Returns}
+The number of dpeth bits the context uses 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\-::logic\-\_\-error} & Calling this function on a context that is not the active one generates a standard logic error. \\
+\hline
+{\em std\-::runtime\-\_\-error} & If, for some reason, the query fails, a standard runtime error will be thrwon. \\
+\hline
+\end{DoxyExceptions}
+\hypertarget{classgfx_1_1context_ab74649cd35aee6e49a03ec6e31f97ee2}{\index{gfx\-::context@{gfx\-::context}!double\-\_\-buffered@{double\-\_\-buffered}}
+\index{double\-\_\-buffered@{double\-\_\-buffered}!gfx::context@{gfx\-::context}}
+\subsubsection[{double\-\_\-buffered}]{\setlength{\rightskip}{0pt plus 5cm}bool gfx\-::context\-::double\-\_\-buffered (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1context_ab74649cd35aee6e49a03ec6e31f97ee2}
+
+
+Query the \hyperlink{classgfx_1_1context}{context} whether or not it uses double buffering. 
+
+\begin{DoxyReturn}{Returns}
+Whether the context uses double buffering 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\-::logic\-\_\-error} & Calling this function on a context that is not the active one generates a standard logic error. \\
+\hline
+{\em std\-::runtime\-\_\-error} & If, for some reason, the query fails, a standard runtime error will be thrwon. \\
+\hline
+\end{DoxyExceptions}
+\hypertarget{classgfx_1_1context_aaef26684c1625beaea62af3f1b6aefd2}{\index{gfx\-::context@{gfx\-::context}!draw\-\_\-triangles@{draw\-\_\-triangles}}
+\index{draw\-\_\-triangles@{draw\-\_\-triangles}!gfx::context@{gfx\-::context}}
+\subsubsection[{draw\-\_\-triangles}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::context\-::draw\-\_\-triangles (
+\begin{DoxyParamCaption}
+\item[{size\-\_\-t const}]{tris, }
+\item[{ui\-\_\-indexer const \&}]{indices}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classgfx_1_1context_aaef26684c1625beaea62af3f1b6aefd2}
+
+
+Draw triangles using the indices given. 
+
+This is a trainwreck of badness; it is only a placeholder and I don't even know if it works (I strongly suspect it does not). It requires a vertex array object and associated buffer to be active before it works. 
+\begin{DoxyParams}{Parameters}
+{\em tris} & The number of triangles the given indexer describes \\
+\hline
+{\em indices} & The indices that describe the triangles. \\
+\hline
+\end{DoxyParams}
+\hypertarget{classgfx_1_1context_a49cbe1635efb5446884361c883b9756e}{\index{gfx\-::context@{gfx\-::context}!is\-\_\-active@{is\-\_\-active}}
+\index{is\-\_\-active@{is\-\_\-active}!gfx::context@{gfx\-::context}}
+\subsubsection[{is\-\_\-active}]{\setlength{\rightskip}{0pt plus 5cm}bool gfx\-::context\-::is\-\_\-active (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1context_a49cbe1635efb5446884361c883b9756e}
+
+
+Query the \hyperlink{classgfx_1_1context}{context} if it is the active context. 
+
+\begin{DoxyReturn}{Returns}
+Whether or not the context is active. 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1context_aa16d73f975660c691ec1b23d2b357838}{\index{gfx\-::context@{gfx\-::context}!major\-\_\-version@{major\-\_\-version}}
+\index{major\-\_\-version@{major\-\_\-version}!gfx::context@{gfx\-::context}}
+\subsubsection[{major\-\_\-version}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int gfx\-::context\-::major\-\_\-version (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1context_aa16d73f975660c691ec1b23d2b357838}
+
+
+Query the \hyperlink{classgfx_1_1context}{context} for the major version of the context. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000003}{Todo}]Why do we even need this? Review for removal. \begin{DoxyReturn}{Returns}
+The major version number of the context. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\-::logic\-\_\-error} & Calling this function on a context that is not the active one generates a standard logic error. \\
+\hline
+{\em std\-::runtime\-\_\-error} & If, for some reason, the query fails, a standard runtime error will be thrwon. \\
+\hline
+\end{DoxyExceptions}
+\end{DoxyRefDesc}
+\hypertarget{classgfx_1_1context_a42b72fb029aab81096e576b3a8a7de52}{\index{gfx\-::context@{gfx\-::context}!minor\-\_\-version@{minor\-\_\-version}}
+\index{minor\-\_\-version@{minor\-\_\-version}!gfx::context@{gfx\-::context}}
+\subsubsection[{minor\-\_\-version}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int gfx\-::context\-::minor\-\_\-version (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1context_a42b72fb029aab81096e576b3a8a7de52}
+
+
+Query the \hyperlink{classgfx_1_1context}{context} for the minor version of the context. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000004}{Todo}]Why do we even need this? Review for removal. \begin{DoxyReturn}{Returns}
+The minor version number of the context. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\-::logic\-\_\-error} & Calling this function on a context that is not the active one generates a standard logic error. \\
+\hline
+{\em std\-::runtime\-\_\-error} & If, for some reason, the query fails, a standard runtime error will be thrwon. \\
+\hline
+\end{DoxyExceptions}
+\end{DoxyRefDesc}
+\hypertarget{classgfx_1_1context_a3004cb783117e15e03e477ab7660657a}{\index{gfx\-::context@{gfx\-::context}!operator==@{operator==}}
+\index{operator==@{operator==}!gfx::context@{gfx\-::context}}
+\subsubsection[{operator==}]{\setlength{\rightskip}{0pt plus 5cm}bool gfx\-::context\-::operator== (
+\begin{DoxyParamCaption}
+\item[{{\bf context} const \&}]{rhs}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classgfx_1_1context_a3004cb783117e15e03e477ab7660657a}
+
+
+Compare this \hyperlink{classgfx_1_1context}{context} to another for equality. 
+
+The comparison is down using internal Open\-G\-L system values; it is feasible that two contexts could compare equal, but extremely extremely unlikely as it would require ill-\/advised hacking of how the \hyperlink{classgfx_1_1video__system}{video system} works. 
+\begin{DoxyParams}{Parameters}
+{\em rhs} & The context to compare this context to \\
+\hline
+\end{DoxyParams}
+\hypertarget{classgfx_1_1context_ab8ca4b7f55d6a658f08db1078781e4ba}{\index{gfx\-::context@{gfx\-::context}!version@{version}}
+\index{version@{version}!gfx::context@{gfx\-::context}}
+\subsubsection[{version}]{\setlength{\rightskip}{0pt plus 5cm}uvec2 gfx\-::context\-::version (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1context_ab8ca4b7f55d6a658f08db1078781e4ba}
+
+
+Query the \hyperlink{classgfx_1_1context}{context} for the version of the context. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000005}{Todo}]Why do we even need this? Review for removal. If it is kept, then change the return type to a \hyperlink{classgfx_1_1version}{version} object. \begin{DoxyReturn}{Returns}
+The version number of the context, represented as a vec2 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\-::logic\-\_\-error} & Calling this function on a context that is not the active one generates a standard logic error. \\
+\hline
+{\em std\-::runtime\-\_\-error} & If, for some reason, the query fails, a standard runtime error will be thrwon. \\
+\hline
+\end{DoxyExceptions}
+\end{DoxyRefDesc}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+g\-Video/context.\-hpp\item 
+g\-Video/context.\-cpp\end{DoxyCompactItemize}

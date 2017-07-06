@@ -18,6 +18,7 @@ namespace gfx {
     /**
      * \class gfx::camera camera.hpp "gCore/gScene/camera.hpp"
      * \brief A base class for cameras.
+     * 
      * Cameras need only implement the why the view matrix is updated.
      */
     class camera: public uniform {
@@ -36,6 +37,7 @@ namespace gfx {
     /**
      * \class gfx::proj_cam camera.hpp "gCore/gScene/camera.hpp"
      * \brief A directable projection camera.
+     * 
      * Put it somewhere, tell it what to look at, and specify what up is,
      * and it does the rest.
      * 
@@ -93,6 +95,7 @@ namespace gfx {
     };
     /**
      * \brief Construct a new default projection camera settings object.
+     * 
      * The default pjection camera is positioned at the origin, looking
      * down the negative z-axis with the positive y-axis as the up
      * direction. The vertical field of view is 135 degrees, the near
@@ -162,6 +165,7 @@ namespace gfx {
     /**
      * \class gfx::ortho_cam camera.hpp "gCore/gScene/camera/hpp"
      * \brief An orthographic camera.
+     * 
      * Functions just like a proj_cam, but with no persepctive, instead
      * using a scaling factor.
      */
@@ -211,6 +215,7 @@ namespace gfx {
     };
     /**
      * \brief Construct a default orthogrpahic camera settings object.
+     * 
      * The default settins for an orthographic camera are to be
      * positioned at the origin, looking down the negative z-axis
      * with the y-axis designated as 'up'. The aspect ratio is 1,
@@ -269,6 +274,7 @@ namespace gfx {
     /**
      * \class gfx::process_cam camera.hpp "gCore/gScene/camera.hpp"
      * \brief A camera for 'process work'.
+     * 
      * That is, compositing and rendering mattes and elements to the screen.
      * The mask region is the sub area of the plane [-1,1][-1,1] to project
      * and the screen region is the sub area of the renderbuffer to project to.
@@ -307,6 +313,7 @@ namespace gfx {
     };
     /**
      * \brief Construct a default process camera settings object.
+     * 
      * The default settings for a process camera is to mask the entire
      * screen area, which is on ([-1.0,1.0],[-1.0,1.0]).
      */

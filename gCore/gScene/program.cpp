@@ -89,6 +89,7 @@ namespace gfx {
     /**
      * \brief Specify that this program has a uniform slot with the given
      * name.
+     * 
      * The program class is not smart enough to knwo about the various fields
      * within a \ref gfx::light "light" or \ref gfx::camera "camera", so for
      * now these fields must be specified manually.
@@ -98,6 +99,7 @@ namespace gfx {
     { (*uniform_map)[name] = -1;}
     /**
      * \brief Compile the shader source associated with this program.
+     * 
      * If no shader source paths have been specified, this function
      * compiles nothing and does not generate an error state.
      * \todo Review this function's implementation, as it should be
@@ -145,6 +147,7 @@ namespace gfx {
     }
     /**
      * \brief Link compiled shader stages into one program.
+     * 
      * Linking the compiled shader stages allow uniforms and atributes
      * to be uploaded to OpenGL.
      * \exception gfx::compilaton_error If shader linking fails, a
@@ -221,6 +224,7 @@ namespace gfx {
     /**
      * \brief Compile the given shader stage using the source at the given
      * path.
+     * 
      * This is an internal utility function, used by the parameterless
      * function of the same name.
      * \param stage_ID The OpenGL id corresponding to the stage to be compiled

@@ -121,6 +121,7 @@ namespace gfx {
     { SDL_DestroyWindow( sys_window );}
     /**
      * \brief Swap the double buffers.
+     * 
      * This will display the latest changes in the window, which will persist
      * until \ref gfx::window::swap() "swap()" is called again.
      * \see gfx::context::clear_color()

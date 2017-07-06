@@ -1,0 +1,223 @@
+\hypertarget{classgfx_1_1ortho__cam}{\section{gfx\-:\-:ortho\-\_\-cam Class Reference}
+\label{classgfx_1_1ortho__cam}\index{gfx\-::ortho\-\_\-cam@{gfx\-::ortho\-\_\-cam}}
+}
+
+
+An orthographic camera.  
+
+
+
+
+{\ttfamily \#include \char`\"{}g\-Core/g\-Scene/camera/hpp\char`\"{}}
+
+Inheritance diagram for gfx\-:\-:ortho\-\_\-cam\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classgfx_1_1ortho__cam}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classgfx_1_1ortho__cam_1_1settings}{settings}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classgfx_1_1ortho__cam_a02874bea9d05ea281cf2cb55142a62a9}{ortho\-\_\-cam} (\hyperlink{classgfx_1_1ortho__cam_1_1settings}{settings} const \&set=\hyperlink{classgfx_1_1ortho__cam_1_1settings}{settings}())
+\begin{DoxyCompactList}\small\item\em Construct a new orthographic camera. \end{DoxyCompactList}\item 
+\hypertarget{classgfx_1_1ortho__cam_a8f711f78d347d0a99a1f8b2333701656}{\hyperlink{classgfx_1_1ortho__cam_a8f711f78d347d0a99a1f8b2333701656}{$\sim$ortho\-\_\-cam} ()}\label{classgfx_1_1ortho__cam_a8f711f78d347d0a99a1f8b2333701656}
+
+\begin{DoxyCompactList}\small\item\em Destruct this orthographic camera. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1ortho__cam}{ortho\-\_\-cam} \& \hyperlink{classgfx_1_1ortho__cam_afe5471d3a7e35115185f571d4b238fba}{position} (vec3 const \&point)
+\begin{DoxyCompactList}\small\item\em Set the orthographic camera's position. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1ortho__cam}{ortho\-\_\-cam} \& \hyperlink{classgfx_1_1ortho__cam_afc22b44b9120637c92c3a358b2a54a1b}{look\-\_\-at} (vec3 const \&point)
+\begin{DoxyCompactList}\small\item\em Set the point the orthographic camera looks at. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1ortho__cam}{ortho\-\_\-cam} \& \hyperlink{classgfx_1_1ortho__cam_a23d29a456f8127e1e88ca5517f3cd50a}{upward} (vec3 const \&dir)
+\begin{DoxyCompactList}\small\item\em Set the direction the orthographic camera considers to be up. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1ortho__cam}{ortho\-\_\-cam} \& \hyperlink{classgfx_1_1ortho__cam_a08d859c4ab06a0bcb0ffcd0221b321bb}{aspect\-\_\-ratio} (double ar)
+\begin{DoxyCompactList}\small\item\em Set the orthographic camera's aspect ratio. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1ortho__cam}{ortho\-\_\-cam} \& \hyperlink{classgfx_1_1ortho__cam_ac7760e5bad7dd1eaf2440bdc1c451c6f}{scale} (double scl)
+\begin{DoxyCompactList}\small\item\em Set the orthographic camera's scale. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1ortho__cam}{ortho\-\_\-cam} \& \hyperlink{classgfx_1_1ortho__cam_af8236f4efd294a6d4c559e2efb51c37c}{far\-\_\-plane} (double fp)
+\begin{DoxyCompactList}\small\item\em Set the orthographic camera's far clipping plane. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgfx_1_1ortho__cam_a80f461508ab2b71d39c938beef5c57ba}{virtual void \hyperlink{classgfx_1_1ortho__cam_a80f461508ab2b71d39c938beef5c57ba}{update\-\_\-view} ()}\label{classgfx_1_1ortho__cam_a80f461508ab2b71d39c938beef5c57ba}
+
+\begin{DoxyCompactList}\small\item\em Update the view matrix of the orthographic camera. Used internally. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgfx_1_1ortho__cam_a754d9a39e56434721ee305e5a0f53e45}{vec3 {\bfseries pos}}\label{classgfx_1_1ortho__cam_a754d9a39e56434721ee305e5a0f53e45}
+
+\item 
+\hypertarget{classgfx_1_1ortho__cam_a4de4fd1c9e79446f1f7266d90217b2b4}{vec3 {\bfseries look}}\label{classgfx_1_1ortho__cam_a4de4fd1c9e79446f1f7266d90217b2b4}
+
+\item 
+\hypertarget{classgfx_1_1ortho__cam_a1b630086ab9e20fde6f4fd47e959f6c3}{vec3 {\bfseries up}}\label{classgfx_1_1ortho__cam_a1b630086ab9e20fde6f4fd47e959f6c3}
+
+\item 
+\hypertarget{classgfx_1_1ortho__cam_ae91d2750eb32b7e33253d7662b3b5926}{double {\bfseries aspect}}\label{classgfx_1_1ortho__cam_ae91d2750eb32b7e33253d7662b3b5926}
+
+\item 
+\hypertarget{classgfx_1_1ortho__cam_af53282509fb8f01997ef2b2c98fe9a0b}{double {\bfseries scale\-\_\-v}}\label{classgfx_1_1ortho__cam_af53282509fb8f01997ef2b2c98fe9a0b}
+
+\item 
+\hypertarget{classgfx_1_1ortho__cam_af8c46db72c1f5075f4533a8ecb728011}{double {\bfseries far}}\label{classgfx_1_1ortho__cam_af8c46db72c1f5075f4533a8ecb728011}
+
+\item 
+\hypertarget{classgfx_1_1ortho__cam_a2eb528597e124a0ac86d53664bd4eace}{mat4 {\bfseries scale\-\_\-m}}\label{classgfx_1_1ortho__cam_a2eb528597e124a0ac86d53664bd4eace}
+
+\item 
+\hypertarget{classgfx_1_1ortho__cam_a295e58950ed5407289d4961076a8b3f1}{bool {\bfseries volume\-\_\-changed}}\label{classgfx_1_1ortho__cam_a295e58950ed5407289d4961076a8b3f1}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+An orthographic camera. 
+
+Functions just like a \hyperlink{classgfx_1_1proj__cam}{proj\-\_\-cam}, but with no persepctive, instead using a scaling factor. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classgfx_1_1ortho__cam_a02874bea9d05ea281cf2cb55142a62a9}{\index{gfx\-::ortho\-\_\-cam@{gfx\-::ortho\-\_\-cam}!ortho\-\_\-cam@{ortho\-\_\-cam}}
+\index{ortho\-\_\-cam@{ortho\-\_\-cam}!gfx::ortho_cam@{gfx\-::ortho\-\_\-cam}}
+\subsubsection[{ortho\-\_\-cam}]{\setlength{\rightskip}{0pt plus 5cm}gfx\-::ortho\-\_\-cam\-::ortho\-\_\-cam (
+\begin{DoxyParamCaption}
+\item[{{\bf settings} const \&}]{set = {\ttfamily {\bf settings}()}}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1ortho__cam_a02874bea9d05ea281cf2cb55142a62a9}
+
+
+Construct a new orthographic camera. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em set} & The settings for the new orthographic camera \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classgfx_1_1ortho__cam_a08d859c4ab06a0bcb0ffcd0221b321bb}{\index{gfx\-::ortho\-\_\-cam@{gfx\-::ortho\-\_\-cam}!aspect\-\_\-ratio@{aspect\-\_\-ratio}}
+\index{aspect\-\_\-ratio@{aspect\-\_\-ratio}!gfx::ortho_cam@{gfx\-::ortho\-\_\-cam}}
+\subsubsection[{aspect\-\_\-ratio}]{\setlength{\rightskip}{0pt plus 5cm}{\bf ortho\-\_\-cam} \& gfx\-::ortho\-\_\-cam\-::aspect\-\_\-ratio (
+\begin{DoxyParamCaption}
+\item[{double}]{ar}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1ortho__cam_a08d859c4ab06a0bcb0ffcd0221b321bb}
+
+
+Set the orthographic camera's aspect ratio. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vert} & The aspect ratio \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This orthographic camera 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1ortho__cam_af8236f4efd294a6d4c559e2efb51c37c}{\index{gfx\-::ortho\-\_\-cam@{gfx\-::ortho\-\_\-cam}!far\-\_\-plane@{far\-\_\-plane}}
+\index{far\-\_\-plane@{far\-\_\-plane}!gfx::ortho_cam@{gfx\-::ortho\-\_\-cam}}
+\subsubsection[{far\-\_\-plane}]{\setlength{\rightskip}{0pt plus 5cm}{\bf ortho\-\_\-cam} \& gfx\-::ortho\-\_\-cam\-::far\-\_\-plane (
+\begin{DoxyParamCaption}
+\item[{double}]{fp}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1ortho__cam_af8236f4efd294a6d4c559e2efb51c37c}
+
+
+Set the orthographic camera's far clipping plane. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fp} & The distance to the far clipping plane \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This orthographic camera 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1ortho__cam_afc22b44b9120637c92c3a358b2a54a1b}{\index{gfx\-::ortho\-\_\-cam@{gfx\-::ortho\-\_\-cam}!look\-\_\-at@{look\-\_\-at}}
+\index{look\-\_\-at@{look\-\_\-at}!gfx::ortho_cam@{gfx\-::ortho\-\_\-cam}}
+\subsubsection[{look\-\_\-at}]{\setlength{\rightskip}{0pt plus 5cm}{\bf ortho\-\_\-cam} \& gfx\-::ortho\-\_\-cam\-::look\-\_\-at (
+\begin{DoxyParamCaption}
+\item[{vec3 const \&}]{point}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1ortho__cam_afc22b44b9120637c92c3a358b2a54a1b}
+
+
+Set the point the orthographic camera looks at. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em point} & The point the orthographic camera looks at \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This orthographic camera 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1ortho__cam_afe5471d3a7e35115185f571d4b238fba}{\index{gfx\-::ortho\-\_\-cam@{gfx\-::ortho\-\_\-cam}!position@{position}}
+\index{position@{position}!gfx::ortho_cam@{gfx\-::ortho\-\_\-cam}}
+\subsubsection[{position}]{\setlength{\rightskip}{0pt plus 5cm}{\bf ortho\-\_\-cam} \& gfx\-::ortho\-\_\-cam\-::position (
+\begin{DoxyParamCaption}
+\item[{vec3 const \&}]{point}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1ortho__cam_afe5471d3a7e35115185f571d4b238fba}
+
+
+Set the orthographic camera's position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em point} & The position of the orthographic camera \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This orthographic camera 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1ortho__cam_ac7760e5bad7dd1eaf2440bdc1c451c6f}{\index{gfx\-::ortho\-\_\-cam@{gfx\-::ortho\-\_\-cam}!scale@{scale}}
+\index{scale@{scale}!gfx::ortho_cam@{gfx\-::ortho\-\_\-cam}}
+\subsubsection[{scale}]{\setlength{\rightskip}{0pt plus 5cm}{\bf ortho\-\_\-cam} \& gfx\-::ortho\-\_\-cam\-::scale (
+\begin{DoxyParamCaption}
+\item[{double}]{scl}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1ortho__cam_ac7760e5bad7dd1eaf2440bdc1c451c6f}
+
+
+Set the orthographic camera's scale. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vert} & The scale \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This orthographic camera 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1ortho__cam_a23d29a456f8127e1e88ca5517f3cd50a}{\index{gfx\-::ortho\-\_\-cam@{gfx\-::ortho\-\_\-cam}!upward@{upward}}
+\index{upward@{upward}!gfx::ortho_cam@{gfx\-::ortho\-\_\-cam}}
+\subsubsection[{upward}]{\setlength{\rightskip}{0pt plus 5cm}{\bf ortho\-\_\-cam} \& gfx\-::ortho\-\_\-cam\-::upward (
+\begin{DoxyParamCaption}
+\item[{vec3 const \&}]{dir}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1ortho__cam_a23d29a456f8127e1e88ca5517f3cd50a}
+
+
+Set the direction the orthographic camera considers to be up. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dir} & The direction that the orthographic camera considers to be up \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This orthographic camera 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+g\-Scene/camera.\-hpp\item 
+g\-Scene/camera.\-cpp\end{DoxyCompactItemize}

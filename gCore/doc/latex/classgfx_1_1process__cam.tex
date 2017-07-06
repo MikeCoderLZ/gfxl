@@ -1,0 +1,149 @@
+\hypertarget{classgfx_1_1process__cam}{\section{gfx\-:\-:process\-\_\-cam Class Reference}
+\label{classgfx_1_1process__cam}\index{gfx\-::process\-\_\-cam@{gfx\-::process\-\_\-cam}}
+}
+
+
+A camera for 'process work'.  
+
+
+
+
+{\ttfamily \#include \char`\"{}g\-Core/g\-Scene/camera.\-hpp\char`\"{}}
+
+Inheritance diagram for gfx\-:\-:process\-\_\-cam\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classgfx_1_1process__cam}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classgfx_1_1process__cam_1_1settings}{settings}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classgfx_1_1process__cam_ae8140987d24060b32d38af0c974db57d}{process\-\_\-cam} (\hyperlink{classgfx_1_1process__cam_1_1settings}{settings} const \&set=\hyperlink{classgfx_1_1process__cam_1_1settings}{settings}())
+\begin{DoxyCompactList}\small\item\em Construct a new process camera. \end{DoxyCompactList}\item 
+\hypertarget{classgfx_1_1process__cam_ae37352650ea0f73fc5e896c0d2ac93b9}{\hyperlink{classgfx_1_1process__cam_ae37352650ea0f73fc5e896c0d2ac93b9}{$\sim$process\-\_\-cam} ()}\label{classgfx_1_1process__cam_ae37352650ea0f73fc5e896c0d2ac93b9}
+
+\begin{DoxyCompactList}\small\item\em Destruct this process camera. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1process__cam}{process\-\_\-cam} \& \hyperlink{classgfx_1_1process__cam_ab2f973b728a87300d284bc2a84b99d9f}{mask\-\_\-region} (vec2 const \&ul\-\_\-corner, vec2 const \&lr\-\_\-corner)
+\begin{DoxyCompactList}\small\item\em Set the extent of the process camera's masking region. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1process__cam}{process\-\_\-cam} \& \hyperlink{classgfx_1_1process__cam_a606398d6801ce89cedcf2db7762dd6a7}{screen\-\_\-region} (vec2 const \&ul\-\_\-corner, vec2 const \&lr\-\_\-corner)
+\begin{DoxyCompactList}\small\item\em Set the full extent of the process camera's renderable area. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{classgfx_1_1process__cam_abf4a9226e8d0907b70f3eadc2b4229a5}{update\-\_\-view} ()
+\begin{DoxyCompactList}\small\item\em Update the view matrix of the process camera. Used internally. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgfx_1_1process__cam_a87a0f257f8be74bd2e2263bed73c29d2}{vec4 {\bfseries mask}}\label{classgfx_1_1process__cam_a87a0f257f8be74bd2e2263bed73c29d2}
+
+\item 
+\hypertarget{classgfx_1_1process__cam_ae643f7cb3a0da2b13564ce4914df5fb7}{vec4 {\bfseries screen}}\label{classgfx_1_1process__cam_ae643f7cb3a0da2b13564ce4914df5fb7}
+
+\item 
+\hypertarget{classgfx_1_1process__cam_a9de84c9a868e246d615afc5029af7f7c}{mat4 {\bfseries clip\-\_\-m}}\label{classgfx_1_1process__cam_a9de84c9a868e246d615afc5029af7f7c}
+
+\item 
+\hypertarget{classgfx_1_1process__cam_a74ce3b70400f3de5038e15bbc91a6519}{bool {\bfseries clip\-\_\-changed}}\label{classgfx_1_1process__cam_a74ce3b70400f3de5038e15bbc91a6519}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A camera for 'process work'. 
+
+That is, compositing and rendering mattes and elements to the screen. The mask region is the sub area of the plane \mbox{[}-\/1,1\mbox{]}\mbox{[}-\/1,1\mbox{]} to project and the screen region is the sub area of the renderbuffer to project to. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classgfx_1_1process__cam_ae8140987d24060b32d38af0c974db57d}{\index{gfx\-::process\-\_\-cam@{gfx\-::process\-\_\-cam}!process\-\_\-cam@{process\-\_\-cam}}
+\index{process\-\_\-cam@{process\-\_\-cam}!gfx::process_cam@{gfx\-::process\-\_\-cam}}
+\subsubsection[{process\-\_\-cam}]{\setlength{\rightskip}{0pt plus 5cm}gfx\-::process\-\_\-cam\-::process\-\_\-cam (
+\begin{DoxyParamCaption}
+\item[{{\bf settings} const \&}]{set = {\ttfamily {\bf settings}()}}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1process__cam_ae8140987d24060b32d38af0c974db57d}
+
+
+Construct a new process camera. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em set} & The settings for the new process camera \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classgfx_1_1process__cam_ab2f973b728a87300d284bc2a84b99d9f}{\index{gfx\-::process\-\_\-cam@{gfx\-::process\-\_\-cam}!mask\-\_\-region@{mask\-\_\-region}}
+\index{mask\-\_\-region@{mask\-\_\-region}!gfx::process_cam@{gfx\-::process\-\_\-cam}}
+\subsubsection[{mask\-\_\-region}]{\setlength{\rightskip}{0pt plus 5cm}{\bf process\-\_\-cam} \& gfx\-::process\-\_\-cam\-::mask\-\_\-region (
+\begin{DoxyParamCaption}
+\item[{vec2 const \&}]{ul\-\_\-corner, }
+\item[{vec2 const \&}]{lr\-\_\-corner}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1process__cam_ab2f973b728a87300d284bc2a84b99d9f}
+
+
+Set the extent of the process camera's masking region. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ul\-\_\-corner} & The upper left corner of the masking region \\
+\hline
+{\em lr\-\_\-corner} & The lower right corner of the masking region \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This process camera 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1process__cam_a606398d6801ce89cedcf2db7762dd6a7}{\index{gfx\-::process\-\_\-cam@{gfx\-::process\-\_\-cam}!screen\-\_\-region@{screen\-\_\-region}}
+\index{screen\-\_\-region@{screen\-\_\-region}!gfx::process_cam@{gfx\-::process\-\_\-cam}}
+\subsubsection[{screen\-\_\-region}]{\setlength{\rightskip}{0pt plus 5cm}{\bf process\-\_\-cam} \& gfx\-::process\-\_\-cam\-::screen\-\_\-region (
+\begin{DoxyParamCaption}
+\item[{vec2 const \&}]{ul\-\_\-corner, }
+\item[{vec2 const \&}]{lr\-\_\-corner}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1process__cam_a606398d6801ce89cedcf2db7762dd6a7}
+
+
+Set the full extent of the process camera's renderable area. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ul\-\_\-corner} & The upper left corner of the renderable area \\
+\hline
+{\em lr\-\_\-corner} & The lower right corner of the renderable area \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This process camera 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1process__cam_abf4a9226e8d0907b70f3eadc2b4229a5}{\index{gfx\-::process\-\_\-cam@{gfx\-::process\-\_\-cam}!update\-\_\-view@{update\-\_\-view}}
+\index{update\-\_\-view@{update\-\_\-view}!gfx::process_cam@{gfx\-::process\-\_\-cam}}
+\subsubsection[{update\-\_\-view}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::process\-\_\-cam\-::update\-\_\-view (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}}\label{classgfx_1_1process__cam_abf4a9226e8d0907b70f3eadc2b4229a5}
+
+
+Update the view matrix of the process camera. Used internally. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000016}{Todo}]My internal comments indicate that this is totally broken. So fix it. \end{DoxyRefDesc}
+
+
+Implements \hyperlink{classgfx_1_1camera}{gfx\-::camera}.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+g\-Scene/camera.\-hpp\item 
+g\-Scene/camera.\-cpp\end{DoxyCompactItemize}

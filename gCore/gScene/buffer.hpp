@@ -26,6 +26,7 @@ namespace gfx {
     /**
      * \class gfx::block_spec buffer.hpp "gCore/gScene/buffer.hpp"
      * \brief Describes an ordered block of memory.
+     * 
      * Block specifications are how the formatting of a buffer is defined.
      * The use pattern is the same as the setting objects used for object
      * configuration, except here a templated function is used and the
@@ -49,6 +50,7 @@ namespace gfx {
     inline  block_spec::block_spec() : attributes( new block_spec::attrib_vector() ) {}
     /**
      * \brief Add an attribute to the block specification.
+     * 
      * Attributes are added in the order they appear.
      */
     template< typename T > inline
@@ -63,6 +65,7 @@ namespace gfx {
      * \class gfx::buffer buffer.hpp "gCore/gScene/buffer.hpp"
      * \brief A base class that provides the interface to deal with OpenGL
      * buffers.
+     * 
      * All the common functionality of the different uses for OpenGL
      * buffers is included in the buffer class. The specific use cases
      * are implemented in derived classes, which in some cases may
@@ -148,6 +151,7 @@ namespace gfx {
     };
     /**
      * \brief Construct a default \ref gfx::buffer::settings "settings" object.
+     * 
      * The default settings for a buffer are to be initialized with zero data
      * blocks and to use dynamic draw mode with the array buffer as target.
      */
@@ -157,6 +161,7 @@ namespace gfx {
                     intended_target( gl::ARRAY_BUFFER ) {}
     /**
      * \brief Set the number of blocks in the \ref gfx::buffer "buffer".
+     * 
      * Note that the number of data blocks is not the number of slots
      * for data. A buffer with 14 blocks and two attributes still has
      * 14 blocks, but altogether has 28 individual slots.

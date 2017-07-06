@@ -18,7 +18,7 @@
 
 namespace gfx {
 
-/**
+/*
  * Okay, forget GLSW.  We'll come up with our own, The High Level
  * Shading Preprocessor, HLSPrep.
  *
@@ -170,7 +170,7 @@ namespace gfx {
  * 
  * */
 
-/**
+/*
  * A Shader object manages a single shader source file.  We adopt
  * the syntax and behavior of the GL Shader Wrangler, which is
  * straight forward to replicate and undoubtedly useful.  Using
@@ -189,7 +189,7 @@ namespace gfx {
  * appropriate shader source is assembled from the pieces.
  * */
 
-/**
+/*
  * The ShaderManager maintains a source tree of shader files and
  * the associated Shader objects.
  * 
@@ -197,6 +197,7 @@ namespace gfx {
     /**
      * \class gfx::program program.hpp "gCore/gScene/program.hpp"
      * \brief A representation of an OpenGL shading program.
+     * 
      * Currently, the program class does alot of heavy lifting. The above
      * thoughts represent the end goal, but that system is going to be
      * tackled after the gScene module is finished.
@@ -223,6 +224,7 @@ namespace gfx {
         /**
          * \class gfx::program::settings program.hpp "gCore/gScene/program.hpp"
          * \brief Used for configuring a new \ref gfx::program "program" object.
+         * 
          * So far, the only settings exposed in this setting sobject are for
          * shader source paths. When materials and/or the asset management
          * system come around, I expect that will change.
@@ -341,6 +343,7 @@ namespace gfx {
     /**
      * \brief Set the new \ref gfx::program "program's" vertex shader source
      * path.
+     * 
      * Only slight parameter checking is done; so long as the given string isn't empty,
      * this function will indicate that the program has a vertex shader.
      * \param path The vertex shader source's path
@@ -357,6 +360,7 @@ namespace gfx {
     /**
      * \brief Set the new \ref gfx::program "program's" fragment shader source
      * path.
+     * 
      * Only slight parameter checking is done; so long as the given string isn't empty,
      * this function will indicate that the program has a fragment shader.
      * \param path The fragment shader source's path
@@ -373,6 +377,7 @@ namespace gfx {
     /**
      * \brief Set the new \ref gfx::program "program's" tesselation shader source
      * path.
+     * 
      * Only slight parameter checking is done; so long as the given string isn't empty,
      * this function will indicate that the program has a tesselation shader.
      * \param path The tesselation shader source's path
@@ -389,6 +394,7 @@ namespace gfx {
     /**
      * \brief Set the new \ref gfx::program "program's" geometry shader source
      * path.
+     * 
      * Only slight parameter checking is done; so long as the given string isn't empty,
      * this function will indicate that the program has a geometry shader.
      * \param path The geometry shader source's path
@@ -405,6 +411,7 @@ namespace gfx {
     /**
      * \brief Upload the given data as a uniform to the OpenGL
      * program object.
+     * 
      * This is the generic template, which actually just throws an exception
      * because there are template specializations for all the supported data
      * types.

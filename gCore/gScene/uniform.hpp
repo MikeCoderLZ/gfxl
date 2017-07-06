@@ -11,6 +11,7 @@ namespace gfx {
      * \class gfx::uniformable uniform.hpp "gCore/gScene/uniform.hpp"
      * \brief An interface for data types that can be uploaded as
      * uniforms.
+     * 
      * I am still trying to figure out a good way to deal with uniforms.
      * This is one idea, though no code uses it yet and I am unsure if I
      * want to do it this way. As mentioned elsewhere in light.hpp, I may
@@ -25,6 +26,7 @@ namespace gfx {
      * \class gfx::uniform uniform.hpp "gCore/gScene/uniform.hpp"
      * \brief An interface for data types that can be uploaded as
      * uniforms.
+     * 
      * This code is actually used for now, though it doesn't provide
      * much benefit and could easily be implemented without an interface.
      */
@@ -37,6 +39,7 @@ namespace gfx {
     };
     /**
      * \brief Check if the given program is currently in use.
+     * 
      * This is a pointless function, as I ended up adding the interogative
      * to \ref gfx::program "program" as a public function anyway.
      */

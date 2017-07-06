@@ -1,0 +1,185 @@
+\hypertarget{classgfx_1_1proj__cam_1_1settings}{\section{gfx\-:\-:proj\-\_\-cam\-:\-:settings Class Reference}
+\label{classgfx_1_1proj__cam_1_1settings}\index{gfx\-::proj\-\_\-cam\-::settings@{gfx\-::proj\-\_\-cam\-::settings}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classgfx_1_1proj__cam_1_1settings_af22728a8d4da91c67569cd5732c061a6}{settings} ()
+\begin{DoxyCompactList}\small\item\em Construct a new default projection camera settings object. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1proj__cam_1_1settings}{settings} \& \hyperlink{classgfx_1_1proj__cam_1_1settings_ade85e327bee8e0adb8cb150c19d8c484}{position} (vec3 const \&pos)
+\begin{DoxyCompactList}\small\item\em Set the new projection camera's position. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1proj__cam_1_1settings}{settings} \& \hyperlink{classgfx_1_1proj__cam_1_1settings_a3fd8d0b49213b71883253076ac244675}{look\-\_\-at} (vec3 const \&point)
+\begin{DoxyCompactList}\small\item\em Set the point the new projection camera looks at. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1proj__cam_1_1settings}{settings} \& \hyperlink{classgfx_1_1proj__cam_1_1settings_ac298e4e4bea07e9fea7f8f1ec073746e}{upward} (vec3 const \&up)
+\begin{DoxyCompactList}\small\item\em Set the what new projection camera considers 'up'. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1proj__cam_1_1settings}{settings} \& \hyperlink{classgfx_1_1proj__cam_1_1settings_aae956f82f4b9b48f667381e1f1a7ecd6}{field\-\_\-of\-\_\-view} (d\-\_\-angle const \&fov\-\_\-vert)
+\begin{DoxyCompactList}\small\item\em Set the new projection camera's vertical field of view. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1proj__cam_1_1settings}{settings} \& \hyperlink{classgfx_1_1proj__cam_1_1settings_ad7521a8cbaf50b051027447d815995d4}{aspect\-\_\-ratio} (double aspect)
+\begin{DoxyCompactList}\small\item\em Set the new projection camera's aspect ratio. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1proj__cam_1_1settings}{settings} \& \hyperlink{classgfx_1_1proj__cam_1_1settings_afd77cbecc30c917e84d9ac09bc2f0ec1}{near\-\_\-plane} (double near)
+\begin{DoxyCompactList}\small\item\em Set the new projection camera's near clipping plane. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1proj__cam_1_1settings}{settings} \& \hyperlink{classgfx_1_1proj__cam_1_1settings_a46b70f3d13f6c105ddae3883639b2b63}{far\-\_\-plane} (double far)
+\begin{DoxyCompactList}\small\item\em Set the new projection camera's far clipping plane. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgfx_1_1proj__cam_1_1settings_aa207f3ba4e6bce9224b585fa32212c3f}{class {\bfseries proj\-\_\-cam}}\label{classgfx_1_1proj__cam_1_1settings_aa207f3ba4e6bce9224b585fa32212c3f}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classgfx_1_1proj__cam_1_1settings_af22728a8d4da91c67569cd5732c061a6}{\index{gfx\-::proj\-\_\-cam\-::settings@{gfx\-::proj\-\_\-cam\-::settings}!settings@{settings}}
+\index{settings@{settings}!gfx::proj_cam::settings@{gfx\-::proj\-\_\-cam\-::settings}}
+\subsubsection[{settings}]{\setlength{\rightskip}{0pt plus 5cm}gfx\-::proj\-\_\-cam\-::settings\-::settings (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classgfx_1_1proj__cam_1_1settings_af22728a8d4da91c67569cd5732c061a6}
+
+
+Construct a new default projection camera settings object. 
+
+The default pjection camera is positioned at the origin, looking down the negative z-\/axis with the positive y-\/axis as the up direction. The vertical field of view is 135 degrees, the near plane is 0.\-01 units in front of the camera and the far plane is at 100 units. Lastly, the aspect ratio is 1. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classgfx_1_1proj__cam_1_1settings_ad7521a8cbaf50b051027447d815995d4}{\index{gfx\-::proj\-\_\-cam\-::settings@{gfx\-::proj\-\_\-cam\-::settings}!aspect\-\_\-ratio@{aspect\-\_\-ratio}}
+\index{aspect\-\_\-ratio@{aspect\-\_\-ratio}!gfx::proj_cam::settings@{gfx\-::proj\-\_\-cam\-::settings}}
+\subsubsection[{aspect\-\_\-ratio}]{\setlength{\rightskip}{0pt plus 5cm}{\bf proj\-\_\-cam\-::settings} \& gfx\-::proj\-\_\-cam\-::settings\-::aspect\-\_\-ratio (
+\begin{DoxyParamCaption}
+\item[{double}]{aspect}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classgfx_1_1proj__cam_1_1settings_ad7521a8cbaf50b051027447d815995d4}
+
+
+Set the new projection camera's aspect ratio. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aspect} & The new projection camera's aspect ratio. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This settings object 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1proj__cam_1_1settings_a46b70f3d13f6c105ddae3883639b2b63}{\index{gfx\-::proj\-\_\-cam\-::settings@{gfx\-::proj\-\_\-cam\-::settings}!far\-\_\-plane@{far\-\_\-plane}}
+\index{far\-\_\-plane@{far\-\_\-plane}!gfx::proj_cam::settings@{gfx\-::proj\-\_\-cam\-::settings}}
+\subsubsection[{far\-\_\-plane}]{\setlength{\rightskip}{0pt plus 5cm}{\bf proj\-\_\-cam\-::settings} \& gfx\-::proj\-\_\-cam\-::settings\-::far\-\_\-plane (
+\begin{DoxyParamCaption}
+\item[{double}]{far}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classgfx_1_1proj__cam_1_1settings_a46b70f3d13f6c105ddae3883639b2b63}
+
+
+Set the new projection camera's far clipping plane. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos} & The new projection camera's far clipping plane. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This settings object 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1proj__cam_1_1settings_aae956f82f4b9b48f667381e1f1a7ecd6}{\index{gfx\-::proj\-\_\-cam\-::settings@{gfx\-::proj\-\_\-cam\-::settings}!field\-\_\-of\-\_\-view@{field\-\_\-of\-\_\-view}}
+\index{field\-\_\-of\-\_\-view@{field\-\_\-of\-\_\-view}!gfx::proj_cam::settings@{gfx\-::proj\-\_\-cam\-::settings}}
+\subsubsection[{field\-\_\-of\-\_\-view}]{\setlength{\rightskip}{0pt plus 5cm}{\bf proj\-\_\-cam\-::settings} \& gfx\-::proj\-\_\-cam\-::settings\-::field\-\_\-of\-\_\-view (
+\begin{DoxyParamCaption}
+\item[{d\-\_\-angle const \&}]{fov\-\_\-vert}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classgfx_1_1proj__cam_1_1settings_aae956f82f4b9b48f667381e1f1a7ecd6}
+
+
+Set the new projection camera's vertical field of view. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fov\-\_\-vert} & The new projection camera's vertical field of view. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This settings object 
+\end{DoxyReturn}
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000018}{Todo}]Should this use the vertical field of view? I feel like the horizontal fov is more useful. \end{DoxyRefDesc}
+\hypertarget{classgfx_1_1proj__cam_1_1settings_a3fd8d0b49213b71883253076ac244675}{\index{gfx\-::proj\-\_\-cam\-::settings@{gfx\-::proj\-\_\-cam\-::settings}!look\-\_\-at@{look\-\_\-at}}
+\index{look\-\_\-at@{look\-\_\-at}!gfx::proj_cam::settings@{gfx\-::proj\-\_\-cam\-::settings}}
+\subsubsection[{look\-\_\-at}]{\setlength{\rightskip}{0pt plus 5cm}{\bf proj\-\_\-cam\-::settings} \& gfx\-::proj\-\_\-cam\-::settings\-::look\-\_\-at (
+\begin{DoxyParamCaption}
+\item[{vec3 const \&}]{point}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classgfx_1_1proj__cam_1_1settings_a3fd8d0b49213b71883253076ac244675}
+
+
+Set the point the new projection camera looks at. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em point} & The point the new projection camera looks at. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This settings object 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1proj__cam_1_1settings_afd77cbecc30c917e84d9ac09bc2f0ec1}{\index{gfx\-::proj\-\_\-cam\-::settings@{gfx\-::proj\-\_\-cam\-::settings}!near\-\_\-plane@{near\-\_\-plane}}
+\index{near\-\_\-plane@{near\-\_\-plane}!gfx::proj_cam::settings@{gfx\-::proj\-\_\-cam\-::settings}}
+\subsubsection[{near\-\_\-plane}]{\setlength{\rightskip}{0pt plus 5cm}{\bf proj\-\_\-cam\-::settings} \& gfx\-::proj\-\_\-cam\-::settings\-::near\-\_\-plane (
+\begin{DoxyParamCaption}
+\item[{double}]{near}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classgfx_1_1proj__cam_1_1settings_afd77cbecc30c917e84d9ac09bc2f0ec1}
+
+
+Set the new projection camera's near clipping plane. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em near} & The new projection camera's near clipping plane. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This settings object 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1proj__cam_1_1settings_ade85e327bee8e0adb8cb150c19d8c484}{\index{gfx\-::proj\-\_\-cam\-::settings@{gfx\-::proj\-\_\-cam\-::settings}!position@{position}}
+\index{position@{position}!gfx::proj_cam::settings@{gfx\-::proj\-\_\-cam\-::settings}}
+\subsubsection[{position}]{\setlength{\rightskip}{0pt plus 5cm}{\bf proj\-\_\-cam\-::settings} \& gfx\-::proj\-\_\-cam\-::settings\-::position (
+\begin{DoxyParamCaption}
+\item[{vec3 const \&}]{pos}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classgfx_1_1proj__cam_1_1settings_ade85e327bee8e0adb8cb150c19d8c484}
+
+
+Set the new projection camera's position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos} & The new projection camera's position. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This settings object 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1proj__cam_1_1settings_ac298e4e4bea07e9fea7f8f1ec073746e}{\index{gfx\-::proj\-\_\-cam\-::settings@{gfx\-::proj\-\_\-cam\-::settings}!upward@{upward}}
+\index{upward@{upward}!gfx::proj_cam::settings@{gfx\-::proj\-\_\-cam\-::settings}}
+\subsubsection[{upward}]{\setlength{\rightskip}{0pt plus 5cm}{\bf proj\-\_\-cam\-::settings} \& gfx\-::proj\-\_\-cam\-::settings\-::upward (
+\begin{DoxyParamCaption}
+\item[{vec3 const \&}]{up}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classgfx_1_1proj__cam_1_1settings_ac298e4e4bea07e9fea7f8f1ec073746e}
+
+
+Set the what new projection camera considers 'up'. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em up} & The 'up' vector of the camera. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This settings object 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+g\-Scene/camera.\-hpp\end{DoxyCompactItemize}

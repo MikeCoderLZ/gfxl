@@ -1,0 +1,103 @@
+\hypertarget{classgfx_1_1context_1_1settings}{\section{gfx\-:\-:context\-:\-:settings Class Reference}
+\label{classgfx_1_1context_1_1settings}\index{gfx\-::context\-::settings@{gfx\-::context\-::settings}}
+}
+
+
+Used to configure a \hyperlink{classgfx_1_1context}{context}.  
+
+
+
+
+{\ttfamily \#include $<$context.\-hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classgfx_1_1context_1_1settings_a83843fc17d4e51082ca33a826fb4ee6a}{settings} ()
+\begin{DoxyCompactList}\small\item\em Construct a \hyperlink{classgfx_1_1context_1_1settings}{settings} object with default settings. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1context_1_1settings}{settings} \& \hyperlink{classgfx_1_1context_1_1settings_a1c83c9a92e8daa1e408ac400ce951476}{double\-\_\-buffered} ()
+\begin{DoxyCompactList}\small\item\em Use double buffering when using the \hyperlink{classgfx_1_1context_1_1settings}{settings} object to construct a \hyperlink{classgfx_1_1context}{context}. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1context_1_1settings}{settings} \& \hyperlink{classgfx_1_1context_1_1settings_a108a98592538904d1c4a7b253de46f5f}{not\-\_\-double\-\_\-buffered} ()
+\begin{DoxyCompactList}\small\item\em Do not use double buffering when using the \hyperlink{classgfx_1_1context_1_1settings}{settings} object to construct a \hyperlink{classgfx_1_1context}{context}. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1context_1_1settings}{settings} \& \hyperlink{classgfx_1_1context_1_1settings_a79034b85648e322afa5a75df9ed0e0f1}{depth\-\_\-bits} (unsigned int bits)
+\begin{DoxyCompactList}\small\item\em Set the number of depth bits to use when constructing a \hyperlink{classgfx_1_1context}{context} object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgfx_1_1context_1_1settings_abfd69a86b028655cf7807981b1c58526}{class {\bfseries video\-\_\-system}}\label{classgfx_1_1context_1_1settings_abfd69a86b028655cf7807981b1c58526}
+
+\item 
+\hypertarget{classgfx_1_1context_1_1settings_ac78d499d6bdacfe4cc1f67b4ce865513}{class {\bfseries context}}\label{classgfx_1_1context_1_1settings_ac78d499d6bdacfe4cc1f67b4ce865513}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Used to configure a \hyperlink{classgfx_1_1context}{context}. 
+
+A settings object is passed to the context constructor. Calls to the mutator member functions alter the settings used when initializing a context. Subsequent calls overwrite previous calls that alter the same settings and a reference to the settings object is returned to facilitate chaining. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classgfx_1_1context_1_1settings_a83843fc17d4e51082ca33a826fb4ee6a}{\index{gfx\-::context\-::settings@{gfx\-::context\-::settings}!settings@{settings}}
+\index{settings@{settings}!gfx::context::settings@{gfx\-::context\-::settings}}
+\subsubsection[{settings}]{\setlength{\rightskip}{0pt plus 5cm}gfx\-::context\-::settings\-::settings (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classgfx_1_1context_1_1settings_a83843fc17d4e51082ca33a826fb4ee6a}
+
+
+Construct a \hyperlink{classgfx_1_1context_1_1settings}{settings} object with default settings. 
+
+The default settings for a \hyperlink{classgfx_1_1context}{context} object are double buffering with 24 bits of depth. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classgfx_1_1context_1_1settings_a79034b85648e322afa5a75df9ed0e0f1}{\index{gfx\-::context\-::settings@{gfx\-::context\-::settings}!depth\-\_\-bits@{depth\-\_\-bits}}
+\index{depth\-\_\-bits@{depth\-\_\-bits}!gfx::context::settings@{gfx\-::context\-::settings}}
+\subsubsection[{depth\-\_\-bits}]{\setlength{\rightskip}{0pt plus 5cm}{\bf context\-::settings} \& gfx\-::context\-::settings\-::depth\-\_\-bits (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{bits}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classgfx_1_1context_1_1settings_a79034b85648e322afa5a75df9ed0e0f1}
+
+
+Set the number of depth bits to use when constructing a \hyperlink{classgfx_1_1context}{context} object. 
+
+No bounds checking is done, so outrageous amounts of depths bits may cause errors. Furthermore, simply indicating a number of depth bits will not automatically set the context to use depth testing. 
+\begin{DoxyParams}{Parameters}
+{\em bits} & The number of depth bits to use \\
+\hline
+\end{DoxyParams}
+\hypertarget{classgfx_1_1context_1_1settings_a1c83c9a92e8daa1e408ac400ce951476}{\index{gfx\-::context\-::settings@{gfx\-::context\-::settings}!double\-\_\-buffered@{double\-\_\-buffered}}
+\index{double\-\_\-buffered@{double\-\_\-buffered}!gfx::context::settings@{gfx\-::context\-::settings}}
+\subsubsection[{double\-\_\-buffered}]{\setlength{\rightskip}{0pt plus 5cm}{\bf context\-::settings} \& gfx\-::context\-::settings\-::double\-\_\-buffered (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classgfx_1_1context_1_1settings_a1c83c9a92e8daa1e408ac400ce951476}
+
+
+Use double buffering when using the \hyperlink{classgfx_1_1context_1_1settings}{settings} object to construct a \hyperlink{classgfx_1_1context}{context}. 
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classgfx_1_1context_1_1settings_a108a98592538904d1c4a7b253de46f5f}{gfx\-::context\-::settings\-::not\-\_\-double\-\_\-buffered()} 
+\end{DoxySeeAlso}
+\hypertarget{classgfx_1_1context_1_1settings_a108a98592538904d1c4a7b253de46f5f}{\index{gfx\-::context\-::settings@{gfx\-::context\-::settings}!not\-\_\-double\-\_\-buffered@{not\-\_\-double\-\_\-buffered}}
+\index{not\-\_\-double\-\_\-buffered@{not\-\_\-double\-\_\-buffered}!gfx::context::settings@{gfx\-::context\-::settings}}
+\subsubsection[{not\-\_\-double\-\_\-buffered}]{\setlength{\rightskip}{0pt plus 5cm}{\bf context\-::settings} \& gfx\-::context\-::settings\-::not\-\_\-double\-\_\-buffered (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classgfx_1_1context_1_1settings_a108a98592538904d1c4a7b253de46f5f}
+
+
+Do not use double buffering when using the \hyperlink{classgfx_1_1context_1_1settings}{settings} object to construct a \hyperlink{classgfx_1_1context}{context}. 
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{classgfx_1_1context_1_1settings_a1c83c9a92e8daa1e408ac400ce951476}{gfx\-::context\-::settings\-::double\-\_\-buffered()} 
+\end{DoxySeeAlso}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+g\-Video/context.\-hpp\end{DoxyCompactItemize}

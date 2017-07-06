@@ -8,6 +8,7 @@ namespace gfx {
     /**
      * \class gfx::orientable orientable.hpp "gCore/gscne/orientable.hpp"
      * \brief A base class for any object that can be oriented in 3-space.
+     * 
      * The rule with multiple inheritance is usually that you should keep
      * as much implementation out of the base classes in the multiply
      * inherited class tree. This class would ignore that rule is it is
@@ -58,6 +59,7 @@ namespace gfx {
     };
     /**
      * \brief Construct a new orientable settings object with default settings.
+     * 
      * The default settings for an orientable object are to have a scale of
      * 1 on all axes, a zeroed out rotation, and to be placed at the origin.
      */

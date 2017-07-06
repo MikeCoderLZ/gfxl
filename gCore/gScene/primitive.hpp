@@ -9,6 +9,7 @@ namespace gfx {
     /**
      * \class gfx::primitive primitive.hpp "gCore/gScene/primitivie.hpp"
      * \brief An interface for basic shapes.
+     * 
      * Primitives have geometry that is set and can only be manipulated
      * by changing the transformation matrix provided by the base class
      * \ref gfx::orientable "orientable".
@@ -27,6 +28,7 @@ namespace gfx {
     };
     /**
      * \brief Construct a new default primtive settings object.
+     * 
      * The default settings are the same as for \ref gfx::orientable
      * "orientable" objects.
      */
@@ -58,6 +60,7 @@ namespace gfx {
                                     : primitive::settings( super ) {}
     /**
      * \brief Return the buffer of the box.
+     * 
      * Using the buffer you can draw the box with OpenGL. I do not like this
      * method of drawing primtives, or any geometry for that matter. The ideal
      * solution is a 'technique' class that synthesizes the drawing settings
@@ -96,6 +99,7 @@ namespace gfx {
                                        : primitive::settings( super ) {}
     /**
      * \brief Return the buffer of the sphere.
+     * 
      * Using the buffer you can draw the sphere with OpenGL. I do not like this
      * method of drawing primtives, or any geometry for that matter. The ideal
      * solution is a 'technique' class that synthesizes the drawing settings

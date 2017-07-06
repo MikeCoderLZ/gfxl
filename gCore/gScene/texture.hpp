@@ -14,6 +14,7 @@ namespace gfx {
     /**
      * \class gfx::bit_t texture.hpp "gCore/gScene/texture.hpp"
      * \brief The base class for channel format selectors.
+     * 
      * Channel format selectors are a utility class used in the configuration
      * of \ref gfx::texture "textures". Functionally, there are an enum with
      * special type charactersitics to make formatting errors cause compilation
@@ -247,6 +248,7 @@ namespace gfx {
     /**
      * \class gfx::filter_t texture.hpp "gCore/gVideo/texture.hpp"
      * \brief Base class for interpolation filter selectors.
+     * 
      * Interpolation selectors are used in the configuration of
      * \ref gfx::texture "textures". Immediate derived classes of filter_t
      * are a family of classes that provide the terminal classes of the
@@ -369,6 +371,7 @@ namespace gfx {
     /**
      * \class gfx::wrap_mode_t texture.hpp "gCore/gVideo/texture.hpp"
      * \brief Base class for wrapping mode selectors.
+     * 
      * An interface for wrap mode selectors; there is no multiple inheritance
      * in this class hierarachy, the derived classes are also the terminal ones.
      */
@@ -446,6 +449,7 @@ namespace gfx {
     /**
      * \class gfx::comparison_function_t texture.hpp "gCore/gVideo/texture.hpp"
      * \brief Base class for comparison function selectors.
+     * 
      * An interface for comparison function selectors; there is no multiple inheritance
      * in this class hierarachy, the derived classes are also the terminal ones.
      */
@@ -578,6 +582,7 @@ namespace gfx {
     /**
      * \class gfx::texture_1D texture.hpp "gCore/gScene/texture.hpp"
      * \brief Represents a one dimenstional texture.
+     * 
      * One dimensional textures are configured with the member class
      * \ref gfx::texture_1D::settings "settings". They consist of a single
      * row of color information, which can be formatted in a large number
@@ -732,6 +737,7 @@ namespace gfx {
     
     /**
      * \brief Construct a new default one dimensional texture settings object.
+     * 
      * The default settings for a one dimenstional texture are to have a
      * width of zero, no extra multi-texturing features, standard channel
      * soruces, and the cheapest interpolation and sampling filters. The
@@ -2027,6 +2033,7 @@ namespace gfx {
     /**
      * \brief Set the new one dimensional texture to have three chanels packed
      * into 8 bits.
+     * 
      * 3 bits for Red and Green, and 2 bits for Blue.
      */
     inline  texture_1D::settings&  texture_1D::settings::packed_3channel_8bit()
@@ -2034,6 +2041,7 @@ namespace gfx {
     /**
      * \brief Set the new one dimensional texture to have four chanels packed
      * into 16 bits.
+     * 
      * Five bits for Red, Green, and Blue, and one bit for Alpha.
      */
     inline  texture_1D::settings&  texture_1D::settings::packed_4channel_16bit()
@@ -2041,6 +2049,7 @@ namespace gfx {
     /**
      * \brief Set the new one dimensional texture to have four chanels packed
      * into 32 bits.
+     * 
      * Ten bits for Red, Green, and Blue, and two for Alpha.
      */
     inline  texture_1D::settings&  texture_1D::settings::packed_4channel_32bit()
@@ -2048,6 +2057,7 @@ namespace gfx {
     /**
      * \brief Set the new one dimensional texture to have four chanels packed
      * into 32 bits.
+     * 
      * Ten bits for Red, Green, and Blue, and two for Alpha. Unsigned.
      */
     inline  texture_1D::settings&  texture_1D::settings::packed_4channel_32bit_unsigned()
@@ -2055,6 +2065,7 @@ namespace gfx {
     /**
      * \brief Set the new one dimensional texture to have three floating point
      * chanels packed into 32 bits.
+     * 
      * Eleven bits for Red and Green, and ten for Blue.
      */
     inline  texture_1D::settings&  texture_1D::settings::packed_3channel_32bit_float()
@@ -2062,6 +2073,7 @@ namespace gfx {
     /**
      * \brief Set the new one dimensional texture to have three floating point
      * chanels packed into 32 bits with a shared exponent.
+     * 
      * Nine bits for Red, Green, Blue mantissa, then five bits for their shared
      * exponent. May not be supported as a renderable format, because WAT!?!
      * There amy be an approrpiate use for this (the OpenGL wiki mentions images
@@ -2075,6 +2087,7 @@ namespace gfx {
     /**
      * \brief Set the new one dimensional texture to use the sRGB
      * with eight bit chanels.
+     * 
      * Eight bits for Red, Green, and Blue. Unsigned.
      */
     inline  texture_1D::settings&  texture_1D::settings::sRGB_8bit()
@@ -2082,6 +2095,7 @@ namespace gfx {
     /**
      * \brief Set the new one dimensional texture to use the sRGB
      * with eight bit chanels.
+     * 
      * Eight bits for Red, Green, and Blue, plus Alpha. Unsigned.
      */
     inline  texture_1D::settings&  texture_1D::settings::sRGBA_8bit()
@@ -2168,6 +2182,7 @@ namespace gfx {
     /**
      * \class gfx::texture_2D texture.hpp "gCore/gScene/texture.hpp"
      * \brief Represents a two dimenstional texture.
+     * 
      * Two dimensional textures are configured with the member class
      * \ref gfx::texture_2D::settings "settings". They consist of a two
      * dimensional grid of color information, which can be formatted in a large
@@ -2322,6 +2337,7 @@ namespace gfx {
     };
     /**
      * \brief Construct a new default two dimensional texture settings object.
+     * 
      * The default settings for a one dimenstional texture are to have a
      * width of zero, no extra multi-texturing features, standard channel
      * soruces, and the cheapest interpolation and sampling filters. The
@@ -3615,6 +3631,7 @@ namespace gfx {
     /**
      * \brief Set the new two dimensional texture to have three chanels packed
      * into 8 bits.
+     * 
      * 3 bits for Red and Green, and 2 bits for Blue.
      */
     inline  texture_2D::settings&  texture_2D::settings::packed_3channel_8bit()
@@ -3622,6 +3639,7 @@ namespace gfx {
     /**
      * \brief Set the new two dimensional texture to have four chanels packed
      * into 16 bits.
+     * 
      * Five bits for Red, Green, and Blue, and one bit for Alpha.
      */
     inline  texture_2D::settings&  texture_2D::settings::packed_4channel_16bit()
@@ -3629,6 +3647,7 @@ namespace gfx {
     /**
      * \brief Set the new two dimensional texture to have four chanels packed
      * into 32 bits.
+     * 
      * Ten bits for Red, Green, and Blue, and two for Alpha.
      */
     inline  texture_2D::settings&  texture_2D::settings::packed_4channel_32bit()
@@ -3636,6 +3655,7 @@ namespace gfx {
     /**
      * \brief Set the new two dimensional texture to have four chanels packed
      * into 32 bits.
+     * 
      * Ten bits for Red, Green, and Blue, and two for Alpha. Unsigned.
      */
     inline  texture_2D::settings&  texture_2D::settings::packed_4channel_32bit_unsigned()
@@ -3643,6 +3663,7 @@ namespace gfx {
     /**
      * \brief Set the new two dimensional texture to have three floating point
      * chanels packed into 32 bits.
+     * 
      * Eleven bits for Red and Green, and ten for Blue.
      */
     inline  texture_2D::settings&  texture_2D::settings::packed_3channel_32bit_float()
@@ -3650,6 +3671,7 @@ namespace gfx {
     /**
      * \brief Set the new two dimensional texture to have three floating point
      * chanels packed into 32 bits with a shared exponent.
+     * 
      * Nine bits for Red, Green, Blue mantissa, then five bits for their shared
      * exponent. May not be supported as a renderable format, because WAT!?!
      * There amy be an approrpiate use for this (the OpenGL wiki mentions images
@@ -3663,6 +3685,7 @@ namespace gfx {
     /**
      * \brief Set the new two dimensional texture to use the sRGB
      * with eight bit chanels.
+     * 
      * Eight bits for Red, Green, and Blue. Unsigned.
      */
     inline  texture_2D::settings&  texture_2D::settings::sRGB_8bit()
@@ -3670,6 +3693,7 @@ namespace gfx {
     /**
      * \brief Set the new two dimensional texture to use the sRGB
      * with eight bit chanels.
+     * 
      * Eight bits for Red, Green, and Blue, plus Alpha. Unsigned.
      */
     inline  texture_2D::settings&  texture_2D::settings::sRGBA_8bit()
@@ -3702,6 +3726,7 @@ namespace gfx {
     }
      /**
      * \brief Set the new two dimensional texture's sampling bias.
+     * 
      * The sampling bias is added to the calculated sample depth.
      * \param bias The sampling bias
      */

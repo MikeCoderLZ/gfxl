@@ -1,0 +1,206 @@
+\hypertarget{classgfx_1_1orientable}{\section{gfx\-:\-:orientable Class Reference}
+\label{classgfx_1_1orientable}\index{gfx\-::orientable@{gfx\-::orientable}}
+}
+
+
+A base class for any object that can be oriented in 3-\/space.  
+
+
+
+
+{\ttfamily \#include \char`\"{}g\-Core/gscne/orientable.\-hpp\char`\"{}}
+
+Inheritance diagram for gfx\-:\-:orientable\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classgfx_1_1orientable}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classgfx_1_1orientable_1_1settings}{settings}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgfx_1_1orientable_a053f20c5e02879540199c0e232636d0b}{\hyperlink{classgfx_1_1orientable_a053f20c5e02879540199c0e232636d0b}{orientable} (\hyperlink{classgfx_1_1orientable_1_1settings}{settings} const \&set=\hyperlink{classgfx_1_1orientable_1_1settings}{settings}())}\label{classgfx_1_1orientable_a053f20c5e02879540199c0e232636d0b}
+
+\begin{DoxyCompactList}\small\item\em Construct a new orientable object. \end{DoxyCompactList}\item 
+\hypertarget{classgfx_1_1orientable_a88fbeffe72a67ff7169ab2aea6109e6c}{\hyperlink{classgfx_1_1orientable}{orientable} \& {\bfseries scale} (vec3 const \&scl)}\label{classgfx_1_1orientable_a88fbeffe72a67ff7169ab2aea6109e6c}
+
+\item 
+\hyperlink{classgfx_1_1orientable}{orientable} \& \hyperlink{classgfx_1_1orientable_abbddb58aba9e2b1d2011cc5d8b289e7a}{stretch} (vec3 const \&scl)
+\begin{DoxyCompactList}\small\item\em Set the scale of the orientable object. \end{DoxyCompactList}\item 
+vec3 const \& \hyperlink{classgfx_1_1orientable_a1a4029fefd371cb0d54b1ba279824223}{scale} () const 
+\begin{DoxyCompactList}\small\item\em Return the scale of the orientable object. \end{DoxyCompactList}\item 
+\hypertarget{classgfx_1_1orientable_a9b65cffc474e9939879af5cebff5c193}{\hyperlink{classgfx_1_1orientable}{orientable} \& {\bfseries rotation} (qutn const \&rot)}\label{classgfx_1_1orientable_a9b65cffc474e9939879af5cebff5c193}
+
+\item 
+\hyperlink{classgfx_1_1orientable}{orientable} \& \hyperlink{classgfx_1_1orientable_a5c66e5f024408cdf71153bfbc444d7f3}{rotate} (qutn const \&rot)
+\begin{DoxyCompactList}\small\item\em Set the rotation of the orientable object. \end{DoxyCompactList}\item 
+qutn const \& \hyperlink{classgfx_1_1orientable_a8e7131168074ee2d76d83313c883fe76}{rotation} () const 
+\begin{DoxyCompactList}\small\item\em Return the rotation of the orientable object. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1orientable}{orientable} \& \hyperlink{classgfx_1_1orientable_a34690e36f7c1623db703903b26ef5239}{position} (vec3 const \&pos)
+\begin{DoxyCompactList}\small\item\em Return the position of the orientable object. \end{DoxyCompactList}\item 
+\hyperlink{classgfx_1_1orientable}{orientable} \& \hyperlink{classgfx_1_1orientable_ac9221e15f972b8c2ba4e530cc8be4535}{move} (vec3 const \&mov)
+\begin{DoxyCompactList}\small\item\em Set the position of the orientable object. \end{DoxyCompactList}\item 
+vec3 const \& \hyperlink{classgfx_1_1orientable_aae8b96c0c3a5b5f86c622c7687616644}{position} () const 
+\begin{DoxyCompactList}\small\item\em Return the position of the orientable object. \end{DoxyCompactList}\item 
+mat4 const \& \hyperlink{classgfx_1_1orientable_a775c3fac31386a99802c2d3169ae8481}{object\-\_\-matrix} () const 
+\begin{DoxyCompactList}\small\item\em Return the transformation matrix of this orientable object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgfx_1_1orientable_ac49e3e938ffb892a8c55e7cb88d8bbe0}{void \hyperlink{classgfx_1_1orientable_ac49e3e938ffb892a8c55e7cb88d8bbe0}{update\-\_\-obj\-\_\-mtrx} ()}\label{classgfx_1_1orientable_ac49e3e938ffb892a8c55e7cb88d8bbe0}
+
+\begin{DoxyCompactList}\small\item\em Generate the trnasformation matrix from current settings. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgfx_1_1orientable_a54e3ccf1da2a2a5fabd7292c60348b1b}{bool {\bfseries orientation\-\_\-changed}}\label{classgfx_1_1orientable_a54e3ccf1da2a2a5fabd7292c60348b1b}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A base class for any object that can be oriented in 3-\/space. 
+
+The rule with multiple inheritance is usually that you should keep as much implementation out of the base classes in the multiply inherited class tree. This class would ignore that rule is it is used as a base class. I'm leaning towards using the composition pattern from the mobile game, as it worked pretty well there. In that case, orientable would just be another component and not much would have to change (other than inheriting the base component class).
+
+Orientable implicitly means that the object exists within simulation space; orientable objects are N\-O\-T used for any sort of G\-U\-I elements or effects objects which have non-\/euclidean properties (such as a sky box). Orientable does N\-O\-T imply that the object is collidable, though. That would be the job of the (as yet unwritten) collidable class. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classgfx_1_1orientable_ac9221e15f972b8c2ba4e530cc8be4535}{\index{gfx\-::orientable@{gfx\-::orientable}!move@{move}}
+\index{move@{move}!gfx::orientable@{gfx\-::orientable}}
+\subsubsection[{move}]{\setlength{\rightskip}{0pt plus 5cm}{\bf orientable} \& gfx\-::orientable\-::move (
+\begin{DoxyParamCaption}
+\item[{vec3 const \&}]{mov}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1orientable_ac9221e15f972b8c2ba4e530cc8be4535}
+
+
+Set the position of the orientable object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em stc} & The position of the orientable object. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This orientable object 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1orientable_a775c3fac31386a99802c2d3169ae8481}{\index{gfx\-::orientable@{gfx\-::orientable}!object\-\_\-matrix@{object\-\_\-matrix}}
+\index{object\-\_\-matrix@{object\-\_\-matrix}!gfx::orientable@{gfx\-::orientable}}
+\subsubsection[{object\-\_\-matrix}]{\setlength{\rightskip}{0pt plus 5cm}mat4 const \& gfx\-::orientable\-::object\-\_\-matrix (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classgfx_1_1orientable_a775c3fac31386a99802c2d3169ae8481}
+
+
+Return the transformation matrix of this orientable object. 
+
+\begin{DoxyReturn}{Returns}
+The transformaton of the orientable object. 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1orientable_a34690e36f7c1623db703903b26ef5239}{\index{gfx\-::orientable@{gfx\-::orientable}!position@{position}}
+\index{position@{position}!gfx::orientable@{gfx\-::orientable}}
+\subsubsection[{position}]{\setlength{\rightskip}{0pt plus 5cm}{\bf orientable} \& gfx\-::orientable\-::position (
+\begin{DoxyParamCaption}
+\item[{vec3 const \&}]{pos}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1orientable_a34690e36f7c1623db703903b26ef5239}
+
+
+Return the position of the orientable object. 
+
+\begin{DoxyReturn}{Returns}
+The position of the orientable object. 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1orientable_aae8b96c0c3a5b5f86c622c7687616644}{\index{gfx\-::orientable@{gfx\-::orientable}!position@{position}}
+\index{position@{position}!gfx::orientable@{gfx\-::orientable}}
+\subsubsection[{position}]{\setlength{\rightskip}{0pt plus 5cm}vec3 const \& gfx\-::orientable\-::position (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classgfx_1_1orientable_aae8b96c0c3a5b5f86c622c7687616644}
+
+
+Return the position of the orientable object. 
+
+\begin{DoxyReturn}{Returns}
+The position of the orientable object. 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1orientable_a5c66e5f024408cdf71153bfbc444d7f3}{\index{gfx\-::orientable@{gfx\-::orientable}!rotate@{rotate}}
+\index{rotate@{rotate}!gfx::orientable@{gfx\-::orientable}}
+\subsubsection[{rotate}]{\setlength{\rightskip}{0pt plus 5cm}{\bf orientable} \& gfx\-::orientable\-::rotate (
+\begin{DoxyParamCaption}
+\item[{qutn const \&}]{rot}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1orientable_a5c66e5f024408cdf71153bfbc444d7f3}
+
+
+Set the rotation of the orientable object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em stc} & The rotation of the orientable object. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This orientable object 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1orientable_a8e7131168074ee2d76d83313c883fe76}{\index{gfx\-::orientable@{gfx\-::orientable}!rotation@{rotation}}
+\index{rotation@{rotation}!gfx::orientable@{gfx\-::orientable}}
+\subsubsection[{rotation}]{\setlength{\rightskip}{0pt plus 5cm}qutn const \& gfx\-::orientable\-::rotation (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classgfx_1_1orientable_a8e7131168074ee2d76d83313c883fe76}
+
+
+Return the rotation of the orientable object. 
+
+\begin{DoxyReturn}{Returns}
+The rotation of the orientable object. 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1orientable_a1a4029fefd371cb0d54b1ba279824223}{\index{gfx\-::orientable@{gfx\-::orientable}!scale@{scale}}
+\index{scale@{scale}!gfx::orientable@{gfx\-::orientable}}
+\subsubsection[{scale}]{\setlength{\rightskip}{0pt plus 5cm}vec3 const \& gfx\-::orientable\-::scale (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classgfx_1_1orientable_a1a4029fefd371cb0d54b1ba279824223}
+
+
+Return the scale of the orientable object. 
+
+\begin{DoxyReturn}{Returns}
+The scale of the orientable object. 
+\end{DoxyReturn}
+\hypertarget{classgfx_1_1orientable_abbddb58aba9e2b1d2011cc5d8b289e7a}{\index{gfx\-::orientable@{gfx\-::orientable}!stretch@{stretch}}
+\index{stretch@{stretch}!gfx::orientable@{gfx\-::orientable}}
+\subsubsection[{stretch}]{\setlength{\rightskip}{0pt plus 5cm}{\bf orientable} \& gfx\-::orientable\-::stretch (
+\begin{DoxyParamCaption}
+\item[{vec3 const \&}]{stc}
+\end{DoxyParamCaption}
+)}}\label{classgfx_1_1orientable_abbddb58aba9e2b1d2011cc5d8b289e7a}
+
+
+Set the scale of the orientable object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em stc} & The scale of the orientable object. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This orientable object 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+g\-Scene/orientable.\-hpp\item 
+g\-Scene/orientable.\-cpp\end{DoxyCompactItemize}

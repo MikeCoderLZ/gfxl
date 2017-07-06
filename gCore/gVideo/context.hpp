@@ -2,13 +2,6 @@
 #define CONTEXT_HPP
 
 namespace gfx {
-
-    /**
-    * The way in which contexts and windows interact is obscure;
-    * It is possible that some OpenGL settings need to be saved in
-    * order to make this all work correctly.
-    * 
-    */
     
     /**
      * \class gfx::context context.hpp "gCore/gVideo/context.hpp
@@ -92,6 +85,7 @@ namespace gfx {
     /**
      * \brief Use double buffering when using the \ref gfx::context::settings
      * "settings" object to construct a \ref gfx::context "context".
+     * 
      * @see gfx::context::settings::not_double_buffered()
      */
     inline context::settings& context::settings::double_buffered()
@@ -99,6 +93,7 @@ namespace gfx {
     /**
      * \brief Do not use double buffering when using the \ref gfx::context::settings
      * "settings" object to construct a \ref gfx::context "context".
+     * 
      * @see gfx::context::settings::double_buffered()
      */
     inline context::settings& context::settings::not_double_buffered()
@@ -106,30 +101,33 @@ namespace gfx {
     /**
      * \brief Set the number of depth bits to use when constructing a
      * \ref gfx::context "context" object.
+     * 
      * No bounds checking is done, so outrageous amounts of depths bits may
      * cause errors. Furthermore, simply indicating a number of depth bits
      * will not automatically set the context to use depth testing.
-     * @param bits The number of depth bits to use
+     * \param bits The number of depth bits to use
      */
     inline context::settings& context::settings::depth_bits( unsigned int bits )
     { n_depth_bits = bits; return *this; }
     /**
      * \brief Compare this \ref gfx::context "context" to another for equality.
+     * 
      * The comparison is down using internal OpenGL system values; it is feasible
      * that two contexts could compare equal, but extremely extremely unlikely
      * as it would require ill-advised hacking of how the \ref gfx::video_system
      * "video system" works.
-     * @param rhs The context to compare this context to
+     * \param rhs The context to compare this context to
      */
     inline  bool    context::operator ==( context const& rhs ) const
     { return this->sys_context == rhs.sys_context; }
     /**
      * \brief Draw triangles using the indices given.
+     * 
      * This is a trainwreck of badness; it is only a placeholder and I don't
      * even know if it works (I strongly suspect it does not). It requires
      * a vertex array object and associated buffer to be active before it works.
-     * @param tris The number of triangles the given indexer describes
-     * @param indices The indices that describe the triangles.
+     * \param tris The number of triangles the given indexer describes
+     * \param indices The indices that describe the triangles.
      */
     inline void     context::draw_triangles( size_t const tris,
                                             ui_indexer const& indices )

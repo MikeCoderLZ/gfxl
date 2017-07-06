@@ -1,0 +1,68 @@
+\hypertarget{classgfx_1_1vertex__buffer}{\section{gfx\-:\-:vertex\-\_\-buffer Class Reference}
+\label{classgfx_1_1vertex__buffer}\index{gfx\-::vertex\-\_\-buffer@{gfx\-::vertex\-\_\-buffer}}
+}
+Inheritance diagram for gfx\-:\-:vertex\-\_\-buffer\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classgfx_1_1vertex__buffer}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classgfx_1_1vertex__buffer_1_1settings}{settings}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgfx_1_1vertex__buffer_a40482a1a31630be86643bf33846ddcdd}{{\bfseries vertex\-\_\-buffer} (\hyperlink{classgfx_1_1vertex__buffer_1_1settings}{settings} const \&set=\hyperlink{classgfx_1_1vertex__buffer_1_1settings}{settings}())}\label{classgfx_1_1vertex__buffer_a40482a1a31630be86643bf33846ddcdd}
+
+\item 
+virtual void \hyperlink{classgfx_1_1vertex__buffer_a3248a790af715bc3b211d81ffd8a686b}{upload\-\_\-data} ()
+\begin{DoxyCompactList}\small\item\em Upload the \hyperlink{classgfx_1_1buffer}{buffer's} data to Open\-G\-L. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classgfx_1_1vertex__buffer_abe471eb3dee70c2b0f01976e3161f157}{align} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgfx_1_1vertex__buffer_a5db1ab86208bdf749a359e08e95d69e0}{G\-Luint {\bfseries vao\-\_\-\-I\-D}}\label{classgfx_1_1vertex__buffer_a5db1ab86208bdf749a359e08e95d69e0}
+
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classgfx_1_1vertex__buffer_abe471eb3dee70c2b0f01976e3161f157}{\index{gfx\-::vertex\-\_\-buffer@{gfx\-::vertex\-\_\-buffer}!align@{align}}
+\index{align@{align}!gfx::vertex_buffer@{gfx\-::vertex\-\_\-buffer}}
+\subsubsection[{align}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::vertex\-\_\-buffer\-::align (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classgfx_1_1vertex__buffer_abe471eb3dee70c2b0f01976e3161f157}
+case D\-O\-U\-B\-L\-E \-: gl\-::\-Vertex\-Attrib\-L\-Pointer( index, ({\itshape a)-\/$>$n\-\_\-components(), ($\ast$a)-\/$>$component\-\_\-to\-\_\-\-G\-L(), stride, ( void}) offset ); 
+
+Implements \hyperlink{classgfx_1_1buffer}{gfx\-::buffer}.
+
+\hypertarget{classgfx_1_1vertex__buffer_a3248a790af715bc3b211d81ffd8a686b}{\index{gfx\-::vertex\-\_\-buffer@{gfx\-::vertex\-\_\-buffer}!upload\-\_\-data@{upload\-\_\-data}}
+\index{upload\-\_\-data@{upload\-\_\-data}!gfx::vertex_buffer@{gfx\-::vertex\-\_\-buffer}}
+\subsubsection[{upload\-\_\-data}]{\setlength{\rightskip}{0pt plus 5cm}void gfx\-::vertex\-\_\-buffer\-::upload\-\_\-data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classgfx_1_1vertex__buffer_a3248a790af715bc3b211d81ffd8a686b}
+
+
+Upload the \hyperlink{classgfx_1_1buffer}{buffer's} data to Open\-G\-L. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000011}{Todo}]There is no check to see if you have actually specified the data format. This means, internally, the stride member has not been correctly specified and so the upload will send Open\-G\-L an unpredictable number of bytes (usually 0 but in more complex use cases it could be anything depending on the lifetime of the particular buffer). It also doesn't check to see if you have even loaded any data into the buffer client-\/ side or if the buffer is \char`\"{}dirty\char`\"{}. Though that is not quite as bad, it certainly isn't very helpful for the user. \end{DoxyRefDesc}
+
+
+Reimplemented from \hyperlink{classgfx_1_1buffer_a7019485ae327de1d5d5525185196ff43}{gfx\-::buffer}.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+g\-Scene/vertex\-\_\-buffer.\-hpp\item 
+g\-Scene/vertex\-\_\-buffer.\-cpp\end{DoxyCompactItemize}
