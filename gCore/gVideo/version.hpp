@@ -171,7 +171,7 @@ namespace gfx {
     version const opengl_4_1 = version( 4, 1 );
     /** \var gfx::version const opengl_4_2
      * Represents OpenGL version 4.2. */
-    version const opengl_4_2 = version( 4, 2 )
+    version const opengl_4_2 = version( 4, 2 );
     /** \var gfx::version const opengl_4_3
      * Represents OpenGL version 4.3. */
     version const opengl_4_3 = version( 4, 3 );
