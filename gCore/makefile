@@ -35,5 +35,10 @@ gEngine.exe: $(OBJ)/gEngine.o $(MATHOBJ) makefile
 $(OBJ)/gEngine.o: $(SRC)/gEngine.cpp $(SRC)/gMath.hpp
 	g++ -c $(COM) $(SRC)/gEngine.cpp $(SDLFLAGS) -o $(OBJ)/gEngine.o
 
-clean:
+docs: FORCE
+	doxygen doxyfile
+	
+clean: FORCE
 	rm $(OBJ)/*.o
+	
+FORCE:

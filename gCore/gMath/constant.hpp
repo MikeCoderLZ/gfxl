@@ -5,13 +5,24 @@
 
 namespace gfx {
 
-// This is a method to ensure the correctly typed values for
-// common literals are used. Since the default type for floating
-// point is double and the compiler is supposed to enforce that,
-// some time can be lost to type promotion. A good programmer
-// naturallywould avoid this, but in templated contexts it saves
-// some dev time and precious lines of code.
-
+/**
+ * \class gfx::lit constant.hpp "gCore/gMath/constant.hpp"
+ * \brief A static resource class containing commonly used literal values.
+ * 
+ * There are two specializations for this template class, one for \c floats
+ * and one for \c doubles. Here is where you'll find pi and the suqare root
+ * of two. A number of other, perhaps less useful, literals are included
+ * as well. This is all included so certain literals, like e, always have
+ * the same values across the whole library.
+ * 
+ * Using this literals in expressions will see the call to the static member be
+ * optimized out, leaving only the literal value. Furthermore, using the correct
+ * type will help ensure type promotion will not infect a mathematical expression
+ * and self document code.
+ * \tparam T The type of the literal values. This should be a decimal
+ * type.
+ * \sa gfx::lit<float> gfx::lit<double> gfx::angle_t
+ */
 template< typename T >
 class lit {
 public:
@@ -43,7 +54,15 @@ public:
     constexpr static T const    phi            = 1.6180339887498948482045868;
     constexpr static T const    delta          = 1.0;
 };
-
+/**
+ * \class gfx::lit<float> constant.hpp "gCore/gMath/constant.hpp"
+ * \brief A static resource class containing commonly used literal \c float
+ * values.
+ * 
+ * The specialzation of gfx::lit for \c floats.
+ * \tparam float The type of the literal values is a 32 bit \c float.
+ * \sa gfx::angle
+ */
 template<>
 class lit<float> {
 public:
@@ -76,8 +95,22 @@ public:
     constexpr static float const    delta          = 0.00001f;
 };
 
+/**
+ * \typedef typedef gfx::lit<float> f_lit
+ * \brief A typedef for the float specialization of gfx::lit, included for
+ * code readability.
+ */
 typedef lit<float>  f_lit;
 
+/**
+ * \class gfx::lit<double> constant.hpp "gCore/gMath/constant.hpp"
+ * \brief A static resource class containing commonly used literal \c double
+ * values.
+ * 
+ * The specialzation of gfx::lit for \c doubles.
+ * \tparam double The type of the literal values is a 64 bit \c double.
+ * \sa gfx::d_angle
+ */
 template<>
 class lit<double> {
 public:
@@ -109,7 +142,11 @@ public:
     constexpr static double const    phi            = 1.6180339887498948482045868;
     constexpr static double const    delta          = 0.0000000001;
 };
-
+/**
+ * \typedef typedef gfx::lit<double> f_lit
+ * \brief A typedef for the double specialization of gfx::lit, included for
+ * code readability.
+ */
 typedef lit<double>  d_lit;
 
 // The angle_t template is a method to disambiguate angular units.
@@ -121,7 +158,16 @@ typedef lit<double>  d_lit;
 
 // TODO angle_t might need to be expanded in the future to act more
 // like the types over in datatype.hpp.
-
+/**
+ * \class gfx::angle_t constant.hpp "gCore/gMath/constant.hpp"
+ * \brief An angle representation safety class.
+ * 
+ * Using this class self documents code and allows functions that accept
+ * angles as parameters to use values the user specified via any method.
+ * 
+ * The class is intended for the interface to a function and does not support
+ * arithmetic or operations.
+ */
 template< typename T >
 class angle_t {
     public:
@@ -141,40 +187,90 @@ class angle_t {
         // One unian = tau radians = 2*pi radians = 200 gradians = 360 degrees
 };
 
+/**
+ * \typedef typedef gfx::angle_t<float> angle
+ * \brief A typedef for the \c float specialization of gfx::angle, included for
+ * code readability.
+ */
 typedef angle_t<float> angle;
+/**
+ * \typedef typedef gfx::angle_t<double> angle
+ * \brief A typedef for the \c double specialization of gfx::angle, included for
+ * code readability.
+ */
 typedef angle_t<double> d_angle;
 
+/**
+ * \brief Specify an angle in radians.
+ * \tparam T The type of the angle representation
+ * \param in_rads The angle in radians
+ */
 template < typename T > inline
 angle_t<T> angle_t< T >::in_rads( T in_rads )
 {
     return angle_t<T>( in_rads * lit<T>::inv_tau );
 }
+/**
+ * \brief Specify an angle in gradians.
+ * 
+ * That's 200 gradians to a full turn.
+ * \tparam T The type of the angle representation
+ * \param in_grads The angle in gradians
+ */
 template < typename T > inline
 angle_t<T> angle_t< T >::in_grads( T in_grads )
 {
     return angle_t<T>( in_grads * (lit<T>::thousandth * lit<T>::five) );
 }
+/**
+ * \brief Specify an angle in degrees.
+ * \tparam T The type of the angle representation
+ * \param in_degs The angle in degrees
+ */
 template < typename T > inline
 angle_t<T> angle_t< T >::in_degs( T in_degs )
 {
     return angle_t<T>( in_degs * lit<T>::inv_360 );
 }
+/**
+ * \brief Return an angle in radians.
+ * \tparam T The type of the angle representation
+ * \return The angle in radians
+ */
 template < typename T > inline
 T angle_t< T >::to_rads() const
 {
     return unians * lit<T>::tau;
 }
+/**
+ * \brief Return an angle in gradians.
+ * 
+ * That's 200 gradians to a full turn.
+ * \tparam T The type of the angle representation
+ * \return The angle in gradians
+ */
 template < typename T > inline
 T angle_t< T >::to_grads() const
 {
     return unians * (lit<T>::two * lit<T>::hundred);
 }
+/**
+ * \brief Return an angle in degrees.
+ * \tparam T The type of the angle representation
+ * \return The angle in degrees
+ */
 template < typename T > inline
 T angle_t< T >::to_degs() const
 {
     return unians * lit<T>::n360;
 }
-
+/**
+ * \fn template<typename T> std::ostream& operator<<( std::ostream const& out, angle_t(T) const& src )
+ * \brief Print the angle to standard output in degrees.
+ * 
+ * This uses the degree character, which may cause hiccups on some systems.
+ * \tparam T The type of the angle representation
+ */
 template< typename T >
 std::ostream& operator<<( std::ostream& out, angle_t<T> const& src )
 {

@@ -46,7 +46,15 @@ class program;
 // to OpenGL or any other memory.
 class raw_mappable;
 
-// A container class used to pass byte arrays of data around
+/**
+ * \class gfx::raw_map datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief A wrapper class for unformatted data.
+ * 
+ * Raw maps wrap up unformatted data in a package that can be passed around,
+ * usually to the OpenGL server for uploading. It uses the access semantics
+ * of arrays.
+ * \todo I suspect optimizations involving word size can be made in this class.
+ */
 class raw_map {
 public:
                             raw_map( raw_map const& src );
@@ -61,7 +69,14 @@ protected:
     friend class            shader;
     unsigned char* bytes;
 };
-
+/**
+ * \brief Clone a gfx::raw_map.
+ * 
+ * The clone is deep, copying all the data to newly allocated memory. Since
+ * the data is stored in contiguous bytes, no association is made between
+ * the original gfx::raw_map and the new one.
+ * \param src The source gfx::raw_map to clone
+ */
 inline raw_map::raw_map( raw_map const& src ) :
                     n_bytes( src.n_bytes ),
                     bytes( new unsigned char[ src.n_bytes ] )
@@ -70,13 +85,25 @@ inline raw_map::raw_map( raw_map const& src ) :
     for( i = 0; i < n_bytes; ++i )
     { bytes[i] = src.bytes[i]; }
 }
-
+/**
+ * \brief Construct a new gfx::raw_map with space for the given number of bytes.
+ * 
+ * The size of a gfx::raw_map is immutable.
+ * \param new_n_bytes The number of bytes to create storage for
+ */
 inline  raw_map::raw_map( size_t new_n_bytes ) :
             n_bytes( new_n_bytes ),
             bytes( new unsigned char[new_n_bytes] ) {}
-
+/**
+ * \brief Destruct the gfx::raw_map.
+ */
 inline  raw_map::~raw_map() { delete[] bytes; }
-
+/**
+ * \brief Return the value of the byte at the given byte.
+ * 
+ * Zero-based, naturally.
+ * \param index The byte to access
+ */
 inline unsigned char&   raw_map::operator[]( int const index )
 {
     if ( index < 0 ) {
@@ -88,7 +115,12 @@ inline unsigned char&   raw_map::operator[]( int const index )
     }
     return bytes[index];
 }
-
+/**
+ * \brief Return the value of the byte at the given byte.
+ * 
+ * Zero-based, naturally.
+ * \param index The byte to access
+ */
 inline unsigned char    raw_map::operator[]( int const index ) const
 {
     if ( index < 0 ) {
@@ -100,9 +132,11 @@ inline unsigned char    raw_map::operator[]( int const index ) const
     }
     return bytes[index];
 }
-
-// An ABC that graphics primitives use to dela with mapping
-// to OpenGL or any other memory.
+/**
+ * \class gfx::raw_mappable datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief An abstract base class defining a class that can deliver a
+ * gfx::raw_map of its data.
+ */
 class raw_mappable {
 public:
                     raw_mappable()                  {}
@@ -112,7 +146,11 @@ protected:
     //map_bytes() is an internal utility used for cloning bytes.
     raw_map const   map_bytes( size_t n_bytes, unsigned char const* bytes ) const;
 };
-
+/**
+ * \brief An internal utility used for cloning bytes.
+ * \param n_bytes The number of bytes to clone
+ * \param bytes The array of bytes
+ */
 inline raw_map const    raw_mappable::map_bytes( size_t n_bytes, unsigned char const* bytes ) const
 {
     raw_map raw( n_bytes );
@@ -122,13 +160,27 @@ inline raw_map const    raw_mappable::map_bytes( size_t n_bytes, unsigned char c
     }
     return raw;
 }
-
-
+/**
+ * \class gfx::scalar datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief A primitive class for singular value types.
+ * 
+ * Scalars represent the linear algebra entity of the same name. They are
+ * included in the family of linear algebra classes in order to support
+ * uploading to OpenGL, though most code supports using true primitives.
+ * 
+ * \warning Inside, a union is used to access the value in full or the bytes
+ * individually. Because these types are using an array and invoke the sizeof()
+ * operator, it is ESPECIALLY DANGEROUS if you put a base class in the template
+ * parameter. Doing that will probably cause object slicing and BOOM, it will
+ * explode.
+ * 
+ * \tparam T The type of the contained data; primitives only please
+ */
 template< typename T >
 class scalar : public raw_mappable {
 public:
     typedef scalar<T>       scalar_t;
-    typedef T               comp_t;
+    typedef T               comp_t;    /** < Public handle for contained type. */
                             scalar();
                             scalar( comp_t x0 );
                             operator T() const;
@@ -147,38 +199,58 @@ public:
     friend std::ostream&    operator<<( std::ostream& out, scalar<U> const& src );
     virtual raw_map const   to_map() const;
 protected:
-  // A union is used to access the value in full or the bytes individually.
-  // WARNING DANGER Because these types are using an array and invoke the
-  // sizeof() operator, it is ESPECIALLY DANGEROUS if you put a base class in
-  // the template parameter. Doing that will inevitably cause object slicing
-  // and BOOM, it will explode.
+    /**
+     * \brief To facilitate uploading to OpenGL as unformatted data, a union is
+     * used to access the stored value as either an array of bytes or a simple
+     * value of the parameter type.
+     */
     union {
         comp_t          value;
         unsigned char   bytes[sizeof(comp_t)];
     } data;
 };
 
-// This macro is defined in datatypeinfo.hpp; it expands to a template
-// specialization of the typeinfo class with a further template param.
-// Type information for library classes is only generated when code
-// actually uses it. Because this partiuclar file uses this system
-// for standard GLSL types, the type information is in fact generated,
-// but that is okay since it is necessary for sending information over
-// to OpenGL.
-//
-// For user created linear algebra types using these templates, it will
-// NOT be generated unless it is in fact used.
-//
-// WARNING This is dangerous dark magics. DO NOT touch anything to do with
-// this typeinfo system unless you know PRECISELY what you are doing.
-// Mixing macros and templates is extremely spooky stuff.
+/**
+ * This macro is defined in datatypeinfo.hpp; it expands to a template
+ * specialization of the type class with a further template parameter.
+ * Type information for library classes is only generated when code
+ * actually uses it. Because this partiuclar file uses this system
+ * for standard GLSL types, the type information is in fact generated,
+ * but that is okay since it is necessary for sending information over
+ * to OpenGL.
+ *
+ * For user created linear algebra types using these templates, it will
+ * NOT be generated unless it is in fact used.
+ *
+ * \warning This is dangerous dark magics. DO NOT touch anything to do with
+ * this typeinfo system unless you know PRECISELY what you are doing.
+ * Mixing macros and templates is extremely spooky stuff.
+*/
 template< typename T >
 G_TYPE( scalar<T>, type<T>().n_components(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
-
+/**
+ * \class gfx::vec2_t datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief A primitive class for dual value types.
+ * 
+ * Vec2s represent the linear algebra entity of a two component vector. Both
+ * array and vector component access semantics are supported; the latter uses
+ * a swizzle system similiar to the one used in GLSL.
+ * 
+ * \todo Review the vector classes to see if it is better to have more explicit
+ * class names and gloss over them with a public typedef somewhat like in scalar.
+ * 
+ * \warning Inside, a union is used to access the values in full or the bytes
+ * individually. Because these types are using an array and invoke the sizeof()
+ * operator, it is ESPECIALLY DANGEROUS if you put a base class in the template
+ * parameter. Doing that will probably cause object slicing and BOOM, it will
+ * explode.
+ * 
+ * \tparam T The type of the contained data; primitives only please
+ */
 template< typename T >
 class vec2_t : public raw_mappable {
 public:
-    typedef T               comp_t;
+    typedef T               comp_t; /** < Public handle for contained type. */
                             vec2_t();
                             vec2_t( comp_t x0,
                                     comp_t x1 );
@@ -219,22 +291,47 @@ public:
                                        vec2_t<D> const& rhs );
     vec2_t<T>&              norm();
 protected:
+    /**
+     * \brief To facilitate uploading to OpenGL as unformatted data, a union is
+     * used to access the stored value as either an array of bytes or a simple
+     * value of the parameter type.
+     */
     union {
         comp_t          c[2];
         unsigned char   bytes[sizeof(T) * 2];
     } data;
 };
 
-// WARNING This is dangerous dark magics. DO NOT touch anything to do with
-// this typeinfo system unless you know PRECISELY what you are doing.
-// Mixing macros and templates is spooky stuff.
+/**
+ * \warning This is dangerous dark magics. DO NOT touch anything to do with
+ * this typeinfo system unless you know PRECISELY what you are doing.
+ * Mixing macros and templates is extremely spooky stuff.
+ */
 template< typename T >
 G_TYPE( vec2_t<T>, 2 * type<T>().n_components(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
-
+/**
+ * \class gfx::vec3_t datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief A primitive class for triple value types.
+ * 
+ * Vec3s represent the linear algebra entity of a three component vector. Both
+ * array and vector component access semantics are supported; the latter uses
+ * a swizzle system similiar to the one used in GLSL.
+ * 
+ * \todo Review the vector classes to see if it is better to have more explicit
+ * class names and gloss over them with a public typedef somewhat like in scalar.
+ * 
+ * \warning Inside, a union is used to access the values in full or the bytes
+ * individually. Because these types are using an array and invoke the sizeof()
+ * operator, it is ESPECIALLY DANGEROUS if you put a base class in the template
+ * parameter. Doing that will probably cause object slicing and BOOM, it will
+ * explode.
+ * 
+ * \tparam T The type of the contained data; primitives only please
+ */
 template< typename T >
 class vec3_t : public raw_mappable  {
 public:
-    typedef T               comp_t;
+    typedef T               comp_t; /** < Public handle for contained type. */
                             vec3_t();
                             vec3_t( comp_t x0,
                                     comp_t x1,
@@ -279,23 +376,47 @@ public:
     vec3_t<T>&              norm();
     vec3_t<T>&              cross( vec3_t<T> const& rhs );
 protected:
+    /**
+     * \brief To facilitate uploading to OpenGL as unformatted data, a union is
+     * used to access the stored value as either an array of bytes or a simple
+     * value of the parameter type.
+     */
     union {
         comp_t          c[3];
         unsigned char   bytes[sizeof(T) * 3];
     } data;
 
 };
-
-// WARNING This is dangerous dark magics. DO NOT touch anything to do with
-// this typeinfo system unless you know PRECISELY what you are doing.
-// Mixing macros and templates is spooky stuff.
+/**
+ * \warning This is dangerous dark magics. DO NOT touch anything to do with
+ * this typeinfo system unless you know PRECISELY what you are doing.
+ * Mixing macros and templates is extremely spooky stuff.
+ */
 template< typename T >
 G_TYPE( vec3_t<T>, 3 * type<T>().n_components(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
-
+/**
+ * \class gfx::vec4_t datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief A primitive class for quadruple value types.
+ * 
+ * Vec4s represent the linear algebra entity of a four component vector. Both
+ * array and vector component access semantics are supported; the latter uses
+ * a swizzle system similiar to the one used in GLSL.
+ * 
+ * \todo Review the vector classes to see if it is better to have more explicit
+ * class names and gloss over them with a public typedef somewhat like in scalar.
+ * 
+ * \warning Inside, a union is used to access the values in full or the bytes
+ * individually. Because these types are using an array and invoke the sizeof()
+ * operator, it is ESPECIALLY DANGEROUS if you put a base class in the template
+ * parameter. Doing that will probably cause object slicing and BOOM, it will
+ * explode.
+ * 
+ * \tparam T The type of the contained data; primitives only please
+ */
 template< typename T >
 class vec4_t : public raw_mappable  {
 public:
-    typedef T               comp_t;
+    typedef T               comp_t; /** < Public handle for contained type. */
                             vec4_t();
                             vec4_t( comp_t x0,
                                     comp_t x1,
@@ -340,22 +461,58 @@ public:
                                        vec4_t<D> const& rhs );
     vec4_t<T>&              norm();
 protected:
+    /**
+     * \brief To facilitate uploading to OpenGL as unformatted data, a union is
+     * used to access the stored value as either an array of bytes or a simple
+     * value of the parameter type.
+     */
     union {
         comp_t          c[4];
         unsigned char   bytes[sizeof(T) * 4];
     } data;
 };
-
-// WARNING This is dangerous dark magics. DO NOT touch anything to do with
-// this typeinfo system unless you know PRECISELY what you are doing.
-// Mixing macros and templates is spooky stuff.
+/**
+ * \warning This is dangerous dark magics. DO NOT touch anything to do with
+ * this typeinfo system unless you know PRECISELY what you are doing.
+ * Mixing macros and templates is extremely spooky stuff.
+ */
 template< typename T >
 G_TYPE( vec4_t<T>, 4 * type<T>().n_components(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
-
+/**
+ * \class gfx::qutn_t datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief A primitive class for quaternion types.
+ * 
+ * Qutns represent the mathematical object known as a quaternion, a concise and
+ * efficient way to represent both rotations and displacements, though in
+ * graphics they find more use for the former. They are a four dimensional analog
+ * to complex numbers, having three imaginary components instead of one.
+ * 
+ * Both array and vector component access semantics are supported; the latter
+ * uses a swizzle system similiar to the one used in GLSL.
+ * 
+ * Unlike the regular vectors, quaternions have their own arithmetic properties.
+ * The product of two quaternions is more closely related to a cross product of
+ * vectors rather than the piecewise product of vectors, and this multiplication
+ * maps to addition when rotations are concerned. Negation is also different.
+ * 
+ * The traditional components of a quaternion, i,j,k, and m (the real component
+ * are mapped to the qutn's components in that order with those names.
+ * 
+ * \todo Review the vector classes to see if it is better to have more explicit
+ * class names and gloss over them with a public typedef somewhat like in scalar.
+ * 
+ * \warning Inside, a union is used to access the values in full or the bytes
+ * individually. Because these types are using an array and invoke the sizeof()
+ * operator, it is ESPECIALLY DANGEROUS if you put a base class in the template
+ * parameter. Doing that will probably cause object slicing and BOOM, it will
+ * explode.
+ * 
+ * \tparam T The type of the contained data; primitives only please
+ */
 template< typename T >
 class qutn_t : public raw_mappable  {
 public:
-    typedef T               comp_t;
+    typedef T               comp_t; /** < Public handle for contained type. */
     
                             qutn_t();
                             qutn_t( comp_t ei,
@@ -393,62 +550,104 @@ public:
     friend std::ostream&    operator<<( std::ostream& out, qutn_t<U> const& src );
     virtual raw_map const   to_map() const;
 protected:
+    /**
+     * \brief To facilitate uploading to OpenGL as unformatted data, a union is
+     * used to access the stored value as either an array of bytes or a simple
+     * value of the parameter type.
+     */
     union {
         comp_t          c[4];
         unsigned char   bytes[sizeof(T) * 4];
     } data;
 };
 
-// WARNING This is dangerous dark magics. DO NOT touch anything to do with
-// this typeinfo system unless you know PRECISELY what you are doing.
-// Mixing macros and templates is spooky stuff.
+/**
+ * \warning This is dangerous dark magics. DO NOT touch anything to do with
+ * this typeinfo system unless you know PRECISELY what you are doing.
+ * Mixing macros and templates is extremely spooky stuff.
+ */
 template< typename T >
 G_TYPE( qutn_t<T>, 4 * type<T>().n_components(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
 // Here we instantiate all the datatypes that GLSL supports
 // and provide typedef names.
 
-typedef     vec4_t<float>       vec4;
-typedef     vec3_t<float>       vec3;
-typedef     vec2_t<float>       vec2;
-typedef     scalar<float>       float32;
-typedef     qutn_t<float>       qutn;
 
-typedef     vec4_t<double>      dvec4;
-typedef     vec3_t<double>      dvec3;
-typedef     vec2_t<double>      dvec2;
-typedef     scalar<double>      double64;
-typedef     qutn_t<double>      dqutn;
+typedef     vec4_t<float>       vec4; /** < \typedef typedef vec4_t<float> vec4
+                                            \brief Four component float vector */
+typedef     vec3_t<float>       vec3; /** < \typedef typedef vec3_t<float> vec3
+                                            \brief Three component float vector */
+typedef     vec2_t<float>       vec2; /** < \typedef typedef vec2_t<float> vec2
+                                            \brief Two component float vector */
+typedef     scalar<float>       float32; /** < \typedef typedef scalar_t<float> float32
+                                               \brief Sinlge value float */
+typedef     qutn_t<float>       qutn; /** < \typedef typedef qutn_t<float> qutn
+                                            \brief Four component float quaternion */
 
-typedef     vec4_t<int32_t>     ivec4;
-typedef     vec3_t<int32_t>     ivec3;
-typedef     vec2_t<int32_t>     ivec2;
-typedef     scalar<int32_t>     int32;
+typedef     vec4_t<double>      dvec4; /** < \typedef typedef vec4_t<double> dvec4
+                                            \brief Four component double vector */
+typedef     vec3_t<double>      dvec3; /** < \typedef typedef vec3_t<double> dvec3
+                                            \brief Three component double vector */
+typedef     vec2_t<double>      dvec2; /** < \typedef typedef vec2_t<double> dvec2
+                                            \brief Two component double vector */
+typedef     scalar<double>      double64; /** < \typedef typedef scalar_t<double> double32
+                                               \brief Sinlge value double */
+typedef     qutn_t<double>      dqutn; /** < \typedef typedef qutn_t<double> dqutn
+                                            \brief Four component double quaternion */
 
-typedef     vec4_t<int16_t>     svec4;
-typedef     vec3_t<int16_t>     svec3;
-typedef     vec2_t<int16_t>     svec2;
-typedef     scalar<int16_t>     short16;
+typedef     vec4_t<int32_t>     ivec4; /** < \typedef typedef vec4_t<int32_t> vec4
+                                            \brief Four component 32 bit integer vector */
+typedef     vec3_t<int32_t>     ivec3; /** < \typedef typedef vec3_t<int32_t> vec3
+                                            \brief Three component 32 bit integer vector */
+typedef     vec2_t<int32_t>     ivec2; /** < \typedef typedef vec2_t<int32_t> vec2
+                                            \brief Two component 32 bit integer vector */
+typedef     scalar<int32_t>     int32; /** < \typedef typedef scalar_t<int32_t> int32_t32
+                                               \brief Sinlge value 32 bit integer */
 
-typedef     vec4_t<int8_t>      cvec4;
-typedef     vec3_t<int8_t>      cvec3;
-typedef     vec2_t<int8_t>      cvec2;
-typedef     scalar<int8_t>      char8;
+typedef     vec4_t<int16_t>     svec4; /** < \typedef typedef vec4_t<int16_t> vec4
+                                            \brief Four component 16 bit integer vector */
+typedef     vec3_t<int16_t>     svec3; /** < \typedef typedef vec3_t<int16_t> vec3
+                                            \brief Three component 16 bit integer vector */
+typedef     vec2_t<int16_t>     svec2; /** < \typedef typedef vec2_t<int16_t> vec2
+                                            \brief Two component 16 bit integer vector */
+typedef     scalar<int16_t>     short16; /** < \typedef typedef scalar_t<int16_t> int16_t32
+                                               \brief Sinlge value 16 bit integer */
 
-typedef     vec4_t<uint32_t>    uvec4;
-typedef     vec3_t<uint32_t>    uvec3;
-typedef     vec2_t<uint32_t>    uvec2;
-typedef     scalar<uint32_t>    uint32;
+typedef     vec4_t<int8_t>      cvec4; /** < \typedef typedef vec4_t<int8_t> vec4
+                                            \brief Four component 8 bit integer vector */
+typedef     vec3_t<int8_t>      cvec3; /** < \typedef typedef vec3_t<int8_t> vec3
+                                            \brief Three component 8 bit integer vector */
+typedef     vec2_t<int8_t>      cvec2; /** < \typedef typedef vec2_t<int8_t> vec2
+                                            \brief Two component 8 bit integer vector */
+typedef     scalar<int8_t>      char8; /** < \typedef typedef scalar_t<int8_t> int8_t32
+                                               \brief Sinlge value 8 bit integer */
 
-typedef     vec4_t<uint16_t>    usvec4;
-typedef     vec3_t<uint16_t>    usvec3;
-typedef     vec2_t<uint16_t>    usvec2;
-typedef     scalar<uint16_t>    ushort16;
+typedef     vec4_t<uint32_t>    uvec4; /** < \typedef typedef vec4_t<uint32_t> vec4
+                                            \brief Four component unsigned 32 bit integer vector */
+typedef     vec3_t<uint32_t>    uvec3; /** < \typedef typedef vec3_t<uint32_t> vec3
+                                            \brief Three component unsigned 32 bit integer vector */
+typedef     vec2_t<uint32_t>    uvec2; /** < \typedef typedef vec2_t<uint32_t> vec2
+                                            \brief Two component unsigned 32 bit integer vector */
+typedef     scalar<uint32_t>    uint32; /** < \typedef typedef scalar_t<uint32_t> uint32_t32
+                                               \brief Sinlge value unsigned 32 bit integer */
 
-typedef     vec4_t<uint8_t>     ucvec4;
-typedef     vec3_t<uint8_t>     ucvec3;
-typedef     vec2_t<uint8_t>     ucvec2;
-typedef     scalar<uint8_t>     uchar8;
+typedef     vec4_t<uint16_t>    usvec4; /** < \typedef typedef vec4_t<uint16_t> vec4
+                                            \brief Four component unsigned 16 bit integer vector */
+typedef     vec3_t<uint16_t>    usvec3; /** < \typedef typedef vec3_t<uint16_t> vec3
+                                            \brief Three component unsigned 16 bit integer vector */
+typedef     vec2_t<uint16_t>    usvec2; /** < \typedef typedef vec2_t<uint16_t> vec2
+                                            \brief Two component unsigned 16 bit integer vector */
+typedef     scalar<uint16_t>    ushort16; /** < \typedef typedef scalar_t<uint16_t> uint16_t32
+                                               \brief Sinlge value unsigned 16 bit integer */
+
+typedef     vec4_t<uint8_t>     ucvec4; /** < \typedef typedef vec4_t<uint8_t> vec4
+                                            \brief Four component unsigned 8 bit integer vector */
+typedef     vec3_t<uint8_t>     ucvec3; /** < \typedef typedef vec3_t<uint8_t> vec3
+                                            \brief Three component unsigned 8 bit integer vector */
+typedef     vec2_t<uint8_t>     ucvec2; /** < \typedef typedef vec2_t<uint8_t> vec2
+                                            \brief Two component unsigned 8 bit integer vector */
+typedef     scalar<uint8_t>     uchar8; /** < \typedef typedef scalar_t<uint8_t> uint8_t32
+                                               \brief Sinlge value unsigned 8 bit integer */
 
 template< typename T >
 class col2 {
