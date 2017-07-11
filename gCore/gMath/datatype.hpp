@@ -648,11 +648,32 @@ typedef     vec2_t<uint8_t>     ucvec2; /** < \typedef typedef vec2_t<uint8_t> v
                                             \brief Two component unsigned 8 bit integer vector */
 typedef     scalar<uint8_t>     uchar8; /** < \typedef typedef scalar_t<uint8_t> uint8_t32
                                                \brief Sinlge value unsigned 8 bit integer */
-
+/**
+ * \class gfx::col2 datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief An intermediary object returned by some access functions of matrices.
+ * 
+ * A simple 2 component column object returned by the array access operators of
+ * matrices of the appropriate dimensions (having 2 rows). This class will
+ * decompose into a gfx::vec2_t object under the right situations.
+ * 
+ * The gfx::col2 class does have access to the matrix data it came from, and it
+ * can be used to set values in the owning matrix by column.
+ * 
+ * \todo The C++ FAQ Lite warns against using the stacked array operator form,
+ * but in these matrices of limited size, and for interoperatbility with
+ * vectors, it was included. The FAQ also provides best practices for doing
+ * this, and one point is to have a const version of the class. I need to
+ * implement that other class to make this all more safe.
+ * 
+ * \todo Review the column and row classes for names and maybe some more
+ * typedefs to clean up the declarations here a bit.
+ * 
+ * \tparam T The type of the contained data.
+ */
 template< typename T >
 class col2 {
 public:
-    typedef T   comp_t;
+    typedef T   comp_t; /** < Public handle for contained type. */
     
                 col2( col2<comp_t> const& acol );
     col2&       operator=( col2<comp_t> const& acol );
@@ -672,11 +693,33 @@ private:
     bool        live_handle;
     comp_t*     column;
 };
-
+/**
+ * \class gfx::row2 datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief An intermediary object returned by some access functions of matrices.
+ * 
+ * A simple 2 component row object returned by the array access operators of
+ * matrices of the appropriate dimensions (having 2 columns). This class will
+ * decompose into a gfx::vec2_t object under the right situations.
+ * 
+ * The gfx::row2 class does have access to the matrix data it came from, and it
+ * can be used to set values in the owning matrix by row. At the moment, this
+ * will be less efficient for reasons of data representation.
+ * 
+ * \todo The C++ FAQ Lite warns against using the stacked array operator form,
+ * but in these matrices of limited size, and for interoperatbility with
+ * vectors, it was included. The FAQ also provides best practices for doing
+ * this, and one point is to have a const version of the class. I need to
+ * implement that other class to make this all more safe.
+ * 
+ * \todo Review the column and row classes for names and maybe some more
+ * typedefs to clean up the declarations here a bit.
+ * 
+ * \tparam T The type of the contained data.
+ */
 template< typename T >
 class row2 {
 public:
-    typedef T   comp_t;
+    typedef T   comp_t; /** < Public handle for contained type. */
     
                 row2( row2<comp_t> const& arow );
     row2&       operator=( row2<comp_t> const& arow );
@@ -702,11 +745,32 @@ private:
     comp_t*     c0;
     comp_t*     c1;
 };
-
+/**
+ * \class gfx::col3 datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief An intermediary object returned by some access functions of matrices.
+ * 
+ * A simple 3 component column object returned by the array access operators of
+ * matrices of the appropriate dimensions (having 3 rows). This class will
+ * decompose into a gfx::vec2_t object under the right situations.
+ * 
+ * The gfx::col3 class does have access to the matrix data it came from, and it
+ * can be used to set values in the owning matrix by column.
+ * 
+ * \todo The C++ FAQ Lite warns against using the stacked array operator form,
+ * but in these matrices of limited size, and for interoperatbility with
+ * vectors, it was included. The FAQ also provides best practices for doing
+ * this, and one point is to have a const version of the class. I need to
+ * implement that other class to make this all more safe.
+ * 
+ * \todo Review the column and row classes for names and maybe some more
+ * typedefs to clean up the declarations here a bit.
+ * 
+ * \tparam T The type of the contained data.
+ */
 template< typename T >
 class col3 {
 public:
-    typedef T   comp_t;
+    typedef T   comp_t; /** < Public handle for contained type. */
     
                 col3( col3<comp_t> const& acol );
     col3&       operator=( col3<comp_t> const& acol );
@@ -726,11 +790,33 @@ private:
     bool        live_handle;
     comp_t*     column;
 };
-
+/**
+ * \class gfx::row3 datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief An intermediary object returned by some access functions of matrices.
+ * 
+ * A simple 3 component row object returned by the array access operators of
+ * matrices of the appropriate dimensions (having 3 columns). This class will
+ * decompose into a gfx::vec2_t object under the right situations.
+ * 
+ * The gfx::row3 class does have access to the matrix data it came from, and it
+ * can be used to set values in the owning matrix by row. At the moment, this
+ * will be less efficient for reasons of data representation.
+ * 
+ * \todo The C++ FAQ Lite warns against using the stacked array operator form,
+ * but in these matrices of limited size, and for interoperatbility with
+ * vectors, it was included. The FAQ also provides best practices for doing
+ * this, and one point is to have a const version of the class. I need to
+ * implement that other class to make this all more safe.
+ * 
+ * \todo Review the column and row classes for names and maybe some more
+ * typedefs to clean up the declarations here a bit.
+ * 
+ * \tparam T The type of the contained data.
+ */
 template< typename T >
 class row3 {
 public:
-    typedef T   comp_t;
+    typedef T   comp_t; /** < Public handle for contained type. */
     
                 row3( row3<comp_t> const& acol );
     row3&       operator=( row3<comp_t> const& acol );
@@ -759,11 +845,32 @@ private:
     comp_t*     c1;
     comp_t*     c2;
 };
-
+/**
+ * \class gfx::col4 datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief An intermediary object returned by some access functions of matrices.
+ * 
+ * A simple 4 component column object returned by the array access operators of
+ * matrices of the appropriate dimensions (having 4 rows). This class will
+ * decompose into a gfx::vec2_t object under the right situations.
+ * 
+ * The gfx::col4 class does have access to the matrix data it came from, and it
+ * can be used to set values in the owning matrix by column.
+ * 
+ * \todo The C++ FAQ Lite warns against using the stacked array operator form,
+ * but in these matrices of limited size, and for interoperatbility with
+ * vectors, it was included. The FAQ also provides best practices for doing
+ * this, and one point is to have a const version of the class. I need to
+ * implement that other class to make this all more safe.
+ * 
+ * \todo Review the column and row classes for names and maybe some more
+ * typedefs to clean up the declarations here a bit.
+ * 
+ * \tparam T The type of the contained data.
+ */
 template< typename T >
 class col4 {
 public:
-    typedef T   comp_t;
+    typedef T   comp_t; /** < Public handle for contained type. */
     
                 col4( col4<comp_t> const& acol );
     col4&       operator=( vec4_t<comp_t> const& avec );
@@ -783,11 +890,33 @@ private:
     bool        live_handle;
     comp_t*     column;
 };
-
+/**
+ * \class gfx::row4 datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief An intermediary object returned by some access functions of matrices.
+ * 
+ * A simple 4 component row object returned by the array access operators of
+ * matrices of the appropriate dimensions (having 4 columns). This class will
+ * decompose into a gfx::vec2_t object under the right situations.
+ * 
+ * The gfx::row4 class does have access to the matrix data it came from, and it
+ * can be used to set values in the owning matrix by row. At the moment, this
+ * will be less efficient for reasons of data representation.
+ * 
+ * \todo The C++ FAQ Lite warns against using the stacked array operator form,
+ * but in these matrices of limited size, and for interoperatbility with
+ * vectors, it was included. The FAQ also provides best practices for doing
+ * this, and one point is to have a const version of the class. I need to
+ * implement that other class to make this all more safe.
+ * 
+ * \todo Review the column and row classes for names and maybe some more
+ * typedefs to clean up the declarations here a bit.
+ * 
+ * \tparam T The type of the contained data.
+ */
 template< typename T >
 class row4 {
 public:
-    typedef T   comp_t;
+    typedef T   comp_t; /** < Public handle for contained type. */
     
                 row4( row4<comp_t> const& acol );
     row4&       operator=( vec4_t<comp_t> const& avec );
@@ -844,11 +973,29 @@ private:
     size_t  n_comp;
     size_t  cur_idx;
 }; */
-
+/**
+ * \class gfx::mat_t datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief An arbitrarily sized two dimensional matrix.
+ * 
+ * The arbitrary matrix is useful when you need more than the fixed size
+ * of the other matrix classes. The downside is that you cannot upload an
+ * arbitrary matrix to OpenGL as a native type (you could upload it as a
+ * onedimensional array and figure out the ordering in the shader).
+ * 
+ * Arbitrary matrices support access by two indices at once; they do not
+ * support array type access (there is not arbitrary size col class).
+ * 
+ * Matrices also provide full arithmetic operations as defined for matrices.
+ * 
+ * \todo Should probably make an arbitrarily sized column and row class to
+ * complete the interface here.
+ * 
+ * \tparam T The type of the contained values
+ */
 template< typename T >
 class mat_t : public raw_mappable {
 public:
-    typedef T               comp_t;
+    typedef T               comp_t; /** < Public handle for contained type. */
 
                             mat_t();
                             mat_t( mat_t<T> const& copy );
@@ -897,11 +1044,21 @@ protected:
     size_t rows;
     size_t comp;
 };
-
+/**
+ * \class gfx::mat2_t datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief A two dimensional matrix with fixed size 2x2.
+ * 
+ * Fixed sized matrices support array access and two index access. This matrix
+ * alos supports constructors for rotation and scale because it is square.
+ * 
+ * Matrices also provide full arithmetic operations as defined for matrices.
+ * 
+ * \tparam T The type of the contained values
+ */
 template< typename T >
 class mat2_t : public raw_mappable {
 public:
-    typedef T                       comp_t;
+    typedef T                       comp_t; /** < Public handle for contained type. */
     constexpr static size_t const   n_cols = 2;
     constexpr static size_t const   n_rows = 2;
     constexpr static size_t const   n_comp = 4;
@@ -909,7 +1066,7 @@ public:
                             mat2_t();
                             mat2_t( mat2_t const& copy );
                             mat2_t( comp_t e00, comp_t e10,
-                                  comp_t e01, comp_t e11 );
+                                    comp_t e01, comp_t e11 );
     // Named Construction
     static mat2_t<T>        column_vectors( vec2_t<comp_t> const& col0,
                                             vec2_t<comp_t> const& col1 );
