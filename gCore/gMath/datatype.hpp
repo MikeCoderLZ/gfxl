@@ -1136,7 +1136,18 @@ protected:
 // Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( mat2_t<T>, 4 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
-
+/**
+ * \class gfx::mat3_t datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief A two dimensional matrix with fixed size 3x3.
+ * 
+ * Fixed sized matrices support array access and two index access. This matrix
+ * alos supports constructors for rotation and scale because it is square, and
+ * two dimensional translation because it is homogenous.
+ * 
+ * Matrices also provide full arithmetic operations as defined for matrices.
+ * 
+ * \tparam T The type of the contained values
+ */
 template< typename T >
 class mat3_t : public raw_mappable {
 public:
