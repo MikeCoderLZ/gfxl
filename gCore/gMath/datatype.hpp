@@ -1141,7 +1141,7 @@ G_TYPE( mat2_t<T>, 4 * type<T>().n_c(), type<T>().component_size(), type<T>().co
  * \brief A two dimensional matrix with fixed size 3x3.
  * 
  * Fixed sized matrices support array access and two index access. This matrix
- * alos supports constructors for rotation and scale because it is square, and
+ * also supports constructors for rotation and scale because it is square, and
  * two dimensional translation because it is homogenous.
  * 
  * Matrices also provide full arithmetic operations as defined for matrices.
@@ -1249,7 +1249,18 @@ protected:
 // Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( mat3_t<T>, 9 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
-
+/**
+ * \class gfx::mat4_t datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief A two dimensional matrix with fixed size 4x4.
+ * 
+ * Fixed sized matrices support array access and two index access. This matrix
+ * also supports constructors for rotation and scale because it is square, and
+ * three dimensional translation because it is homogenous.
+ * 
+ * Matrices also provide full arithmetic operations as defined for matrices.
+ * 
+ * \tparam T The type of the contained values
+ */
 template< typename T >
 class mat4_t : public raw_mappable {
 public:
@@ -1358,7 +1369,16 @@ protected:
 // Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( mat4_t<T>, 16 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
-
+/**
+ * \class gfx::mat2x3_t datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief A two dimensional matrix with fixed size 2x3.
+ * 
+ * Fixed sized matrices support array access and two index access.
+ * 
+ * Matrices also provide full arithmetic operations as defined for matrices.
+ * 
+ * \tparam T The type of the contained values
+ */
 template< typename T >
 class mat2x3_t : public raw_mappable {
 public:
@@ -1442,7 +1462,16 @@ protected:
 // Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( mat2x3_t<T>, 6 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
-
+/**
+ * \class gfx::mat3x2_t datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief A two dimensional matrix with fixed size 3x2.
+ * 
+ * Fixed sized matrices support array access and two index access.
+ 
+ * Matrices also provide full arithmetic operations as defined for matrices.
+ * 
+ * \tparam T The type of the contained values
+ */
 template< typename T >
 class mat3x2_t : public raw_mappable {
 public:
@@ -1525,7 +1554,16 @@ protected:
 // Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( mat3x2_t<T>, 6 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
-
+/**
+ * \class gfx::mat2x4_t datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief A two dimensional matrix with fixed size 2x4.
+ * 
+ * Fixed sized matrices support array access and two index access.
+ * 
+ * Matrices also provide full arithmetic operations as defined for matrices.
+ * 
+ * \tparam T The type of the contained values
+ */
 template< typename T >
 class mat2x4_t : public raw_mappable {
 public:
@@ -1612,7 +1650,16 @@ protected:
 // Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( mat2x4_t<T>, 8 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
-
+/**
+ * \class gfx::mat4x2_t datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief A two dimensional matrix with fixed size 4x2.
+ * 
+ * Fixed sized matrices support array access and two index access.
+ * 
+ * Matrices also provide full arithmetic operations as defined for matrices.
+ * 
+ * \tparam T The type of the contained values
+ */
 template< typename T >
 class mat4x2_t : public raw_mappable {
 public:
@@ -1697,7 +1744,16 @@ protected:
 // Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( mat4x2_t<T>, 8 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
-
+/**
+ * \class gfx::mat3x4_t datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief A two dimensional matrix with fixed size 3x4.
+ * 
+ * Fixed sized matrices support array access and two index access.
+ * 
+ * Matrices also provide full arithmetic operations as defined for matrices.
+ * 
+ * \tparam T The type of the contained values
+ */
 template< typename T >
 class mat3x4_t : public raw_mappable {
 public:
@@ -1786,7 +1842,16 @@ protected:
 // Mixing macros and templates is spooky stuff.
 template< typename T >
 G_TYPE( mat3x4_t<T>, 12 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
-
+/**
+ * \class gfx::mat4x3_t datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief A two dimensional matrix with fixed size 4x3.
+ * 
+ * Fixed sized matrices support array access and two index access.
+ * 
+ * Matrices also provide full arithmetic operations as defined for matrices.
+ * 
+ * \tparam T The type of the contained values
+ */
 template< typename T >
 class mat4x3_t : public raw_mappable {
 public:
@@ -1874,29 +1939,81 @@ protected:
 template< typename T >
 G_TYPE( mat4x3_t<T>, 12 * type<T>().n_c(), type<T>().component_size(), type<T>().component_to_GL(), type<T>().mapping() );
 
+/** \typedef typedef mat_t<float> mat 
+    Alias for an arbitrary matrix containing floats. */
 typedef     mat_t<float>            mat;
+/** \typedef typedef mat2_t<float> mat2
+    Alias for a 2x2 matrix containing floats. */
 typedef     mat2_t<float>           mat2;
+/** \typedef typedef mat3_t<float> mat3
+    Alias for a 3x3 matrix containing floats. */
 typedef     mat3_t<float>           mat3;
+/** \typedef typedef mat4_t<float> mat4
+    Alias for a 4x4 matrix containing floats. */
 typedef     mat4_t<float>           mat4;
+/** \typedef typedef mat2x3_t<float> mat2x3
+    Alias for a 2x3 matrix containing floats. */
 typedef     mat2x3_t<float>         mat2x3;
+/** \typedef typedef mat3x2_t<float> mat3x2
+    Alias for a 3x2 matrix containing floats. */
 typedef     mat3x2_t<float>         mat3x2;
+/** \typedef typedef mat2x4_t<float> mat2x4
+    Alias for a 2x4 matrix containing floats. */
 typedef     mat2x4_t<float>         mat2x4;
+/** \typedef typedef mat4x2_t<float> mat4x2
+    Alias for a 4x3 matrix containing floats. */
 typedef     mat4x2_t<float>         mat4x2;
+/** \typedef typedef mat3x4_t<float> mat3x4
+    Alias for a 3x4 matrix containing floats. */
 typedef     mat3x4_t<float>         mat3x4;
+/** \typedef typedef mat2x3_t<float> mat4x3
+    Alias for a 4x3 matrix containing floats. */
 typedef     mat4x3_t<float>         mat4x3;
 
+/** \typedef typedef mat_t<double> dmat
+    Alias for an arbitrary matrix containing doubles. */
 typedef     mat_t<double>           dmat;
+/** \typedef typedef mat2_t<double> dmat2
+    Alias for a 2x2 matrix containing doubles. */
 typedef     mat2_t<double>          dmat2;
+/** \typedef typedef mat3_t<double> dmat3
+    Alias for a 3x3 matrix containing doubles. */
 typedef     mat3_t<double>          dmat3;
+/** \typedef typedef mat4_t<double> dmat4
+    Alias for a 4x4 matrix containing doubles. */
 typedef     mat4_t<double>          dmat4;
+/** \typedef typedef mat2x3_t<double> dmat2x3
+    Alias for a 2x3 matrix containing doubles. */
 typedef     mat2x3_t<double>        dmat2x3;
+/** \typedef typedef mat3x2_t<double> dmat3x2
+    Alias for a 3x2 matrix containing doubles. */
 typedef     mat3x2_t<double>        dmat3x2;
+/** \typedef typedef mat2x4_t<double> dmat2x4
+    Alias for a 2x4 matrix containing doubles. */
 typedef     mat2x4_t<double>        dmat2x4;
+/** \typedef typedef mat4x2_t<double> dmat4x2
+    Alias for a 4x3 matrix containing doubles. */
 typedef     mat4x2_t<double>        dmat4x2;
+/** \typedef typedef mat3x4_t<double> dmat3x4
+    Alias for a 3x4 matrix containing doubles. */
 typedef     mat3x4_t<double>        dmat3x4;
+/** \typedef typedef mat2x3_t<double> dmat4x3
+    Alias for a 4x3 matrix containing doubles. */
 typedef     mat4x3_t<double>        dmat4x3;
 
-
+/**
+ * \class gfx::swizz4 datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief Four component idex swizzle.
+ *
+ * Swizzles are selectors for the components of linear algebra
+ * objects. They cannot be instantiated and the only objects of
+ * the swizzle types are constants with names that correspond to
+ * conventional linear algebra or graphics components (x, y, r, g,
+ * and so on).
+ * \sa gfx::swizz3
+ * \sa gfx::swizz2
+ * \sa gfx::swizz1
+ */
 class swizz4 {
     public:
                                     swizz4() : index(0) {};
@@ -1913,7 +2030,17 @@ class swizz4 {
                                     swizz4( int index ) : index(index){};
         int                         index;
 };
-
+/**
+ * \class gfx::swizz3 datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief Three component idex swizzle.
+ *
+ * Swizzles are selectors for the components of linear algebra
+ * objects.
+ *
+ * \sa gfx::swizz4
+ * \sa gfx::swizz2
+ * \sa gfx::swizz1
+ */
 class swizz3 : public swizz4 {
     public:
                                     swizz3() {};
@@ -1929,7 +2056,17 @@ class swizz3 : public swizz4 {
     protected:
                                     swizz3( int index ) : swizz4( index ) {};
 };
-
+/**
+ * \class gfx::swizz2 datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief Two component idex swizzle.
+ *
+ * Swizzles are selectors for the components of linear algebra
+ * objects.
+ *
+ * \sa gfx::swizz4
+ * \sa gfx::swizz3
+ * \sa gfx::swizz1
+ */
 class swizz2 : public swizz3 {
     public:
                                     swizz2() {};
@@ -1945,7 +2082,17 @@ class swizz2 : public swizz3 {
     protected:
                                     swizz2( int index ) : swizz3( index ) {};
 };
-
+/**
+ * \class gfx::swizz1 datatype.hpp "gCore/gMath/datatype.hpp"
+ * \brief One component idex swizzle.
+ *
+ * Swizzles are selectors for the components of linear algebra
+ * objects.
+ *
+ * \sa gfx::swizz4
+ * \sa gfx::swizz3
+ * \sa gfx::swizz2
+ */
 class swizz1 : public swizz2 {
     public:
                                     swizz1() {};
