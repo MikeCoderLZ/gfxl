@@ -5,7 +5,26 @@
 #include <string>
 #include "../gVideo/gl_core_3_3.hpp"
 
+#define gfx_xstr(x) gfx_str(x)
+#define gfx_str(x) #x
+
 namespace gfx {
+
+template< typename T >
+class Out {
+    typedef typename T InType;
+    
+    public:
+    Out( InType& ref ) : ref( mRef ) {}
+    
+    
+    
+    
+    private:
+    InType& mRef;
+    
+}
+
 
 /**
  * Never ever ever dump the 'type' namespace into 'gfx'!
