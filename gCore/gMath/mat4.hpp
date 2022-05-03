@@ -5,7 +5,7 @@
 #include "gfxl_assertion.hpp"
 #include "literal.hpp"
 
-namspace gfx {
+namespace gfx {
     
     union Mat4 {
     

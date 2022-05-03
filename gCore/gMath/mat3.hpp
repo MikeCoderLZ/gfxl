@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-namspace gfx {
+namespace gfx {
     
     union Mat3 {
     

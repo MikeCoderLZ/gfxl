@@ -1,6 +1,6 @@
 #pragma once
 
-namspace gfx {
+namespace gfx {
     
     
     // Really gotta look into column major vs row major for Vulkan etc.
