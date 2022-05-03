@@ -206,7 +206,7 @@ namspace gfx {
             return out;
         }
         
-        float* operator float*() { return reinterpret<float*>(this); }
+        float* operator float*() { return ary; }
         
         struct {
             float xx,
@@ -232,7 +232,7 @@ namspace gfx {
             char[sizeof(float) * 4] bytes;
         };
         
-    }
+    };
     
     inline Mat2 transpose( Mat2 const& a )
     {

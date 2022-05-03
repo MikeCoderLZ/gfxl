@@ -68,7 +68,7 @@ namspace gfx {
             ary[4 + row]  = row.y;
         }
         
-        float* operator float*() { return reinterpret<float*>(this); }
+        float* operator float*() { return ary; }
         
         Mat2x3 operator+ ( Mat2x3 const& b ) const {
             return Mat2x3( xx + b.xx, xy + b.xy,
@@ -118,7 +118,7 @@ namspace gfx {
             char[sizeof(float) * 6] bytes;
         };
         
-    }
+    };
     
     inline Mat2 transpose( Mat2 const& a )
     {

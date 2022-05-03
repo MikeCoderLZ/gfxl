@@ -236,7 +236,7 @@ namspace gfx {
             return out;
         }
         
-        float* operator float*() { return reinterpret_cast<float*>(this); }
+        float* operator float*() { return ary; }
         
         Mat3 operator* ( Mat3 const& b ) {
             
@@ -279,7 +279,7 @@ namspace gfx {
             char[sizeof(float) * 9] bytes;
         };
         
-    }
+    };
     
     inline Mat3 transpose( Mat3 const& a )
     {
