@@ -1,3 +1,6 @@
 [submodule "lib/unittest-cpp"]
 	path = lib/unittest-cpp
 	url = https://github.com/unittest-cpp/unittest-cpp.git
+[submodule "lib/portable-snippets"]
+	path = lib/portable-snippets
+	url = https://github.com/nemequ/portable-snippets.git
